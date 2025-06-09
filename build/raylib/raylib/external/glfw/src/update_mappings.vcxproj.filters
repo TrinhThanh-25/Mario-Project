@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\ProjectMario\build\CMakeFiles\1f9f4bcdf95f6b21ba4559bbce2931ba\update_mappings.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\ProjectMario\raylib\src\external\glfw\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="D:\ProjectMario\raylib\src\external\glfw\src\mappings.h.in">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="D:\ProjectMario\raylib\src\external\glfw\CMake\GenerateMappings.cmake" />
+    <None Include="D:\ProjectMario\build\raylib\raylib\external\glfw\src\CMakeFiles\update_mappings" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{F8CBDD7D-6CC5-371F-B72D-6D8E74860417}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{621B9E64-F085-3682-A660-84C4512C4B8C}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

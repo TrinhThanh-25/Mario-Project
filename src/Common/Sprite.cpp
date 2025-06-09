@@ -1,0 +1,158 @@
+#include "Common/Sprite.h"
+#include <string>
+
+Sprite::Sprite() 
+    : position({0, 0}), size({5, 5}), velocity({0, 0}), color(WHITE),
+      state(SpriteState::IDLE), direction(Direction::DOWN), frameTime(0.1f), frameAcum(0.0f), curFrame(0), maxFrame(1) {
+    updateCollisionBoxes();
+}
+
+Sprite::Sprite(Vector2 positon, Vector2 size, Vector2 vel, Color color, float frameTime, int maxFrames, Direction facingDirection)
+    : position(positon), size(size), velocity(vel), color(color), state(SpriteState::IDLE), direction(facingDirection),
+    frameTime(frameTime), frameAcum(0.0f), curFrame(0), maxFrame(maxFrame) {
+
+    north.setColor(color);
+    south.setColor(color);
+    west.setColor(color);
+    east.setColor(color);
+}
+
+Sprite::Sprite(Vector2 positon, Vector2 size, Color color)
+    : position(positon), size(size), velocity({0, 0}), color(color), direction(Direction::RIGHT),
+      frameTime(0.0f), frameAcum(0.0f), curFrame(0), maxFrame(0) {
+
+    north.setColor(color);
+    south.setColor(color);
+    west.setColor(color);
+    east.setColor(color);
+}
+
+Sprite::~Sprite() = default;
+
+CollisionType Sprite::checkCollision(Sprite* sprite) const {
+    if (sprite == nullptr) return NONE;
+    if (this->north.checkCollision(sprite->getRect())) return NORTH;
+    if (this->south.checkCollision(sprite->getRect())) return SOUTH;
+    if (this->west.checkCollision(sprite->getRect())) return WEST;
+    if (this->east.checkCollision(sprite->getRect())) return EAST;
+    return NONE;
+}
+
+void Sprite::updateCollisionBoxes() {
+    north.setPosition({position.x + size.x/2 - north.getWidth()/2, position.y});
+    south.setPosition({position.x + size.x/2 - south.getWidth()/2, position.y + size.y - south.getHeight()});
+    west.setPosition({position.x, position.y + size.y/2 - west.getHeight()/2});
+    east.setPosition({position.x + size.x - east.getWidth(), position.y + size.y/2 - east.getHeight()/2});
+}
+
+void Sprite::setPosition(Vector2 position) {
+    this->position = position;
+}
+
+void Sprite::setPosition(float x, float y) {
+    this->position = {x, y};
+}
+
+void Sprite::setX(float x) {
+    this->position.x = x;
+}
+
+void Sprite::setY(float y) {
+    this->position.y = y;
+}
+
+void Sprite::setSize(Vector2 size) {
+    this->size = size;
+}
+
+void Sprite::setSize(float width, float height) {
+    this->size = {width, height};
+}
+
+void Sprite::setWidth(float width) {
+    this->size.x = width;
+}
+
+void Sprite::setHeight(float height) {
+    this->size.y = height;
+}
+
+void Sprite::setVelocity(Vector2 velocity) {
+    this->velocity = velocity;
+}
+
+void Sprite::setVelocity(float x, float y) {
+    this->velocity = {x, y};
+}
+
+void Sprite::setVelocityX(float x) {
+    this->velocity.x = x;
+}
+
+void Sprite::setVelocityY(float y) {
+    this->velocity.y = y;
+}
+
+void Sprite::setColor(Color color) {
+    this->color = color;
+}
+
+void Sprite::setState(SpriteState state) {
+    this->state = state;
+}
+
+void Sprite::setDirection(Direction direction) {
+    this->direction = direction;
+}
+
+Vector2 Sprite::getPosition() const {
+    return this->position;
+}
+
+float Sprite::getX() const {
+    return this->position.x;
+}
+
+float Sprite::getY() const {
+    return this->position.y;
+}
+
+Vector2 Sprite::getSize() const {
+    return this->size;
+}
+
+float Sprite::getWidth() const {
+    return this->size.x;
+}
+
+float Sprite::getHeight() const {
+    return this->size.y;
+}
+
+Vector2 Sprite::getVelocity() const {
+    return this->velocity;
+}
+
+float Sprite::getVelocityX() const {
+    return this->velocity.x;
+}
+
+float Sprite::getVelocityY() const {
+    return this->velocity.y;
+}
+
+Color Sprite::getColor() const {
+    return this->color;
+}
+
+SpriteState Sprite::getState() const {
+    return this->state;
+}
+
+Direction Sprite::getDirection() const {
+    return this->direction;
+}
+
+Rectangle Sprite::getRect() const {
+    return Rectangle{position.x, position.y, size.x, size.y};
+}
