@@ -1,0 +1,15 @@
+#include "Block/Block.h"
+#include "raylib.h"
+
+Block::Block(Vector2 pos, Vector2 size, Color color)
+    : Block(pos, size, color, 0, 1) {}
+
+Block::Block(Vector2 pos, Vector2 size, Color color, float frameTime, int maxFrames)
+    : Sprite(pos, size, {0, 0}, color, frameTime, maxFrames, RIGHT) {}
+
+Block::~Block() = default;
+
+void Block::update() {
+}
+void Block::draw() {
+}
