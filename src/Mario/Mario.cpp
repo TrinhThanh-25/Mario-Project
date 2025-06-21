@@ -293,9 +293,9 @@ void Mario::movement(float deltaTime) {
     oldPosition = position;
 }
 
-CollisionType Mario::checkCollision(Sprite* sprite) const {
+//CollisionType Mario::checkCollision(Sprite* sprite) const {
     
-}
+//}
 
 void Mario::collisionTile(Sprite* sprite) const {
     

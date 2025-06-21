@@ -3,9 +3,9 @@
 
 float World::gravity = 800.0f;
 
-World::World(int width, int height, const std::string& title, int FPS)
-    : width(width), height(height), title(title), FPS(FPS) {
-}
+//World::World(int width, int height, const std::string& title, int FPS)
+//    : width(width), height(height), title(title), FPS(FPS) {
+//}
 
 World::~World() {
 }

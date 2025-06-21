@@ -86,7 +86,7 @@ class Mario : public Sprite {
         bool transition(float deltaTime);
         void movement(float deltaTime);
 
-        CollisionType checkCollision(Sprite* sprite) const override;
+        //CollisionType checkCollision(Sprite* sprite) const override;
         void collisionTile(Sprite* sprite) const;
         void collisionBlock(Sprite* sprite) const;
         void collisionEnemy(Sprite* sprite) const;
