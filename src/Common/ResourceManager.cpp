@@ -159,6 +159,11 @@ void ResourceManager::loadTexture() {
     texture["Start3"] = LoadTexture("resources/Effect/Start_3.png");
 
     //Item
+    texture["Coin0"] = LoadTexture("resources/Item/Coin_0.png");
+    texture["Coin1"] = LoadTexture("resources/Item/Coin_1.png");
+    texture["Coin2"] = LoadTexture("resources/Item/Coin_2.png");
+    texture["Coin3"] = LoadTexture("resources/Item/Coin_3.png");
+    
 
     //Tile
     for (int i=1;i<=4;i++){
