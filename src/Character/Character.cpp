@@ -1,0 +1,530 @@
+// fix jumping and falling animation
+#include "Character/Character.h"
+#include "Common/ResourceManager.h"
+#include "Game/World.h"
+#include <string>
+
+Character::Character(std::string name, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed) :
+    Sprite(pos, dim, vel, color, 0, 2, Direction::RIGHT),
+    name(name),
+    modePlayer(mode),
+    speed(speedX), 
+    maxSpeed(maxSpeedX), 
+    jumpSpeed(jumpSpeed), 
+    dyingSpeed(-600),  
+    isRunning(false),
+    isDucking(false),
+    isLookingUp(false),
+    lives(5),
+    frameTimeWalking(0.1f),
+    frameTimeRunning(0.05f),
+    walkingBeforeRunningTime(0.5f),
+    walkingBeforeRunningAcum(0.0f),
+    drawRunning(false),
+    invulnerable(false),
+    invulnerableTime(2.0f),
+    invulnerableAcum(0.0f),
+    invulnerableBlink(false),
+    invincible(false),
+    invincibleTime(8.0f), 
+    invincibleAcum(0.0f),
+    transitionTime(0.06f),
+    transitionAcum(0.0f),
+    normalTransitionSteps(11),
+    superToFlowerTransitionSteps(8),
+    transitionCurrentFrame(0),
+    transitionCurrentIndex(0),
+    oldPosition(pos),
+    type(CharacterType::SMALL) {
+    setState(SpriteState::ON_GROUND);
+}
+
+Character::~Character() {
+    fireball.clear();
+}
+
+void Character::update() {
+    float deltaTime = GetFrameTime();
+    if(state == SpriteState::DYING || velocity.x!=0) {
+        frameAcum += deltaTime;
+    }
+    else {
+        curFrame = 0;
+    }
+    if(state == SpriteState::DYING) {
+        position.y += dyingSpeed * deltaTime;
+        dyingSpeed += World::gravity * deltaTime;
+    }
+    if( state != SpriteState::DYING && state!= SpriteState::VICTORY) {
+        if(!transition(deltaTime)) {
+            movement(deltaTime);
+        }
+        for (auto i=0; i<fireball.size(); i++) {
+            fireball[i].update();
+        }
+    }
+    updateCollisionBoxes();
+}
+
+void Character::draw() {
+    std::unordered_map<std::string, Texture2D>& texture = ResourceManager::getTexture();
+    std::string characterType;
+    std::string direct;
+
+    if(type == CharacterType::SMALL) {
+        characterType = "Small" + name;
+    } else if(type == CharacterType::SUPER) {
+        characterType = "Super" + name;
+    } else if(type == CharacterType::FLOWER) {
+        characterType = "Flower" + name;
+    }
+
+    if(direction == Direction::RIGHT) {
+        direct = "Right";
+    } else {
+        direct = "Left";
+    }
+
+    if(state == SpriteState::DYING) {
+        DrawTexture(texture[characterType + "Dying" + std::to_string(curFrame)], position.x, position.y, WHITE);
+    }
+    else if(state == SpriteState::SMALL_TO_SUPER||state==SpriteState::SUPER_TO_SMALL) {
+        DrawTexture(texture["TransitioningSuper" + name + std::to_string(curFrame) + direct], position.x, position.y, WHITE);
+    }
+    else if(state == SpriteState::SMALL_TO_FLOWER || state == SpriteState::FLOWER_TO_SMALL) {
+        DrawTexture(texture["TransitioningFlower" + name + std::to_string(curFrame) + direct], position.x, position.y, WHITE);
+    }
+    else if(state == SpriteState::SUPER_TO_FLOWER) {
+        if(curFrame==0) {
+            DrawTexture(texture["Super" + name + "0" + direct], position.x, position.y, WHITE);
+        }
+        else {
+            DrawTexture(texture["Flower" + name + "0" + direct], position.x, position.y, WHITE);
+        }
+    }
+    else {
+        if(!invulnerableBlink) {
+            if(state==SpriteState::ON_GROUND) {
+                if(isDucking) {
+                    DrawTexture(texture[characterType + "Ducking0" + direct], position.x, position.y, WHITE);
+                }
+                else if(drawRunning) {
+                    DrawTexture(texture[characterType + "Running" + std::to_string(curFrame) + direct], position.x, position.y, WHITE);
+                }
+                else{
+                    if((modePlayer==FIRSTPLAYER||modePlayer==SINGLEPLAYER) && type==CharacterType::FLOWER){
+                        if(IsKeyPressed(KEY_LEFT_CONTROL)) {
+                            DrawTexture(texture[characterType +"ThrowingFireball0" + direct], position.x, position.y, WHITE);
+                        }
+                    }
+                    else if(modePlayer==SECONDPLAYER && type==CharacterType::FLOWER){
+                        if(IsKeyPressed(KEY_RIGHT_CONTROL)) {
+                            DrawTexture(texture[characterType +"ThrowingFireball0" + direct], position.x, position.y, WHITE);
+                        }
+                    }
+                    else{
+                        DrawTexture(texture[characterType + std::to_string(curFrame) + direct], position.x, position.y, WHITE);
+                    }
+                }
+
+            }
+            else if(state==SpriteState::JUMPING) {
+                if(drawRunning) {
+                    DrawTexture(texture[characterType + "JumpingAndRunning0" + direct], position.x, position.y, WHITE);
+                }
+                else {
+                    DrawTexture(texture[characterType + "Jumping0" + direct], position.x, position.y, WHITE);
+                }
+            }
+            else if(state==SpriteState::FALLING) {
+                DrawTexture(texture[characterType + "Falling0" + direct], position.x, position.y, WHITE);
+            }
+            else if(state==SpriteState::VICTORY) {
+                DrawTexture(texture[characterType + "Victory0"], position.x, position.y, WHITE);
+            }
+        }
+    }
+    for (auto& fb : fireball) {
+        fb.draw();
+    }
+}
+
+void Character::updateCollisionBoxes() {
+    north.setWidth(size.x/4);
+    north.setX( position.x + size.x / 2 - north.getWidth() / 2 );
+    if(isDucking){
+        north.setY( position.y + size.y - 32 );
+    }
+    else{
+        north.setY( position.y );
+    }
+    south.setWidth(size.x/4);
+    south.setX( position.x + size.x / 2 - south.getWidth() / 2 );
+    south.setY( position.y + size.y - south.getHeight() );
+    east.setHeight(size.y/1.5f);
+    east.setX( position.x + size.x - east.getWidth() );
+    west.setHeight(size.y/1.5f);
+    west.setX( position.x );
+    if(isDucking){
+        east.setHeight(size.y/3);
+        west.setHeight(size.y/3);
+    }
+    if ( type == CharacterType::SMALL ) {
+        if ( isDucking ) {
+            east.setY( position.y + 26 - east.getHeight() / 2 );
+            west.setY( position.y + 26 - west.getHeight() / 2 );
+        } else {
+            east.setY( position.y + size.y/2 - east.getHeight() / 2 );
+            west.setY( position.y + size.y/2- west.getHeight() / 2 );
+        }
+    } 
+    else {
+        if ( isDucking ) {
+            east.setY( position.y + 40 - east.getHeight() / 2 );
+            west.setY( position.y + 40 - west.getHeight() / 2 );
+        } else {
+            east.setY( position.y + size.y/2 - east.getHeight() / 2 );
+            west.setY( position.y + size.y/2 - west.getHeight() / 2 );
+        }
+    }   
+}
+
+bool Character::transition(float deltaTime) {
+    const int* currentFrame = nullptr;
+    int transitionSteps = 0;
+    if(state==SpriteState::SMALL_TO_SUPER || state==SpriteState::SMALL_TO_FLOWER) {
+        currentFrame = normalTransitionFrame;
+        transitionSteps = normalTransitionSteps;
+    }
+    else if(state==SpriteState::SUPER_TO_FLOWER) {
+        currentFrame = superToFlowerTransitionFrame;
+        transitionSteps = superToFlowerTransitionSteps;
+    }
+    else if(state==SpriteState::SUPER_TO_SMALL || state==SpriteState::FLOWER_TO_SMALL) {
+        currentFrame = reverseTransitionFrame;
+        transitionSteps = normalTransitionSteps;
+    }
+    else return false;
+    transitionAcum += deltaTime;
+    if(transitionAcum >= transitionTime) {
+        transitionCurrentIndex++;
+        transitionAcum = 0.0f;
+        if(transitionCurrentIndex > transitionSteps) {
+            transitionCurrentIndex = 0;
+            if(state == SpriteState::SMALL_TO_SUPER) {
+                transitionToSuper();
+            } else if(state == SpriteState::SUPER_TO_FLOWER || state == SpriteState::SMALL_TO_FLOWER) {
+                transitionToFlower();
+            } else if(state == SpriteState::SUPER_TO_SMALL || state == SpriteState::FLOWER_TO_SMALL) {
+                transitionToSmall();
+            }
+            state = previousState;
+        }
+        else {
+            curFrame = currentFrame[transitionCurrentIndex];
+        }
+        return true;
+    }
+    return true;
+}
+
+void Character::movement(float deltaTime) {
+    KeyboardKey up, down, left, right, control;
+    if(modePlayer == ModePlayer::ONEPLAYER) {
+        up = KEY_SPACE;
+        down = KEY_DOWN;
+        left = KEY_LEFT;
+        right = KEY_RIGHT;
+        control = KEY_LEFT_CONTROL;
+    } else if(modePlayer == ModePlayer::FIRSTPLAYER) {
+        up = KEY_W;
+        down = KEY_S;
+        left = KEY_A;
+        right = KEY_D;
+        control = KEY_LEFT_CONTROL;
+    } else if(modePlayer == ModePlayer::SECONDPLAYER) {
+        up = KEY_UP;
+        down = KEY_DOWN;
+        left = KEY_LEFT;
+        right = KEY_RIGHT;
+        control = KEY_RIGHT_CONTROL;
+    }
+    float currentSpeedX = isRunning ? ( drawRunning ? maxSpeed * 1.3f : maxSpeed ) : speed;
+    float frameTimeAct = isRunning ? frameTimeRunning : frameTimeWalking;
+    if(IsKeyDown(control)&&velocity.x!=0) {
+        isRunning = true;;
+    }
+    else {
+        isRunning = false;
+    }
+    if(invulnerable) {
+        invulnerableAcum += deltaTime;
+        invulnerableBlink = !invulnerableBlink;
+        if(invulnerableAcum >= invulnerableTime) {
+            invulnerable = false;
+            invulnerableAcum = 0.0f;
+            invulnerableBlink = false;
+        }
+    }
+    if(invincible) {
+        invincibleAcum += deltaTime;
+        if(invincibleAcum >= invincibleTime) {
+            invincible = false;
+            invincibleAcum = 0.0f;
+        }
+    }
+    if(isRunning){
+        walkingBeforeRunningAcum +=deltaTime;
+        if(walkingBeforeRunningAcum >= walkingBeforeRunningTime) {
+            drawRunning = true;
+        }
+    }
+    else {
+        drawRunning = false;
+        walkingBeforeRunningAcum = 0.0f;
+    }
+    if(velocity.x!=0) {
+        if (frameAcum >= frameTimeAct) {
+            curFrame = (curFrame + 1) % maxFrame;
+            frameAcum = 0.0f;
+        }
+    }
+    if(IsKeyDown(right)) {
+        walkingAcum += deltaTime;
+        direction = Direction::RIGHT;
+        if(isRunning) {
+            if(drawRunning) {
+                velocity.x = maxSpeed * 1.3f * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+            }
+            else {
+                velocity.x = maxSpeed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+            }
+        }
+        else {
+            velocity.x = speed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+        }
+    }
+    else if(IsKeyDown(left)) {
+        walkingAcum += deltaTime;
+        direction = Direction::LEFT;
+        if(isRunning) {
+            if(drawRunning) {
+                velocity.x = -maxSpeed * 1.3f * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+            }
+            else {
+                velocity.x = -maxSpeed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+            }
+        }
+        else {
+            velocity.x = -speed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+        }
+    } 
+    else {
+        walkingAcum = 0.0f;
+        if(velocity.x>=-10 && velocity.x<=10) {
+            velocity.x = 0;
+        }
+        else {
+            velocity.x *= 0.9f;
+        }
+    }
+    if(state==SpriteState::ON_GROUND) {
+        if(IsKeyDown(down)) {
+            isDucking = true;
+            velocity.x = 0;
+        } else {
+            isDucking = false;
+        }
+    } else {
+        isDucking = false;
+    }
+    if(IsKeyPressed(up)&& state == SpriteState::ON_GROUND) {
+        velocity.y = jumpSpeed;
+        state = SpriteState::JUMPING;
+        PlaySound(ResourceManager::getSound()["Jump"]);
+    }
+    if(IsKeyPressed(control) && type==CharacterType::FLOWER) {
+        if(direction == Direction::RIGHT) {
+            fireball.push_back(Fireball({position.x+size.x/2.0f, position.y+size.y/2.0f}, Direction::RIGHT, 2.0f));
+        } else {
+            fireball.push_back(Fireball({position.x+size.x/2.0f, position.y+size.y/2.0f}, Direction::LEFT, 2.0f));
+        }
+        PlaySound(ResourceManager::getSound()["Fireball"]);
+    }
+    position.x += velocity.x * deltaTime;
+    position.y += velocity.y * deltaTime;
+    velocity.y += World::gravity * deltaTime; 
+    if(oldPosition.y < position.y) {
+        state = SpriteState::FALLING;
+    }
+    oldPosition = position;
+}
+
+CollisionType Character::checkCollision(Sprite* sprite) {
+    if(sprite->getState() == SpriteState::NO_COLLIDABLE) return CollisionType::NONE;
+    Rectangle rect = sprite->getRect();
+    for (auto& fb : fireball){
+        switch(fb.checkCollision(sprite)) {
+            case CollisionType::NORTH:
+                fb.setVelocityY(-fb.getVelocityY());
+                break;
+            case CollisionType::SOUTH:
+                fb.setVelocityY(-320);
+                break;
+            case CollisionType::WEST:
+                fireball.erase(fireball.begin() + (&fb - &fireball[0]));
+                break;
+            case CollisionType::EAST:
+                fireball.erase(fireball.begin() + (&fb - &fireball[0]));
+                break;
+            default:
+                break;
+        }
+    }
+    if(north.checkCollision(rect)) {
+        return CollisionType::NORTH;
+    }
+    else if(south.checkCollision(rect)){
+        return CollisionType::SOUTH;
+    } 
+    else if(west.checkCollision(rect)) {
+        return CollisionType::WEST;
+    }
+    else if(east.checkCollision(rect)) {
+        return CollisionType::EAST;
+    }
+    return CollisionType::NONE;
+}
+
+void Character::collisionTile(Tile* tile) {
+    if(tile->getType() == TileType::SOLID){
+        switch(checkCollision(tile)) {
+            case CollisionType::NORTH:
+                position.y = tile->getY() + tile->getHeight();
+                velocity.y = 0;
+                updateCollisionBoxes();
+                break;
+            case CollisionType::SOUTH:
+                position.y = tile->getY() - size.y;
+                velocity.y = 0;
+                state = SpriteState::ON_GROUND;
+                updateCollisionBoxes();
+                break;
+            case CollisionType::WEST:
+                position.x = tile->getX() + tile->getWidth();
+                velocity.x = 0;
+                updateCollisionBoxes();
+                break;
+            case CollisionType::EAST:
+                position.x = tile->getX() - size.x;
+                velocity.x = 0;
+                updateCollisionBoxes();
+                break;
+            default:
+                break;
+        }
+    }
+    else if(tile->getType() == TileType::SOLID_ABOVE){
+        if(checkCollision(tile) == CollisionType::SOUTH&& state == SpriteState::JUMPING) {
+            position.y = tile->getY() - size.y;
+            velocity.y = 0;
+            state = SpriteState::ON_GROUND;
+            updateCollisionBoxes();
+        }
+    }
+    else if(tile->getType() == SLOPE_DOWN || tile->getType() == SLOPE_UP) {
+        //
+        //
+        //
+    }
+}
+
+void Character::collisionBlock(Block* block) {
+    switch(checkCollision(block)) {
+        case CollisionType::NORTH:
+            position.y = block->getY() + block->getHeight();
+            velocity.y = 0;
+            updateCollisionBoxes();
+            //
+            // activate block
+            break;
+        case CollisionType::SOUTH:
+            position.y = block->getY() - size.y;
+            velocity.y = 0;
+            state = SpriteState::ON_GROUND;
+            updateCollisionBoxes();
+            break;
+        case CollisionType::WEST:
+            position.x = block->getX() + block->getWidth();
+            velocity.x = 0;
+            updateCollisionBoxes();
+            break;
+        case CollisionType::EAST:
+            position.x = block->getX() - size.x;
+            velocity.x = 0;
+            updateCollisionBoxes();
+            break;
+        default:
+            break;
+    }
+}
+
+void Character::collisionEnemy(Enemy* enemy) {
+
+}
+
+void Character::setLives(int lives) {
+    this->lives = lives;
+}
+
+int Character::getLives() const {
+    return this->lives;
+}
+
+void Character::transitionToSmall() {
+    type = CharacterType::SMALL;
+    size = {32, 40};
+    maxFrame = 2;
+    invulnerable = true;
+    invulnerableAcum = 0.0f;
+}
+
+void Character::transitionToSuper() {
+    type = CharacterType::SUPER;
+    size = {32, 56};
+    maxFrame = 3;
+}
+
+void Character::transitionToFlower() {
+    type = CharacterType::FLOWER;
+    size = {32, 56};
+    maxFrame = 3;
+}
+
+void Character::setInvulnerable(bool invulnerable) {
+    this->invulnerable = invulnerable;
+}
+
+bool Character::isInvulnerable() const {
+    return this->invulnerable;
+}
+
+void Character::setInvincible(bool invincible) {
+    this->invincible = invincible;
+}
+
+bool Character::isInvincible() const {
+    return this->invincible;
+}
+
+void Character::setType(CharacterType type) {
+    this->type = type;
+}
+
+CharacterType Character::getType() const {
+    return this->type;
+}
+
+void Character::setPreviousState(SpriteState state) {
+    this->previousState = state;
+}

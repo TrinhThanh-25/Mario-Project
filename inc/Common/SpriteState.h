@@ -21,7 +21,6 @@ enum SpriteState {
     SUPER_TO_SMALL,
     FLOWER_TO_SMALL,
     VICTORY,
-    TO_NEXT_MAP,
     INVULNERABLE,
 
     //Other objects

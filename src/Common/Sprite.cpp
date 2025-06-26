@@ -7,7 +7,7 @@ Sprite::Sprite()
     updateCollisionBoxes();
 }
 
-Sprite::Sprite(Vector2 positon, Vector2 size, Vector2 vel, Color color, float frameTime, int maxFrames, Direction facingDirection)
+Sprite::Sprite(Vector2 positon, Vector2 size, Vector2 vel, Color color, float frameTime, int maxFrame, Direction facingDirection)
     : position(positon), size(size), velocity(vel), color(color), state(SpriteState::IDLE), direction(facingDirection),
     frameTime(frameTime), frameAcum(0.0f), curFrame(0), maxFrame(maxFrame) {
 
@@ -29,7 +29,7 @@ Sprite::Sprite(Vector2 positon, Vector2 size, Color color)
 
 Sprite::~Sprite() = default;
 
-CollisionType Sprite::checkCollision(Sprite* sprite) const {
+CollisionType Sprite::checkCollision(Sprite* sprite){
     if (sprite == nullptr) return NONE;
     if (this->north.checkCollision(sprite->getRect())) return NORTH;
     if (this->south.checkCollision(sprite->getRect())) return SOUTH;

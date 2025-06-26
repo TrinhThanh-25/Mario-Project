@@ -1,19 +1,22 @@
 #ifndef MAP_H
 #define MAP_H
 
+#include <vector>
 #include "raylib.h"
 #include "Common/Drawable.h"
 #include "Tile/Tile.h"
 #include "Block/Block.h"
 #include "Enemy/Enemy.h"
 #include "Item/Item.h"
+#include <vector>
 
 class World;
-class Mario;
+class Character;
 
 class Map : virtual public Drawable {
     private:
-        Mario* mario;
+        std::vector<Character*>* characters;
+        float offset;
         Camera2D* camera;
         World* world;
 
@@ -21,7 +24,9 @@ class Map : virtual public Drawable {
         int width;
         int height;
         Texture2D background;
+        Color backgroundColor;
         int backgroundID;
+        int musicID;
         
         std::vector<Tile*> tile;
         std::vector<Tile*> backTile;
@@ -33,10 +38,16 @@ class Map : virtual public Drawable {
         std::vector<Enemy*> frontEnemy;
         std::vector<Item*> item;
     public:
-        Map();
+        Map(std::vector<Character*>* characters, World* world, int mapNumber);
         ~Map() override;
         void loadMap(int mapnumber);
+        void setCharacters(std::vector<Character*>* characters);
         void draw() override;
+        void setOffset(float offset);
+        void setCamera(Camera2D* camera);
+        int getWidth() const;
+        int getHeight() const;
+        std::vector<Tile*>& getTile();
 };
 
 #endif

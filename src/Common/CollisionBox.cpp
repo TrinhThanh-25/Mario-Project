@@ -1,7 +1,7 @@
 #include "Common/CollisionBox.h"
 
 CollisionBox::CollisionBox() 
-    : position({0, 0}), size({5, 5}), rect({0,0,5,5}), color(WHITE) {}
+    : position({0, 0}), size({5, 5}), rect({0,0,5,5}), color(YELLOW) {}
 
 CollisionBox::CollisionBox(Vector2 position, Vector2 size, Color color)
     : position(position), size(size), rect({position.x, position.y, size.x, size.y}), color(color) {}
