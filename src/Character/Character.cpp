@@ -1,4 +1,3 @@
-// fix jumping and falling animation
 #include "Character/Character.h"
 #include "Common/ResourceManager.h"
 #include "Game/World.h"
@@ -15,7 +14,6 @@ Character::Character(std::string name, ModePlayer mode, Vector2 pos, Vector2 dim
     isRunning(false),
     isDucking(false),
     isLookingUp(false),
-    lives(5),
     frameTimeWalking(0.1f),
     frameTimeRunning(0.05f),
     walkingBeforeRunningTime(0.5f),
@@ -35,7 +33,8 @@ Character::Character(std::string name, ModePlayer mode, Vector2 pos, Vector2 dim
     transitionCurrentFrame(0),
     transitionCurrentIndex(0),
     oldPosition(pos),
-    type(CharacterType::SMALL) {
+    type(CharacterType::SMALL),
+    activateWidth(0.0f) {
     setState(SpriteState::ON_GROUND);
 }
 
@@ -43,10 +42,20 @@ Character::~Character() {
     fireball.clear();
 }
 
+void Character::setWorld(World* world) {
+    this->world = world;
+    this->map = world->getMap();
+    this->gameHud = world->getGameHud();
+}
+
 void Character::update() {
     float deltaTime = GetFrameTime();
-    if(state == SpriteState::DYING || velocity.x!=0) {
+    if(state == SpriteState::DYING || velocity.x != 0) {
         frameAcum += deltaTime;
+        if(frameAcum >= frameTimeWalking) {
+            curFrame = (curFrame + 1) % maxFrame;
+            frameAcum = 0.0f;
+        }
     }
     else {
         curFrame = 0;
@@ -61,6 +70,12 @@ void Character::update() {
         }
         for (auto i=0; i<fireball.size(); i++) {
             fireball[i].update();
+        }
+    }
+    for (int i=0;i<fireball.size();i++) {
+        if(fireball[i].getState() == SpriteState::TO_BE_REMOVED) {
+            fireball.erase(fireball.begin() + i);
+            i--;
         }
     }
     updateCollisionBoxes();
@@ -103,44 +118,48 @@ void Character::draw() {
         }
     }
     else {
+        Color curColor = WHITE;
+        if(invincible) {
+            curColor = ColorFromHSV( 360.0f * (invincibleAcum / invincibleTime * 20), 0.3f, 1.0f);
+        }
         if(!invulnerableBlink) {
             if(state==SpriteState::ON_GROUND) {
                 if(isDucking) {
-                    DrawTexture(texture[characterType + "Ducking0" + direct], position.x, position.y, WHITE);
+                    DrawTexture(texture[characterType + "Ducking0" + direct], position.x, position.y, curColor);
                 }
                 else if(drawRunning) {
-                    DrawTexture(texture[characterType + "Running" + std::to_string(curFrame) + direct], position.x, position.y, WHITE);
+                    DrawTexture(texture[characterType + "Running" + std::to_string(curFrame) + direct], position.x, position.y, curColor);
                 }
                 else{
                     if((modePlayer==FIRSTPLAYER||modePlayer==SINGLEPLAYER) && type==CharacterType::FLOWER){
                         if(IsKeyPressed(KEY_LEFT_CONTROL)) {
-                            DrawTexture(texture[characterType +"ThrowingFireball0" + direct], position.x, position.y, WHITE);
+                            DrawTexture(texture[characterType +"ThrowingFireball0" + direct], position.x, position.y, curColor);
                         }
                     }
                     else if(modePlayer==SECONDPLAYER && type==CharacterType::FLOWER){
                         if(IsKeyPressed(KEY_RIGHT_CONTROL)) {
-                            DrawTexture(texture[characterType +"ThrowingFireball0" + direct], position.x, position.y, WHITE);
+                            DrawTexture(texture[characterType +"ThrowingFireball0" + direct], position.x, position.y, curColor);
                         }
                     }
                     else{
-                        DrawTexture(texture[characterType + std::to_string(curFrame) + direct], position.x, position.y, WHITE);
+                        DrawTexture(texture[characterType + std::to_string(curFrame) + direct], position.x, position.y, curColor);
                     }
                 }
 
             }
             else if(state==SpriteState::JUMPING) {
                 if(drawRunning) {
-                    DrawTexture(texture[characterType + "JumpingAndRunning0" + direct], position.x, position.y, WHITE);
+                    DrawTexture(texture[characterType + "JumpingAndRunning0" + direct], position.x, position.y, curColor);
                 }
                 else {
-                    DrawTexture(texture[characterType + "Jumping0" + direct], position.x, position.y, WHITE);
+                    DrawTexture(texture[characterType + "Jumping0" + direct], position.x, position.y, curColor);
                 }
             }
             else if(state==SpriteState::FALLING) {
-                DrawTexture(texture[characterType + "Falling0" + direct], position.x, position.y, WHITE);
+                DrawTexture(texture[characterType + "Falling0" + direct], position.x, position.y, curColor);
             }
             else if(state==SpriteState::VICTORY) {
-                DrawTexture(texture[characterType + "Victory0"], position.x, position.y, WHITE);
+                DrawTexture(texture[characterType + "Victory0"], position.x, position.y, curColor);
             }
         }
     }
@@ -372,10 +391,10 @@ CollisionType Character::checkCollision(Sprite* sprite) {
                 fb.setVelocityY(-320);
                 break;
             case CollisionType::WEST:
-                fireball.erase(fireball.begin() + (&fb - &fireball[0]));
+                fb.setState(SpriteState::TO_BE_REMOVED);
                 break;
             case CollisionType::EAST:
-                fireball.erase(fireball.begin() + (&fb - &fireball[0]));
+                fb.setState(SpriteState::TO_BE_REMOVED);
                 break;
             default:
                 break;
@@ -396,7 +415,34 @@ CollisionType Character::checkCollision(Sprite* sprite) {
     return CollisionType::NONE;
 }
 
+CollisionType Character::checkCollisionEnemy(Sprite* sprite) {
+    if(sprite->getState() == SpriteState::NO_COLLIDABLE || sprite->getState() == SpriteState::DYING || sprite->getState() == SpriteState::TO_BE_REMOVED) return CollisionType::NONE;
+    Rectangle rect = sprite->getRect();
+    for (auto& fb : fireball){
+        if(fb.checkCollision(sprite) != CollisionType::NONE && sprite->getState() != SpriteState::DYING) {
+            fb.setState(SpriteState::TO_BE_REMOVED);
+            return CollisionType::FIREBALL;
+        }
+    }
+    if(state == SpriteState::JUMPING || velocity.y > 0) {
+        if(north.checkCollision(rect)) {
+            return CollisionType::NORTH;
+        }
+        else if(south.checkCollision(rect)) {
+            return CollisionType::SOUTH;
+        }
+        else if(west.checkCollision(rect)) {
+            return CollisionType::WEST;
+        }
+        else if(east.checkCollision(rect)) {
+            return CollisionType::EAST;
+        }
+    }
+    return CollisionType::NONE;
+}
+
 void Character::collisionTile(Tile* tile) {
+    if(state == SpriteState::DYING || state == SpriteState::VICTORY) return;
     if(tile->getType() == TileType::SOLID){
         switch(checkCollision(tile)) {
             case CollisionType::NORTH:
@@ -434,18 +480,16 @@ void Character::collisionTile(Tile* tile) {
     }
     else if(tile->getType() == SLOPE_DOWN || tile->getType() == SLOPE_UP) {
         //
-        //
-        //
     }
 }
 
 void Character::collisionBlock(Block* block) {
+    if(state == SpriteState::DYING || state == SpriteState::VICTORY) return;
     switch(checkCollision(block)) {
         case CollisionType::NORTH:
             position.y = block->getY() + block->getHeight();
             velocity.y = 0;
             updateCollisionBoxes();
-            //
             // activate block
             break;
         case CollisionType::SOUTH:
@@ -470,15 +514,59 @@ void Character::collisionBlock(Block* block) {
 }
 
 void Character::collisionEnemy(Enemy* enemy) {
-
-}
-
-void Character::setLives(int lives) {
-    this->lives = lives;
-}
-
-int Character::getLives() const {
-    return this->lives;
+    if(state == SpriteState::DYING || state == SpriteState::VICTORY) return;
+    if(enemy->getState() == SpriteState::IDLE){
+        // activate enemy
+    }
+    if(enemy->getState() != SpriteState::DYING && enemy->getState() != SpriteState::TO_BE_REMOVED) {
+        CollisionType collision = checkCollisionEnemy(enemy);
+        if(invincible == true && collision != CollisionType::NONE){
+            // enemy is defeated
+            PlaySound(ResourceManager::getSound()["Stomp"]);
+            // character earn points of enemy
+        }
+        else if (collision == CollisionType::FIREBALL) {
+            // enemy is defeated by fireball
+            PlaySound(ResourceManager::getSound()["Stomp"]);
+            // character earn points of enemy 
+        }
+        else if( enemy->getAuxiliaryState() != SpriteState::INVULNERABLE && collision == CollisionType::SOUTH ) {
+            if( state == SpriteState::FALLING && enemy->getState() != SpriteState::DYING && enemy->getState() != SpriteState::TO_BE_REMOVED) {
+                position.y = enemy->getY() - size.y;
+                if(((modePlayer == ModePlayer::FIRSTPLAYER || modePlayer == ModePlayer::ONEPLAYER) && IsKeyDown(KEY_LEFT_CONTROL)) || (modePlayer == ModePlayer::SECONDPLAYER && IsKeyDown(KEY_RIGHT_CONTROL))) {
+                    velocity.y = -400.0f;
+                }
+                else {
+                    velocity.y = -200.0f;
+                }
+                state = SpriteState::JUMPING;
+                // enemy is defeated
+                PlaySound(ResourceManager::getSound()["Stomp"]);
+                // character earn points of enemy
+            }
+        }
+        else if( collision != CollisionType::NONE && invulnerable == false ) {
+            switch(type) {
+                case CharacterType::SMALL:
+                    state = SpriteState::DYING;
+                    world->playPlayerDownMusic();
+                    gameHud->removeLives(1);
+                    break;
+                case CharacterType::SUPER:
+                    PlaySound(ResourceManager::getSound()["Pipe"]);
+                    previousState = state;
+                    state = SpriteState::SUPER_TO_SMALL;
+                    invulnerable = true;
+                    break;
+                case CharacterType::FLOWER:
+                    PlaySound(ResourceManager::getSound()["Pipe"]);
+                    previousState = state;
+                    state = SpriteState::FLOWER_TO_SMALL;
+                    invulnerable = true;
+                    break;
+            }
+        }
+    }
 }
 
 void Character::transitionToSmall() {
@@ -517,6 +605,14 @@ bool Character::isInvincible() const {
     return this->invincible;
 }
 
+void Character::setActivateWidth(float width) {
+    this->activateWidth = width;
+}
+
+float Character::getActivateWidth() const {
+    return this->activateWidth;
+}
+
 void Character::setType(CharacterType type) {
     this->type = type;
 }
@@ -527,4 +623,29 @@ CharacterType Character::getType() const {
 
 void Character::setPreviousState(SpriteState state) {
     this->previousState = state;
+}
+
+SpriteState Character::getPreviousState() const {
+    return this->previousState;
+}
+
+void Character::reset(bool isPowerOff) {
+    if(isPowerOff) {
+        transitionToSmall();
+    }
+    velocity = {0, 0};
+    dyingSpeed = -600;
+    state = SpriteState::ON_GROUND;
+    direction = Direction::RIGHT;
+    isDucking = false;
+    isRunning = false;
+    isLookingUp = false;
+    invulnerable = false;
+    invulnerableAcum = 0.0f;
+    invulnerableBlink = false;
+    fireball.clear();
+}
+
+void Character::resetGame() {
+    reset(true);
 }

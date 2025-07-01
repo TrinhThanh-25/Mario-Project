@@ -6,6 +6,7 @@
 
 class IrisOutState : public GameState {
     private:
+        GameHud* gameHud;
     public:
         IrisOutState(World* world);
         ~IrisOutState() override;

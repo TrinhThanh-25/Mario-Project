@@ -15,6 +15,7 @@ class Sprite : public virtual Drawable {
         Vector2 velocity;
         Color color;
         SpriteState state;
+        SpriteState auxiliaryState;
         Direction direction;
 
         float frameTime;
@@ -54,6 +55,7 @@ class Sprite : public virtual Drawable {
 
         void setColor(Color color);
         void setState(SpriteState state);
+        void setAuxiliaryState(SpriteState auxiliaryState);
         void setDirection(Direction direction);
 
         Vector2 getPosition() const;
@@ -70,6 +72,7 @@ class Sprite : public virtual Drawable {
 
         Color getColor() const;
         SpriteState getState() const;
+        SpriteState getAuxiliaryState() const;
         Direction getDirection() const;
 
         Rectangle getRect() const;

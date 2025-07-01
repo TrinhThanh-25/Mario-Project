@@ -10,11 +10,16 @@ class PlayingState : public GameState {
         Map* map;
         Camera2D* camera;
         ModeWorld* modeWorld;
+        GameHud* gameHud;
+        bool* pausedForTransition;
+        bool* pausedUpdateCharacters;
     public:
         PlayingState(World* world);
         ~PlayingState() override;
         void update() override;
         void draw() override;
+        bool isOneCharactersDead() const;
+        bool isAllCharactersVictory() const;
 };
 
 #endif

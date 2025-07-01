@@ -42,6 +42,8 @@ class ResourceManager {
         static void drawMessageString( std::string str, int x, int y );
         static int getMessageStringWidth( std::string str );
         static int getMessageStringHeight();
+
+        static std::vector<std::string> split( const std::string& s, char delim = '\n' );
 };
 
 #endif

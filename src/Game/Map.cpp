@@ -4,7 +4,7 @@
 #include <fstream>
 #include <iostream>
 
-Map::Map(std::vector<Character*>* characters, World* world, int mapNumber)
+Map::Map(std::vector<Character*>& characters, World* world, int mapNumber)
     : characters(characters), 
     world(world), 
     mapNumber(mapNumber), 
@@ -20,33 +20,7 @@ Map::Map(std::vector<Character*>* characters, World* world, int mapNumber)
 }
 
 Map::~Map() {
-    for (auto& t : tile) {
-        delete t;
-    }
-    for (auto& bT : backTile) {
-        delete bT;
-    }
-    for (auto& fT : frontTile) {
-        delete fT;
-    }
-    for (auto& b : block) {
-        delete b;
-    }
-    for (auto& mB : messBlock) {
-        delete mB;
-    }
-    for (auto& e : enemy) {
-        delete e;
-    }
-    for (auto& bE : backEnemy) {
-        delete bE;
-    }
-    for (auto& fE : frontEnemy) {
-        delete fE;
-    }
-    for (auto& i : item) {
-        delete i;
-    }
+    clear();
 }
 
 void Map::loadMap(int mapNumber) {
@@ -390,7 +364,7 @@ void Map::loadMap(int mapNumber) {
 	}
 }
 
-void Map::setCharacters(std::vector<Character*>* characters) {
+void Map::setCharacters(std::vector<Character*>& characters) {
     this->characters = characters;
 }
 
@@ -414,9 +388,6 @@ void Map::draw() {
     for (auto& mB : messBlock) {
         mB->draw();
     }
-    for (auto& e : enemy) {
-        e->draw();
-    }
     for (auto& bE : backEnemy) {
         bE->draw();
     }
@@ -426,7 +397,7 @@ void Map::draw() {
     for (auto& fE : frontEnemy) {
         fE->draw();
     }
-    for (auto& character : *characters) {
+    for (auto& character : characters) {
         character->draw();
     }
     for (auto& fT : frontTile) {
@@ -452,4 +423,84 @@ int Map::getHeight() const {
 
 std::vector<Tile*>& Map::getTile() {
     return tile;
+}
+
+std::vector<Block*>& Map::getBlock() {
+    return block;
+}
+
+std::vector<Enemy*>& Map::getBackEnemy() {
+    return backEnemy;
+}
+
+std::vector<Enemy*>& Map::getFrontEnemy() {
+    return frontEnemy;
+}
+
+std::vector<Item*>& Map::getItem() {
+    return item;
+}
+
+std::vector<Item*>& Map::getStaticItem() {
+    return staticItem;
+}
+
+void Map::clear() {
+    for (auto& t : tile) {
+        delete t;
+    }
+    tile.clear();
+    for (auto& bT : backTile) {
+        delete bT;
+    }
+    backTile.clear();
+    for (auto& fT : frontTile) {
+        delete fT;
+    }
+    frontTile.clear();
+    for (auto& b : block) {
+        delete b;
+    }
+    block.clear();
+    for (auto& mB : messBlock) {
+        delete mB;
+    }
+    messBlock.clear();
+    for (auto& bE : backEnemy) {
+        delete bE;
+    }
+    backEnemy.clear();
+    for (auto& fE : frontEnemy) {
+        delete fE;
+    }
+    frontEnemy.clear();
+    for (auto& i : item) {
+        delete i;
+    }
+    item.clear();
+}
+
+void Map::showMessage() {
+    // Hiện thông báo nếu có
+}
+
+void Map::reset() {
+    // thêm vẽ vẽ với reset mặc định
+
+    clear();
+    loadMap(mapNumber);
+}
+
+bool Map::next() {
+    if (mapNumber < maxMapNumber) {
+        mapNumber++;
+        reset();
+        return true;
+    }
+    return false;
+}
+
+void Map::first() {
+    mapNumber = 1;
+    reset();
 }

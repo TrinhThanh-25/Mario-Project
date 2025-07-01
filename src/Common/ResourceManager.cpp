@@ -1,7 +1,9 @@
 #include "Common/ResourceManager.h"
 #include "raylib.h"
 #include <string>
+#include <sstream>
 #include <iostream>
+#include <vector>
 
 
 std::unordered_map<std::string, Texture2D> ResourceManager::texture;
@@ -260,39 +262,38 @@ void ResourceManager::loadTexture() {
     texture["Start3"] = LoadTexture("../resources/Effect/Start_3.png");
 
     //GUI
-    texture["gui1Up"] = LoadTexture("../resources/gui/gui1Up.png");
-    texture["gui2Up"] = LoadTexture("../resources/gui/gui2Up.png");
-    texture["gui3Up"] = LoadTexture("../resources/gui/gui3Up.png");
-    texture["guiAlfa"] = LoadTexture("../resources/gui/guiAlfa.png");
-    texture["guiAlfaLowerUpper"] = LoadTexture("../resources/gui/guiAlfaLowerUpper.png");
-    texture["guiClock"] = LoadTexture("../resources/gui/guiClock.png");
-    texture["guiCoin"] = LoadTexture("../resources/gui/guiCoin.png");
-    texture["guiCredits"] = LoadTexture("../resources/gui/guiCredits.png");
-    texture["guiGameOver"] = LoadTexture("../resources/gui/guiGameOver.png");
-    texture["gui100"] = LoadTexture("../resources/gui/guiHundredsPoints_100.png");
-    texture["gui200"] = LoadTexture("../resources/gui/guiHundredsPoints_200.png");
-    texture["gui400"] = LoadTexture("../resources/gui/guiHundredsPoints_400.png");
-    texture["gui800"] = LoadTexture("../resources/gui/guiHundredsPoints_800.png");
-    texture["guiLetters"] = LoadTexture("../resources/gui/guiLetters.png");
-    texture["guiMario"] = LoadTexture("../resources/gui/guiMario.png");
-    texture["guiMarioStart"] = LoadTexture("../resources/gui/guiMarioStart.png");
-    texture["guiNextItem"] = LoadTexture("../resources/gui/guiNextItem.png");
-    texture["guiNumbersBig"] = LoadTexture("../resources/gui/guiNumbersBig.png");
-    texture["guiNumbersWhite"] = LoadTexture("../resources/gui/guiNumbersWhite.png");
-    texture["guiNumbersYellow"] = LoadTexture("../resources/gui/guiNumbersYellow.png");
-    texture["guiPunctuation"] = LoadTexture("../resources/gui/guiPunctuation.png");
-    texture["guiRayMarioLogo"] = LoadTexture("../resources/gui/guiRayMarioLogo.png");
-    texture["gui10"] = LoadTexture("../resources/gui/guiTensPoints_10.png");
-    texture["gui20"] = LoadTexture("../resources/gui/guiTensPoints_20.png");
-    texture["gui40"] = LoadTexture("../resources/gui/guiTensPoints_40.png");
-    texture["gui80"] = LoadTexture("../resources/gui/guiTensPoints_80.png");
-    texture["gui1000"] = LoadTexture("../resources/gui/guiThousandsPoints_1000.png");
-    texture["gui2000"] = LoadTexture("../resources/gui/guiThousandsPoints_2000.png");
-    texture["gui4000"] = LoadTexture("../resources/gui/guiThousandsPoints_4000.png");
-    texture["gui8000"] = LoadTexture("../resources/gui/guiThousandsPoints_8000.png");
-    texture["guiTime"] = LoadTexture("../resources/gui/guiTime.png");
-    texture["guiTimeUp"] = LoadTexture("../resources/gui/guiTimeUp.png");
-    texture["guiX"] = LoadTexture("../resources/gui/guiX.png");
+    texture["Gui1Up"] = LoadTexture("../resources/gui/gui1Up.png");
+    texture["Gui2Up"] = LoadTexture("../resources/gui/gui2Up.png");
+    texture["Gui3Up"] = LoadTexture("../resources/gui/gui3Up.png");
+    texture["GuiAlfa"] = LoadTexture("../resources/gui/guiAlfa.png");
+    texture["GuiAlfaLowerUpper"] = LoadTexture("../resources/gui/guiAlfaLowerUpper.png");
+    texture["GuiClock"] = LoadTexture("../resources/gui/guiClock.png");
+    texture["GuiCoin"] = LoadTexture("../resources/gui/guiCoin.png");
+    texture["GuiGameOver"] = LoadTexture("../resources/gui/guiGameOver.png");
+    texture["Gui100"] = LoadTexture("../resources/gui/guiHundredsPoints_100.png");
+    texture["Gui200"] = LoadTexture("../resources/gui/guiHundredsPoints_200.png");
+    texture["Gui400"] = LoadTexture("../resources/gui/guiHundredsPoints_400.png");
+    texture["Gui800"] = LoadTexture("../resources/gui/guiHundredsPoints_800.png");
+    texture["GuiLetters"] = LoadTexture("../resources/gui/guiLetters.png");
+    texture["GuiMario"] = LoadTexture("../resources/gui/guiMario.png");
+    texture["GuiMarioStart"] = LoadTexture("../resources/gui/guiMarioStart.png");
+    texture["GuiNextItem"] = LoadTexture("../resources/gui/guiNextItem.png");
+    texture["GuiNumbersBig"] = LoadTexture("../resources/gui/guiNumbersBig.png");
+    texture["GuiNumbersWhite"] = LoadTexture("../resources/gui/guiNumbersWhite.png");
+    texture["GuiNumbersYellow"] = LoadTexture("../resources/gui/guiNumbersYellow.png");
+    texture["GuiPunctuation"] = LoadTexture("../resources/gui/guiPunctuation.png");
+    texture["GuiRayMarioLogo"] = LoadTexture("../resources/gui/guiRayMarioLogo.png");
+    texture["Gui10"] = LoadTexture("../resources/gui/guiTensPoints_10.png");
+    texture["Gui20"] = LoadTexture("../resources/gui/guiTensPoints_20.png");
+    texture["Gui40"] = LoadTexture("../resources/gui/guiTensPoints_40.png");
+    texture["Gui80"] = LoadTexture("../resources/gui/guiTensPoints_80.png");
+    texture["Gui1000"] = LoadTexture("../resources/gui/guiThousandsPoints_1000.png");
+    texture["Gui2000"] = LoadTexture("../resources/gui/guiThousandsPoints_2000.png");
+    texture["Gui4000"] = LoadTexture("../resources/gui/guiThousandsPoints_4000.png");
+    texture["Gui8000"] = LoadTexture("../resources/gui/guiThousandsPoints_8000.png");
+    texture["GuiTime"] = LoadTexture("../resources/gui/guiTime.png");
+    texture["GuiTimeUp"] = LoadTexture("../resources/gui/guiTimeUp.png");
+    texture["GuiX"] = LoadTexture("../resources/gui/guiX.png");
 };
 
 void ResourceManager::loadSound() {
@@ -310,8 +311,8 @@ void ResourceManager::loadSound() {
     sound["Pipe"] = LoadSound("../resources/Sound/pipe.wav");
     sound["PowerUpAppear"] = LoadSound("../resources/Sound/power_up_appear.wav");
     sound["PowerUp"] = LoadSound("../resources/Sound/power_up.wav");
-    sound["ReserveItemRelease"] = LoadSound("../resources/Sound/reserve_item_release.wav");
-    sound["ReserveItemStore"] = LoadSound("../resources/Sound/reserve_item_store.wav");
+    sound["ReleasePowerUpItem"] = LoadSound("../resources/Sound/release_power_up_item.wav");
+    sound["StorePowerUpItem"] = LoadSound("../resources/Sound/store_power_up_item.wav");
     sound["RidingYoshi"] = LoadSound("../resources/Sound/riding_yoshi.wav");
     sound["ShellRicochet"] = LoadSound("../resources/Sound/shell_ricochet.wav");
     sound["StompNoDamage"] = LoadSound("../resources/Sound/stomp_no_damage.wav");
@@ -377,7 +378,7 @@ void ResourceManager::unloadResources() {
 }
 
 void ResourceManager::drawWhiteSmallNumber(int number, int x, int y) {
-    Texture2D texture = ResourceManager::getTexture()["guiNumbersWhite"];
+    Texture2D texture = ResourceManager::getTexture()["GuiNumbersWhite"];
     int width = 18;
     int height = 14;
     std::string str = std::to_string( number );
@@ -389,7 +390,7 @@ void ResourceManager::drawWhiteSmallNumber(int number, int x, int y) {
 }
 
 void ResourceManager::drawYellowSmallNumber(int number, int x, int y) {
-    Texture2D texture = ResourceManager::getTexture()["guiNumbersYellow"];
+    Texture2D texture = ResourceManager::getTexture()["GuiNumbersYellow"];
     int width = 18;
     int height = 14;
     std::string str = std::to_string( number );
@@ -401,7 +402,7 @@ void ResourceManager::drawYellowSmallNumber(int number, int x, int y) {
 }
 
 void ResourceManager::drawBigNumber(int number, int x, int y) {
-    Texture2D texture = ResourceManager::getTexture()["guiNumbersBig"];
+    Texture2D texture = ResourceManager::getTexture()["GuiNumbersBig"];
     int width = 18;
     int height = 28;
     std::string str = std::to_string( number );
@@ -429,7 +430,7 @@ int ResourceManager::getBigNumberHeight() {
 }
 
 void ResourceManager::drawString(std::string str, int x, int y) {
-    Texture2D texture = ResourceManager::getTexture()["guiAlfa"];
+    Texture2D texture = ResourceManager::getTexture()["GuiAlfa"];
     int width = 18;
     int height = 20;
     int px = x;
@@ -480,7 +481,7 @@ int ResourceManager::getDrawStringHeight() {
 }
 
 void ResourceManager::drawMessageString(std::string str, int x, int y) {
-    const Texture2D texture = ResourceManager::getTexture()["guiAlfaLowerUpper"];
+    const Texture2D texture = ResourceManager::getTexture()["GuiAlfaLowerUpper"];
     int width = 16;
     int height = 16;
     int px = x;
@@ -533,4 +534,14 @@ int ResourceManager::getMessageStringWidth(std::string str) {
 
 int ResourceManager::getMessageStringHeight() {
     return 16;
+}
+
+std::vector<std::string> ResourceManager::split( const std::string& str, char delim ) {
+    std::vector<std::string> result;
+    std::string line;
+    std::istringstream ss( str );
+    while( std::getline( ss, line, delim ) ) {
+        result.push_back( line );
+    }
+    return result;
 }

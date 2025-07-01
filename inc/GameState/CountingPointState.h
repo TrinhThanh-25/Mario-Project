@@ -6,6 +6,8 @@
 
 class CountingPointState : public GameState {
     private:
+        int* remainTimePoint;
+        GameHud* gameHud;
     public:
         CountingPointState(World* world);
         ~CountingPointState() override;

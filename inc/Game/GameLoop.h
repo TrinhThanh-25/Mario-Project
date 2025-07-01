@@ -3,7 +3,7 @@
 
 #include "Common/Drawable.h"
 
-class GameLoop : public Drawable {
+class GameLoop : virtual public Drawable {
     public:
         void run();
         virtual void init() = 0;

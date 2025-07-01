@@ -23,11 +23,13 @@ class Map;
 class Block;
 class Tile;
 class Enemy;
+class GameHud;
 
 class Character : public Sprite {
     protected:
         World* world;
         Map* map;
+        GameHud* gameHud;
         std::string name;
         ModePlayer modePlayer;
 
@@ -39,7 +41,6 @@ class Character : public Sprite {
         bool isRunning;
         bool isDucking;
         bool isLookingUp;
-        int lives;
 
         //walking
         float frameTimeWalking;
@@ -80,9 +81,6 @@ class Character : public Sprite {
         std::vector<Fireball> fireball;
 
         float activateWidth;
-        int live;
-        int coin;
-        int yoshiCoin;
 
         // bool playerDownMusicStreamPlaying;
         // bool gameOverMusicStreamPlaying;
@@ -90,6 +88,8 @@ class Character : public Sprite {
     public:
         Character(std::string name, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed);
         virtual ~Character() override;
+
+        void setWorld(World* world);
 
         void update() override;
         void draw() override;
@@ -99,12 +99,10 @@ class Character : public Sprite {
         void movement(float deltaTime);
 
         CollisionType checkCollision(Sprite* sprite) override;
+        CollisionType checkCollisionEnemy(Sprite* sprite);
         void collisionTile(Tile* tile);
         void collisionBlock(Block* block);
         void collisionEnemy(Enemy* enemy);
-
-        void setLives(int lives);
-        int getLives() const;
 
         void transitionToSmall();
         void transitionToSuper();
@@ -115,10 +113,17 @@ class Character : public Sprite {
         void setInvincible(bool invincible);
         bool isInvincible() const;
 
+        void setActivateWidth(float width);
+        float getActivateWidth() const;
+
         void setType(CharacterType type);
         CharacterType getType() const;
 
         void setPreviousState(SpriteState state);
+        SpriteState getPreviousState() const;
+
+        void reset(bool isPowerOff);
+        void resetGame();
 };
 
 #endif

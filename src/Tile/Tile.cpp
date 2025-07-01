@@ -6,7 +6,9 @@ Tile::Tile(Vector2 position, Vector2 size, std::string nameTexture)
 };
 
 Tile::Tile(Vector2 position, Vector2 size, std::string nameTexture, TileType type)
-    : Sprite(position, size, BLUE), nameTexture(nameTexture), type(type) {
+    : Sprite(position, size, BLUE), 
+    nameTexture(nameTexture), 
+    type(type) {
 };
 
 Tile::~Tile() = default;

@@ -9,17 +9,33 @@
 #include "GameState/IrisOutState.h"
 #include "GameState/SettingState.h"
 #include "GameState/TimeUpState.h"
+#include "Common/ResourceManager.h"
+#include <unordered_map>
 
 
 float World::gravity = 1200.0f;
 
 World::World(int width, int height, const std::string& title, int FPS)
-    : map (nullptr, this, 1), camera(),
-    width(width), height(height), title(title), FPS(FPS) {
+    : map(characters, this, 1), 
+    camera(), 
+    gameHud(0, 0, 5, 0, 200.0f),
+    width(width), 
+    height(height), 
+    title(title), 
+    FPS(FPS),
+    remainTimePoint(0), 
+    gameState(nullptr), 
+    modeWorld(ModeWorld::SINGLEPLAYER),
+    playerDownMusicStreamPlaying(false),
+    gameOverMusicStreamPlaying(false),
+    pausedForTransition(false),
+    pausedUpdateCharacters(false) {
         characters.push_back(new Mario( ModePlayer::FIRSTPLAYER, {64, 0}, {32, 40}, {0, 0}, BLUE, 260.0f, 360.0f, -600.0f));
+        characters[0]->setWorld(this);
         characters.push_back(new Mario( ModePlayer::SECONDPLAYER, {64, 0}, {32, 40}, {0, 0}, GREEN, 260.0f, 360.0f, -600.0f));
-        map.setCharacters(&characters);
-        modeWorld = ModeWorld::SINGLEPLAYER;
+        characters[1]->setWorld(this);
+        map.setCharacters(characters);
+        modeWorld = ModeWorld::MULTIPLAYER;
         gameState = new TitleScreenState(this);
 }
 
@@ -48,7 +64,17 @@ void World::init() {
 }
 
 void World::update() {
+    if(IsKeyPressed(KEY_ESCAPE)) {
+        characters[0]->setState(SpriteState::DYING);
+        characters[1]->setState(SpriteState::DYING);
+    }
     gameState->update();
+    if(playerDownMusicStreamPlaying) {
+        playPlayerDownMusic();
+    }
+    else if (gameOverMusicStreamPlaying) {
+        playGameOverMusic();
+    }
 }
 
 void World::draw() {
@@ -100,4 +126,117 @@ Map* World::getMap() {
 
 ModeWorld* World::getModeWorld() {
     return &modeWorld;
+}
+
+int* World::getRemainTimePoint() {
+    return &remainTimePoint;
+}
+
+GameHud* World::getGameHud() {
+    return &gameHud;
+}
+
+void World::playPlayerDownMusic() {
+    std::unordered_map<std::string, Music>& music = ResourceManager::getMusic();
+    if (!playerDownMusicStreamPlaying) {
+        playerDownMusicStreamPlaying = true;
+    }
+    if (!IsMusicStreamPlaying(music["PlayerDown"])) {
+        PlayMusicStream(music["PlayerDown"]);
+    } else {
+        UpdateMusicStream(music["PlayerDown"]);
+        if ((int)GetMusicTimeLength(music["PlayerDown"]) == (int)GetMusicTimePlayed(music["PlayerDown"])) {
+            StopMusicStream(music["PlayerDown"]);
+            playerDownMusicStreamPlaying = false;
+        }
+    }
+}
+
+void World::playGameOverMusic() {
+    std::unordered_map<std::string, Music>& music = ResourceManager::getMusic();
+    if (!gameOverMusicStreamPlaying) {
+        gameOverMusicStreamPlaying = true;
+    }
+    if (!IsMusicStreamPlaying(music["GameOver"])) {
+        PlayMusicStream(music["GameOver"]);
+    } else {
+        UpdateMusicStream(music["GameOver"]);
+        if ((int)GetMusicTimeLength(music["GameOver"]) == (int)GetMusicTimePlayed(music["GameOver"])) {
+            StopMusicStream(music["GameOver"]);
+            gameOverMusicStreamPlaying = false;
+        }
+    }
+}
+
+bool World::isPlayerDownMusicStreamPlaying() const {
+    return playerDownMusicStreamPlaying;
+}
+
+bool World::isGameOverMusicStreamPlaying() const {
+    return gameOverMusicStreamPlaying;
+}
+
+void World::pausWorld(bool pausedForTransition, bool pausedUpdateCharacters) {
+    this->pausedForTransition = pausedForTransition;
+    this->pausedUpdateCharacters = pausedUpdateCharacters;
+}
+
+void World::resumeWorld() {
+    pausedForTransition = false;
+    pausedUpdateCharacters = false;
+}
+
+bool* World::getPausedForTransition() {
+    return &pausedForTransition;
+}
+
+bool* World::getPausedUpdateCharacters() {
+    return &pausedUpdateCharacters;
+}
+
+void World::resetMap() {
+    for (Character* character : characters) {
+        character->reset(true);
+    }
+    map.reset();
+    gameHud.reset(true);
+    setGameState(new PlayingState(this));
+}
+
+void World::resetGame() {
+    for (Character* character : characters) {
+        character->resetGame();
+    }
+    map.first();
+    map.reset();
+    gameHud.resetGame();
+    setGameState(new TitleScreenState(this));
+}
+
+void World::nextMap() {
+    if(map.next()) {
+        for (Character* character : characters) {
+            character->reset(false);
+        }
+        gameHud.reset(false);
+        setGameState(new PlayingState(this));
+    } else {
+        setGameState(new FinishedState(this));
+    }
+}
+
+void World::resetWhenCharacterDead() {
+    if(!isPlayerDownMusicStreamPlaying() && !isGameOverMusicStreamPlaying()) {
+        if(gameHud.getLives() > 0) {
+            resetMap();
+        }
+        else if(gameHud.getLives() < 0) {
+            resetGame();
+        }
+        else {
+            playGameOverMusic();
+            setGameState(new GameOverState(this));
+            gameHud.setLives(-1);
+        }
+    }
 }

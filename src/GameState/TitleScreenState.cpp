@@ -19,18 +19,11 @@ void TitleScreenState::update() {
         UpdateMusicStream(ResourceManager::getMusic()["Title"]);
     }
     if(GetKeyPressed()){
+        StopMusicStream(ResourceManager::getMusic()["Title"]);
         world->setGameState(new PlayingState(world));
     }
 }
 
 void TitleScreenState::draw() {
-
-}
-
-void TitleScreenState::enter() {
-    PlayMusicStream(ResourceManager::getMusic()["Title"]);
-}
-
-void TitleScreenState::exit() {
-    StopMusicStream(ResourceManager::getMusic()["Title"]);
+    //
 }

@@ -8,6 +8,7 @@
 #include "Game/Map.h"
 #include "GameState/GameState.h"
 #include "Game/GameLoop.h"
+#include "Game/GameHud.h"
 #include <vector>
 #include <string>
 
@@ -21,6 +22,7 @@ class World : public GameLoop {
         std::vector<Character*> characters;
         Map map;
         Camera2D camera;
+        GameHud gameHud;
         
         //Window
         int width;
@@ -28,8 +30,15 @@ class World : public GameLoop {
         std::string title;
         int FPS;
 
+        int remainTimePoint;
+
         GameState* gameState;
         ModeWorld modeWorld;
+
+        bool playerDownMusicStreamPlaying;
+        bool gameOverMusicStreamPlaying;
+        bool pausedForTransition;
+        bool pausedUpdateCharacters;
     public:
         static float gravity;
     public:
@@ -49,6 +58,23 @@ class World : public GameLoop {
         std::vector<Character*>& getCharacters();
         Map* getMap();
         ModeWorld* getModeWorld();
+        int* getRemainTimePoint();
+        GameHud* getGameHud();
+
+        void playPlayerDownMusic();
+        void playGameOverMusic();
+        bool isPlayerDownMusicStreamPlaying() const;
+        bool isGameOverMusicStreamPlaying() const;
+
+        void pausWorld(bool pausedForTransition, bool pausedUpdateCharacters);
+        void resumeWorld();
+        bool* getPausedForTransition();
+        bool* getPausedUpdateCharacters();
+
+        void resetMap();
+        void resetGame();
+        void nextMap();
+        void resetWhenCharacterDead();
 
 };
 
