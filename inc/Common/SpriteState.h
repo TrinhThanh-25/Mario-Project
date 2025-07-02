@@ -3,13 +3,7 @@
 
 enum SpriteState {
     //All objects
-    IDLE,
-    ACTIVE,
-    TO_BE_REMOVED,
-    
-    HIT,
     DYING,
-    NEITHER,
 
     //Only Mario
     ON_GROUND,
@@ -21,12 +15,22 @@ enum SpriteState {
     SUPER_TO_SMALL,
     FLOWER_TO_SMALL,
     VICTORY,
-    TO_NEXT_MAP,
-    INVULNERABLE,
 
     //Other objects
-    NO_COLLIDABLE,
+    IDLE,
+    ACTIVE,
+    TO_BE_REMOVED,
+
+    HIT,
+    NEITHER,
+
+
+    // Auxiliary State
+    INVULNERABLE,
     INVISIBLE,
+
+    //
+    NO_COLLIDABLE,
 };
 
 #endif

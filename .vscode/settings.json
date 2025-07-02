@@ -127,7 +127,9 @@
     "unordered_set": "cpp",
     "cstring": "cpp",
     "ranges": "cpp",
-    "valarray": "cpp"
+    "valarray": "cpp",
+    "any": "cpp",
+    "forward_list": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled",
   "cmake.generator": "Visual Studio 17 2022",

@@ -1,7 +1,7 @@
-#include <iostream>
-#include "raylib.h"
+#include "Game/World.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    World world(1600, 900, "Project Mario", 60);
+    world.run();
     return 0;
 }

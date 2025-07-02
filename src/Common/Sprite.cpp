@@ -2,15 +2,32 @@
 #include <string>
 
 Sprite::Sprite() 
-    : position({0, 0}), size({5, 5}), velocity({0, 0}), color(WHITE),
-      state(SpriteState::IDLE), direction(Direction::DOWN), frameTime(0.1f), frameAcum(0.0f), curFrame(0), maxFrame(1) {
+    : position({0, 0}), 
+    size({5, 5}), 
+    velocity({0, 0}), 
+    color(WHITE),
+    state(SpriteState::IDLE), 
+    auxiliaryState(SpriteState::NEITHER), 
+    direction(Direction::DOWN), 
+    frameTime(0.1f), 
+    frameAcum(0.0f), 
+    curFrame(0), 
+    maxFrame(1) {
     updateCollisionBoxes();
 }
 
-Sprite::Sprite(Vector2 positon, Vector2 size, Vector2 vel, Color color, float frameTime, int maxFrames, Direction facingDirection)
-    : position(positon), size(size), velocity(vel), color(color), state(SpriteState::IDLE), direction(facingDirection),
-    frameTime(frameTime), frameAcum(0.0f), curFrame(0), maxFrame(maxFrame) {
-
+Sprite::Sprite(Vector2 positon, Vector2 size, Vector2 vel, Color color, float frameTime, int maxFrame, Direction facingDirection)
+    : position(positon), 
+    size(size), 
+    velocity(vel), 
+    color(color), 
+    state(SpriteState::IDLE), 
+    auxiliaryState(SpriteState::NEITHER), 
+    direction(facingDirection),
+    frameTime(frameTime), 
+    frameAcum(0.0f), 
+    curFrame(0), 
+    maxFrame(maxFrame) {
     north.setColor(color);
     south.setColor(color);
     west.setColor(color);
@@ -18,9 +35,15 @@ Sprite::Sprite(Vector2 positon, Vector2 size, Vector2 vel, Color color, float fr
 }
 
 Sprite::Sprite(Vector2 positon, Vector2 size, Color color)
-    : position(positon), size(size), velocity({0, 0}), color(color), direction(Direction::RIGHT),
-      frameTime(0.0f), frameAcum(0.0f), curFrame(0), maxFrame(0) {
-
+    : position(positon), 
+    size(size), 
+    velocity({0, 0}), 
+    color(color), 
+    direction(Direction::RIGHT),
+    frameTime(0.0f), 
+    frameAcum(0.0f), 
+    curFrame(0), 
+    maxFrame(0) {
     north.setColor(color);
     south.setColor(color);
     west.setColor(color);
@@ -29,7 +52,7 @@ Sprite::Sprite(Vector2 positon, Vector2 size, Color color)
 
 Sprite::~Sprite() = default;
 
-CollisionType Sprite::checkCollision(Sprite* sprite) const {
+CollisionType Sprite::checkCollision(Sprite* sprite){
     if (sprite == nullptr) return NONE;
     if (this->north.checkCollision(sprite->getRect())) return NORTH;
     if (this->south.checkCollision(sprite->getRect())) return SOUTH;
@@ -101,6 +124,10 @@ void Sprite::setState(SpriteState state) {
     this->state = state;
 }
 
+void Sprite::setAuxiliaryState(SpriteState auxiliaryState) {
+    this->auxiliaryState = auxiliaryState;
+}
+
 void Sprite::setDirection(Direction direction) {
     this->direction = direction;
 }
@@ -147,6 +174,10 @@ Color Sprite::getColor() const {
 
 SpriteState Sprite::getState() const {
     return this->state;
+}
+
+SpriteState Sprite::getAuxiliaryState() const {
+    return this->auxiliaryState;
 }
 
 Direction Sprite::getDirection() const {
