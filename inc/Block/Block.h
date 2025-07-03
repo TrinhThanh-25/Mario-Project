@@ -6,7 +6,7 @@
 #include "raylib.h"
 
 class Block : public Sprite{
-    
+public:
+    Rectangle getCollisionBox();
 };
-
 #endif
