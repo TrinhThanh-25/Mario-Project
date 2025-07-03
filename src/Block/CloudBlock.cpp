@@ -5,7 +5,6 @@
 
 CloudBlock::CloudBlock(Vector2 pos, Vector2 size, Color color)
     : CloudBlock(pos, size, color, 0, 1) {}
-//
 CloudBlock::CloudBlock(Vector2 pos, Vector2 size, Color color, float frameTime, int maxFrames)
     : Block(pos, size, color, frameTime, maxFrames) {}
 
