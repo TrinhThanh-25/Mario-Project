@@ -1,5 +1,6 @@
 
-#pragma once
+#ifndef GLASSBLOCK_H
+#define GLASSBLOCK_H
 
 #include "raylib.h"
 #include "Block/Block.h"
@@ -16,3 +17,4 @@ public:
     void draw() override;
 
 };
+#endif 

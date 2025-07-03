@@ -19,9 +19,5 @@ void GlassBlock::draw() {
 		position.y,
 		WHITE
 	);
-  // DrawRectangleLinesEx(
-  //     {position.x, position.y, size.x, size.y},
-  //     1,
-  //     WHITE
-  // );
+
 }
