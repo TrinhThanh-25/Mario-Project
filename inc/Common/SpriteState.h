@@ -23,9 +23,8 @@ enum SpriteState {
     VICTORY,
     TO_NEXT_MAP,
     INVULNERABLE,
-
+	
     //Other objects
-    NO_COLLIDABLE,
     INVISIBLE,
 };
 
