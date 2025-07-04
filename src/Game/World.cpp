@@ -18,7 +18,7 @@ float World::gravity = 1200.0f;
 World::World(int width, int height, const std::string& title, int FPS)
     : map(characters, this, 1), 
     camera(), 
-    gameHud(0, 0, 5, 0, 200.0f),
+    gameHud(this, 0, 0, 5, 0, 200.0f),
     width(width), 
     height(height), 
     title(title), 

@@ -1,4 +1,5 @@
 #include "GameState/PlayingState.h"
+#include "GameState/CountingPointState.h"
 #include "raylib.h"
 #include <algorithm>
 
@@ -162,6 +163,10 @@ void PlayingState::update() {
         } else {
             camera->target.y = center.y;
         }
+    }
+    //
+    if(IsKeyPressed(KEY_ENTER)){
+        world->setGameState(new CountingPointState(world));
     }
 }
 

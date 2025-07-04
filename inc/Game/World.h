@@ -34,7 +34,7 @@ class World : public GameLoop {
 
         GameState* gameState;
         ModeWorld modeWorld;
-
+        
         bool playerDownMusicStreamPlaying;
         bool gameOverMusicStreamPlaying;
         bool pausedForTransition;

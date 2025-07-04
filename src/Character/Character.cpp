@@ -131,14 +131,20 @@ void Character::draw() {
                     DrawTexture(texture[characterType + "Running" + std::to_string(curFrame) + direct], position.x, position.y, curColor);
                 }
                 else{
-                    if((modePlayer==FIRSTPLAYER||modePlayer==SINGLEPLAYER) && type==CharacterType::FLOWER){
+                    if((modePlayer==FIRSTPLAYER|| *(world->getModeWorld()) == SINGLEPLAYER) && type==CharacterType::FLOWER){
                         if(IsKeyPressed(KEY_LEFT_CONTROL)) {
                             DrawTexture(texture[characterType +"ThrowingFireball0" + direct], position.x, position.y, curColor);
+                        }
+                        else{
+                            DrawTexture(texture[characterType + std::to_string(curFrame) + direct], position.x, position.y, curColor);
                         }
                     }
                     else if(modePlayer==SECONDPLAYER && type==CharacterType::FLOWER){
                         if(IsKeyPressed(KEY_RIGHT_CONTROL)) {
                             DrawTexture(texture[characterType +"ThrowingFireball0" + direct], position.x, position.y, curColor);
+                        }
+                        else{
+                            DrawTexture(texture[characterType + std::to_string(curFrame) + direct], position.x, position.y, curColor);
                         }
                     }
                     else{
