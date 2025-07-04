@@ -22,6 +22,7 @@ void TitleScreenState::update() {
         StopMusicStream(ResourceManager::getMusic()["Title"]);
         world->setGameState(new PlayingState(world));
     }
+    // update logic for the title screen state
 }
 
 void TitleScreenState::draw() {

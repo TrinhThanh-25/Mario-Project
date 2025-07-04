@@ -22,7 +22,7 @@ void CountingPointState::update() {
 
     *remainTimePoint--;
     gameHud->addPoints(50);
-    if(*remainTimePoint % 3 == 0) {
+    if(*remainTimePoint % 4 == 0) {
         PlaySound(ResourceManager::getSound()["Coin"]);
     }
     if(*remainTimePoint <= 0) {

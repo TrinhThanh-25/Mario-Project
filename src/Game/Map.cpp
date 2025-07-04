@@ -1,5 +1,7 @@
 #include "Game/Map.h"
 #include "Character/Character.h"
+#include "Common/ResourceManager.h"
+#include "raylib.h"
 #include "json.hpp"
 #include <fstream>
 #include <iostream>
@@ -24,6 +26,10 @@ Map::~Map() {
 }
 
 void Map::loadMap(int mapNumber) {
+    background = ResourceManager::getTexture()["Background1"];
+    backgroundColor = WHITE;
+    backgroundID = mapNumber;
+    musicID = mapNumber;
     char* map = nullptr;
     std::string mapFileName = "../resources/Map/map" +std::to_string(mapNumber) + ".json";
     std::ifstream file(mapFileName);
@@ -369,13 +375,14 @@ void Map::setCharacters(std::vector<Character*>& characters) {
 }
 
 void Map::draw() {
+    background = ResourceManager::getTexture()["Background" + std::to_string(backgroundID)];
     DrawRectangle(0, 0, width, height, backgroundColor);
-    // int repeats = width / background.width+2;
-    // if ( backgroundID > 0 ) {
-    //     for ( int i = 0; i <= repeats; i++ ) {
-    //         DrawTexture(background,-background.width + i * background.width + offset * 0.4, height - background.height, WHITE );
-    //     }
-    // }
+    int repeat = width / background.width + 2;
+    if ( backgroundID > 0 ) {
+        for ( int i = 0; i <= repeat; i++ ) {
+            DrawTexture(background,-background.width + i * background.width + offset * 0.5, height - background.height, WHITE );
+        }
+    }
     for (auto& t : tile) {
         t->draw();
     }
@@ -485,9 +492,8 @@ void Map::showMessage() {
 }
 
 void Map::reset() {
-    // thêm vẽ vẽ với reset mặc định
-
     clear();
+    //stop map music
     loadMap(mapNumber);
 }
 
@@ -503,4 +509,40 @@ bool Map::next() {
 void Map::first() {
     mapNumber = 1;
     reset();
+}
+
+void Map::playMusic() {
+    std::unordered_map<std::string, Music> music = ResourceManager::getMusic();
+    std::string musicKey = "Music" + std::to_string(musicID);
+    bool checkInvincible = false;
+    if (IsMusicValid(music[musicKey])) {
+        for (auto& character : characters) {
+            if (character->isInvincible()) {
+                checkInvincible = true;
+                break;
+            }
+        }
+        if(checkInvincible) {
+            if (!IsMusicStreamPlaying(music["Invincible"])) {
+                PlayMusicStream(music["Invincible"]);
+            }
+            else {
+                UpdateMusicStream(music["Invincible"]);
+            }
+            if( IsMusicStreamPlaying(music[musicKey]) ) {
+                StopMusicStream(music[musicKey]);
+            }
+        }
+        else {
+            if (!IsMusicStreamPlaying(music[musicKey])) {
+                PlayMusicStream(music[musicKey]);
+            }
+            else {
+                UpdateMusicStream(music[musicKey]);
+            }
+            if( IsMusicStreamPlaying(music["Invincible"]) ) {
+                StopMusicStream(music["Invincible"]);
+            }
+        }
+    } 
 }

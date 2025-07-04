@@ -80,11 +80,7 @@ void World::update() {
 void World::draw() {
     BeginDrawing();
     ClearBackground(RAYWHITE);
-    
-    BeginMode2D(camera);
     gameState->draw();
-    EndMode2D();
-
     DrawFPS(10, 10);
     EndDrawing();
 }

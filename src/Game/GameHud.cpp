@@ -20,6 +20,7 @@ GameHud::~GameHud() {}
 
 void GameHud::update() {
     float deltaTime = GetFrameTime();
+    ellapsedTime += deltaTime;
     if (ellapsedTime >= maxTime) {
         world->playPlayerDownMusic();
         lives--;
@@ -142,11 +143,12 @@ CharacterType GameHud::getPowerUpItem() const {
 
 void GameHud::releasePowerUpItem() {
     Item* item = nullptr;
-    // Item initial position
 
     if(powerUpItem == CharacterType::SUPER) {
+        Vector2 position = GetScreenToWorld2D({(float) GetScreenWidth() / 2 - ResourceManager::getTexture()["Mushroom"].width / 2, 32}, *world->getCamera());
         // item = new mushroom
     } else if(powerUpItem == CharacterType::FLOWER) {
+        Vector2 position = GetScreenToWorld2D({(float) GetScreenWidth() / 2 - ResourceManager::getTexture()["FireFlower0"].width / 2, 32}, *world->getCamera());
         // item = new flower
     }
 
