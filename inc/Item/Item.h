@@ -2,7 +2,7 @@
 #define ITEM_H
 
 #include "Common/Sprite.h"
-#include "Mario/Mario.h"
+// #include "Mario/Mario.h"
 #include "raylib.h"
 #include "Block/Block.h"
 #include "Tile/Tile.h"

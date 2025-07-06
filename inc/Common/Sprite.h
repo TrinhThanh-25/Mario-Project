@@ -15,6 +15,7 @@ class Sprite : public virtual Drawable {
         Vector2 velocity;
         Color color;
         SpriteState state;
+        SpriteState auxiliaryState;
         Direction direction;
 
         float frameTime;
@@ -28,13 +29,13 @@ class Sprite : public virtual Drawable {
         CollisionBox east;
     public:
         Sprite();
-        Sprite(Vector2 positon, Vector2 size, Vector2 vel, Color color, float frameTime, int maxFrames, Direction facingDirection);
+        Sprite(Vector2 positon, Vector2 size, Vector2 vel, Color color, float frameTime, int maxFrame, Direction facingDirection);
         Sprite(Vector2 positon, Vector2 size, Color color);
         virtual ~Sprite() override;
 
         virtual void update() = 0;
         void draw() override = 0;
-        virtual CollisionType checkCollision(Sprite* sprite) const;
+        virtual CollisionType checkCollision(Sprite* sprite);
         virtual void updateCollisionBoxes();
 
         void setPosition(Vector2 position);
@@ -54,6 +55,7 @@ class Sprite : public virtual Drawable {
 
         void setColor(Color color);
         void setState(SpriteState state);
+        void setAuxiliaryState(SpriteState auxiliaryState);
         void setDirection(Direction direction);
 
         Vector2 getPosition() const;
@@ -70,6 +72,7 @@ class Sprite : public virtual Drawable {
 
         Color getColor() const;
         SpriteState getState() const;
+        SpriteState getAuxiliaryState() const;
         Direction getDirection() const;
 
         Rectangle getRect() const;
