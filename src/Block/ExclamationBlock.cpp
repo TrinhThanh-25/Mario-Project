@@ -1,6 +1,5 @@
 #include "Block/ExclamationBlock.h"
 #include "Block/Block.h"
-#include "Mario/Mario.h"
 #include "Game/World.h"
 #include "raylib.h"
 #include "Common/ResourceManager.h"
@@ -103,7 +102,7 @@ void ExclamationBlock::draw() {
 	}
 }
 
-void ExclamationBlock::doHit(Mario& mario, Map* map) {
+void ExclamationBlock::doHit(Character& character, Map* map) {
 	if (!hit) {
 		PlaySound(ResourceManager::getSound()["Coin"]);
 		hit = true;

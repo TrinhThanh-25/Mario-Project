@@ -1,6 +1,6 @@
 #include "Block/QuestionFireFlowerBlock.h"
 #include "Block/Block.h"
-#include "Mario/Mario.h"
+#include "Character/Character.h"
 #include "Game/World.h"
 //#include "Item/FireFlower.h"
 #include "raylib.h"
@@ -49,7 +49,7 @@ void QuestionFireFlowerBlock::draw() {
 			position.x, position.y, WHITE);
 	}
 }
-void QuestionFireFlowerBlock::doHit(Mario& mario, Map* map) {
+void QuestionFireFlowerBlock::doHit(Character& character, Map* map) {
 	if (!hit) {
 		hit = true;
 		PlaySound(ResourceManager::getSound()["PowerUpAppear"]);

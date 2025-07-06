@@ -1,9 +1,11 @@
-#include "Mario/Fireball.h"
+#include "Character/Fireball.h"
 #include "Common/ResourceManager.h"
 #include "Game/World.h"
 
 Fireball::Fireball(Vector2 pos, Direction Direction, float fireTime)
-    : Sprite(pos, {16, 16}, {300, 240}, WHITE, 0.1f, 4, Direction), fireTime(fireTime), fireAcum(0.0f) {
+    : Sprite(pos, {16, 16}, {300, 240}, BLUE, 0.1f, 4, Direction), 
+    fireTime(fireTime), 
+    fireAcum(0.0f) {
     if(Direction == Direction::LEFT) {
         setVelocity(-300, 240);
     } else {

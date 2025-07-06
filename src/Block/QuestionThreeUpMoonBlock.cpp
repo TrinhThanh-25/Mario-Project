@@ -1,6 +1,6 @@
 #include "Block/QuestionThreeUpMoonBlock.h"
 #include "Block/Block.h"
-#include "Mario/Mario.h"
+#include "Character/Character.h"
 #include "Game/World.h"
 //#include "Item/ThreeUpMoon.h"
 #include "raylib.h"
@@ -49,7 +49,7 @@ void QuestionThreeUpMoonBlock::draw() {
 			position.x, position.y, WHITE);
 	}
 }
-void QuestionThreeUpMoonBlock::doHit(Mario& mario, Map* map) {
+void QuestionThreeUpMoonBlock::doHit(Character& character, Map* map) {
 	if (!hit) {
 		hit = true;
 		PlaySound(ResourceManager::getSound()["PowerUpAppear"]);

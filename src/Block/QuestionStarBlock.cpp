@@ -1,6 +1,6 @@
 #include "Block/QuestionStarBlock.h"
 #include "Block/Block.h"
-#include "Mario/Mario.h"
+#include "Character/Character.h"
 #include "Game/World.h"
 //#include "Item/Star.h"
 #include "raylib.h"
@@ -49,7 +49,7 @@ void QuestionStarBlock::draw() {
 			position.x, position.y, WHITE);
 	}
 }
-void QuestionStarBlock::doHit(Mario& mario, Map* map) {
+void QuestionStarBlock::doHit(Character& character, Map* map) {
 	if (!hit) {
 		hit = true;
 		PlaySound(ResourceManager::getSound()["PowerUpAppear"]);

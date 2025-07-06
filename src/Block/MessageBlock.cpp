@@ -50,7 +50,7 @@ void MessageBlock::draw() {
 	}
 }
 
-void MessageBlock::doHit(Mario& mario, Map* map) {
+void MessageBlock::doHit(Character& character, Map* map) {
 	if (!hit) {
 		hit = true;
 		hasMoved = true;

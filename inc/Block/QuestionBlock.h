@@ -2,7 +2,7 @@
 #define QUESTIONBLOCK_H
 
 #include "Block/Block.h"
-#include "Mario/Mario.h"
+#include "Character/Character.h"
 #include "Game/Map.h"
 
 class QuestionBlock : public Block {
@@ -33,7 +33,7 @@ public:
 
     void update() override;
     void draw() override;
-    void doHit(Mario& mario, Map* map) override;
+    void doHit(Character& character, Map* map) override;
 };
 
 #endif

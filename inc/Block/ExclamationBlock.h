@@ -3,6 +3,7 @@
 
 #include "Block/Block.h"
 
+
 class ExclamationBlock : public Block {
 private:
 	float coinAnimationTime;
@@ -28,7 +29,7 @@ public:
 
     void update() override;
     void draw() override;
-    void doHit(Mario& mario, Map* map) override;
+    void doHit(Character& character, Map* map) override;
 };
 
 #endif

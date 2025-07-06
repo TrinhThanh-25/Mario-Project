@@ -3,7 +3,7 @@
 
 #include "Block/Block.h"
 #include "Game/Map.h"
-#include "Mario/Mario.h"
+#include "Character/Character.h"
 #include <string>
 class MessageBlock : public Block {
 private:
@@ -21,7 +21,7 @@ public:
 
     void update() override;
     void draw() override;
-	void doHit(Mario& mario, Map* map) override;
+	void doHit(Character& character, Map* map) override;
 };
 
 #endif // MESSAGE_BLOCK_H

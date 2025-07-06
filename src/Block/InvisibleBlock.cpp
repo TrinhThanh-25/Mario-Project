@@ -1,6 +1,6 @@
 #include "Block/InvisibleBlock.h"
 #include "Block/Block.h"
-#include "Mario/Mario.h"
+#include "Character/Character.h"
 #include "Game/World.h"
 #include "raylib.h"
 #include "Common/ResourceManager.h"
@@ -103,7 +103,7 @@ void InvisibleBlock::draw() {
 	} 
 }
 
-void InvisibleBlock::doHit( Mario& mario, Map *map ) {
+void InvisibleBlock::doHit(Character& character, Map *map) {
     if ( !hit ) {
         PlaySound( ResourceManager::getSound()["Coin"] );
         hit = true;

@@ -2,7 +2,7 @@
 #define BLOCK_H
 
 #include "Common/Sprite.h"
-#include "Mario/Mario.h"
+#include "Character/Character.h"
 #include "raylib.h"
 
 class Block : public Sprite{
@@ -18,7 +18,7 @@ public:
 
     void update() override = 0;
     void draw() override = 0;
-	virtual void doHit(Mario& mario, Map* map);
+	virtual void doHit(Character& mario, Map* map);
 	void resetHit();
 };
 

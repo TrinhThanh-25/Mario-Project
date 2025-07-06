@@ -16,7 +16,7 @@ void Block::update() {
 }
 void Block::draw() {
 }
-void Block::doHit(Mario& mario, Map* map) {
+void Block::doHit(Character& character, Map* map) {
 
 }
 

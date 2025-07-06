@@ -1,7 +1,7 @@
 #include "Block/QuestionBlock.h"
 #include "Game/Map.h"
 #include "Common/ResourceManager.h"
-#include "Mario/Mario.h"
+#include "Character/Character.h"
 #include "Block/Block.h"
 #include <string>
 #include "Game/World.h"
@@ -106,7 +106,7 @@ void QuestionBlock::draw() {
 	}
 }
 
-void QuestionBlock::doHit(Mario& mario, Map* map) {
+void QuestionBlock::doHit(Character& character, Map* map) {
 	if (!hit) {
 		PlaySound(ResourceManager::getSound()["Coin"]);
 		hit = true;

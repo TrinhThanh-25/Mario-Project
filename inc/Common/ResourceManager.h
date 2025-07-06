@@ -27,6 +27,23 @@ class ResourceManager {
 
         static void loadResources();
         static void unloadResources();
+
+        static void drawWhiteSmallNumber( int number, int x, int y );
+        static void drawYellowSmallNumber( int number, int x, int y );
+        static void drawBigNumber( int number, int x, int y );
+        static int getSmallNumberWidth( int number );
+        static int getSmallNumberHeight();
+        static int getBigNumberWidth( int number );
+        static int getBigNumberHeight();
+
+        static void drawString( std::string str, int x, int y );
+        static int getDrawStringWidth( std::string str );
+        static int getDrawStringHeight();
+        static void drawMessageString( std::string str, int x, int y );
+        static int getMessageStringWidth( std::string str );
+        static int getMessageStringHeight();
+
+        static std::vector<std::string> split( const std::string& s, char delim = '\n' );
 };
 
 #endif

@@ -1,5 +1,4 @@
 #include "Block/EyesOpenedBlock.h"
-#include "Mario/Mario.h"
 #include "Game/Map.h"
 #include "raylib.h"
 #include "Common/ResourceManager.h"
@@ -38,7 +37,7 @@ void EyesOpenedBlock::draw() {
 	}
 }
 
-void EyesOpenedBlock::doHit(Mario& mario, Map* map) {
+void EyesOpenedBlock::doHit(Character& character, Map* map) {
 	if (!hit) {
 		PlaySound(ResourceManager::getSound()["ShellRicochet"]);
 		hit = true;

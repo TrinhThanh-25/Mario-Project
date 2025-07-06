@@ -1,7 +1,7 @@
 #include "Block/QuestionMushroomBlock.h"
 //#include "Item/Mushroom.h"
 #include "Block/Block.h"
-#include "Mario/Mario.h"
+#include "Character/Character.h"
 #include "Game/World.h"
 #include "raylib.h"
 #include "Common/ResourceManager.h"
@@ -48,7 +48,7 @@ void QuestionMushroomBlock::draw() {
 	}
 }
 
-void QuestionMushroomBlock::doHit(Mario& mario, Map* map) {
+void QuestionMushroomBlock::doHit(Character& character, Map* map) {
 	if (!hit) {
 		hit = true;
 		PlaySound(ResourceManager::getSound()["PowerUpAppear"]);

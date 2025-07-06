@@ -17,6 +17,7 @@
 #include "Block/QuestionStarBlock.h"
 #include "Block/InvisibleBlock.h"
 void test() {
+	SetConfigFlags(FLAG_WINDOW_HIGHDPI);
 	InitWindow(800, 600, "Test Window");
 	SetTargetFPS(60);
 	CloudBlock cb9({100, 100}, {64, 64}, WHITE);
@@ -61,8 +62,15 @@ void test() {
 	CloseWindow();
 }
 
+// int main() {
+//     std::cout << "Hello, World!" << std::endl;
+// 	test();
+// }
+#include "Game/World.h"
+
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-	test();
+		SetConfigFlags(FLAG_WINDOW_HIGHDPI);
+    World world(1600, 900, "Project Mario", 60);
+    world.run();
     return 0;
 }
