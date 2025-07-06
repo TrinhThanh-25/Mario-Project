@@ -5,9 +5,10 @@
 
 class Coin : public Item {
 private:
+    int points;
 public:
     Coin();
-    Coin(Vector2 position, Vector2 size, Vector2 velocity, Color color, float frameTime, int maxFrames, Direction facingDirection);
+    Coin(Vector2 position, Vector2 size, Vector2 vel, Color color, float FrameTime, int MaxFrame, Direction direction,float HitFrameTime, int maxHitFrame, bool pause,int points);
     ~Coin() override;
 
     void update() override;

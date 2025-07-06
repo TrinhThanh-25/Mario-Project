@@ -4,6 +4,8 @@
 #include "Common/Sprite.h"
 #include "Mario/Mario.h"
 #include "raylib.h"
+#include "Block/Block.h"
+#include "Tile/Tile.h"
 
 class Item : public Sprite{
 protected:
@@ -16,7 +18,10 @@ protected:
     bool pauseGameWhenHit;
 public:
     Item();
+    Item(Vector2 position, Vector2 size, Color color);
+    Item(Vector2 position, Vector2 size, Vector2 vel, Color color, float FrameTime, int MaxFrame, Direction direction,float HitFrameTime, int maxHitFrame, bool pause);
     ~Item() override;
+    
     void update() override;
     void draw() override;
 
@@ -25,6 +30,9 @@ public:
     virtual void collisionSouth(Mario& Mario) = 0;
     virtual bool isPausedGameWhenBeingHit();
 
+    void collisionBlock(Block* block);
+    void collisionTile(Tile* tile);
+    void collisionCharacter(Mario* mario);
 };
 
 #endif
