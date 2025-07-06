@@ -1,33 +1,47 @@
 #include "Item/Coin.h"
 #include "Coin.h"
 
-Coin::Coin(Vector2 position, Vector2 size, Vector2 vel, Color color, float FrameTime, int MaxFrame, Direction direction, float HitFrameTime, int maxHitFrame, bool pause, int points):
-    Item(position, size, vel, color, FrameTime, MaxFrame, direction, HitFrameTime, maxHitFrame, pause), points(points)  
-{
-}
+Coin::Coin(Vector2 position, Vector2 size, Color color, int points):
+Item(position, size, Vector2(0, 0), color, 0.1f, 4, Direction::RIGHT, 0.1f, 4, false), points(points) {}
 
 void Coin::update()
 {
-    if (this->getState() == SpriteState::ACTIVE)
+    float timeElapsed = GetFrameTime();
+    if (this->getState() == SpriteState::IDLE)
     {
-        float timeElapsed = GetFrameTime();
-        this->frameAcum += timeElapsed;
-        if (this->frameAcum >= this->frameTime) {
-            this->frameAcum -= this->frameTime;
-            this->curFrame++;
-            if (this->curFrame >= this->maxFrame) {
-                this->curFrame = 0;
-            }
+        this->updateWhenActive(timeElapsed);
+    }
+    else if (this->getState() == SpriteState::HIT)
+    {
+        this->updateWhenHit(timeElapsed);
+    }
+    updateCollisionBoxes();
+}
+
+void Coin::updateWhenActive(float timeElapsed)
+{
+    frameAcum += timeElapsed;
+    if (frameAcum >= frameTime)
+    {
+        frameAcum -= frameTime;
+        curFrame++;
+        if (curFrame >= maxFrame)
+        {
+            curFrame = 0;
         }
-    } else if (this->getState() == SpriteState::HIT)
+    }
+}
+
+void Coin::updateWhenHit(float timeElapsed)
+{
+    beingHitFrameAcum += timeElapsed;
+    if (beingHitFrameAcum >= beingHitFrameTime)
     {
-        this->beingHitFrameAcum += GetFrameTime();
-        if (this->beingHitFrameAcum >= this->beingHitFrameTime) {
-            this->beingHitFrameAcum -= this->beingHitFrameTime;
-            this->currentBeingHitFrame++;
-            if (this->currentBeingHitFrame >= this->maxBeingHitFrame) {
-                this->setState(SpriteState::TO_BE_REMOVED);
-            }
+        beingHitFrameAcum -= beingHitFrameTime;
+        currentBeingHitFrame++;
+        if (currentBeingHitFrame >= maxBeingHitFrame)
+        {
+            this->setState(SpriteState::TO_BE_REMOVED);
         }
     }
 }
@@ -40,6 +54,7 @@ void Coin::draw()
     }
     else if (this->getState() == SpriteState::HIT)
     {
+        //Draw point floating above the coin
         DrawTexture(ResourceManager::getTexture()["Star" + std::to_string(this->getCurrentBeingHitFrame())], this->getX(), this->getY(), this->getColor());
     }
 }
@@ -49,8 +64,10 @@ void Coin::playCollisionSound()
     PlaySound(ResourceManager::getSound()["Coin"]);
 }
 
-void Coin::updateMario(Mario &mario)
+void Coin::updateCharacter(Character *character)
 {
-    // coin + 1
-    // point + 
+    //Add points to the character
+    //Add coin to the character's inventory
 }
+
+
