@@ -7,6 +7,7 @@
 #include "Character/Mario.h"
 #include "Block/Block.h"
 #include "Tile/Tile.h"
+#include "Common/HitType.h"
 
 
 class Enemy : public Sprite {
@@ -19,7 +20,7 @@ public:
     virtual void draw() = 0;
 
     virtual void activeWhenMarioApproach(Mario& mario);
-    virtual void beingHit();
+    virtual void beingHit(HitTyple type);
     virtual void followTheLeader(Sprite* leader);
     virtual void collisionSound() = 0;
 
@@ -36,6 +37,8 @@ protected:
     float pointFrameAcum;
     float pointFrameTime;
     Vector2 diePosition;
+
+    bool isFacingLeft;
 };
 
 #endif
