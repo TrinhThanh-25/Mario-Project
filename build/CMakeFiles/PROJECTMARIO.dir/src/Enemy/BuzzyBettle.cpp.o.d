@@ -1,5 +1,6 @@
-CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.o: \
-  /Users/tranducthien/Documents/Project/Mario-Project/src/Enemy/Enemy.cpp \
+CMakeFiles/PROJECTMARIO.dir/src/Enemy/BuzzyBettle.cpp.o: \
+  /Users/tranducthien/Documents/Project/Mario-Project/src/Enemy/BuzzyBettle.cpp \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Enemy/BuzzyBettle.h \
   /Users/tranducthien/Documents/Project/Mario-Project/inc/Enemy/Enemy.h \
   /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/Sprite.h \
   /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/raylib.h \
@@ -762,4 +763,13 @@ CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/cstdarg \
   /Users/tranducthien/Documents/Project/Mario-Project/inc/Block/Block.h \
   /Users/tranducthien/Documents/Project/Mario-Project/inc/Tile/Tile.h \
-  /Users/tranducthien/Documents/Project/Mario-Project/inc/Tile/TileType.h
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Tile/TileType.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/ResourceManager.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/unordered_map \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/__functional/is_transparent.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/__hash_table \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/__type_traits/can_extract_key.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/__type_traits/remove_const_ref.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/__iterator/erase_if_container.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/__iterator/ranges_iterator_traits.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/__node_handle

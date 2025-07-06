@@ -1,7 +1,7 @@
 CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.o: \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Common/ResourceManager.cpp \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Common/ResourceManager.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/raylib.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/src/Common/ResourceManager.cpp \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/ResourceManager.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/raylib.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_header_macro.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___gnuc_va_list.h \

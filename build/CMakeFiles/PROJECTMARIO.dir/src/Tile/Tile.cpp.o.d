@@ -1,9 +1,9 @@
 CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.o: \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Tile/Tile.cpp \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Tile/Tile.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Tile/TileType.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Common/Sprite.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/raylib.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/src/Tile/Tile.cpp \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Tile/Tile.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Tile/TileType.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/Sprite.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/raylib.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_header_macro.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___gnuc_va_list.h \
@@ -11,11 +11,11 @@ CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_arg.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___va_copy.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_copy.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Common/Direction.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Common/Drawable.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Common/SpriteState.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Common/CollisionType.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Common/CollisionBox.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/Direction.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/Drawable.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/SpriteState.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/CollisionType.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/CollisionBox.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/string \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/__algorithm/max.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/__algorithm/comp.h \
@@ -646,7 +646,7 @@ CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/execution \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/__type_traits/is_execution_policy.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/bit \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Common/ResourceManager.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/ResourceManager.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/unordered_map \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/__functional/is_transparent.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/__hash_table \

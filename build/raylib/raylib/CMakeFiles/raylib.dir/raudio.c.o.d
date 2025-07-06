@@ -1,6 +1,6 @@
 raylib/raylib/CMakeFiles/raylib.dir/raudio.c.o: \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/raudio.c \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/raylib.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/raudio.c \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/raylib.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_header_macro.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___gnuc_va_list.h \
@@ -9,9 +9,9 @@ raylib/raylib/CMakeFiles/raylib.dir/raudio.c.o: \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___va_copy.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_copy.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/config.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/utils.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/miniaudio.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/config.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/utils.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/miniaudio.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_header_macro.h \
@@ -346,10 +346,10 @@ raylib/raylib/CMakeFiles/raylib.dir/raudio.c.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AUMIDIController.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/CoreAudioClock.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AudioSession.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/dr_wav.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/stb_vorbis.c \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/dr_mp3.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/qoa.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/qoaplay.c \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/jar_xm.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/jar_mod.h
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/dr_wav.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/stb_vorbis.c \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/dr_mp3.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/qoa.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/qoaplay.c \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/jar_xm.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/jar_mod.h

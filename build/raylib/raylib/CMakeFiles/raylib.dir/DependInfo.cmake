@@ -8,13 +8,13 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/raudio.c" "raylib/raylib/CMakeFiles/raylib.dir/raudio.c.o" "gcc" "raylib/raylib/CMakeFiles/raylib.dir/raudio.c.o.d"
-  "/Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/rcore.c" "raylib/raylib/CMakeFiles/raylib.dir/rcore.c.o" "gcc" "raylib/raylib/CMakeFiles/raylib.dir/rcore.c.o.d"
-  "/Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/rmodels.c" "raylib/raylib/CMakeFiles/raylib.dir/rmodels.c.o" "gcc" "raylib/raylib/CMakeFiles/raylib.dir/rmodels.c.o.d"
-  "/Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/rshapes.c" "raylib/raylib/CMakeFiles/raylib.dir/rshapes.c.o" "gcc" "raylib/raylib/CMakeFiles/raylib.dir/rshapes.c.o.d"
-  "/Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/rtext.c" "raylib/raylib/CMakeFiles/raylib.dir/rtext.c.o" "gcc" "raylib/raylib/CMakeFiles/raylib.dir/rtext.c.o.d"
-  "/Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/rtextures.c" "raylib/raylib/CMakeFiles/raylib.dir/rtextures.c.o" "gcc" "raylib/raylib/CMakeFiles/raylib.dir/rtextures.c.o.d"
-  "/Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/utils.c" "raylib/raylib/CMakeFiles/raylib.dir/utils.c.o" "gcc" "raylib/raylib/CMakeFiles/raylib.dir/utils.c.o.d"
+  "/Users/tranducthien/Documents/Project/Mario-Project/raylib/src/raudio.c" "raylib/raylib/CMakeFiles/raylib.dir/raudio.c.o" "gcc" "raylib/raylib/CMakeFiles/raylib.dir/raudio.c.o.d"
+  "/Users/tranducthien/Documents/Project/Mario-Project/raylib/src/rcore.c" "raylib/raylib/CMakeFiles/raylib.dir/rcore.c.o" "gcc" "raylib/raylib/CMakeFiles/raylib.dir/rcore.c.o.d"
+  "/Users/tranducthien/Documents/Project/Mario-Project/raylib/src/rmodels.c" "raylib/raylib/CMakeFiles/raylib.dir/rmodels.c.o" "gcc" "raylib/raylib/CMakeFiles/raylib.dir/rmodels.c.o.d"
+  "/Users/tranducthien/Documents/Project/Mario-Project/raylib/src/rshapes.c" "raylib/raylib/CMakeFiles/raylib.dir/rshapes.c.o" "gcc" "raylib/raylib/CMakeFiles/raylib.dir/rshapes.c.o.d"
+  "/Users/tranducthien/Documents/Project/Mario-Project/raylib/src/rtext.c" "raylib/raylib/CMakeFiles/raylib.dir/rtext.c.o" "gcc" "raylib/raylib/CMakeFiles/raylib.dir/rtext.c.o.d"
+  "/Users/tranducthien/Documents/Project/Mario-Project/raylib/src/rtextures.c" "raylib/raylib/CMakeFiles/raylib.dir/rtextures.c.o" "gcc" "raylib/raylib/CMakeFiles/raylib.dir/rtextures.c.o.d"
+  "/Users/tranducthien/Documents/Project/Mario-Project/raylib/src/utils.c" "raylib/raylib/CMakeFiles/raylib.dir/utils.c.o" "gcc" "raylib/raylib/CMakeFiles/raylib.dir/utils.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

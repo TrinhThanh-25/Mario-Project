@@ -1,6 +1,6 @@
 raylib/raylib/CMakeFiles/raylib.dir/rtextures.c.o: \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/rtextures.c \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/raylib.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/rtextures.c \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/raylib.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_header_macro.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___gnuc_va_list.h \
@@ -9,9 +9,9 @@ raylib/raylib/CMakeFiles/raylib.dir/rtextures.c.o: \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___va_copy.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_copy.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/config.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/utils.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/rlgl.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/config.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/utils.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/rlgl.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/stdlib.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/_stdlib.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/Availability.h \
@@ -105,7 +105,7 @@ raylib/raylib/CMakeFiles/raylib.dir/rtextures.c.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/_ctermid.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/sys/_types/_off_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/secure/_stdio.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/stb_image.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/stb_image.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_header_macro.h \
@@ -124,11 +124,11 @@ raylib/raylib/CMakeFiles/raylib.dir/rtextures.c.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/_assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/_static_assert.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/rl_gputex.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/qoi.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/stb_image_write.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/stb_perlin.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/stb_image_resize2.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/rl_gputex.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/qoi.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/stb_image_write.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/stb_perlin.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/stb_image_resize2.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/arm_neon.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/arm_bf16.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/arm_vector_types.h

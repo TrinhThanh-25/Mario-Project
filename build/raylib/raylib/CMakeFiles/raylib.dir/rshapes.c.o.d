@@ -1,6 +1,6 @@
 raylib/raylib/CMakeFiles/raylib.dir/rshapes.c.o: \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/rshapes.c \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/raylib.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/rshapes.c \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/raylib.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_header_macro.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___gnuc_va_list.h \
@@ -9,8 +9,8 @@ raylib/raylib/CMakeFiles/raylib.dir/rshapes.c.o: \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___va_copy.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_copy.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/config.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/rlgl.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/config.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/rlgl.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/math.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/sys/cdefs.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/sys/_symbol_aliasing.h \

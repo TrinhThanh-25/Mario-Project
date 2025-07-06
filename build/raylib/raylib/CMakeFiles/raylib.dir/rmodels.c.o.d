@@ -1,6 +1,6 @@
 raylib/raylib/CMakeFiles/raylib.dir/rmodels.c.o: \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/rmodels.c \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/raylib.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/rmodels.c \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/raylib.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_header_macro.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___gnuc_va_list.h \
@@ -9,10 +9,10 @@ raylib/raylib/CMakeFiles/raylib.dir/rmodels.c.o: \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___va_copy.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_copy.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/config.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/utils.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/rlgl.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/raymath.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/config.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/utils.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/rlgl.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/raymath.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/math.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/sys/cdefs.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/sys/_symbol_aliasing.h \
@@ -106,13 +106,13 @@ raylib/raylib/CMakeFiles/raylib.dir/rmodels.c.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/_strings.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/secure/_strings.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/secure/_string.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/tinyobj_loader_c.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/tinyobj_loader_c.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/_assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/_static_assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/errno.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/sys/errno.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/cgltf.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/cgltf.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_header_macro.h \
@@ -130,9 +130,9 @@ raylib/raylib/CMakeFiles/raylib.dir/rmodels.c.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/sys/syslimits.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/float.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/float.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/vox_loader.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/m3d.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/par_shapes.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/vox_loader.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/m3d.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/par_shapes.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/unistd.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/sys/unistd.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/sys/_types/_posix_vdisable.h \

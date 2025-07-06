@@ -4,7 +4,7 @@
 # compile CXX with /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++
 CXX_DEFINES = -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP
 
-CXX_INCLUDES = -I/Users/tranducthien/Documents/Project/MARIO-PROJECT/inc -I/Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src -I/Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/glfw/include
+CXX_INCLUDES = -I/Users/tranducthien/Documents/Project/Mario-Project/inc -I/Users/tranducthien/Documents/Project/Mario-Project/raylib/src -I/Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/glfw/include
 
 CXX_FLAGSarm64 =  -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk
 

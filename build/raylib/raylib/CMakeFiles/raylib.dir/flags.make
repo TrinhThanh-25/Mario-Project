@@ -4,7 +4,7 @@
 # compile C with /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc
 C_DEFINES = -DGL_SILENCE_DEPRECATION -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP
 
-C_INCLUDES = -I/Users/tranducthien/Documents/Project/MARIO-PROJECT/inc -I/Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/System/Library/Frameworks -isystem /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/glfw/include
+C_INCLUDES = -I/Users/tranducthien/Documents/Project/Mario-Project/inc -I/Users/tranducthien/Documents/Project/Mario-Project/raylib/src -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/System/Library/Frameworks -isystem /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/glfw/include
 
 C_FLAGSarm64 = -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -std=gnu99 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk
 

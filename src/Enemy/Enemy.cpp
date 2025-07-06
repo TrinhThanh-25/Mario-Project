@@ -33,7 +33,7 @@ void Enemy::collisionBlock(Block* block){
     case CollisionType::SOUTH:
         position.y = block->getY() - size.y;
         velocity.y = 0;
-        setstate(SpriteState::ON_GROUND);
+        setState(SpriteState::ON_GROUND);
         updateCollisionBoxes();
         break;
     case CollisionType::NORTH:
@@ -103,8 +103,10 @@ void Enemy::update(){
         }
     }
     else {
-        position.x = velocity.x * GetFrameTime();
-        position.y = velocity.y * GetFrameTime();
+        position.x += velocity.x * GetFrameTime();
+        position.y += velocity.y * GetFrameTime();
+        updateCollisionBoxes();
+       
     }
 }
 
@@ -115,11 +117,14 @@ void Enemy::beingHit(){
     setState(SpriteState::DYING);
     currentDyingFrame = 0;
     dyingFrameAcum = 0.0f;
+    diePosition = position;
 }
 
-void Enemy::followTheLeader(Sprite* leader){}
-
-void Enemy::collisionSound(){
+void Enemy::followTheLeader(Sprite* leader){
 
 }
+
+// void Enemy::collisionSound(){
+
+// }
 

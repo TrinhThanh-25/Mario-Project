@@ -4,7 +4,7 @@
 # compile C with /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc
 C_DEFINES = -D_GLFW_COCOA
 
-C_INCLUDES = -I/Users/tranducthien/Documents/Project/MARIO-PROJECT/inc -I/Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src -I/Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/glfw/include -I/Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/glfw/src -I/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/raylib/raylib/external/glfw/src
+C_INCLUDES = -I/Users/tranducthien/Documents/Project/Mario-Project/inc -I/Users/tranducthien/Documents/Project/Mario-Project/raylib/src -I/Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/glfw/include -I/Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/glfw/src -I/Users/tranducthien/Documents/Project/Mario-Project/build/raylib/raylib/external/glfw/src
 
 C_FLAGSarm64 = -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -std=c99 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk -fPIC -Wall
 

@@ -53,10 +53,10 @@ RM = /Applications/CMake.app/Contents/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/tranducthien/Documents/Project/MARIO-PROJECT
+CMAKE_SOURCE_DIR = /Users/tranducthien/Documents/Project/Mario-Project
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/tranducthien/Documents/Project/MARIO-PROJECT/build
+CMAKE_BINARY_DIR = /Users/tranducthien/Documents/Project/Mario-Project/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/PROJECTMARIO.dir/depend.make
@@ -73,382 +73,396 @@ CMakeFiles/PROJECTMARIO.dir/codegen:
 .PHONY : CMakeFiles/PROJECTMARIO.dir/codegen
 
 CMakeFiles/PROJECTMARIO.dir/src/Block/Block.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/Block/Block.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Block/Block.cpp
+CMakeFiles/PROJECTMARIO.dir/src/Block/Block.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/Block/Block.cpp
 CMakeFiles/PROJECTMARIO.dir/src/Block/Block.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Block/Block.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Block/Block.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Block/Block.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Block/Block.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Block/Block.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Block/Block.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Block/Block.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Block/Block.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Block/Block.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/Block/Block.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/Block/Block.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/Block/Block.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Block/Block.cpp > CMakeFiles/PROJECTMARIO.dir/src/Block/Block.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/Block/Block.cpp > CMakeFiles/PROJECTMARIO.dir/src/Block/Block.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/Block/Block.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/Block/Block.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Block/Block.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Block/Block.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/Block/Block.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Block/Block.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/Character/Character.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/Character/Character.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Character/Character.cpp
+CMakeFiles/PROJECTMARIO.dir/src/Character/Character.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/Character/Character.cpp
 CMakeFiles/PROJECTMARIO.dir/src/Character/Character.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Character/Character.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Character/Character.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Character/Character.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Character/Character.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Character/Character.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Character/Character.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Character/Character.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Character/Character.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Character/Character.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/Character/Character.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/Character/Character.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/Character/Character.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Character/Character.cpp > CMakeFiles/PROJECTMARIO.dir/src/Character/Character.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/Character/Character.cpp > CMakeFiles/PROJECTMARIO.dir/src/Character/Character.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/Character/Character.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/Character/Character.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Character/Character.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Character/Character.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/Character/Character.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Character/Character.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/Character/Fireball.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/Character/Fireball.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Character/Fireball.cpp
+CMakeFiles/PROJECTMARIO.dir/src/Character/Fireball.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/Character/Fireball.cpp
 CMakeFiles/PROJECTMARIO.dir/src/Character/Fireball.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Character/Fireball.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Character/Fireball.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Character/Fireball.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Character/Fireball.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Character/Fireball.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Character/Fireball.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Character/Fireball.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Character/Fireball.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Character/Fireball.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/Character/Fireball.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/Character/Fireball.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/Character/Fireball.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Character/Fireball.cpp > CMakeFiles/PROJECTMARIO.dir/src/Character/Fireball.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/Character/Fireball.cpp > CMakeFiles/PROJECTMARIO.dir/src/Character/Fireball.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/Character/Fireball.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/Character/Fireball.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Character/Fireball.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Character/Fireball.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/Character/Fireball.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Character/Fireball.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Character/Luigi.cpp
+CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/Character/Luigi.cpp
 CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Character/Luigi.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/Character/Luigi.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Character/Luigi.cpp > CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/Character/Luigi.cpp > CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Character/Luigi.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/Character/Luigi.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/Character/Mario.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/Character/Mario.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Character/Mario.cpp
+CMakeFiles/PROJECTMARIO.dir/src/Character/Mario.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/Character/Mario.cpp
 CMakeFiles/PROJECTMARIO.dir/src/Character/Mario.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Character/Mario.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Character/Mario.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Character/Mario.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Character/Mario.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Character/Mario.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Character/Mario.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Character/Mario.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Character/Mario.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Character/Mario.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/Character/Mario.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/Character/Mario.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/Character/Mario.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Character/Mario.cpp > CMakeFiles/PROJECTMARIO.dir/src/Character/Mario.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/Character/Mario.cpp > CMakeFiles/PROJECTMARIO.dir/src/Character/Mario.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/Character/Mario.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/Character/Mario.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Character/Mario.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Character/Mario.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/Character/Mario.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Character/Mario.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Common/CollisionBox.cpp
+CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/Common/CollisionBox.cpp
 CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Common/CollisionBox.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/Common/CollisionBox.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Common/CollisionBox.cpp > CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/Common/CollisionBox.cpp > CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Common/CollisionBox.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/Common/CollisionBox.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Common/ResourceManager.cpp
+CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/Common/ResourceManager.cpp
 CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Common/ResourceManager.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/Common/ResourceManager.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Common/ResourceManager.cpp > CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/Common/ResourceManager.cpp > CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Common/ResourceManager.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/Common/ResourceManager.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Common/Sprite.cpp
+CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/Common/Sprite.cpp
 CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Common/Sprite.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/Common/Sprite.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Common/Sprite.cpp > CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/Common/Sprite.cpp > CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Common/Sprite.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/Common/Sprite.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.s
+
+CMakeFiles/PROJECTMARIO.dir/src/Enemy/BuzzyBettle.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
+CMakeFiles/PROJECTMARIO.dir/src/Enemy/BuzzyBettle.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/Enemy/BuzzyBettle.cpp
+CMakeFiles/PROJECTMARIO.dir/src/Enemy/BuzzyBettle.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Enemy/BuzzyBettle.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Enemy/BuzzyBettle.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Enemy/BuzzyBettle.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Enemy/BuzzyBettle.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/Enemy/BuzzyBettle.cpp
+
+CMakeFiles/PROJECTMARIO.dir/src/Enemy/BuzzyBettle.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/Enemy/BuzzyBettle.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/Enemy/BuzzyBettle.cpp > CMakeFiles/PROJECTMARIO.dir/src/Enemy/BuzzyBettle.cpp.i
+
+CMakeFiles/PROJECTMARIO.dir/src/Enemy/BuzzyBettle.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/Enemy/BuzzyBettle.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/Enemy/BuzzyBettle.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Enemy/BuzzyBettle.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Enemy/Enemy.cpp
+CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/Enemy/Enemy.cpp
 CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Enemy/Enemy.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/Enemy/Enemy.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Enemy/Enemy.cpp > CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/Enemy/Enemy.cpp > CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Enemy/Enemy.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/Enemy/Enemy.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Game/GameHud.cpp
+CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/Game/GameHud.cpp
 CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Game/GameHud.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/Game/GameHud.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Game/GameHud.cpp > CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/Game/GameHud.cpp > CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Game/GameHud.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/Game/GameHud.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Game/GameLoop.cpp
+CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/Game/GameLoop.cpp
 CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Game/GameLoop.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/Game/GameLoop.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Game/GameLoop.cpp > CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/Game/GameLoop.cpp > CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Game/GameLoop.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/Game/GameLoop.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/Game/Map.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/Game/Map.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Game/Map.cpp
+CMakeFiles/PROJECTMARIO.dir/src/Game/Map.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/Game/Map.cpp
 CMakeFiles/PROJECTMARIO.dir/src/Game/Map.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Game/Map.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Game/Map.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Game/Map.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Game/Map.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Game/Map.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Game/Map.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Game/Map.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Game/Map.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Game/Map.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/Game/Map.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/Game/Map.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/Game/Map.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Game/Map.cpp > CMakeFiles/PROJECTMARIO.dir/src/Game/Map.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/Game/Map.cpp > CMakeFiles/PROJECTMARIO.dir/src/Game/Map.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/Game/Map.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/Game/Map.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Game/Map.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Game/Map.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/Game/Map.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Game/Map.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/Game/World.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/Game/World.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Game/World.cpp
+CMakeFiles/PROJECTMARIO.dir/src/Game/World.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/Game/World.cpp
 CMakeFiles/PROJECTMARIO.dir/src/Game/World.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Game/World.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Game/World.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Game/World.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Game/World.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Game/World.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Game/World.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Game/World.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Game/World.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Game/World.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/Game/World.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/Game/World.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/Game/World.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Game/World.cpp > CMakeFiles/PROJECTMARIO.dir/src/Game/World.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/Game/World.cpp > CMakeFiles/PROJECTMARIO.dir/src/Game/World.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/Game/World.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/Game/World.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Game/World.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Game/World.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/Game/World.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Game/World.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/ChooseCharacterState.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/GameState/ChooseCharacterState.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/ChooseCharacterState.cpp
+CMakeFiles/PROJECTMARIO.dir/src/GameState/ChooseCharacterState.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/ChooseCharacterState.cpp
 CMakeFiles/PROJECTMARIO.dir/src/GameState/ChooseCharacterState.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/ChooseCharacterState.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/ChooseCharacterState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/ChooseCharacterState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/ChooseCharacterState.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/ChooseCharacterState.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/ChooseCharacterState.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/ChooseCharacterState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/ChooseCharacterState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/ChooseCharacterState.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/ChooseCharacterState.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/ChooseCharacterState.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/GameState/ChooseCharacterState.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/ChooseCharacterState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/ChooseCharacterState.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/ChooseCharacterState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/ChooseCharacterState.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/ChooseCharacterState.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/GameState/ChooseCharacterState.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/ChooseCharacterState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/ChooseCharacterState.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/ChooseCharacterState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/ChooseCharacterState.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/CountingPointState.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/GameState/CountingPointState.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/CountingPointState.cpp
+CMakeFiles/PROJECTMARIO.dir/src/GameState/CountingPointState.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/CountingPointState.cpp
 CMakeFiles/PROJECTMARIO.dir/src/GameState/CountingPointState.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/CountingPointState.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/CountingPointState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/CountingPointState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/CountingPointState.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/CountingPointState.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/CountingPointState.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/CountingPointState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/CountingPointState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/CountingPointState.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/CountingPointState.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/CountingPointState.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/GameState/CountingPointState.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/CountingPointState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/CountingPointState.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/CountingPointState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/CountingPointState.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/CountingPointState.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/GameState/CountingPointState.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/CountingPointState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/CountingPointState.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/CountingPointState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/CountingPointState.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/FinishedState.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/GameState/FinishedState.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/FinishedState.cpp
+CMakeFiles/PROJECTMARIO.dir/src/GameState/FinishedState.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/FinishedState.cpp
 CMakeFiles/PROJECTMARIO.dir/src/GameState/FinishedState.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/FinishedState.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/FinishedState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/FinishedState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/FinishedState.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/FinishedState.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/FinishedState.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/FinishedState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/FinishedState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/FinishedState.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/FinishedState.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/FinishedState.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/GameState/FinishedState.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/FinishedState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/FinishedState.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/FinishedState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/FinishedState.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/FinishedState.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/GameState/FinishedState.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/FinishedState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/FinishedState.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/FinishedState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/FinishedState.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/GameOverState.cpp
+CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/GameOverState.cpp
 CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/GameOverState.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/GameOverState.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/GameOverState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/GameOverState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/GameOverState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/GameOverState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/GameState.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/GameState/GameState.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/GameState.cpp
+CMakeFiles/PROJECTMARIO.dir/src/GameState/GameState.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/GameState.cpp
 CMakeFiles/PROJECTMARIO.dir/src/GameState/GameState.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/GameState.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/GameState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/GameState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/GameState.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/GameState.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/GameState.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/GameState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/GameState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/GameState.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/GameState.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/GameState.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/GameState/GameState.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/GameState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/GameState.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/GameState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/GameState.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/GameState.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/GameState/GameState.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/GameState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/GameState.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/GameState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/GameState.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/GoNextMapState.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/GameState/GoNextMapState.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/GoNextMapState.cpp
+CMakeFiles/PROJECTMARIO.dir/src/GameState/GoNextMapState.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/GoNextMapState.cpp
 CMakeFiles/PROJECTMARIO.dir/src/GameState/GoNextMapState.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/GoNextMapState.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/GoNextMapState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/GoNextMapState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/GoNextMapState.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/GoNextMapState.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/GoNextMapState.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/GoNextMapState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/GoNextMapState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/GoNextMapState.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/GoNextMapState.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/GoNextMapState.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/GameState/GoNextMapState.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/GoNextMapState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/GoNextMapState.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/GoNextMapState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/GoNextMapState.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/GoNextMapState.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/GameState/GoNextMapState.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/GoNextMapState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/GoNextMapState.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/GoNextMapState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/GoNextMapState.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/IrisOutState.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/GameState/IrisOutState.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/IrisOutState.cpp
+CMakeFiles/PROJECTMARIO.dir/src/GameState/IrisOutState.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/IrisOutState.cpp
 CMakeFiles/PROJECTMARIO.dir/src/GameState/IrisOutState.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/IrisOutState.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/IrisOutState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/IrisOutState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/IrisOutState.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/IrisOutState.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/IrisOutState.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/IrisOutState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/IrisOutState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/IrisOutState.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/IrisOutState.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/IrisOutState.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/GameState/IrisOutState.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/IrisOutState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/IrisOutState.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/IrisOutState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/IrisOutState.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/IrisOutState.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/GameState/IrisOutState.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/IrisOutState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/IrisOutState.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/IrisOutState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/IrisOutState.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/PlayingState.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/GameState/PlayingState.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/PlayingState.cpp
+CMakeFiles/PROJECTMARIO.dir/src/GameState/PlayingState.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/PlayingState.cpp
 CMakeFiles/PROJECTMARIO.dir/src/GameState/PlayingState.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/PlayingState.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/PlayingState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/PlayingState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/PlayingState.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/PlayingState.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/PlayingState.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/PlayingState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/PlayingState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/PlayingState.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/PlayingState.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/PlayingState.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/GameState/PlayingState.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/PlayingState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/PlayingState.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/PlayingState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/PlayingState.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/PlayingState.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/GameState/PlayingState.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/PlayingState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/PlayingState.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/PlayingState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/PlayingState.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/SettingState.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/GameState/SettingState.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/SettingState.cpp
+CMakeFiles/PROJECTMARIO.dir/src/GameState/SettingState.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/SettingState.cpp
 CMakeFiles/PROJECTMARIO.dir/src/GameState/SettingState.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/SettingState.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/SettingState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/SettingState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/SettingState.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/SettingState.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/SettingState.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/SettingState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/SettingState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/SettingState.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/SettingState.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/SettingState.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/GameState/SettingState.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/SettingState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/SettingState.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/SettingState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/SettingState.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/SettingState.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/GameState/SettingState.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/SettingState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/SettingState.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/SettingState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/SettingState.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/TimeUpState.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/GameState/TimeUpState.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/TimeUpState.cpp
+CMakeFiles/PROJECTMARIO.dir/src/GameState/TimeUpState.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/TimeUpState.cpp
 CMakeFiles/PROJECTMARIO.dir/src/GameState/TimeUpState.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/TimeUpState.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/TimeUpState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/TimeUpState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/TimeUpState.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/TimeUpState.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/TimeUpState.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/TimeUpState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/TimeUpState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/TimeUpState.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/TimeUpState.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/TimeUpState.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/GameState/TimeUpState.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/TimeUpState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/TimeUpState.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/TimeUpState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/TimeUpState.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/TimeUpState.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/GameState/TimeUpState.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/TimeUpState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/TimeUpState.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/TimeUpState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/TimeUpState.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/TitleScreenState.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/GameState/TitleScreenState.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/TitleScreenState.cpp
+CMakeFiles/PROJECTMARIO.dir/src/GameState/TitleScreenState.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/TitleScreenState.cpp
 CMakeFiles/PROJECTMARIO.dir/src/GameState/TitleScreenState.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/TitleScreenState.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/TitleScreenState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/TitleScreenState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/TitleScreenState.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/TitleScreenState.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/GameState/TitleScreenState.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/GameState/TitleScreenState.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/GameState/TitleScreenState.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/GameState/TitleScreenState.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/TitleScreenState.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/TitleScreenState.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/GameState/TitleScreenState.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/TitleScreenState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/TitleScreenState.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/TitleScreenState.cpp > CMakeFiles/PROJECTMARIO.dir/src/GameState/TitleScreenState.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/GameState/TitleScreenState.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/GameState/TitleScreenState.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/TitleScreenState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/TitleScreenState.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/TitleScreenState.cpp -o CMakeFiles/PROJECTMARIO.dir/src/GameState/TitleScreenState.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/Item/Item.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/Item/Item.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Item/Item.cpp
+CMakeFiles/PROJECTMARIO.dir/src/Item/Item.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/Item/Item.cpp
 CMakeFiles/PROJECTMARIO.dir/src/Item/Item.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Item/Item.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Item/Item.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Item/Item.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Item/Item.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Item/Item.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Item/Item.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Item/Item.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Item/Item.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Item/Item.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/Item/Item.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/Item/Item.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/Item/Item.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Item/Item.cpp > CMakeFiles/PROJECTMARIO.dir/src/Item/Item.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/Item/Item.cpp > CMakeFiles/PROJECTMARIO.dir/src/Item/Item.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/Item/Item.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/Item/Item.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Item/Item.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Item/Item.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/Item/Item.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Item/Item.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Tile/Tile.cpp
+CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/Tile/Tile.cpp
 CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Tile/Tile.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/Tile/Tile.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Tile/Tile.cpp > CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/Tile/Tile.cpp > CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Tile/Tile.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/Tile/Tile.cpp -o CMakeFiles/PROJECTMARIO.dir/src/Tile/Tile.cpp.s
 
 CMakeFiles/PROJECTMARIO.dir/src/main.cpp.o: CMakeFiles/PROJECTMARIO.dir/flags.make
-CMakeFiles/PROJECTMARIO.dir/src/main.cpp.o: /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/main.cpp
+CMakeFiles/PROJECTMARIO.dir/src/main.cpp.o: /Users/tranducthien/Documents/Project/Mario-Project/src/main.cpp
 CMakeFiles/PROJECTMARIO.dir/src/main.cpp.o: CMakeFiles/PROJECTMARIO.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/main.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/main.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/main.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/main.cpp.o -c /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/PROJECTMARIO.dir/src/main.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/PROJECTMARIO.dir/src/main.cpp.o -MF CMakeFiles/PROJECTMARIO.dir/src/main.cpp.o.d -o CMakeFiles/PROJECTMARIO.dir/src/main.cpp.o -c /Users/tranducthien/Documents/Project/Mario-Project/src/main.cpp
 
 CMakeFiles/PROJECTMARIO.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/PROJECTMARIO.dir/src/main.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/main.cpp > CMakeFiles/PROJECTMARIO.dir/src/main.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tranducthien/Documents/Project/Mario-Project/src/main.cpp > CMakeFiles/PROJECTMARIO.dir/src/main.cpp.i
 
 CMakeFiles/PROJECTMARIO.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/PROJECTMARIO.dir/src/main.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/main.cpp -o CMakeFiles/PROJECTMARIO.dir/src/main.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tranducthien/Documents/Project/Mario-Project/src/main.cpp -o CMakeFiles/PROJECTMARIO.dir/src/main.cpp.s
 
 # Object files for target PROJECTMARIO
 PROJECTMARIO_OBJECTS = \
@@ -460,6 +474,7 @@ PROJECTMARIO_OBJECTS = \
 "CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.o" \
 "CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.o" \
 "CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.o" \
+"CMakeFiles/PROJECTMARIO.dir/src/Enemy/BuzzyBettle.cpp.o" \
 "CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.o" \
 "CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.o" \
 "CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.o" \
@@ -491,6 +506,7 @@ PROJECTMARIO: CMakeFiles/PROJECTMARIO.dir/src/Character/Mario.cpp.o
 PROJECTMARIO: CMakeFiles/PROJECTMARIO.dir/src/Common/CollisionBox.cpp.o
 PROJECTMARIO: CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.o
 PROJECTMARIO: CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.o
+PROJECTMARIO: CMakeFiles/PROJECTMARIO.dir/src/Enemy/BuzzyBettle.cpp.o
 PROJECTMARIO: CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.o
 PROJECTMARIO: CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.o
 PROJECTMARIO: CMakeFiles/PROJECTMARIO.dir/src/Game/GameLoop.cpp.o
@@ -513,7 +529,7 @@ PROJECTMARIO: CMakeFiles/PROJECTMARIO.dir/src/main.cpp.o
 PROJECTMARIO: CMakeFiles/PROJECTMARIO.dir/build.make
 PROJECTMARIO: raylib/raylib/libraylib.a
 PROJECTMARIO: CMakeFiles/PROJECTMARIO.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Linking CXX executable PROJECTMARIO"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Linking CXX executable PROJECTMARIO"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/PROJECTMARIO.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -525,6 +541,6 @@ CMakeFiles/PROJECTMARIO.dir/clean:
 .PHONY : CMakeFiles/PROJECTMARIO.dir/clean
 
 CMakeFiles/PROJECTMARIO.dir/depend:
-	cd /Users/tranducthien/Documents/Project/MARIO-PROJECT/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/tranducthien/Documents/Project/MARIO-PROJECT /Users/tranducthien/Documents/Project/MARIO-PROJECT /Users/tranducthien/Documents/Project/MARIO-PROJECT/build /Users/tranducthien/Documents/Project/MARIO-PROJECT/build /Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles/PROJECTMARIO.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/tranducthien/Documents/Project/Mario-Project/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/tranducthien/Documents/Project/Mario-Project /Users/tranducthien/Documents/Project/Mario-Project /Users/tranducthien/Documents/Project/Mario-Project/build /Users/tranducthien/Documents/Project/Mario-Project/build /Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles/PROJECTMARIO.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/PROJECTMARIO.dir/depend
 

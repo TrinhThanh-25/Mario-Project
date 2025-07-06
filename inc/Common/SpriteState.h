@@ -31,6 +31,10 @@ enum SpriteState {
 
     //
     NO_COLLIDABLE,
+
+    // New enemy state
+    SHELL,
+    HIDDEN,
 };
 
 #endif

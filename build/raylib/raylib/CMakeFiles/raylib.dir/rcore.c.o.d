@@ -1,6 +1,6 @@
 raylib/raylib/CMakeFiles/raylib.dir/rcore.c.o: \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/rcore.c \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/raylib.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/rcore.c \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/raylib.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_header_macro.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___gnuc_va_list.h \
@@ -9,8 +9,8 @@ raylib/raylib/CMakeFiles/raylib.dir/rcore.c.o: \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___va_copy.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_copy.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdbool.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/config.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/utils.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/config.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/utils.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/stdlib.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/_stdlib.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/Availability.h \
@@ -109,12 +109,12 @@ raylib/raylib/CMakeFiles/raylib.dir/rcore.c.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/sys/_types/_time_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/sys/_types/_timespec.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/math.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/rlgl.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/glad.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/raymath.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/rgestures.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/rcamera.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/msf_gif.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/rlgl.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/glad.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/raymath.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/rgestures.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/rcamera.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/msf_gif.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_header_macro.h \
@@ -124,18 +124,18 @@ raylib/raylib/CMakeFiles/raylib.dir/rcore.c.o: \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_wchar_t.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_null.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stddef_offsetof.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/sinfl.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/sinfl.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/_assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/_static_assert.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/sdefl.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/sdefl.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/limits.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/limits.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/machine/limits.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/arm/limits.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/arm/_limits.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/sys/syslimits.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/rprand.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/rprand.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/mach-o/dyld.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/mach-o/loader.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/mach/machine.h \
@@ -189,6 +189,6 @@ raylib/raylib/CMakeFiles/raylib.dir/rcore.c.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/sys/_select.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/sys/_types/_uuid_t.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/gethostuuid.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/platforms/rcore_desktop_glfw.c \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/glfw/include/GLFW/glfw3.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/glfw/include/GLFW/glfw3native.h
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/platforms/rcore_desktop_glfw.c \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/glfw/include/GLFW/glfw3.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/glfw/include/GLFW/glfw3native.h

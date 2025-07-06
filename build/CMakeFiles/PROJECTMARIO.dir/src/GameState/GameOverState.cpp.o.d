@@ -1,12 +1,12 @@
 CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.o: \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/GameState/GameOverState.cpp \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/GameState/GameOverState.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/GameState/GameState.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Game/World.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Character/Character.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Character/Fireball.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Common/Sprite.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/raylib.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/src/GameState/GameOverState.cpp \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/GameState/GameOverState.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/GameState/GameState.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Game/World.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Character/Character.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Character/Fireball.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/Sprite.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/raylib.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_header_macro.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___gnuc_va_list.h \
@@ -14,12 +14,12 @@ CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_arg.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___va_copy.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_copy.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Common/Direction.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Common/Drawable.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Common/SpriteState.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Common/CollisionType.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Common/CollisionBox.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Character/CharacterType.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/Direction.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/Drawable.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/SpriteState.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/CollisionType.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/CollisionBox.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Character/CharacterType.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/vector \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/__algorithm/copy.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/__algorithm/copy_move_common.h \
@@ -761,17 +761,17 @@ CMakeFiles/PROJECTMARIO.dir/src/GameState/GameOverState.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/_types/_nl_item.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/__locale_dir/locale_base_api/bsd_locale_defaults.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/cstdarg \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Character/Mario.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Character/Luigi.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Game/Map.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Tile/Tile.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Tile/TileType.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Block/Block.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Enemy/Enemy.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Item/Item.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Game/GameLoop.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Game/GameHud.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Common/ResourceManager.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Character/Mario.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Character/Luigi.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Game/Map.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Tile/Tile.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Tile/TileType.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Block/Block.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Enemy/Enemy.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Item/Item.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Game/GameLoop.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Game/GameHud.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/ResourceManager.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/unordered_map \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/__functional/is_transparent.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/__hash_table \

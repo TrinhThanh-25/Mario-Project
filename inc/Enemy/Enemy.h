@@ -4,6 +4,10 @@
 #include "Common/Sprite.h"
 //#include "Mario/Mario.h"
 #include "raylib.h"
+#include "Character/Mario.h"
+#include "Block/Block.h"
+#include "Tile/Tile.h"
+
 
 class Enemy : public Sprite {
 public:
@@ -12,12 +16,12 @@ public:
     virtual ~Enemy();
 
     virtual void update();
-    virtual void draw();
+    virtual void draw() = 0;
 
     virtual void activeWhenMarioApproach(Mario& mario);
     virtual void beingHit();
     virtual void followTheLeader(Sprite* leader);
-    virtual void collisionSound();
+    virtual void collisionSound() = 0;
 
     Rectangle getCollisionBox();
     // CollisionType checkCollision(Block* block);

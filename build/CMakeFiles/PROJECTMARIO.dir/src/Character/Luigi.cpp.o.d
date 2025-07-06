@@ -1,10 +1,10 @@
 CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.o: \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/src/Character/Luigi.cpp \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Character/Luigi.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Character/Character.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Character/Fireball.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Common/Sprite.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/raylib.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/src/Character/Luigi.cpp \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Character/Luigi.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Character/Character.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Character/Fireball.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/Sprite.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/raylib.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/stdarg.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_header_macro.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___gnuc_va_list.h \
@@ -12,12 +12,12 @@ CMakeFiles/PROJECTMARIO.dir/src/Character/Luigi.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_arg.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg___va_copy.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/17/include/__stdarg_va_copy.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Common/Direction.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Common/Drawable.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Common/SpriteState.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Common/CollisionType.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Common/CollisionBox.h \
-  /Users/tranducthien/Documents/Project/MARIO-PROJECT/inc/Character/CharacterType.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/Direction.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/Drawable.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/SpriteState.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/CollisionType.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Common/CollisionBox.h \
+  /Users/tranducthien/Documents/Project/Mario-Project/inc/Character/CharacterType.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/vector \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/__algorithm/copy.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.4.sdk/usr/include/c++/v1/__algorithm/copy_move_common.h \

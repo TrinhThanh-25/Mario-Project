@@ -1,4 +1,4 @@
-# Install script for directory: /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src
+# Install script for directory: /Users/tranducthien/Documents/Project/Mario-Project/raylib/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,11 +39,11 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/raylib/raylib/external/glfw/cmake_install.cmake")
+  include("/Users/tranducthien/Documents/Project/Mario-Project/build/raylib/raylib/external/glfw/cmake_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/raylib/raylib/libraylib.a")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/Users/tranducthien/Documents/Project/Mario-Project/build/raylib/raylib/libraylib.a")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libraylib.a" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libraylib.a")
     execute_process(COMMAND "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libraylib.a")
@@ -52,28 +52,28 @@ endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE FILE FILES
-    "/Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/raylib.h"
-    "/Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/rcamera.h"
-    "/Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/rlgl.h"
-    "/Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/raymath.h"
+    "/Users/tranducthien/Documents/Project/Mario-Project/raylib/src/raylib.h"
+    "/Users/tranducthien/Documents/Project/Mario-Project/raylib/src/rcamera.h"
+    "/Users/tranducthien/Documents/Project/Mario-Project/raylib/src/rlgl.h"
+    "/Users/tranducthien/Documents/Project/Mario-Project/raylib/src/raymath.h"
     )
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/raylib/raylib/raylib.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/Users/tranducthien/Documents/Project/Mario-Project/build/raylib/raylib/raylib.pc")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/raylib" TYPE FILE FILES "/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/raylib/raylib/raylib-config-version.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/raylib" TYPE FILE FILES "/Users/tranducthien/Documents/Project/Mario-Project/build/raylib/raylib/raylib-config-version.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/raylib" TYPE FILE FILES "/Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/../cmake/raylib-config.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/raylib" TYPE FILE FILES "/Users/tranducthien/Documents/Project/Mario-Project/raylib/src/../cmake/raylib-config.cmake")
 endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/raylib/raylib/install_local_manifest.txt"
+  file(WRITE "/Users/tranducthien/Documents/Project/Mario-Project/build/raylib/raylib/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

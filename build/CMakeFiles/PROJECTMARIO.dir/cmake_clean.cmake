@@ -15,6 +15,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/PROJECTMARIO.dir/src/Common/ResourceManager.cpp.o.d"
   "CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.o"
   "CMakeFiles/PROJECTMARIO.dir/src/Common/Sprite.cpp.o.d"
+  "CMakeFiles/PROJECTMARIO.dir/src/Enemy/BuzzyBettle.cpp.o"
+  "CMakeFiles/PROJECTMARIO.dir/src/Enemy/BuzzyBettle.cpp.o.d"
   "CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.o"
   "CMakeFiles/PROJECTMARIO.dir/src/Enemy/Enemy.cpp.o.d"
   "CMakeFiles/PROJECTMARIO.dir/src/Game/GameHud.cpp.o"

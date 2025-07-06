@@ -53,10 +53,10 @@ RM = /Applications/CMake.app/Contents/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/tranducthien/Documents/Project/MARIO-PROJECT
+CMAKE_SOURCE_DIR = /Users/tranducthien/Documents/Project/Mario-Project
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/tranducthien/Documents/Project/MARIO-PROJECT/build
+CMAKE_BINARY_DIR = /Users/tranducthien/Documents/Project/Mario-Project/build
 
 # Utility rule file for update_mappings.
 
@@ -67,8 +67,8 @@ include raylib/raylib/external/glfw/src/CMakeFiles/update_mappings.dir/compiler_
 include raylib/raylib/external/glfw/src/CMakeFiles/update_mappings.dir/progress.make
 
 raylib/raylib/external/glfw/src/CMakeFiles/update_mappings:
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/tranducthien/Documents/Project/MARIO-PROJECT/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Updating gamepad mappings from upstream repository"
-	cd /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/glfw/src && /Applications/CMake.app/Contents/bin/cmake -P /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/glfw/CMake/GenerateMappings.cmake mappings.h.in mappings.h
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/tranducthien/Documents/Project/Mario-Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Updating gamepad mappings from upstream repository"
+	cd /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/glfw/src && /Applications/CMake.app/Contents/bin/cmake -P /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/glfw/CMake/GenerateMappings.cmake mappings.h.in mappings.h
 
 raylib/raylib/external/glfw/src/CMakeFiles/update_mappings.dir/codegen:
 .PHONY : raylib/raylib/external/glfw/src/CMakeFiles/update_mappings.dir/codegen
@@ -82,10 +82,10 @@ raylib/raylib/external/glfw/src/CMakeFiles/update_mappings.dir/build: update_map
 .PHONY : raylib/raylib/external/glfw/src/CMakeFiles/update_mappings.dir/build
 
 raylib/raylib/external/glfw/src/CMakeFiles/update_mappings.dir/clean:
-	cd /Users/tranducthien/Documents/Project/MARIO-PROJECT/build/raylib/raylib/external/glfw/src && $(CMAKE_COMMAND) -P CMakeFiles/update_mappings.dir/cmake_clean.cmake
+	cd /Users/tranducthien/Documents/Project/Mario-Project/build/raylib/raylib/external/glfw/src && $(CMAKE_COMMAND) -P CMakeFiles/update_mappings.dir/cmake_clean.cmake
 .PHONY : raylib/raylib/external/glfw/src/CMakeFiles/update_mappings.dir/clean
 
 raylib/raylib/external/glfw/src/CMakeFiles/update_mappings.dir/depend:
-	cd /Users/tranducthien/Documents/Project/MARIO-PROJECT/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/tranducthien/Documents/Project/MARIO-PROJECT /Users/tranducthien/Documents/Project/MARIO-PROJECT/raylib/src/external/glfw/src /Users/tranducthien/Documents/Project/MARIO-PROJECT/build /Users/tranducthien/Documents/Project/MARIO-PROJECT/build/raylib/raylib/external/glfw/src /Users/tranducthien/Documents/Project/MARIO-PROJECT/build/raylib/raylib/external/glfw/src/CMakeFiles/update_mappings.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/tranducthien/Documents/Project/Mario-Project/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/tranducthien/Documents/Project/Mario-Project /Users/tranducthien/Documents/Project/Mario-Project/raylib/src/external/glfw/src /Users/tranducthien/Documents/Project/Mario-Project/build /Users/tranducthien/Documents/Project/Mario-Project/build/raylib/raylib/external/glfw/src /Users/tranducthien/Documents/Project/Mario-Project/build/raylib/raylib/external/glfw/src/CMakeFiles/update_mappings.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : raylib/raylib/external/glfw/src/CMakeFiles/update_mappings.dir/depend
 
