@@ -273,34 +273,45 @@ void Character::movement(float deltaTime) {
             frameAcum = 0.0f;
         }
     }
-    if(IsKeyDown(right)) {
-        walkingAcum += deltaTime;
-        direction = Direction::RIGHT;
-        if(isRunning) {
-            if(drawRunning) {
-                velocity.x = maxSpeed * 1.3f * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+    if(IsKeyDown(left) || IsKeyDown(right)) {
+        if(IsKeyDown(left) && IsKeyDown(right)) {
+            walkingAcum = 0.0f;
+            if(velocity.x>=-10 && velocity.x<=10) {
+                velocity.x = 0;
             }
             else {
-                velocity.x = maxSpeed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+                velocity.x *= 0.9f;
             }
-        }
-        else {
-            velocity.x = speed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
-        }
-    }
-    else if(IsKeyDown(left)) {
-        walkingAcum += deltaTime;
-        direction = Direction::LEFT;
-        if(isRunning) {
-            if(drawRunning) {
-                velocity.x = -maxSpeed * 1.3f * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+        } 
+        else if(IsKeyDown(right)) {
+            walkingAcum += deltaTime;
+            direction = Direction::RIGHT;
+            if(isRunning) {
+                if(drawRunning) {
+                    velocity.x = maxSpeed * 1.3f * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+                }
+                else {
+                    velocity.x = maxSpeed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+                }
             }
             else {
-                velocity.x = -maxSpeed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+                velocity.x = speed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
             }
         }
-        else {
-            velocity.x = -speed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+        else if(IsKeyDown(left)) {
+            walkingAcum += deltaTime;
+            direction = Direction::LEFT;
+            if(isRunning) {
+                if(drawRunning) {
+                    velocity.x = -maxSpeed * 1.3f * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+                }
+                else {
+                    velocity.x = -maxSpeed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+                }
+            }
+            else {
+                velocity.x = -speed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+            }
         }
     } 
     else {
@@ -322,7 +333,7 @@ void Character::movement(float deltaTime) {
     } else {
         isDucking = false;
     }
-    if(IsKeyPressed(up)&& state == SpriteState::ON_GROUND) {
+    if(IsKeyPressed(up) && state == SpriteState::ON_GROUND) {
         velocity.y = jumpSpeed;
         state = SpriteState::JUMPING;
         PlaySound(ResourceManager::getSound()["Jump"]);

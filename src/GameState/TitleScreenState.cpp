@@ -1,10 +1,18 @@
 #include "GameState/TitleScreenState.h"
 #include "GameState/PlayingState.h"
+#include "GameState/ChooseCharacterState.h"
+#include "GameState/SettingState.h"
 #include "Common/ResourceManager.h"
 #include "raylib.h"
 
 TitleScreenState::TitleScreenState(World* world)
-    : GameState(world) {
+    : GameState(world),
+    newGameButton({1600 / 2 - 100, 900 / 2 + 50, 200, 50}, "New Game", 20),
+    continueButton({1600 / 2 - 100, 900 / 2 + 110, 200, 50}, "Continue", 20),
+    optionsButton({1600 / 2 - 100, 900 / 2 + 170, 200, 50}, "Options", 20),
+    exitButton({1600 / 2 - 100, 900 / 2 + 230, 200, 50}, "Exit", 20) {
+        // check saved game availability
+        isSavedGameAvailable = false; //
 }
 
 TitleScreenState::~TitleScreenState() {
@@ -20,17 +28,35 @@ void TitleScreenState::update() {
     }
     if(IsKeyPressed(KEY_ENTER)) {
         StopMusicStream(ResourceManager::getMusic()["Title"]);
-        world->setGameState(new PlayingState(world));
+        world->setGameState(new ChooseCharacterState(world));
     }
-    // if press new game -> ChooseCharacterState 
-    // if press continue -> PlayingState (if there is a saved game)
-    // if press exit -> CloseWindow()
+    if(newGameButton.isPressed()) {
+        StopMusicStream(ResourceManager::getMusic()["Title"]);
+        world->setGameState(new ChooseCharacterState(world));
+    }
+    else if(continueButton.isPressed() && isSavedGameAvailable) {
+        StopMusicStream(ResourceManager::getMusic()["Title"]);
+        // load saved game
+    }
+    else if(exitButton.isPressed()) {
+        CloseWindow();
+    }
+    else if(optionsButton.isPressed()) {
+        SettingState* newState = new SettingState(world);
+        newState->setIsTitleBefore(true);
+        world->setGameState(newState);
+    }
 }
 
 void TitleScreenState::draw() {
     ClearBackground(RAYWHITE);
     std::unordered_map<std::string, Texture2D>& texture = ResourceManager::getTexture();
     DrawTexture(texture["Logo"], GetScreenWidth() / 2 - texture["Logo"].width / 2, GetScreenHeight() / 2 - texture["Logo"].height / 2 - 200, WHITE);
-    // draw title screen background
-    // draw buttons for new game, continue, exit (normal, hovered, pressed)
+    DrawTexture(texture["TitleScreenBackground"], 0, 0, WHITE);
+    newGameButton.draw();
+    if(isSavedGameAvailable) {
+        continueButton.draw();
+    }
+    optionsButton.draw();
+    exitButton.draw();
 }

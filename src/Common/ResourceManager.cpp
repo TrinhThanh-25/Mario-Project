@@ -24,6 +24,17 @@ std::unordered_map<std::string, Music>& ResourceManager::getMusic() {
 
 void ResourceManager::loadTexture() {
     texture["Logo"] = LoadTexture("../resources/logo.png");
+
+    // Tags
+    texture["SmallMarioTag"] = LoadTexture("../resources/Mario/SmallMario.png");
+    texture["SuperMarioTag"] = LoadTexture("../resources/Mario/SuperMario.png");
+    texture["FlowerMarioTag"] = LoadTexture("../resources/Mario/FlowerMario.png");
+    texture["SmallLuigiTag"] = LoadTexture("../resources/Luigi/SmallLuigi.png");
+    texture["SuperLuigiTag"] = LoadTexture("../resources/Luigi/SuperLuigi.png");
+    texture["FlowerLuigiTag"] = LoadTexture("../resources/Luigi/FlowerLuigi.png");
+    texture["MarioNameTag"] = LoadTexture("../resources/Mario/MarioNameTag.png");
+    texture["LuigiNameTag"] = LoadTexture("../resources/Luigi/LuigiNameTag.png");
+
     // Small Mario
     texture["SmallMario0Right"] = LoadTexture("../resources/Mario/SmallMario_0.png");
     texture["SmallMario0Left"] = texture2DFlipHorizontal(texture["SmallMario0Right"]);
@@ -366,6 +377,7 @@ void ResourceManager::loadTexture() {
     texture["Gui800"] = LoadTexture("../resources/gui/guiHundredsPoints_800.png");
     texture["GuiLetters"] = LoadTexture("../resources/gui/guiLetters.png");
     texture["GuiMario"] = LoadTexture("../resources/gui/guiMario.png");
+    texture["GuiLuigi"] = LoadTexture("../resources/gui/guiLuigi.png");
     texture["GuiMarioStart"] = LoadTexture("../resources/gui/guiMarioStart.png");
     texture["GuiNextItem"] = LoadTexture("../resources/gui/guiNextItem.png");
     texture["GuiNumbersBig"] = LoadTexture("../resources/gui/guiNumbersBig.png");

@@ -30,11 +30,6 @@ World::World(int width, int height, const std::string& title, int FPS)
     gameOverMusicStreamPlaying(false),
     pausedForTransition(false),
     pausedUpdateCharacters(false) {
-        //
-        characters.push_back(new Mario( ModePlayer::FIRSTPLAYER, {64, 0}, {0, 0}, BLUE, 260.0f, 360.0f, -600.0f));
-        characters[0]->setWorld(this);
-        characters.push_back(new Luigi( ModePlayer::SECONDPLAYER, {64, 0}, {0, 0}, GREEN, 260.0f, 360.0f, -600.0f));
-        characters[1]->setWorld(this);
         map.setCharacters(characters);
         modeWorld = ModeWorld::MULTIPLAYER;
         gameState = new TitleScreenState(this);
@@ -109,16 +104,20 @@ Camera2D* World::getCamera() {
     return &camera;
 }
 
+void World::setModeWorld(ModeWorld mode) {
+    modeWorld = mode;
+}
+
+ModeWorld* World::getModeWorld() {
+    return &modeWorld;
+}
+
 std::vector<Character*>& World::getCharacters() {
     return characters;
 }
 
 Map* World::getMap() {
     return &map;
-}
-
-ModeWorld* World::getModeWorld() {
-    return &modeWorld;
 }
 
 int* World::getRemainTimePoint() {

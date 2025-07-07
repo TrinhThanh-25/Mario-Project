@@ -1,5 +1,6 @@
 #include "GameState/PlayingState.h"
 #include "GameState/CountingPointState.h"
+#include "GameState/SettingState.h"
 #include "raylib.h"
 #include <algorithm>
 
@@ -19,6 +20,12 @@ PlayingState::~PlayingState() {
 }
 
 void PlayingState::update() {
+    if(IsKeyPressed(KEY_ESCAPE)) {
+        SettingState* settingState = new SettingState(world);
+        settingState->setIsTitleBefore(false);
+        world->setGameState(settingState);
+        return;
+    }
     std::vector<Tile*>& tile = map->getTile();
     std::vector<Block*>& block = map->getBlock();
     std::vector<Enemy*>& backEnemy = map->getBackEnemy();
