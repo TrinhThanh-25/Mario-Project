@@ -8,10 +8,10 @@ private:
     int points;
 
     // Atributes for Inventory
-    bool isInInventory = false;
+    bool isInInventory;
     float blinkFrameTime = 0.1f; 
-    float blinkFrameAccum;
-    bool appear;
+    float blinkFrameAccum = 0.0f;
+    bool appear = false;
 
 public:
     Mushroom(Vector2 position, Vector2 size, Color color, int points, bool isInInventory);
