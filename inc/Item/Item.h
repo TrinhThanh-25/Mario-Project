@@ -6,6 +6,7 @@
 #include "raylib.h"
 #include "Block/Block.h"
 #include "Tile/Tile.h"
+#include "Common/ResourceManager.h"
 
 class Item : public Sprite{
 protected:

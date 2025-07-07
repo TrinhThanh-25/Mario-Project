@@ -1,9 +1,12 @@
-#include "Item/Coin.h"
+#include "Item/YoshiCoin.h"
+#include "YoshiCoin.h"
 
-Coin::Coin(Vector2 position, Vector2 size, Color color, int points):
-Item(position, size, Vector2(0, 0), color, 0.1f, 4, Direction::RIGHT, 0.1f, 4, false), points(points) {}
+Yoshicoin::Yoshicoin(Vector2 position, Vector2 size, Color color, int points):
+Item(position, size, Vector2(0, 0), color, 0.1f, 4, Direction::RIGHT, 0.1f, 4, false), points(points)
+{
+}
 
-void Coin::update()
+void Yoshicoin::update()
 {
     float timeElapsed = GetFrameTime();
     if (this->getState() == SpriteState::IDLE)
@@ -17,7 +20,7 @@ void Coin::update()
     updateCollisionBoxes();
 }
 
-void Coin::updateWhenActive(float timeElapsed)
+void Yoshicoin::updateWhenActive(float timeElapsed)
 {
     frameAcum += timeElapsed;
     if (frameAcum >= frameTime)
@@ -31,7 +34,7 @@ void Coin::updateWhenActive(float timeElapsed)
     }
 }
 
-void Coin::updateWhenHit(float timeElapsed)
+void Yoshicoin::updateWhenHit(float timeElapsed)
 {
     beingHitFrameAcum += timeElapsed;
     if (beingHitFrameAcum >= beingHitFrameTime)
@@ -48,11 +51,11 @@ void Coin::updateWhenHit(float timeElapsed)
     if (pointFrameAccum >= pointFrameTime) pointFrameAccum = pointFrameTime;
 }
 
-void Coin::draw()
+void Yoshicoin::draw()
 {
     if (this->getState() == SpriteState::ACTIVE || this->getState() == SpriteState::IDLE)
     {
-        DrawTexture(ResourceManager::getTexture()["Coin" + std::to_string(this->getCurrentFrame())], this->getX(), this->getY(), this->getColor());
+        DrawTexture(ResourceManager::getTexture()["YoshiCoin" + std::to_string(this->getCurrentFrame())], this->getX(), this->getY(), this->getColor());
     }
     else if (this->getState() == SpriteState::HIT)
     {
@@ -61,15 +64,13 @@ void Coin::draw()
     }
 }
 
-void Coin::playCollisionSound()
+void Yoshicoin::playCollisionSound()
 {
-    PlaySound(ResourceManager::getSound()["Coin"]);
+    PlaySound(ResourceManager::getSound()["DragonCoin"]);
 }
 
-void Coin::updateCharacter(Character *character)
+void Yoshicoin::updateCharacter(Character *character)
 {
-    //Add points to the character
-    //Add coin to the character's inventory
+    /*Add point here*/
+    /*If there is 5 coins --> add one live*/
 }
-
-

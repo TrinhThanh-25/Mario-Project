@@ -1,14 +1,14 @@
-#ifndef COIN_H
-#define COIN_H
+#ifndef YOSHICOIN_H
+#define YOSHICOIN_H
 
 #include "Item.h"
 
-class Coin : public Item {
+class Yoshicoin : public Item {
 private:
     int points;
 public:
-    Coin(Vector2 position, Vector2 size, Color color, int points);
-    ~Coin() override;
+    Yoshicoin(Vector2 position, Vector2 size, Color color, int points);
+    ~Yoshicoin() override;
 
     void update() override;
         void updateWhenActive(float timeElapsed) override;

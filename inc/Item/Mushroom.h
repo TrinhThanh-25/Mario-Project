@@ -1,14 +1,21 @@
-#ifndef COIN_H
-#define COIN_H
+#ifndef MUSHROOM_H
+#define MUSHROOM_H
 
 #include "Item.h"
 
-class Coin : public Item {
+class Mushroom : public Item {
 private:
     int points;
+
+    // Atributes for Inventory
+    bool isInInventory = false;
+    float blinkFrameTime = 0.1f; 
+    float blinkFrameAccum;
+    bool appear;
+
 public:
-    Coin(Vector2 position, Vector2 size, Color color, int points);
-    ~Coin() override;
+    Mushroom(Vector2 position, Vector2 size, Color color, int points, bool isInInventory);
+    ~Mushroom() override;
 
     void update() override;
         void updateWhenActive(float timeElapsed) override;
