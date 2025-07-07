@@ -18,13 +18,19 @@ void TitleScreenState::update() {
     else {
         UpdateMusicStream(ResourceManager::getMusic()["Title"]);
     }
-    if(GetKeyPressed()){
+    if(IsKeyPressed(KEY_ENTER)) {
         StopMusicStream(ResourceManager::getMusic()["Title"]);
         world->setGameState(new PlayingState(world));
     }
-    // update logic for the title screen state
+    // if press new game -> ChooseCharacterState 
+    // if press continue -> PlayingState (if there is a saved game)
+    // if press exit -> CloseWindow()
 }
 
 void TitleScreenState::draw() {
-    //
+    ClearBackground(RAYWHITE);
+    std::unordered_map<std::string, Texture2D>& texture = ResourceManager::getTexture();
+    DrawTexture(texture["Logo"], GetScreenWidth() / 2 - texture["Logo"].width / 2, GetScreenHeight() / 2 - texture["Logo"].height / 2 - 200, WHITE);
+    // draw title screen background
+    // draw buttons for new game, continue, exit (normal, hovered, pressed)
 }

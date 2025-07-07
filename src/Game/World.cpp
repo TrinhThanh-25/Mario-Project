@@ -30,9 +30,10 @@ World::World(int width, int height, const std::string& title, int FPS)
     gameOverMusicStreamPlaying(false),
     pausedForTransition(false),
     pausedUpdateCharacters(false) {
-        characters.push_back(new Mario( ModePlayer::FIRSTPLAYER, {64, 0}, {32, 40}, {0, 0}, BLUE, 260.0f, 360.0f, -600.0f));
+        //
+        characters.push_back(new Mario( ModePlayer::FIRSTPLAYER, {64, 0}, {0, 0}, BLUE, 260.0f, 360.0f, -600.0f));
         characters[0]->setWorld(this);
-        characters.push_back(new Mario( ModePlayer::SECONDPLAYER, {64, 0}, {32, 40}, {0, 0}, GREEN, 260.0f, 360.0f, -600.0f));
+        characters.push_back(new Luigi( ModePlayer::SECONDPLAYER, {64, 0}, {0, 0}, GREEN, 260.0f, 360.0f, -600.0f));
         characters[1]->setWorld(this);
         map.setCharacters(characters);
         modeWorld = ModeWorld::MULTIPLAYER;
@@ -64,10 +65,6 @@ void World::init() {
 }
 
 void World::update() {
-    if(IsKeyPressed(KEY_ESCAPE)) {
-        characters[0]->setState(SpriteState::DYING);
-        characters[1]->setState(SpriteState::DYING);
-    }
     gameState->update();
     if(playerDownMusicStreamPlaying) {
         playPlayerDownMusic();
@@ -214,7 +211,6 @@ void World::nextMap() {
         for (Character* character : characters) {
             character->reset(false);
         }
-        gameHud.reset(false);
         setGameState(new PlayingState(this));
     } else {
         setGameState(new FinishedState(this));
@@ -226,13 +222,13 @@ void World::resetWhenCharacterDead() {
         if(gameHud.getLives() > 0) {
             resetMap();
         }
-        else if(gameHud.getLives() < 0) {
-            resetGame();
-        }
-        else {
+        else if (gameHud.getLives() == 0) {
             playGameOverMusic();
             setGameState(new GameOverState(this));
             gameHud.setLives(-1);
+        }
+        else {
+            resetGame();
         }
     }
 }

@@ -21,10 +21,13 @@ void CountingPointState::update() {
     } else {
         UpdateMusicStream(ResourceManager::getMusic()["CourseClear"]);
     }
-
-    *remainTimePoint--;
+    if(!isGetRemainTimePoint) {
+        isGetRemainTimePoint = true;
+        *remainTimePoint = gameHud->getRemainingTime();
+    }
+    (*remainTimePoint)--;
     gameHud->addPoints(50);
-    if(*remainTimePoint % 4 == 0) {
+    if(*remainTimePoint % 5 == 0) {
         PlaySound(ResourceManager::getSound()["Coin"]);
     }
     if(*remainTimePoint <= 0) {
@@ -48,9 +51,9 @@ void CountingPointState::draw() {
     std::string message1 = "course clear!";
     ResourceManager::drawString( message1, centerX - ResourceManager::getDrawStringWidth( message1 ) / 2, centerY - 40 );
 
-    int totalTimePoints = *remainTimePoint * 50;
+    int totalTimePoints = gameHud->getRemainingTime() * 50;
     float clockWidth = textures["GuiClock"].width;
-    float remainingTimeWidth = ResourceManager::getSmallNumberWidth( *remainTimePoint );\
+    float remainingTimeWidth = ResourceManager::getSmallNumberWidth( gameHud->getRemainingTime() );
     float multiplicationSignWidth = textures["GuiX"].width;
     float multiplierWidth = ResourceManager::getSmallNumberWidth( 50 );
     float equalSignWidth = ResourceManager::getDrawStringWidth( "=" );
@@ -62,7 +65,7 @@ void CountingPointState::draw() {
     
     DrawTexture( textures["GuiClock"], resultPositionX, resultPositionY, WHITE );
     resultPositionX += clockWidth;
-    ResourceManager::drawWhiteSmallNumber( *remainTimePoint, resultPositionX, resultPositionY );
+    ResourceManager::drawWhiteSmallNumber( gameHud->getRemainingTime(), resultPositionX, resultPositionY );
     resultPositionX += remainingTimeWidth;
     DrawTexture( textures["GuiX"], resultPositionX, resultPositionY, WHITE );
     resultPositionX += multiplicationSignWidth;
@@ -71,4 +74,7 @@ void CountingPointState::draw() {
     ResourceManager::drawString( "=", resultPositionX, resultPositionY - 5 );
     resultPositionX += equalSignWidth;
     ResourceManager::drawWhiteSmallNumber( totalTimePoints, resultPositionX, resultPositionY );
+    
+    std::string message2 = "Total Points: " + std::to_string(gameHud->getPoints());
+    ResourceManager::drawString( message2, centerX - ResourceManager::getDrawStringWidth( message2 ) / 2, centerY + 40 );
 }

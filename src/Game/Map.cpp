@@ -494,7 +494,8 @@ void Map::showMessage() {
 
 void Map::reset() {
     clear();
-    //stop map music
+    StopMusicStream(ResourceManager::getMusic()["Invincible"]);
+    StopMusicStream(ResourceManager::getMusic()["Music" + std::to_string(musicID)]);
     loadMap(mapNumber);
 }
 

@@ -9,12 +9,12 @@ SettingState::~SettingState() {
 }
 
 void SettingState::update() {
-    // Update logic for the settings state
-    // This could include handling user input, updating settings, etc.
+    // if press resume -> PlayingState (unless title -> setting)
+    // if press quit -> TitleScreenState (unless title -> setting)
+    // if press exit -> CloseWindow()
+    // music / sfx
 }
 
 void SettingState::draw() {
-    // Draw logic for the settings state
-    // This could include rendering the settings menu, options, etc.
-    // Additional drawing code for settings UI can be added here
+    // draw those button and toggle (normal, hovered, pressed)
 }

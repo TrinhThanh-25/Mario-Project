@@ -15,15 +15,14 @@ IrisOutState::~IrisOutState() {
 }
 
 void IrisOutState::update() {
-    if(!IsMusicStreamPlaying(ResourceManager::getMusic()["CourseClear"])) {
-        PlaySound(ResourceManager::getSound()["GoalIrisOut"]);
-        world->setGameState(new GoNextMapState(world));
-    }
-    else {
+    if (IsMusicStreamPlaying(ResourceManager::getMusic()["CourseClear"])) {
         UpdateMusicStream(ResourceManager::getMusic()["CourseClear"]);
         if ((int)GetMusicTimeLength(ResourceManager::getMusic()["CourseClear"]) == (int)GetMusicTimePlayed(ResourceManager::getMusic()["CourseClear"])) {
             StopMusicStream(ResourceManager::getMusic()["CourseClear"]);
         }
+    } else {
+        PlaySound(ResourceManager::getSound()["GoalIrisOut"]);
+        world->setGameState(new GoNextMapState(world));
     }
 }
 
@@ -66,4 +65,7 @@ void IrisOutState::draw() {
     ResourceManager::drawString( "=", resultPositionX, resultPositionY - 5 );
     resultPositionX += equalSignWidth;
     ResourceManager::drawWhiteSmallNumber( totalTimePoints, resultPositionX, resultPositionY );
+    
+    std::string message2 = "Total Points: " + std::to_string(gameHud->getPoints());
+    ResourceManager::drawString( message2, centerX - ResourceManager::getDrawStringWidth( message2 ) / 2, centerY + 40 );
 }

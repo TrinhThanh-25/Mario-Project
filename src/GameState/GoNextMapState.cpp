@@ -68,6 +68,9 @@ void GoNextMapState::draw() {
     ResourceManager::drawString( "=", resultPositionX, resultPositionY - 5 );
     resultPositionX += equalSignWidth;
     ResourceManager::drawWhiteSmallNumber( totalTimePoints, resultPositionX, resultPositionY );
+    
+    std::string message2 = "Total Points: " + std::to_string(gameHud->getPoints());
+    ResourceManager::drawString( message2, centerX - ResourceManager::getDrawStringWidth( message2 ) / 2, centerY + 40 );
 
     RenderTexture2D mask = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
 
