@@ -19,6 +19,7 @@ enum SpriteState {
     //Other objects
     IDLE,
     ACTIVE,
+    INACTIVE,
     TO_BE_REMOVED,
 
     HIT,
@@ -36,5 +37,10 @@ enum SpriteState {
     SHELL,
     HIDDEN,
 };
+
+enum MoveType{
+    FLYING,
+    WALKING,
+}
 
 #endif

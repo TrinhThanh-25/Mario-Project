@@ -90,26 +90,27 @@ void Enemy::collisionTile(Tile* tile) {
 
 
 // ======================== MAIN METHOD ==========================
-void Enemy::update() {
+void Enemy::update(Mario& mario) {
     float delta = GetFrameTime();
+
+    if (state == SpriteState::INACTIVE) {
+        activeWhenMarioApproach(mario);  
+        return;
+    }
 
     if (state == SpriteState::DYING) {
         dyingFrameAcum += delta;
-
         if (dyingFrameAcum >= dyingFrameTime) {
             currentDyingFrame++;
             dyingFrameAcum = 0.0f;
         }
-
         if (currentDyingFrame >= maxDyingFrame) {
             setState(SpriteState::TO_BE_REMOVED);
         }
-    }
-    else {
+    } else {
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
-        // Cập nhật hướng
         if (velocity.x != 0) {
             isFacingLeft = velocity.x < 0;
         }
@@ -117,6 +118,7 @@ void Enemy::update() {
         updateCollisionBoxes();
     }
 }
+
 
 
 

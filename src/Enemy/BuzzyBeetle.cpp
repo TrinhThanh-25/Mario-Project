@@ -14,19 +14,16 @@ BuzzyBeetle::BuzzyBeetle(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
 
 void BuzzyBeetle::draw() {
     std::string textureKey;
+    int frame = (int)(GetTime() * 6) % 2;
 
     if (state == SpriteState::ACTIVE) {
-        // Số giây khi game bắt đầu, 6 frame/s, % 2 -> 0, 1, 0, 1,...
-
-        if (isFacingLeft){
+        if (isFacingLeft) {
             textureKey = (frame == 0) ? "BuzzyBeetle0Left" : "BuzzyBeetle1Left";
-        }
-        else {
+        } else {
             textureKey = (frame == 0) ? "BuzzyBeetle0Right" : "BuzzyBeetle1Right";
         }
     }
-
-    else if (state == SpriteState::SHELL || state == SpriteState::DYING){
+    else if (state == SpriteState::SHELL || state == SpriteState::DYING) {
         textureKey = isFacingLeft ? "BuzzyBeetle1Left" : "BuzzyBeetle1Right";
     }
     else {
@@ -36,53 +33,60 @@ void BuzzyBeetle::draw() {
     DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
 
     if (state == SpriteState::DYING) {
-        //  Tính vị trí point bay lên
-        float offsetY = 50.0f * pointFrameAcum / pointFrameTime;  // Đi lên tối đa 50 pixel
-
-        // Vẽ points (ví dụ "Point100" là key resource)
-        DrawTexture(ResourceManager::getTexture()["Point100"],
-                    diePosition.x,
-                    diePosition.y - offsetY,
-                    WHITE);
+        float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
+        DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
     }
 }
 
 
 
-void BuzzyBeetle::update(){
+
+void BuzzyBeetle::update(Mario& mario) {
     float delta = GetFrameTime();
 
-    if (state == SpriteState::ACTIVE){
+    // Nếu chưa active → kiểm tra Mario
+    if (state == SpriteState::INACTIVE) {
+        activeWhenMarioApproach(mario);
+        return;
+    }
+
+    if (state == SpriteState::ACTIVE) {
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
         updateCollisionBoxes();
-    }
 
-    else if (state == SpriteState::SHELL){
+        // Cập nhật hướng nhìn
+        if (velocity.x != 0) {
+            isFacingLeft = velocity.x < 0;
+        }
+    }
+    else if (state == SpriteState::SHELL) {
         if (shellMoving) {
             float dir = isFacingLeft ? -1.0f : 1.0f;
             position.x += shellSpeed * dir * delta;
             updateCollisionBoxes();
         }
     }
-
-    else if (state == SpriteState::DYING){
+    else if (state == SpriteState::DYING) {
         dyingFrameAcum += delta;
-        if (dyingFrameAcum >= dyingFrameTime){
+        if (dyingFrameAcum >= dyingFrameTime) {
             dyingFrameAcum = 0.0f;
             currentDyingFrame++;
-
-            if (currentDyingFrame >= maxDyingFrame){
+            if (currentDyingFrame >= maxDyingFrame) {
                 setState(SpriteState::TO_BE_REMOVED);
             }
         }
     }
 
-    pointFrameAcum += delta;
-    if (pointFrameAcum >= pointFrameTime){
-        pointFrameAcum = pointFrameTime;
+    // Point bay lên nếu đang dying
+    if (state == SpriteState::DYING) {
+        pointFrameAcum += delta;
+        if (pointFrameAcum >= pointFrameTime) {
+            pointFrameAcum = pointFrameTime;
+        }
     }
 }
+
 
 
 void BuzzyBeetle::beingHit(HitType type) {
@@ -135,6 +139,19 @@ void BuzzyBeetle::kickShell(bool faceLeft) {
  
 bool BuzzyBeetle::isShellMoving() const {
     return shellMoving;
+}
+
+#define ACTIVATION_RANGE 300.0f
+
+void BuzzyBeetle::activeWhenMarioApproach(Mario& mario) {
+    if (state != SpriteState::INACTIVE) return;  // Đã active hoặc đã chết v.v.
+
+    Vector2 marioPos = mario.getPosition();
+    float dx = fabs(marioPos.x - position.x);
+
+    if (dx <= ACTIVATION_RANGE) {
+        setState(SpriteState::ACTIVE);
+    }
 }
 
 void BuzzyBeetle::collisionSound(){

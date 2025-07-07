@@ -12,52 +12,72 @@ MontyMole::MontyMole(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     
 MontyMole::~MontyMole(){}
 
-void MontyMole::draw(){
+void MontyMole::draw() {
     std::string textureKey;
+    int frame = (int)(GetTime() * 6) % 2;
 
-    if (state == SpriteState::ACTIVE){
-        int frame = (int)(GetTime() * 6) % 2;
-        if (isFacingLeft){
+    if (state == SpriteState::ACTIVE) {
+        if (isFacingLeft) {
             textureKey = (frame == 0) ? "MontyMole0Left" : "MontyMole1Left";
-        }
-        else {
+        } else {
             textureKey = (frame == 0) ? "MontyMole0Right" : "MontyMole1Right";
         }
+
+        DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
     }
-    DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
 
-    if (state == SpriteState::DYING){
-        float offsetY = 50.0f * pointFrameAcum/pointFrameTime;
+    if (state == SpriteState::DYING) {
+        std::string dyingKey = isFacingLeft ? "MontyMole1Left" : "MontyMole1Right";
+        DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
+
+        float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
         DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
-
     }
 }
 
-void MontyMole::update(){
+
+void MontyMole::update(Mario& mario) {
     float delta = GetFrameTime();
-    if (state == SpriteState::ACTIVE){
+
+    // Nếu chưa active, kiểm tra khoảng cách với Mario
+    if (state == SpriteState::INACTIVE) {
+        activeWhenMarioApproach(mario);
+        return;
+    }
+
+    // Di chuyển khi đang active
+    if (state == SpriteState::ACTIVE) {
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
+
+        // Cập nhật hướng nhìn
+        if (velocity.x != 0) {
+            isFacingLeft = velocity.x < 0;
+        }
+
         updateCollisionBoxes();
     }
 
-    else if (state == SpriteState::DYING){
+    // Đang bị tiêu diệt
+    else if (state == SpriteState::DYING) {
         dyingFrameAcum += delta;
-        //position.y += gravity * delta;
-        if (dyingFrameAcum >= dyingFrameTime){
+        if (dyingFrameAcum >= dyingFrameTime) {
             dyingFrameAcum = 0.0f;
             currentDyingFrame++;
 
-            if (currentDyingFrame >= maxDyingFrame){
+            if (currentDyingFrame >= maxDyingFrame) {
                 setState(SpriteState::TO_BE_REMOVED);
             }
         }
+
+        // Hiệu ứng point bay lên
         pointFrameAcum += delta;
-        if (pointFrameAcum >= pointFrameTime){
+        if (pointFrameAcum >= pointFrameTime) {
             pointFrameAcum = pointFrameTime;
         }
     }
 }
+
 
 void MontyMole::beingHit(HitType type) {
     switch (type) {
@@ -81,6 +101,14 @@ void MontyMole::beingHit(HitType type) {
     }
     // PlaySound(ResourceManager::getSound()["EnemyDefeat"]);
 }
+
+void MontyMole::activeWhenMarioApproach(Mario& mario) {
+    float distance = std::abs(mario.getPosition().x - position.x);
+    if (distance < 200.0f) {
+        setState(SpriteState::ACTIVE);
+    }
+}
+
 
 
 void MontyMole::collisionSound(){

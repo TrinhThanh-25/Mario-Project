@@ -10,9 +10,10 @@ public:
     ~MontyMole();
 
     void draw();
-    void update();
+    void update(Mario& mario);
     void beingHit(HitType type);
     void collisionSound();
+    void activeWhenMarioApproach(Mario& mario);
 
 private:
     float emergeDelay;   // thời gian chờ để chui lên

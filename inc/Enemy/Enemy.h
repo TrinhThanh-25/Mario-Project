@@ -16,7 +16,7 @@ public:
     Enemy(Vector2 pos, Vector2 dim, Vector2 vel, Color color);
     virtual ~Enemy();
 
-    virtual void update();
+    virtual void update(Mario& mario);
     virtual void draw() = 0;
 
     virtual void activeWhenMarioApproach(Mario& mario);
@@ -28,6 +28,10 @@ public:
     // CollisionType checkCollision(Block* block);
     void collisionBlock(Block* block);
     void collisionTile(Tile* tile);
+
+    MoveType movetype;
+    void setMoveType(MoveType type) { movetype = type; }
+    MoveType getMoveType() const { return movetype; }
 
 protected:
     float dyingFrameAcum;

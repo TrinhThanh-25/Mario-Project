@@ -6,8 +6,9 @@
 class BuzzyBeetle : public Enemy {
 public:
     BuzzyBeetle(Vector2 pos, Vector2 dim, Vector2 vel, Color color);
+    ~BuzzyBeetle();
 
-    void update() override;
+    void update(Mario& mario) override;
     void draw() override;
 
     void beingHit(HitType type) override;
@@ -15,6 +16,8 @@ public:
 
     void kickShell(bool faceLeft); // gọi từ Mario khi đá mai
     bool isShellMoving() const;    // để Mario kiểm tra
+
+    void activeWhenMarioApproach(Mario& mario);
 
 private:
     bool shellMoving;
