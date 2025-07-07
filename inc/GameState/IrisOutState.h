@@ -7,6 +7,8 @@
 class IrisOutState : public GameState {
     private:
         GameHud* gameHud;
+        Map* map;
+        Camera2D* camera;
     public:
         IrisOutState(World* world);
         ~IrisOutState() override;
