@@ -97,7 +97,7 @@ void Mushroom::updateCharacter(Character *character)
         CharacterType previousType = character->getPreviousState();
         if (previousType == CharacterType::SMALL) {
             PlaySound(ResourceManager::getSound()["StorePowerUpItem"]);
-            /*Set last type here(super)*/
+            /*Put mushroom into the inventory*/
         }
     }
 }
