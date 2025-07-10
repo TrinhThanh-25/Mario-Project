@@ -16,7 +16,8 @@ public:
     Enemy(Vector2 pos, Vector2 dim, Vector2 vel, Color color);
     virtual ~Enemy();
 
-    virtual void update(Mario& mario);
+    virtual void update(Mario& mario, const std::vector<Sprite*>& mapCollidables) = 0;
+
     virtual void draw() = 0;
 
     virtual void activeWhenMarioApproach(Mario& mario);
@@ -33,9 +34,12 @@ public:
     void setMoveType(MoveType type) { movetype = type; }
     MoveType getMoveType() const { return movetype; }
 
+    CollisionType checkCollision(const std::vector<Sprite*>& collidables);
+
+
 protected:
     float dyingFrameAcum;
-    float dyingFrameTime;
+    float dyingFrameTime = 0.2f;
     int maxDyingFrame;
     int currentDyingFrame;
     float pointFrameAcum;

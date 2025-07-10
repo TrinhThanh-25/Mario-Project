@@ -66,18 +66,37 @@ void World::init() {
 }
 
 void World::update() {
+    // Thoát bằng ESC
     if(IsKeyPressed(KEY_ESCAPE)) {
         characters[0]->setState(SpriteState::DYING);
         characters[1]->setState(SpriteState::DYING);
     }
+
+    // Update GameState
     gameState->update();
-    if(playerDownMusicStreamPlaying) {
+
+    // Lấy collidables từ map
+    const std::vector<Sprite*>& collidables = map.getMapCollidables();
+
+    // Update Enemy (Back Layer)
+    for (Enemy* enemy : map.getBackEnemy()) {
+        enemy->update(*characters[0], collidables);
+    }
+
+    // Update Enemy (Front Layer)
+    for (Enemy* enemy : map.getFrontEnemy()) {
+        enemy->update(*characters[0], collidables);
+    }
+
+    // Play âm thanh nếu cần
+    if (playerDownMusicStreamPlaying) {
         playPlayerDownMusic();
     }
     else if (gameOverMusicStreamPlaying) {
         playGameOverMusic();
     }
 }
+
 
 void World::draw() {
     BeginDrawing();

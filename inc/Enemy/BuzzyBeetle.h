@@ -23,6 +23,7 @@ private:
     bool shellMoving;
     float shellSpeed;
     bool isFacingLeft;
+    float shellTimer;
 };
 
 #endif

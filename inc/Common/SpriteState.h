@@ -35,6 +35,7 @@ enum SpriteState {
 
     // New enemy state
     SHELL,
+    SHELL_MOVING,
     HIDDEN,
 };
 

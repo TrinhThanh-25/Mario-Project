@@ -90,35 +90,6 @@ void Enemy::collisionTile(Tile* tile) {
 
 
 // ======================== MAIN METHOD ==========================
-void Enemy::update(Mario& mario) {
-    float delta = GetFrameTime();
-
-    if (state == SpriteState::INACTIVE) {
-        activeWhenMarioApproach(mario);  
-        return;
-    }
-
-    if (state == SpriteState::DYING) {
-        dyingFrameAcum += delta;
-        if (dyingFrameAcum >= dyingFrameTime) {
-            currentDyingFrame++;
-            dyingFrameAcum = 0.0f;
-        }
-        if (currentDyingFrame >= maxDyingFrame) {
-            setState(SpriteState::TO_BE_REMOVED);
-        }
-    } else {
-        position.x += velocity.x * delta;
-        position.y += velocity.y * delta;
-
-        if (velocity.x != 0) {
-            isFacingLeft = velocity.x < 0;
-        }
-
-        updateCollisionBoxes();
-    }
-}
-
 
 
 
@@ -134,6 +105,18 @@ void Enemy::beingHit(){
 void Enemy::followTheLeader(Sprite* leader){
 
 }
+
+CollisionType Enemy::checkCollision(const std::vector<Sprite*>& collidables) {
+    for (Sprite* sprite : collidables) {
+        if (sprite == nullptr) continue;
+        CollisionType result = this->checkCollision(sprite);
+        if (result != CollisionType::NONE) {
+            return result;
+        }
+    }
+    return CollisionType::NONE;
+}
+
 
 // void Enemy::collisionSound(){
 

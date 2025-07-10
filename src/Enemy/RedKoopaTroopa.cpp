@@ -30,9 +30,7 @@ void RedKoopaTroopa::draw() {
         DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
     }
 }
-
-
-    
+ 
     
 void RedKoopaTroopa::beingHit(HitType type) {
     switch (type) {
@@ -75,7 +73,7 @@ void RedKoopaTroopa::beingHit(HitType type) {
                 diePosition = position;
                 currentDyingFrame = 0;
                 dyingFrameAcum = 0.0f;
-                pointFrameAcum = 0.0f;
+                dyingFrameTime = 0.2f; 
                 velocity = {0, 0};
                 shellMoving = false;
             }
@@ -91,25 +89,34 @@ void RedKoopaTroopa::collisionSound(){
 
 }
     
-void RedKoopaTroopa::update(Mario& mario) {
+void RedKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collidables) {
     float delta = GetFrameTime();
 
-    // Nếu chưa active, kiểm tra khoảng cách với Mario
     if (state == SpriteState::INACTIVE) {
         activeWhenMarioApproach(mario);
         return;
     }
 
-    // Di chuyển khi đang active
     if (state == SpriteState::ACTIVE) {
+        // Gravity
+        velocity.y += World::gravity * delta;
 
+        // Đổi hướng nếu gần mép (đặc trưng Red Koopa)
         if (isNearEdge()) {
-        velocity.x = -velocity.x;
-        isFacingLeft = !isFacingLeft;
-        }   
+            velocity.x = -velocity.x;
+            isFacingLeft = !isFacingLeft;
+        }
 
+        // Di chuyển
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
+
+        // Va chạm ngang => đổi hướng
+        CollisionType collision = checkCollision(collidables);
+        if (collision == CollisionType::WEST || collision == CollisionType::EAST) {
+            velocity.x = -velocity.x;
+            isFacingLeft = velocity.x < 0;
+        }
 
         // Cập nhật hướng nhìn
         if (velocity.x != 0) {
@@ -119,25 +126,23 @@ void RedKoopaTroopa::update(Mario& mario) {
         updateCollisionBoxes();
     }
 
-    // Đang bị tiêu diệt
     else if (state == SpriteState::DYING) {
         dyingFrameAcum += delta;
         if (dyingFrameAcum >= dyingFrameTime) {
             dyingFrameAcum = 0.0f;
             currentDyingFrame++;
-
             if (currentDyingFrame >= maxDyingFrame) {
                 setState(SpriteState::TO_BE_REMOVED);
             }
         }
 
-        // Hiệu ứng point bay lên
         pointFrameAcum += delta;
         if (pointFrameAcum >= pointFrameTime) {
             pointFrameAcum = pointFrameTime;
         }
     }
 }
+
 
 void RedKoopaTroopa::activeWhenMarioApproach(const Mario& mario) {
     float distanceX = std::abs(mario.getPosition().x - position.x);

@@ -64,6 +64,8 @@ class Map : virtual public Drawable {
         bool next();
         void first();
 
+        std::vector<Sprite*> getMapCollidables();
+
         //add map function
 };
 

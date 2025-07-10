@@ -36,7 +36,7 @@ void MontyMole::draw() {
 }
 
 
-void MontyMole::update(Mario& mario) {
+void MontyMole::update(Mario& mario, const std::vector<Sprite*>& collidables) {
     float delta = GetFrameTime();
 
     // Nếu chưa active, kiểm tra khoảng cách với Mario
@@ -45,13 +45,23 @@ void MontyMole::update(Mario& mario) {
         return;
     }
 
-    // Di chuyển khi đang active
     if (state == SpriteState::ACTIVE) {
+        // Gravity
+        //velocity.y += World::gravity * delta;
+
+        // Di chuyển
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
         // Cập nhật hướng nhìn
         if (velocity.x != 0) {
+            isFacingLeft = velocity.x < 0;
+        }
+
+        // Va chạm với map
+        CollisionType collision = checkCollision(collidables);
+        if (collision == CollisionType::WEST || collision == CollisionType::EAST) {
+            velocity.x = -velocity.x;
             isFacingLeft = velocity.x < 0;
         }
 
@@ -64,7 +74,6 @@ void MontyMole::update(Mario& mario) {
         if (dyingFrameAcum >= dyingFrameTime) {
             dyingFrameAcum = 0.0f;
             currentDyingFrame++;
-
             if (currentDyingFrame >= maxDyingFrame) {
                 setState(SpriteState::TO_BE_REMOVED);
             }
