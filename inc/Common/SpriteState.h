@@ -37,6 +37,12 @@ enum SpriteState {
     SHELL,
     SHELL_MOVING,
     HIDDEN,
+
+    PRIMED,  // đã kích nỗ
+    IGNITED, // đếm ngược
+    EXPLODING, // đang nổ
+    
+
 };
 
 enum MoveType{
