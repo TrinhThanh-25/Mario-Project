@@ -1,4 +1,4 @@
-#include "CourseClearToken.h"
+#include "Item/CourseClearToken.h"
 
 CourseClearToken::CourseClearToken(Vector2 position, Vector2 size, Color color):
     Item(position, size, Vector2(0, 0), color, 0.0f, 0, Direction::NONE, 0.1f, 4, false),
