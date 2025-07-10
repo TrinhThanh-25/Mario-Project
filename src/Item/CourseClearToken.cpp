@@ -16,6 +16,7 @@ void CourseClearToken::update()
     } else if (state == SpriteState::HIT) {
         updateWhenHit(timeElapsed);
     }
+    updateCollisionBoxes();
 }
 
 void CourseClearToken::updateWhenActive(float timeElapsed)
