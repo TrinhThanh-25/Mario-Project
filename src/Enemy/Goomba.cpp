@@ -4,7 +4,9 @@
 
     
 Goomba::Goomba(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color){}
+    : Enemy(pos, dim, vel, color){
+    setState(SpriteState::ACTIVE);
+}
     
 Goomba::~Goomba(){}
 
@@ -47,7 +49,7 @@ void Goomba::update(Mario& mario, const std::vector<Sprite*>& collidables) {
         }
 
         //  Gravity
-        //velocity.y += World::gravity * delta;
+        velocity.y += 981.0f * delta;
 
         // Di chuyển
         position.x += velocity.x * delta;
@@ -109,9 +111,4 @@ void Goomba::collisionSound(){
 
 }
     
-void Goomba::activeWhenMarioApproach(Mario& mario){
-    float distance = std::abs(mario.getPosition().x - position.x);
-    if (distance < 200.0f) {
-        setState(SpriteState::ACTIVE);
-    }
-}
+void Goomba::activeWhenMarioApproach(Mario& mario){}

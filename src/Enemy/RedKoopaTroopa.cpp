@@ -3,7 +3,10 @@
 #include "Enemy/Enemy.h"
 
 RedKoopaTroopa::RedKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color){}
+    : Enemy(pos, dim, vel, color){
+    setState(SpriteState::INACTIVE); 
+    
+}
     
 RedKoopaTroopa::~RedKoopaTroopa(){}
 
@@ -108,6 +111,7 @@ void RedKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collidable
         }
 
         // Di chuyển
+        velocity.y += 981.0f * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 

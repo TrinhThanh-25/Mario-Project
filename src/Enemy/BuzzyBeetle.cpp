@@ -7,7 +7,9 @@
 
 BuzzyBeetle::BuzzyBeetle(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     : Enemy(pos, dim, vel, color), shellMoving(false), shellSpeed(200.0f),
-      shellTimer(0.0f), isFacingLeft(true) {}
+      shellTimer(0.0f), isFacingLeft(true) {
+    setState(SpriteState::INACTIVE);
+}
 
 void BuzzyBeetle::draw() {
     std::string textureKey;
@@ -41,6 +43,7 @@ void BuzzyBeetle::update(Mario& mario, const std::vector<Sprite*>& mapCollidable
     }
 
     if (state == SpriteState::ACTIVE) {
+        velocity.y += 981.0f * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 

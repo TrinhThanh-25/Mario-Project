@@ -18,6 +18,7 @@ void Rex::update(Mario& mario, const std::vector<Sprite*>& collidables) {
     }
 
     if (state == SpriteState::ACTIVE){
+        velocity.y += 981.0f * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 

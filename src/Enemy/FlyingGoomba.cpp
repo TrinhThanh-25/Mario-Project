@@ -3,7 +3,10 @@
 
 
 FlyingGoomba::FlyingGoomba(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color){}
+    : Enemy(pos, dim, vel, color){
+        
+    setState(SpriteState::INACTIVE);
+}
 
 
 FlyingGoomba::~FlyingGoomba(){}

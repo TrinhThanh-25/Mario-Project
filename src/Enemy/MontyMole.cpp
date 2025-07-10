@@ -8,7 +8,8 @@ MontyMole::MontyMole(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     emergeDelay = 2.0f + (rand() % 1000) / 1000.0f; // Random 2.0 ~ 3.0s
     emergeTimer = 0;
     hasEmerge = false;
-    }
+    setState(SpriteState::INACTIVE);
+}
     
 MontyMole::~MontyMole(){}
 
@@ -46,10 +47,9 @@ void MontyMole::update(Mario& mario, const std::vector<Sprite*>& collidables) {
     }
 
     if (state == SpriteState::ACTIVE) {
-        // Gravity
-        //velocity.y += World::gravity * delta;
 
         // Di chuyển
+        velocity.y += 981.0f * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
