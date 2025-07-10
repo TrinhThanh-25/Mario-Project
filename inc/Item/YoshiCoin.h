@@ -3,12 +3,12 @@
 
 #include "Item.h"
 
-class Yoshicoin : public Item {
+class YoshiCoin : public Item {
 private:
     int points;
 public:
-    Yoshicoin(Vector2 position, Vector2 size, Color color, int points);
-    ~Yoshicoin() override;
+    YoshiCoin(Vector2 position, Vector2 size, Color color, int points);
+    ~YoshiCoin() override;
 
     void update() override;
         void updateWhenActive(float timeElapsed) override;

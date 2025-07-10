@@ -2,7 +2,7 @@
 #include "FireFlower.h"
 
 FireFlower::FireFlower(Vector2 position, Vector2 size, Color color, int points, bool isInInventory):
-Item(position, size, Vector2(0, 0), color, 0, 0, Direction::RIGHT, 0, 0, false), points(points), isInInventory(isInInventory)
+Item(position, size, Vector2(0, 0), color, 0.1f, 2, Direction::RIGHT, 0, 0, false), points(points), isInInventory(isInInventory)
 {
     pauseGameWhenHit = true;
     if (isInInventory) {
@@ -16,6 +16,7 @@ void FireFlower::update()
     } else if (getState() == SpriteState::HIT) {
         updateWhenHit(GetFrameTime());
     }
+    updateCollisionBoxes();
 }
 
 void FireFlower::updateWhenActive(float timeElapsed)

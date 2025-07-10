@@ -1,20 +1,14 @@
-#ifndef FIREFLOWER_H
-#define FIREFLOWER_H
+#ifndef THREEUPMOON_H
+#define THREEUPMOON_H
 
 #include "Item.h"
 
-class FireFlower : public Item {
+class ThreeUpMoon : public Item {
 private:
-    int points;
-    
-    // Atributes for Inventory
-    bool isInInventory;
-    float blinkFrameTime = 0.1f; 
-    float blinkFrameAccum = 0.0f;
-    bool appear = false;
+    int lives;
 public:
-    FireFlower(Vector2 position, Vector2 size, Color color, int points,bool isInInventory);
-    ~FireFlower() override;
+    ThreeUpMoon(Vector2 position, Vector2 size, Color color, int lives);
+    ~ThreeUpMoon() override;
 
     void update() override;
         void updateWhenActive(float timeElapsed) override;

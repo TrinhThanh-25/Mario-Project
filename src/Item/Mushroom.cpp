@@ -94,11 +94,11 @@ void Mushroom::updateCharacter(Character *character)
         character->setPreviousState(character->getState());
         character->setState(SpriteState::SMALL_TO_SUPER);
     } else if (type == CharacterType::SUPER || type == CharacterType::FLOWER) {
-        CharacterType previousType = character->getPreviousState();
-        if (previousType == CharacterType::SMALL) {
-            PlaySound(ResourceManager::getSound()["StorePowerUpItem"]);
-            /*Put mushroom into the inventory*/
-        }
+        // CharacterType previousType = character->getPreviousType();
+        // if (previousType == CharacterType::SMALL) {
+        //     PlaySound(ResourceManager::getSound()["StorePowerUpItem"]);
+        //     /*Put mushroom into the inventory*/
+        // }
     }
 }
 

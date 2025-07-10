@@ -1,20 +1,16 @@
-#ifndef FIREFLOWER_H
-#define FIREFLOWER_H
+#ifndef COURSECLEARTOKEN_H
+#define COURSECLEARTOKEN_H
 
 #include "Item.h"
 
-class FireFlower : public Item {
+class CourseClearToken : public Item {
 private:
+    int minY;
+    int maxY;
     int points;
-    
-    // Atributes for Inventory
-    bool isInInventory;
-    float blinkFrameTime = 0.1f; 
-    float blinkFrameAccum = 0.0f;
-    bool appear = false;
 public:
-    FireFlower(Vector2 position, Vector2 size, Color color, int points,bool isInInventory);
-    ~FireFlower() override;
+    CourseClearToken(Vector2 position, Vector2 size, Color color);
+    ~CourseClearToken() override;
 
     void update() override;
         void updateWhenActive(float timeElapsed) override;

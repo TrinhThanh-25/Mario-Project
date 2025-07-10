@@ -1,12 +1,12 @@
 #include "Item/YoshiCoin.h"
 #include "YoshiCoin.h"
 
-Yoshicoin::Yoshicoin(Vector2 position, Vector2 size, Color color, int points):
+YoshiCoin::YoshiCoin(Vector2 position, Vector2 size, Color color, int points):
 Item(position, size, Vector2(0, 0), color, 0.1f, 4, Direction::RIGHT, 0.1f, 4, false), points(points)
 {
 }
 
-void Yoshicoin::update()
+void YoshiCoin::update()
 {
     float timeElapsed = GetFrameTime();
     if (this->getState() == SpriteState::IDLE)
@@ -20,7 +20,7 @@ void Yoshicoin::update()
     updateCollisionBoxes();
 }
 
-void Yoshicoin::updateWhenActive(float timeElapsed)
+void YoshiCoin::updateWhenActive(float timeElapsed)
 {
     frameAcum += timeElapsed;
     if (frameAcum >= frameTime)
@@ -34,7 +34,7 @@ void Yoshicoin::updateWhenActive(float timeElapsed)
     }
 }
 
-void Yoshicoin::updateWhenHit(float timeElapsed)
+void YoshiCoin::updateWhenHit(float timeElapsed)
 {
     beingHitFrameAcum += timeElapsed;
     if (beingHitFrameAcum >= beingHitFrameTime)
@@ -51,7 +51,7 @@ void Yoshicoin::updateWhenHit(float timeElapsed)
     if (pointFrameAccum >= pointFrameTime) pointFrameAccum = pointFrameTime;
 }
 
-void Yoshicoin::draw()
+void YoshiCoin::draw()
 {
     if (this->getState() == SpriteState::ACTIVE || this->getState() == SpriteState::IDLE)
     {
@@ -64,12 +64,12 @@ void Yoshicoin::draw()
     }
 }
 
-void Yoshicoin::playCollisionSound()
+void YoshiCoin::playCollisionSound()
 {
     PlaySound(ResourceManager::getSound()["DragonCoin"]);
 }
 
-void Yoshicoin::updateCharacter(Character *character)
+void YoshiCoin::updateCharacter(Character *character)
 {
     /*Add point here*/
     /*If there is 5 coins --> add one live*/
