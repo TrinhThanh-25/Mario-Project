@@ -20,6 +20,10 @@ void GreenKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collidab
     float delta = GetFrameTime();
 
     if (state == SpriteState::ACTIVE) {
+
+        if (leader) {
+            followTheLeader(leader);
+        }
         velocity.y += 981.0f * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
@@ -82,15 +86,15 @@ void GreenKoopaTroopa::draw() {
     int frame = (int)(GetTime() * 6) % 2;
 
     if (state == SpriteState::ACTIVE) {
-        textureKey = isFacingLeft ? (frame == 0 ? "GreenKoopa0Left" : "GreenKoopa1Left")
-                                  : (frame == 0 ? "GreenKoopa0Right" : "GreenKoopa1Right");
+        textureKey = isFacingLeft ? (frame == 0 ? "GreenKoopaTroopa0Left" : "GreenKoopaTroopa1Left")
+                                  : (frame == 0 ? "GreenKoopaTroopa0Right" : "GreenKoopaTroopa1Right");
     }
 
     // Bạn có thể thêm shell / dying nếu có sprite riêng
     DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
 
     if (state == SpriteState::DYING) {
-        std::string dyingKey = isFacingLeft ? "GreenKoopa1Left" : "GreenKoopa1Right";
+        std::string dyingKey = isFacingLeft ? "GreenKoopaTroopa1Left" : "GreenKoopaTroopa1Right";
         DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
 
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
@@ -148,3 +152,19 @@ bool GreenKoopaTroopa::isShellMoving() const {
 void GreenKoopaTroopa::activeWhenMarioApproach(Mario& mario) {
     // Green Koopa luôn ACTIVE từ đầu → không cần xử lý gì ở đây
 }
+
+void GreenKoopaTroopa::followTheLeader(Sprite* leader) {
+    if (!leader || state != SpriteState::ACTIVE) return;
+
+    Vector2 leaderPos = leader->getPosition();
+    float delta = GetFrameTime();
+
+    if (fabs(position.x - leaderPos.x) > 32.0f) {
+        isFacingLeft = leaderPos.x < position.x;
+        velocity.x = isFacingLeft ? -30.0f : 30.0f;
+
+        position.x += velocity.x * delta;
+        updateCollisionBoxes();
+    }
+}
+

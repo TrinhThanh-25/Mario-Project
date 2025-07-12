@@ -14,6 +14,10 @@ public:
     void collisionSound();
     void activeWhenMarioApproach(Mario& mario);
 
+    void followTheLeader(Sprite* leader);
+
+    Sprite* leader = nullptr;
+
     bool isNearEdge();
 private:
     bool shellMoving = false;

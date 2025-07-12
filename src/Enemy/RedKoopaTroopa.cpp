@@ -1,6 +1,5 @@
 #include "Enemy/RedKoopaTroopa.h"
 #include "Common/ResourceManager.h"
-#include "Enemy/Enemy.h"
 
 RedKoopaTroopa::RedKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     : Enemy(pos, dim, vel, color){
@@ -101,6 +100,11 @@ void RedKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collidable
     }
 
     if (state == SpriteState::ACTIVE) {
+
+        if (leader) {
+            followTheLeader(leader);
+        }
+
         // Gravity
         velocity.y += 980.0f * delta;
 
@@ -154,6 +158,23 @@ void RedKoopaTroopa::activeWhenMarioApproach(const Mario& mario) {
         setState(SpriteState::ACTIVE);
     }
 }
+
+void RedKoopaTroopa::followTheLeader(Sprite* leader) {
+    if (!leader || state != SpriteState::ACTIVE) return;
+
+    Vector2 leaderPos = leader->getPosition();
+    float delta = GetFrameTime();
+
+    // Nếu leader cách quá xa thì chạy theo
+    if (fabs(position.x - leaderPos.x) > 32.0f) {
+        isFacingLeft = leaderPos.x < position.x;
+        velocity.x = isFacingLeft ? -40.0f : 40.0f; // tốc độ như trong update()
+
+        position.x += velocity.x * delta;
+        updateCollisionBoxes();
+    }
+}
+
 
 
 // bool RedKoopaTroopa::isNearEdge() {

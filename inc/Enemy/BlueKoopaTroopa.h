@@ -1,12 +1,12 @@
-#ifndef GREENKOOPATROOPA_H
-#define GREENKOOPATROOPA_H
+#ifndef BLUEKOOPATROOPA_H
+#define BLUEKOOPATROOPA_H
 
 #include "Enemy/Enemy.h"
 #include "Common/HitType.h"
 
-class GreenKoopaTroopa : public Enemy {
+class BlueKoopaTroopa : public Enemy {
 public:
-    GreenKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color color);
+    BlueKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color color);
 
     void update(Mario& mario, const std::vector<Sprite*>& collidables) override;
     void draw() override;
@@ -16,11 +16,6 @@ public:
     bool isShellMoving() const;
 
     void activeWhenMarioApproach(Mario& mario) override;
-
-    void followTheLeader(Sprite* leader);
-
-    Sprite* leader = nullptr;
-
 
 private:
     bool shellMoving;        // Shell đang lăn không

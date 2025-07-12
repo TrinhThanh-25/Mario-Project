@@ -44,6 +44,11 @@ void BuzzyBeetle::update(Mario& mario, const std::vector<Sprite*>& collidables) 
     }
 
     if (state == SpriteState::ACTIVE) {
+        // Nếu có leader, cập nhật hướng theo leader
+        if (leader) {
+            followTheLeader(leader);
+        }
+
         velocity.y += 981.0f * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
@@ -69,7 +74,7 @@ void BuzzyBeetle::update(Mario& mario, const std::vector<Sprite*>& collidables) 
         float dir = isFacingLeft ? -1.0f : 1.0f;
         position.x += shellSpeed * dir * delta;
 
-        if (checkCollision(mapCollidables) != CollisionType::NONE) {
+        if (checkCollision(collidables) != CollisionType::NONE) {
             isFacingLeft = !isFacingLeft;
         }
 
@@ -161,3 +166,19 @@ void BuzzyBeetle::activeWhenMarioApproach(Mario& mario) {
 void BuzzyBeetle::collisionSound() {
     // PlaySound(ResourceManager::getSound()["BuzzyHit"]);
 }
+
+void BuzzyBeetle::followTheLeader(Sprite* leader) {
+    if (!leader || state != SpriteState::ACTIVE) return;
+
+    Vector2 leaderPos = leader->getPosition();
+    float delta = GetFrameTime();
+
+    if (fabs(position.x - leaderPos.x) > 32.0f) {
+        isFacingLeft = leaderPos.x < position.x;
+        velocity.x = isFacingLeft ? -35.0f : 35.0f;
+
+        position.x += velocity.x * delta;
+        updateCollisionBoxes();
+    }
+}
+

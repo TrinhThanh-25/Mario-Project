@@ -1,25 +1,23 @@
-#include "Enemy/MummyBeetle.h"
+#include "Enemy/BlueKoopaTroopa.h"
 #include "Common/ResourceManager.h"
 #include <string>
 
-#define ACTIVATION_RANGE 300.0f
-#define WAKE_UP_TIME 5.0f // tự bật dậy sau 5s
+#define WAKE_UP_TIME 5.0f
 
-MummyBeetle::MummyBeetle(Vector2 pos, Vector2 dim, Vector2 vel, Color color) 
+BlueKoopaTroopa::BlueKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     : Enemy(pos, dim, vel, color) {
+    
     extraWakeUpTime = 2.0f;
     shellSpeed = 150.0f;
-    setState(SpriteState::INACTIVE);
-    isFacingLeft = vel.x < 0;   
-    }
+    shellTimer = 0.0f;
+    shellMoving = false;
 
-void MummyBeetle::update(Mario& mario, const std::vector<Sprite*>& collidables) {
+    setState(SpriteState::ACTIVE);
+    isFacingLeft = vel.x < 0;
+}
+
+void BlueKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collidables) {
     float delta = GetFrameTime();
-
-    if (state == SpriteState::INACTIVE) {
-        activeWhenMarioApproach(mario);
-        return;
-    }
 
     if (state == SpriteState::ACTIVE) {
         velocity.y += 981.0f * delta;
@@ -35,12 +33,19 @@ void MummyBeetle::update(Mario& mario, const std::vector<Sprite*>& collidables) 
     }
 
     else if (state == SpriteState::SHELL) {
-        shellTimer += delta;
         velocity.y += 981.0f * delta;
         position.y += velocity.y * delta;
+
+        if (checkCollision(collidables) == CollisionType::SOUTH) {
+            velocity.y = 0;
+        }
+
+        shellTimer += delta;
+        updateCollisionBoxes();
+
         if (shellTimer >= WAKE_UP_TIME + extraWakeUpTime) {
             setState(SpriteState::ACTIVE);
-            velocity.x = isFacingLeft ? -50.0f : 50.0f;
+            velocity.x = isFacingLeft ? -40.0f : 40.0f;
             shellTimer = 0.0f;
         }
     }
@@ -72,31 +77,32 @@ void MummyBeetle::update(Mario& mario, const std::vector<Sprite*>& collidables) 
     }
 }
 
-void MummyBeetle::draw(){
+void BlueKoopaTroopa::draw() {
     std::string textureKey;
     int frame = (int)(GetTime() * 6) % 2;
 
     if (state == SpriteState::ACTIVE) {
-        textureKey = isFacingLeft ? (frame == 0 ? "MummyBeetle0Left" : "MummyBeetle1Left")
-                                  : (frame == 0 ? "MummyBeetle0Right" : "MummyBeetle1Right");
-        
-    } 
-    DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
-    // else if (state == SpriteState::SHELL || state == SpriteState::SHELL_MOVING || state == SpriteState::DYING) {
-    //     textureKey = isFacingLeft ? "BuzzyBeetleShellLeft" : "BuzzyBeetleShellRight";
+        textureKey = isFacingLeft ? (frame == 0 ? "BlueKoopaTroopa0Left" : "BlueKoopaTroopa1Left")
+                                  : (frame == 0 ? "BlueKoopaTroopa0Right" : "BlueKoopaTroopa1Right");
+    }
+
+    // else if (state == SpriteState::SHELL || state == SpriteState::SHELL_MOVING) {
+    // textureKey = isFacingLeft ? "BlueKoopaShellLeft" : "BlueKoopaShellRight";
     // }
 
+    // Bạn có thể thêm shell / dying nếu có sprite riêng
+    DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
 
     if (state == SpriteState::DYING) {
-
-        std::string dyingKey = isFacingLeft ? "MummyBeetle1Left" : "MummyBeetle1Right";
+        std::string dyingKey = isFacingLeft ? "BlueKoopaTroopa1Left" : "BlueKoopaTroopa1Right";
         DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
+
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
         DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
     }
 }
 
-void MummyBeetle::beingHit(HitType type) {
+void BlueKoopaTroopa::beingHit(HitType type) {
     switch (type) {
         case HitType::STOMP:
             if (state == SpriteState::ACTIVE) {
@@ -118,9 +124,11 @@ void MummyBeetle::beingHit(HitType type) {
             break;
 
         case HitType::FIREBALL:
-            break;
-
         case HitType::SHELL_KICK:
+            setState(SpriteState::DYING);
+            diePosition = position;
+            dyingFrameAcum = 0.0f;
+            pointFrameAcum = 0.0f;
             break;
 
         default:
@@ -128,7 +136,7 @@ void MummyBeetle::beingHit(HitType type) {
     }
 }
 
-void MummyBeetle::kickShell(bool faceLeft){
+void BlueKoopaTroopa::kickShell(bool faceLeft) {
     if (state == SpriteState::SHELL) {
         setState(SpriteState::SHELL_MOVING);
         shellMoving = true;
@@ -137,18 +145,11 @@ void MummyBeetle::kickShell(bool faceLeft){
     }
 }
 
-bool MummyBeetle::isShellMoving(){
+bool BlueKoopaTroopa::isShellMoving() const {
     return shellMoving;
 }
 
-void MummyBeetle::activeWhenMarioApproach(Mario& mario){
-    if (state != SpriteState::INACTIVE) return;
-
-    Vector2 marioPos = mario.getPosition();
-    float dx = fabs(marioPos.x - position.x);
-
-    if (dx <= ACTIVATION_RANGE) {
-        setState(SpriteState::ACTIVE);
-        velocity.x = isFacingLeft ? -30.0f : 30.0f;
-    }
+void BlueKoopaTroopa::activeWhenMarioApproach(Mario& mario)
+ {
+    // Green Koopa luôn ACTIVE từ đầu → không cần xử lý gì ở đây
 }

@@ -19,6 +19,10 @@ public:
 
     void activeWhenMarioApproach(Mario& mario);
 
+    void followTheLeader(Sprite* leader);
+
+    Sprite* leader = nullptr;
+
 private:
     bool shellMoving;
     float shellSpeed;
