@@ -80,9 +80,6 @@ class Character : public Sprite {
         std::vector<Fireball> fireball;
 
         float activateWidth;
-
-        // bool playerDownMusicStreamPlaying;
-        // bool gameOverMusicStreamPlaying;
         SpriteState previousState;
     public:
         Character(std::string name, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed);

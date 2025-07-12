@@ -4,7 +4,7 @@
 #include "Character/Luigi.h"
 
 ChooseCharacterState::ChooseCharacterState(World* world)
-    : GameState(world),
+    : GameState(world, GameStateType::CHOOSE_CHARACTER),
     modeWorld(ModeWorld::SINGLEPLAYER),
     singlePlayerTag(CharacterName::MARIO, {650, 100, 300, 500}),
     firstPlayerTag(CharacterName::MARIO, {300, 100, 300, 500}),

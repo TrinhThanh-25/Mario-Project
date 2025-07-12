@@ -5,7 +5,7 @@
 #include <algorithm>
 
 PlayingState::PlayingState(World* world)
-    : GameState(world), 
+    : GameState(world, GameStateType::PLAYING), 
     characters(world->getCharacters()), 
     map(world->getMap()), 
     camera(world->getCamera()), 
@@ -22,7 +22,7 @@ PlayingState::~PlayingState() {
 void PlayingState::update() {
     if(IsKeyPressed(KEY_ESCAPE)) {
         SettingState* settingState = new SettingState(world);
-        settingState->setIsTitleBefore(false);
+        settingState->setStateBeforeSetting(GameStateType::PLAYING);
         world->setGameState(settingState);
         return;
     }

@@ -2,7 +2,7 @@
 #include "Common/ResourceManager.h"
 
 GameOverState::GameOverState(World* world)
-    : GameState(world) {
+    : GameState(world, GameStateType::GAME_OVER) {
 }
 
 GameOverState::~GameOverState() {

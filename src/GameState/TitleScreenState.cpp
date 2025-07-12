@@ -3,16 +3,24 @@
 #include "GameState/ChooseCharacterState.h"
 #include "GameState/SettingState.h"
 #include "Common/ResourceManager.h"
+#include "SaveGame.h"
 #include "raylib.h"
 
 TitleScreenState::TitleScreenState(World* world)
-    : GameState(world),
-    newGameButton({1600 / 2 - 100, 900 / 2 + 50, 200, 50}, "New Game", 20),
-    continueButton({1600 / 2 - 100, 900 / 2 + 110, 200, 50}, "Continue", 20),
+    : GameState(world, GameStateType::TITLE_SCREEN),
+    continueButton({1600 / 2 - 100, 900 / 2 + 50, 200, 50}, "Continue", 20),
+    newGameButton({1600 / 2 - 100, 900 / 2 + 110, 200, 50}, "New Game", 20),
     optionsButton({1600 / 2 - 100, 900 / 2 + 170, 200, 50}, "Options", 20),
     exitButton({1600 / 2 - 100, 900 / 2 + 230, 200, 50}, "Exit", 20) {
-        // check saved game availability
-        isSavedGameAvailable = false; //
+        if(SaveGame::saveGameExists()) {
+            isSavedGameAvailable = true;
+        }
+        else {
+            isSavedGameAvailable = false;
+            newGameButton.setPosition({1600 / 2 - 100, 900 / 2 + 50});
+            optionsButton.setPosition({1600 / 2 - 100, 900 / 2 + 110});
+            exitButton.setPosition({1600 / 2 - 100, 900 / 2 + 170});
+        }
 }
 
 TitleScreenState::~TitleScreenState() {
@@ -36,14 +44,14 @@ void TitleScreenState::update() {
     }
     else if(continueButton.isPressed() && isSavedGameAvailable) {
         StopMusicStream(ResourceManager::getMusic()["Title"]);
-        // load saved game
+        SaveGame::loadGame(world);
     }
     else if(exitButton.isPressed()) {
         CloseWindow();
     }
     else if(optionsButton.isPressed()) {
         SettingState* newState = new SettingState(world);
-        newState->setIsTitleBefore(true);
+        newState->setStateBeforeSetting(GameStateType::TITLE_SCREEN);
         world->setGameState(newState);
     }
 }

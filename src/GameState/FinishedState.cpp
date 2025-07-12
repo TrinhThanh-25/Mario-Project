@@ -2,7 +2,7 @@
 #include "Common/ResourceManager.h"
 
 FinishedState::FinishedState(World* world)
-    : GameState(world) {
+    : GameState(world, GameStateType::FINISHED) {
 
 }
 

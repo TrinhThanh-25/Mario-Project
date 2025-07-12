@@ -24,7 +24,6 @@ class World : public GameLoop {
         Camera2D camera;
         GameHud gameHud;
         
-        //Window
         int width;
         int height;
         std::string title;
