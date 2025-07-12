@@ -16,7 +16,7 @@ public:
     Enemy(Vector2 pos, Vector2 dim, Vector2 vel, Color color);
     virtual ~Enemy();
 
-    virtual void update(Mario& mario, const std::vector<Sprite*>& mapCollidables) = 0;
+    virtual void update(Mario& mario, const std::vector<Sprite*>& collidables) = 0;
 
     virtual void draw() = 0;
 

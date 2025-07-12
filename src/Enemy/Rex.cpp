@@ -7,7 +7,7 @@
 
 Rex::Rex(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     : Enemy(pos, dim, vel, color), isShrunken(false), shrinkDuration(0.0f) {
-    isFacingLeft = true;
+    isFacingLeft = vel.x < 0;   
 }
 
 void Rex::update(Mario& mario, const std::vector<Sprite*>& collidables) {

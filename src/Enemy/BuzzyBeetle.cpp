@@ -7,8 +7,9 @@
 
 BuzzyBeetle::BuzzyBeetle(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     : Enemy(pos, dim, vel, color), shellMoving(false), shellSpeed(200.0f),
-      shellTimer(0.0f), isFacingLeft(true) {
+      shellTimer(0.0f) {
     setState(SpriteState::INACTIVE);
+    isFacingLeft = vel.x < 0;
 }
 
 void BuzzyBeetle::draw() {
@@ -34,7 +35,7 @@ void BuzzyBeetle::draw() {
     }
 }
 
-void BuzzyBeetle::update(Mario& mario, const std::vector<Sprite*>& mapCollidables) {
+void BuzzyBeetle::update(Mario& mario, const std::vector<Sprite*>& collidables) {
     float delta = GetFrameTime();
 
     if (state == SpriteState::INACTIVE) {
@@ -47,7 +48,7 @@ void BuzzyBeetle::update(Mario& mario, const std::vector<Sprite*>& mapCollidable
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
-        if (checkCollision(mapCollidables) != CollisionType::NONE) {
+        if (checkCollision(collidables) != CollisionType::NONE) {
             velocity.x = -velocity.x;
             isFacingLeft = velocity.x < 0;
         }

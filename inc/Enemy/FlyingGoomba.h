@@ -9,7 +9,7 @@ public:
     ~FlyingGoomba();
 
     void draw();
-    void update(Mario& mario);
+    void update(Mario& mario, const std::vector<Sprite*>& collidables) override;
     void beingHit(HitType type);
     void collisionSound();
     void activeWhenMarioApproach(Mario& mario);

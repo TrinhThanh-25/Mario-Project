@@ -5,7 +5,7 @@
 RedKoopaTroopa::RedKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     : Enemy(pos, dim, vel, color){
     setState(SpriteState::INACTIVE); 
-    
+    isFacingLeft = vel.x < 0;   
 }
     
 RedKoopaTroopa::~RedKoopaTroopa(){}
@@ -102,7 +102,7 @@ void RedKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collidable
 
     if (state == SpriteState::ACTIVE) {
         // Gravity
-        velocity.y += World::gravity * delta;
+        velocity.y += 980.0f * delta;
 
         // Đổi hướng nếu gần mép (đặc trưng Red Koopa)
         if (isNearEdge()) {

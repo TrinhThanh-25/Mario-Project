@@ -6,6 +6,7 @@
 Goomba::Goomba(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     : Enemy(pos, dim, vel, color){
     setState(SpriteState::ACTIVE);
+    isFacingLeft = vel.x < 0;   
 }
     
 Goomba::~Goomba(){}

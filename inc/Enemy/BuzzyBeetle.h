@@ -8,7 +8,7 @@ public:
     BuzzyBeetle(Vector2 pos, Vector2 dim, Vector2 vel, Color color);
     ~BuzzyBeetle();
 
-    void update(Mario& mario) override;
+    void update(Mario& mario, const std::vector<Sprite*>& collidables) override;
     void draw() override;
 
     void beingHit(HitType type) override;
@@ -22,7 +22,6 @@ public:
 private:
     bool shellMoving;
     float shellSpeed;
-    bool isFacingLeft;
     float shellTimer;
 };
 

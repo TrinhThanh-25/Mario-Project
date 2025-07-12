@@ -8,13 +8,13 @@ BanzaiBill::BanzaiBill(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     : Enemy(pos, dim, vel, color) {
     
     setState(SpriteState::INACTIVE);   // Chờ Mario đến gần mới active
-    isFacingLeft = velocity.x < 0;     // Dựa theo hướng bay ban đầu
+    isFacingLeft = vel.x < 0;     // Dựa theo hướng bay ban đầu
 
     maxLifeTime = 8.0f;    // Sau 8 giây sẽ tự biến mất (có thể tùy chỉnh)
     lifeTimer = 0.0f;
 }
 
-void BanzaiBill::update(Mario& mario, const std::vector<Sprite*>& mapCollidables) {
+void BanzaiBill::update(Mario& mario, const std::vector<Sprite*>& collidables) {
     float delta = GetFrameTime();
 
     if (state == SpriteState::INACTIVE) {
@@ -57,13 +57,13 @@ void BanzaiBill::draw() {
     std::string textureKey;
 
     if (state == SpriteState::ACTIVE) {
-        textureKey = isFacingLeft ?  "BanzaiBille0Left" :  "BanzaiBill0Right";
+        textureKey = isFacingLeft ?  "BobOmb0Left" :  "BobOmb0Right";
         DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);                  
     } 
 
     if (state == SpriteState::DYING) {
 
-        std::string dyingKey = isFacingLeft ? "BanzaiBill0Left" :  "BanzaiBill0Right"; 
+        std::string dyingKey = isFacingLeft ? "BobOmb1Left" :  "BanzaiBill0Right"; 
         DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
         DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
