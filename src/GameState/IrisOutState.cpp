@@ -1,9 +1,10 @@
 #include "GameState/IrisOutState.h"
 #include "GameState/GoNextMapState.h"
+#include "GameState/SettingState.h"
 #include "Common/ResourceManager.h"
 
 IrisOutState::IrisOutState(World* world) 
-    : GameState(world),
+    : GameState(world, GameStateType::IRIS_OUT),
       gameHud(world->getGameHud()), 
       map(world->getMap()),
       camera(world->getCamera()) {
@@ -15,6 +16,12 @@ IrisOutState::~IrisOutState() {
 }
 
 void IrisOutState::update() {
+    if(IsKeyPressed(KEY_ESCAPE)) {
+        SettingState* settingState = new SettingState(world);
+        settingState->setStateBeforeSetting(GameStateType::IRIS_OUT);
+        world->setGameState(settingState);
+        return;
+    }
     if (IsMusicStreamPlaying(ResourceManager::getMusic()["CourseClear"])) {
         UpdateMusicStream(ResourceManager::getMusic()["CourseClear"]);
         if ((int)GetMusicTimeLength(ResourceManager::getMusic()["CourseClear"]) == (int)GetMusicTimePlayed(ResourceManager::getMusic()["CourseClear"])) {

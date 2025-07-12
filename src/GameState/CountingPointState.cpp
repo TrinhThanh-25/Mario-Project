@@ -1,10 +1,11 @@
 #include "GameState/CountingPointState.h"
 #include "GameState/IrisOutState.h"
 #include "Common/ResourceManager.h"
+#include "GameState/SettingState.h"
 #include "raylib.h"
 
 CountingPointState::CountingPointState(World* world)
-    : GameState(world), 
+    : GameState(world, GameStateType::COUNTING_POINT), 
       remainTimePoint(world->getRemainTimePoint()), 
       gameHud(world->getGameHud()),
       map(world->getMap()),
@@ -16,6 +17,12 @@ CountingPointState::~CountingPointState() {
 }
 
 void CountingPointState::update() {
+    if(IsKeyPressed(KEY_ESCAPE)) {
+        SettingState* settingState = new SettingState(world);
+        settingState->setStateBeforeSetting(GameStateType::COUNTING_POINT);
+        world->setGameState(settingState);
+        return;
+    }
     if(!IsMusicStreamPlaying(ResourceManager::getMusic()["CourseClear"])) {
         PlayMusicStream(ResourceManager::getMusic()["CourseClear"]);
     } else {

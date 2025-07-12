@@ -7,12 +7,13 @@
 
 class SettingState : public GameState {
     private:
+        GameStateType stateBeforeSetting;
+
         Button resumeButton;
         Button restartButton;
         Button returnButton;
         Button exitButton;
-
-        bool isTitleBefore;
+        // music / sfx
     public:
         SettingState(World* world);
         ~SettingState() override;
@@ -20,7 +21,7 @@ class SettingState : public GameState {
         void update() override;
         void draw() override;
 
-        void setIsTitleBefore(bool isTitleBefore);
+        void setStateBeforeSetting(GameStateType stateBeforeSetting);
 };
 
 #endif

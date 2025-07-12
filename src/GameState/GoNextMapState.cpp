@@ -1,10 +1,11 @@
 #include "GameState/GoNextMapState.h"
 #include "GameState/PlayingState.h"
 #include "GameState/FinishedState.h"
+#include "GameState/SettingState.h"
 #include "Common/ResourceManager.h"
 
 GoNextMapState::GoNextMapState(World* world)
-    : GameState(world), 
+    : GameState(world, GameStateType::GO_NEXT_MAP), 
     irisOutTime(1.0f), 
     irisOutAcum(0.0f), 
     isIrisOutFinished(false), 
@@ -19,6 +20,12 @@ GoNextMapState::~GoNextMapState() {
 }
 
 void GoNextMapState::update() {
+    if(IsKeyPressed(KEY_ESCAPE)) {
+        SettingState* settingState = new SettingState(world);
+        settingState->setStateBeforeSetting(GameStateType::GO_NEXT_MAP);
+        world->setGameState(settingState);
+        return;
+    }
     float deltaTime = GetFrameTime();
     irisOutAcum += deltaTime;
     if (irisOutAcum >= irisOutTime) {

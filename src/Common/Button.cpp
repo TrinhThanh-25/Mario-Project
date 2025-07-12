@@ -27,7 +27,7 @@ void Button::update(){
 
 void Button::draw(){
     //
-    DrawRectangleRec(this->rectangle, (this->selected || this->isPressed()) ? RED : (this->isHovered() ? LIGHTGRAY : GRAY));//
+    DrawRectangleRec(this->rectangle, (this->selected || this->isPressed()) ? RED : (this->isHovered() ? LIGHTGRAY : GRAY));
     if (this->text) {
         DrawTextEx(GetFontDefault(), this->text, {this->rectangle.x + (this->rectangle.width - MeasureTextEx(GetFontDefault(), this->text, this->fontSize, 0).x) / 2.0f, this->rectangle.y + (this->rectangle.height - MeasureTextEx(GetFontDefault(), this->text, this->fontSize, 0).y) / 2.0f}, this->fontSize, 0, WHITE);
     }

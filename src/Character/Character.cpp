@@ -339,11 +339,10 @@ void Character::movement(float deltaTime) {
         PlaySound(ResourceManager::getSound()["Jump"]);
     }
     if(IsKeyPressed(control) && type==CharacterType::FLOWER) {
-        //
         if(direction == Direction::RIGHT) {
-            fireball.push_back(Fireball({position.x+size.x/2.0f, position.y+size.y/2.0f}, Direction::RIGHT, 2.0f));
+            fireball.push_back(Fireball({position.x + size.x - 4, position.y+size.y - 34}, Direction::RIGHT, 2.0f));
         } else {
-            fireball.push_back(Fireball({position.x+size.x/2.0f, position.y+size.y/2.0f}, Direction::LEFT, 2.0f));
+            fireball.push_back(Fireball({position.x - 16 + 4, position.y+size.y - 34}, Direction::LEFT, 2.0f));
         }
         PlaySound(ResourceManager::getSound()["Fireball"]);
     }
