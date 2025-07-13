@@ -40,6 +40,7 @@ class Character : public Sprite {
         float dyingSpeed;
         bool isRunning;
         bool isDucking;
+        bool isLookingUp;
 
         //walking
         float frameTimeWalking;
@@ -92,7 +93,7 @@ class Character : public Sprite {
 
         void update() override;
         void draw() override;
-        virtual void updateCollisionBoxes() override = 0;
+        void updateCollisionBoxes() override;
 
         bool transition(float deltaTime);
         void movement(float deltaTime);
@@ -103,9 +104,9 @@ class Character : public Sprite {
         void collisionBlock(Block* block);
         void collisionEnemy(Enemy* enemy);
 
-        virtual void transitionToSmall() = 0;
-        virtual void transitionToSuper() = 0;
-        virtual void transitionToFlower() = 0;
+        void transitionToSmall();
+        void transitionToSuper();
+        void transitionToFlower();
 
         void setInvulnerable(bool invulnerable);
         bool isInvulnerable() const;

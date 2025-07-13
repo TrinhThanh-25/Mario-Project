@@ -23,19 +23,7 @@ std::unordered_map<std::string, Music>& ResourceManager::getMusic() {
 }
 
 void ResourceManager::loadTexture() {
-    texture["Logo"] = LoadTexture("../resources/logo.png");
-
-    // Tags
-    texture["SmallMarioTag"] = LoadTexture("../resources/Mario/SmallMario.png");
-    texture["SuperMarioTag"] = LoadTexture("../resources/Mario/SuperMario.png");
-    texture["FlowerMarioTag"] = LoadTexture("../resources/Mario/FlowerMario.png");
-    texture["SmallLuigiTag"] = LoadTexture("../resources/Luigi/SmallLuigi.png");
-    texture["SuperLuigiTag"] = LoadTexture("../resources/Luigi/SuperLuigi.png");
-    texture["FlowerLuigiTag"] = LoadTexture("../resources/Luigi/FlowerLuigi.png");
-    texture["MarioNameTag"] = LoadTexture("../resources/Mario/MarioNameTag.png");
-    texture["LuigiNameTag"] = LoadTexture("../resources/Luigi/LuigiNameTag.png");
-
-    // Small Mario
+    // Normal Mario
     texture["SmallMario0Right"] = LoadTexture("../resources/Mario/SmallMario_0.png");
     texture["SmallMario0Left"] = texture2DFlipHorizontal(texture["SmallMario0Right"]);
     texture["SmallMario1Right"] = LoadTexture("../resources/Mario/SmallMario_1.png");
@@ -123,95 +111,6 @@ void ResourceManager::loadTexture() {
     texture["TransitioningFlowerMario1Left"] = texture2DFlipHorizontal(texture["TransitioningFlowerMario1Right"]);
     texture["TransitioningFlowerMario2Right"] = LoadTexture("../resources/Mario/TransitioningFlowerMario_2.png");
     texture["TransitioningFlowerMario2Left"] = texture2DFlipHorizontal(texture["TransitioningFlowerMario2Right"]);
-
-    //Small Luigi
-    texture["SmallLuigi0Right"] = LoadTexture("../resources/Luigi/SmallLuigi_0.png");
-    texture["SmallLuigi0Left"] = texture2DFlipHorizontal(texture["SmallLuigi0Right"]);
-    texture["SmallLuigi1Right"] = LoadTexture("../resources/Luigi/SmallLuigi_1.png");
-    texture["SmallLuigi1Left"] = texture2DFlipHorizontal(texture["SmallLuigi1Right"]);
-    texture["SmallLuigiDucking0Right"] = LoadTexture("../resources/Luigi/SmallLuigiDucking_0.png");
-    texture["SmallLuigiDucking0Left"] = texture2DFlipHorizontal(texture["SmallLuigiDucking0Right"]);
-    texture["SmallLuigiFalling0Right"] = LoadTexture("../resources/Luigi/SmallLuigiFalling_0.png");
-    texture["SmallLuigiFalling0Left"] = texture2DFlipHorizontal(texture["SmallLuigiFalling0Right"]);
-    texture["SmallLuigiJumping0Right"] = LoadTexture("../resources/Luigi/SmallLuigiJumping_0.png");
-    texture["SmallLuigiJumping0Left"] = texture2DFlipHorizontal(texture["SmallLuigiJumping0Right"]);
-    texture["SmallLuigiJumpingAndRunning0Right"] = LoadTexture("../resources/Luigi/SmallLuigiJumpingAndRunning_0.png");
-    texture["SmallLuigiJumpingAndRunning0Left"] = texture2DFlipHorizontal(texture["SmallLuigiJumpingAndRunning0Right"]);
-    texture["SmallLuigiLookingUp0Right"] = LoadTexture("../resources/Luigi/SmallLuigiLookingUp_0.png");
-    texture["SmallLuigiLookingUp0Left"] = texture2DFlipHorizontal(texture["SmallLuigiLookingUp0Right"]);
-    texture["SmallLuigiRunning0Right"] = LoadTexture("../resources/Luigi/SmallLuigiRunning_0.png");
-    texture["SmallLuigiRunning0Left"] = texture2DFlipHorizontal(texture["SmallLuigiRunning0Right"]);
-    texture["SmallLuigiRunning1Right"] = LoadTexture("../resources/Luigi/SmallLuigiRunning_1.png");
-    texture["SmallLuigiRunning1Left"] = texture2DFlipHorizontal(texture["SmallLuigiRunning1Right"]);
-    texture["SmallLuigiDying0"] = LoadTexture("../resources/Luigi/SmallLuigiDying_0.png");
-    texture["SmallLuigiDying1"] = texture2DFlipHorizontal(texture["SmallLuigiDying0"]);
-    texture["SmallLuigiVictory0"] = LoadTexture("../resources/Luigi/SmallLuigiVictory_0.png");
-
-    //Super Luigi
-    texture["SuperLuigi0Right"] = LoadTexture("../resources/Luigi/SuperLuigi_0.png");
-    texture["SuperLuigi0Left"] = texture2DFlipHorizontal(texture["SuperLuigi0Right"]);
-    texture["SuperLuigi1Right"] = LoadTexture("../resources/Luigi/SuperLuigi_1.png");
-    texture["SuperLuigi1Left"] = texture2DFlipHorizontal(texture["SuperLuigi1Right"]);
-    texture["SuperLuigi2Right"] = LoadTexture("../resources/Luigi/SuperLuigi_2.png");
-    texture["SuperLuigi2Left"] = texture2DFlipHorizontal(texture["SuperLuigi2Right"]);
-    texture["SuperLuigiDucking0Right"] = LoadTexture("../resources/Luigi/SuperLuigiDucking_0.png");
-    texture["SuperLuigiDucking0Left"] = texture2DFlipHorizontal(texture["SuperLuigiDucking0Right"]);
-    texture["SuperLuigiFalling0Right"] = LoadTexture("../resources/Luigi/SuperLuigiFalling_0.png");
-    texture["SuperLuigiFalling0Left"] = texture2DFlipHorizontal(texture["SuperLuigiFalling0Right"]);
-    texture["SuperLuigiJumping0Right"] = LoadTexture("../resources/Luigi/SuperLuigiJumping_0.png");
-    texture["SuperLuigiJumping0Left"] = texture2DFlipHorizontal(texture["SuperLuigiJumping0Right"]);
-    texture["SuperLuigiJumpingAndRunning0Right"] = LoadTexture("../resources/Luigi/SuperLuigiJumpingAndRunning_0.png");
-    texture["SuperLuigiJumpingAndRunning0Left"] = texture2DFlipHorizontal(texture["SuperLuigiJumpingAndRunning0Right"]);
-    texture["SuperLuigiLookingUp0Right"] = LoadTexture("../resources/Luigi/SuperLuigiLookingUp_0.png");
-    texture["SuperLuigiLookingUp0Left"] = texture2DFlipHorizontal(texture["SuperLuigiLookingUp0Right"]);
-    texture["SuperLuigiRunning0Right"] = LoadTexture("../resources/Luigi/SuperLuigiRunning_0.png");
-    texture["SuperLuigiRunning0Left"] = texture2DFlipHorizontal(texture["SuperLuigiRunning0Right"]);
-    texture["SuperLuigiRunning1Right"] = LoadTexture("../resources/Luigi/SuperLuigiRunning_1.png");
-    texture["SuperLuigiRunning1Left"] = texture2DFlipHorizontal(texture["SuperLuigiRunning1Right"]);
-    texture["SuperLuigiRunning2Right"] = LoadTexture("../resources/Luigi/SuperLuigiRunning_2.png");
-    texture["SuperLuigiRunning2Left"] = texture2DFlipHorizontal(texture["SuperLuigiRunning2Right"]);
-    texture["SuperLuigiThrowingFireball0Right"] = LoadTexture("../resources/Luigi/SuperLuigiThrowingFireball_0.png");
-    texture["SuperLuigiThrowingFireball0Left"] = texture2DFlipHorizontal(texture["SuperLuigiThrowingFireball0Right"]);
-    texture["SuperLuigiVictory0"] = LoadTexture("../resources/Luigi/SuperLuigiVictory_0.png");
-    texture["TransitioningSuperLuigi0Right"] = LoadTexture("../resources/Luigi/TransitioningSuperLuigi_0.png");
-    texture["TransitioningSuperLuigi0Left"] = texture2DFlipHorizontal(texture["TransitioningSuperLuigi0Right"]);
-    texture["TransitioningSuperLuigi1Right"] = LoadTexture("../resources/Luigi/TransitioningSuperLuigi_1.png");
-    texture["TransitioningSuperLuigi1Left"] = texture2DFlipHorizontal(texture["TransitioningSuperLuigi1Right"]);
-    texture["TransitioningSuperLuigi2Right"] = LoadTexture("../resources/Luigi/TransitioningSuperLuigi_2.png");
-    texture["TransitioningSuperLuigi2Left"] = texture2DFlipHorizontal(texture["TransitioningSuperLuigi2Right"]);
-
-    //Flower Luigi
-    texture["FlowerLuigi0Right"] = LoadTexture("../resources/Luigi/FlowerLuigi_0.png");
-    texture["FlowerLuigi0Left"] = texture2DFlipHorizontal(texture["FlowerLuigi0Right"]);
-    texture["FlowerLuigi1Right"] = LoadTexture("../resources/Luigi/FlowerLuigi_1.png");
-    texture["FlowerLuigi1Left"] = texture2DFlipHorizontal(texture["FlowerLuigi1Right"]);
-    texture["FlowerLuigi2Right"] = LoadTexture("../resources/Luigi/FlowerLuigi_2.png");
-    texture["FlowerLuigi2Left"] = texture2DFlipHorizontal(texture["FlowerLuigi2Right"]);
-    texture["FlowerLuigiDucking0Right"] = LoadTexture("../resources/Luigi/FlowerLuigiDucking_0.png");
-    texture["FlowerLuigiDucking0Left"] = texture2DFlipHorizontal(texture["FlowerLuigiDucking0Right"]);
-    texture["FlowerLuigiFalling0Right"] = LoadTexture("../resources/Luigi/FlowerLuigiFalling_0.png");
-    texture["FlowerLuigiFalling0Left"] = texture2DFlipHorizontal(texture["FlowerLuigiFalling0Right"]);
-    texture["FlowerLuigiJumping0Right"] = LoadTexture("../resources/Luigi/FlowerLuigiJumping_0.png");
-    texture["FlowerLuigiJumping0Left"] = texture2DFlipHorizontal(texture["FlowerLuigiJumping_0Right"]);
-    texture["FlowerLuigiJumpingAndRunning0Right"] = LoadTexture("../resources/Luigi/FlowerLuigiJumpingAndRunning_0.png");
-    texture["FlowerLuigiJumpingAndRunning0Left"] = texture2DFlipHorizontal(texture["FlowerLuigiJumpingAndRunning_0Right"]);
-    texture["FlowerLuigiLookingUp0Right"] = LoadTexture("../resources/Luigi/FlowerLuigiLookingUp_0.png");
-    texture["FlowerLuigiLookingUp0Left"] = texture2DFlipHorizontal(texture["FlowerLuigiLookingUp_0Right"]);
-    texture["FlowerLuigiRunning0Right"] = LoadTexture("../resources/Luigi/FlowerLuigiRunning_0.png");
-    texture["FlowerLuigiRunning0Left"] = texture2DFlipHorizontal(texture["FlowerLuigiRunning_0Right"]);
-    texture["FlowerLuigiRunning1Right"] = LoadTexture("../resources/Luigi/FlowerLuigiRunning_1.png");
-    texture["FlowerLuigiRunning1Left"] = texture2DFlipHorizontal(texture["FlowerLuigiRunning_1Right"]);
-    texture["FlowerLuigiRunning2Right"] = LoadTexture("../resources/Luigi/FlowerLuigiRunning_2.png");
-    texture["FlowerLuigiRunning2Left"] = texture2DFlipHorizontal(texture["FlowerLuigiRunning_2Right"]);
-    texture["FlowerLuigiThrowingFireball0Right"] = LoadTexture("../resources/Luigi/FlowerLuigiThrowingFireball_0.png");
-    texture["FlowerLuigiThrowingFireball0Left"] = texture2DFlipHorizontal(texture["FlowerLuigiThrowingFireball_0Right"]);
-    texture["FlowerLuigiVictory0"] = LoadTexture("../resources/Luigi/FlowerLuigiVictory_0.png");
-    texture["TransitioningFlowerLuigi0Right"] = LoadTexture("../resources/Luigi/TransitioningFlowerLuigi_0.png");
-    texture["TransitioningFlowerLuigi0Left"] = texture2DFlipHorizontal(texture["TransitioningFlowerLuigi0Right"]);
-    texture["TransitioningFlowerLuigi1Right"] = LoadTexture("../resources/Luigi/TransitioningFlowerLuigi_1.png");
-    texture["TransitioningFlowerLuigi1Left"] = texture2DFlipHorizontal(texture["TransitioningFlowerLuigi1Right"]);
-    texture["TransitioningFlowerLuigi2Right"] = LoadTexture("../resources/Luigi/TransitioningFlowerLuigi_2.png");
-    texture["TransitioningFlowerLuigi2Left"] = texture2DFlipHorizontal(texture["TransitioningFlowerLuigi2Right"]);
 
     //Fireball
     texture["Fireball0Right"] = LoadTexture("../resources/Fireball/Fireball_0.png");
@@ -377,7 +276,6 @@ void ResourceManager::loadTexture() {
     texture["Gui800"] = LoadTexture("../resources/gui/guiHundredsPoints_800.png");
     texture["GuiLetters"] = LoadTexture("../resources/gui/guiLetters.png");
     texture["GuiMario"] = LoadTexture("../resources/gui/guiMario.png");
-    texture["GuiLuigi"] = LoadTexture("../resources/gui/guiLuigi.png");
     texture["GuiMarioStart"] = LoadTexture("../resources/gui/guiMarioStart.png");
     texture["GuiNextItem"] = LoadTexture("../resources/gui/guiNextItem.png");
     texture["GuiNumbersBig"] = LoadTexture("../resources/gui/guiNumbersBig.png");

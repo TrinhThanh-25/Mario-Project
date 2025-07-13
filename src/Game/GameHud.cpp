@@ -20,7 +20,6 @@ GameHud::~GameHud() {}
 
 void GameHud::update() {
     float deltaTime = GetFrameTime();
-    ellapsedTime += deltaTime;
     if (ellapsedTime >= maxTime) {
         world->playPlayerDownMusic();
         lives--;
@@ -33,34 +32,8 @@ void GameHud::update() {
 }
 
 void GameHud::draw() const {
-    //
-    std::unordered_map<std::string, Texture2D>& textures = ResourceManager::getTexture();
-
-    DrawTexture( textures["GuiMario"], 34, 32, WHITE );
-    DrawTexture( textures["GuiX"], 54, 49, WHITE );
-    ResourceManager::drawWhiteSmallNumber( lives < 0 ? 0 : lives, 68, 49 );
-
-    for ( int i = 0; i < yoshiCoins; i++ ) {
-        DrawTexture( textures["GuiCoin"], 34 + textures["GuiMario"].width + 16 + i*textures["GuiCoin"].width, 32, WHITE);
-    }
-
-    if ( powerUpItem == CharacterType::SUPER ) {
-        DrawTexture( textures["Mushroom"], GetScreenWidth() / 2 - textures["Mushroom"].width / 2, 32, WHITE );
-    } else if ( powerUpItem == CharacterType::FLOWER ) {
-        DrawTexture( textures["FireFlower0"], GetScreenWidth() / 2 - textures["FireFlower0"].width / 2, 32, WHITE );
-    }
-    DrawTexture( textures["GuiNextItem"], GetScreenWidth() / 2 - textures["GuiNextItem"].width / 2, 20, WHITE );
-
-    int time = getRemainingTime();
-    time = time < 0 ? 0 : time;
-
-    DrawTexture( textures["GuiTime"], GetScreenWidth() - 34 - 176, 32, WHITE );
-    ResourceManager::drawYellowSmallNumber( time, GetScreenWidth() - 34 - 128 - ResourceManager::getSmallNumberWidth( time ), 50 );
-
-    DrawTexture( textures["GuiCoin"], GetScreenWidth() - 115, 32, WHITE );
-    DrawTexture( textures["GuiX"], GetScreenWidth() - 97, 34, WHITE );
-    ResourceManager::drawWhiteSmallNumber( coins, GetScreenWidth() - 34 - ResourceManager::getSmallNumberWidth( coins ), 34 );
-    ResourceManager::drawWhiteSmallNumber( points, GetScreenWidth() - 34 - ResourceManager::getSmallNumberWidth( points ), 50 );
+    // Drawing logic for the HUD would go here
+    // This could include drawing lives, coins, yoshi coins, points, and remaining time
 }
 
 void GameHud::reset() {
@@ -169,15 +142,13 @@ CharacterType GameHud::getPowerUpItem() const {
 
 void GameHud::releasePowerUpItem() {
     Item* item = nullptr;
+    // Item initial position
 
     if(powerUpItem == CharacterType::SUPER) {
-        Vector2 position = GetScreenToWorld2D({(float) GetScreenWidth() / 2 - ResourceManager::getTexture()["Mushroom"].width / 2, 32}, *world->getCamera());
         // item = new mushroom
     } else if(powerUpItem == CharacterType::FLOWER) {
-        Vector2 position = GetScreenToWorld2D({(float) GetScreenWidth() / 2 - ResourceManager::getTexture()["FireFlower0"].width / 2, 32}, *world->getCamera());
         // item = new flower
     }
-    powerUpItem = CharacterType::SMALL;   
 
     if(item) {
         item->setState(SpriteState::ACTIVE);
@@ -185,6 +156,7 @@ void GameHud::releasePowerUpItem() {
         map->getItem().push_back(item);
         PlaySound(ResourceManager::getSound()["ReleasePowerUpItem"]);
     }
+    powerUpItem = CharacterType::SMALL;   
 }
 
 void GameHud::reset(bool isPowerOff) {
@@ -200,4 +172,5 @@ void GameHud::resetGame() {
     lives = 5;
     coins = 0;
     points = 0;
+    maxTime = 200.0f;
 }

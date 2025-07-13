@@ -3,17 +3,9 @@
 
 #include "GameState/GameState.h"
 #include "Game/World.h"
-#include "Common/Button.h"
-#include "Character/CharacterTag.h"
 
 class ChooseCharacterState : public GameState {
     private:
-        ModeWorld modeWorld;
-        CharacterTag singlePlayerTag;
-        CharacterTag firstPlayerTag;
-        CharacterTag secondPlayerTag;
-        Button onePlayerButton;
-        Button twoPlayersButton;
     public:
         ChooseCharacterState(World* world);
         ~ChooseCharacterState() override;

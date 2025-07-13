@@ -1,7 +1,4 @@
 #include "GameState/PlayingState.h"
-#include "GameState/CountingPointState.h"
-#include "GameState/SettingState.h"
-#include "raylib.h"
 #include <algorithm>
 
 PlayingState::PlayingState(World* world)
@@ -20,12 +17,6 @@ PlayingState::~PlayingState() {
 }
 
 void PlayingState::update() {
-    if(IsKeyPressed(KEY_ESCAPE)) {
-        SettingState* settingState = new SettingState(world);
-        settingState->setIsTitleBefore(false);
-        world->setGameState(settingState);
-        return;
-    }
     std::vector<Tile*>& tile = map->getTile();
     std::vector<Block*>& block = map->getBlock();
     std::vector<Enemy*>& backEnemy = map->getBackEnemy();
@@ -34,90 +25,13 @@ void PlayingState::update() {
     std::vector<Item*>& staticItem = map->getStaticItem();
 
     if(!isOneCharactersDead() && !isAllCharactersVictory()) {
-        if(*modeWorld == ModeWorld::SINGLEPLAYER) {
-            float centerX = GetScreenWidth() / 2.0f;
-            float centerY = GetScreenHeight() / 2.0f;
-            float charactersX = characters[0]->getX() + characters[0]->getWidth() / 2.0f;
-            float charactersY = characters[0]->getY() + characters[0]->getHeight() / 2.0f;
-            camera->offset = {centerX, centerY};
-            if(charactersX < centerX) {
-                camera->target.x = centerX; 
-                map->setOffset(0);
-            } else if(charactersX >= map->getWidth() - centerX) {
-                camera->target.x = map->getWidth() - GetScreenWidth() / 2.0f;
-            } else {
-                camera->target.x = charactersX;
-                map->setOffset(charactersX - centerX);
-            }
-            if(charactersY < centerY) {
-                camera->target.y = centerY;
-            } else if(charactersY >= map->getHeight() - centerY) {
-                camera->target.y = map->getHeight() - GetScreenHeight() / 2.0f;
-            } else {
-                camera->target.y = charactersY;
-            }
-        }
-        else {
-            const float screenWidth = GetScreenWidth();
-            const float screenHeight = GetScreenHeight();
-            const float mapWidth = map->getWidth();
-            const float mapHeight = map->getHeight();
-            const float border = 100.0f;
-            const float maxZoom = 1.0f, minZoom = 0.8f;
-            const float maxDistanceX = screenWidth - 2 * border;
-            const float maxDistanceY = screenHeight - 2 * border;
-
-            Vector2 p1 = {characters[0]->getX() + characters[0]->getWidth() / 2.0f, characters[0]->getY() + characters[0]->getHeight() / 2.0f};
-            Vector2 p2 = {characters[1]->getX() + characters[1]->getWidth() / 2.0f, characters[1]->getY() + characters[1]->getHeight() / 2.0f};
-            Vector2 center = {(p1.x + p2.x) / 2.0f, (p1.y + p2.y) / 2.0f};
-            float dx = fabs(p1.x - p2.x), dy = fabs(p1.y - p2.y);
-
-            float zoomX = (dx > maxDistanceX) ? maxDistanceX / dx : 1.0f;
-            float zoomY = (dy > maxDistanceY) ? maxDistanceY / dy : 1.0f;
-            float targetZoom = std::min(zoomX, zoomY);
-            if(targetZoom < minZoom) {
-                targetZoom = minZoom;
-            } else if(targetZoom > maxZoom) {
-                targetZoom = maxZoom;
-            }
-            camera->zoom += (targetZoom - camera->zoom) * 0.1f;
-
-            camera->offset = {screenWidth / 2.0f, screenHeight / 2.0f};
-            float viewWidth = screenWidth / camera->zoom;
-            float viewHeight = screenHeight / camera->zoom;
-
-            if (center.x < viewWidth / 2.0f) {
-                camera->target.x = viewWidth / 2.0f;
-                map->setOffset(0);
-            } else if (center.x > mapWidth - viewWidth / 2.0f) {
-                camera->target.x = mapWidth - viewWidth / 2.0f;
-            } else {
-                camera->target.x = center.x;
-                map->setOffset(center.x - viewWidth / 2.0f);
-            }
-
-            if (center.y < viewHeight / 2.0f) {
-                camera->target.y = viewHeight / 2.0f;
-            } else if (center.y >= mapHeight - viewHeight / 2.0f) {
-                camera->target.y = mapHeight - viewHeight / 2.0f;
-            } else {
-                camera->target.y = center.y;
-            }
-        }
-    }
-
-    if (!*pausedUpdateCharacters) {
-        for (auto& character : characters) {
-            if((!isOneCharactersDead() || (isOneCharactersDead() && character->getState() == SpriteState::DYING)) && character->getState() != SpriteState::VICTORY) {
-                character->update();
-                character->setActivateWidth(GetScreenWidth() * 2.0f);
-            }
-        }
-    }
-
-    if(!isOneCharactersDead() && !isAllCharactersVictory()) {
         gameHud->update();
-        map->playMusic();
+        if (!*pausedUpdateCharacters) {
+            for (auto& character : characters) {
+                character->update();
+                character->setActivateWidth(GetScreenWidth() * 2);
+            }
+        }
         if (!*pausedForTransition) {
             for (auto& b : block) {
                 b->update();
@@ -174,14 +88,124 @@ void PlayingState::update() {
         world->resetWhenCharacterDead();
     } 
     else if (isAllCharactersVictory()) {
-        world->setGameState(new CountingPointState(world));
+        // tính điểm
+    }
+
+    if(*modeWorld == ModeWorld::SINGLEPLAYER) {
+        float centerX = GetScreenWidth() / 2.0f;
+        float centerY = GetScreenHeight() / 2.0f;
+        float charactersX = characters[0]->getX() + characters[0]->getWidth() / 2.0f;
+        float charactersY = characters[0]->getY() + characters[0]->getHeight() / 2.0f;
+        camera->offset.x = 0;
+        if(charactersX < centerX) {
+            camera->target.x = 0;
+            map->setOffset(0);
+        } else if(charactersX > map->getWidth() - centerX) {
+            camera->target.x = map->getWidth() - GetScreenWidth();
+        } else {
+            camera->target.x = charactersX - centerX;
+            map->setOffset(charactersX - centerX);
+        }
+        camera->offset.y = 0;
+        if(charactersY < centerY) {
+            camera->target.y = 0;
+        } else if(charactersY > map->getHeight() - centerY) {
+            camera->target.y = map->getHeight() - GetScreenHeight();
+        } else {
+            camera->target.y = charactersY - centerY;
+        }
+    }
+    else {
+        // fix lỗi kéo nhau
+        const float screenWidth = GetScreenWidth();
+        const float screenHeight = GetScreenHeight();
+        const float mapWidth = map->getWidth();
+        const float mapHeight = map->getHeight();
+
+        const float border = 100.0f;
+        const float maxDistanceX = screenWidth - 2 * border; 
+        const float maxDistanceY = screenHeight - 2 * border;
+
+        const float maxZoom = 1.0f;
+        const float minZoom = 0.8f;
+
+        Vector2 p1Center = {characters[0]->getX() + characters[0]->getWidth() / 2.0f,characters[0]->getY() + characters[0]->getHeight() / 2.0f};
+        Vector2 p2Center = {characters[1]->getX() + characters[1]->getWidth() / 2.0f,characters[1]->getY() + characters[1]->getHeight() / 2.0f};
+
+        float dx = fabs(p1Center.x - p2Center.x);
+        float dy = fabs(p1Center.y - p2Center.y);
+
+        float centerX = (p1Center.x + p2Center.x) / 2.0f;
+        float centerY = (p1Center.y + p2Center.y) / 2.0f;
+
+        float zoomX = 1.0f;
+        float zoomY = 1.0f;
+
+        if (dx > maxDistanceX) {
+                zoomX = maxDistanceX / dx; 
+        }   
+        if (dy > maxDistanceY) {
+            zoomY = maxDistanceY / dy; 
+        }
+
+        float targetZoom = std::min(zoomX, zoomY);
+        if(targetZoom < minZoom) {
+            targetZoom = minZoom; 
+        } else if (targetZoom > maxZoom) {
+            targetZoom = maxZoom; 
+        }
+        camera->zoom = targetZoom;
+
+        camera->offset = { 0, 0 };
+
+        float viewWidth = screenWidth / camera->zoom;
+        float viewHeight = screenHeight / camera->zoom;
+
+        float minTargetX = viewWidth / 2.0f;
+        float maxTargetX = mapWidth - viewWidth / 2.0f;
+        float minTargetY = viewHeight / 2.0f;
+        float maxTargetY = mapHeight - viewHeight / 2.0f;
+
+        if (centerX < minTargetX) {
+            camera->target.x = 0;
+        } 
+        else if (centerX > maxTargetX) {
+            camera->target.x = maxTargetX - viewWidth / 2.0f;
+        }
+        else {
+            camera->target.x = centerX - viewWidth / 2.0f;
+        }
+
+        if (centerY < minTargetY) {
+            camera->target.y = 0;
+        } 
+        else if (centerY > maxTargetY) {
+            camera->target.y = maxTargetY - viewHeight / 2.0f;
+        }
+        else {
+            camera->target.y = centerY - viewHeight / 2.0f;
+        }
+
+        Rectangle camBounds = {camera->target.x ,camera->target.y,viewWidth,viewHeight};
+
+        for (int i = 0; i < 2; i++) {
+            Character* c = characters[i];
+
+            if (c->getX() < camBounds.x)
+                c->setX(camBounds.x);
+            else if (c->getX() + c->getWidth() > camBounds.x + camBounds.width)
+                c->setX(camBounds.x + camBounds.width - c->getWidth());
+
+            if (c->getY() < camBounds.y)
+                c->setY(camBounds.y);
+            else if (c->getY() + c->getHeight() > camBounds.y + camBounds.height)
+                c->setY(camBounds.y + camBounds.height - c->getHeight());
+        }
     }
 }
 
 void PlayingState::draw() {
-    BeginMode2D(*camera);
     map->draw();
-    EndMode2D();
     gameHud->draw();
 }
 

@@ -2,11 +2,11 @@
 #include "Common/ResourceManager.h"
 
 TimeUpState::TimeUpState(World* world) : GameState(world) {
-    
+    // Constructor implementation
 }
 
 TimeUpState::~TimeUpState() {
-    
+    // Destructor implementation
 }
 
 void TimeUpState::update() {

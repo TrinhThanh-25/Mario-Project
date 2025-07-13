@@ -2,7 +2,8 @@
 #include "Common/ResourceManager.h"
 
 FinishedState::FinishedState(World* world)
-    : GameState(world) {
+    : GameState(world), 
+      gameHud(world->getGameHud()) {
 
 }
 
@@ -17,13 +18,14 @@ void FinishedState::update() {
         UpdateMusicStream(ResourceManager::getMusic()["Ending"]);
     }
 
-    if (IsKeyPressed(KEY_ENTER)) {
+    if (GetKeyPressed()) {
+        StopMusicStream(ResourceManager::getMusic()["CourseClear"]);
         world->resetGame();
     }
 }
 
 void FinishedState::draw() {
-    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(BLACK, 0.8f));
-    ResourceManager::drawString("Congratulations!", GetScreenWidth() / 2 - ResourceManager::getDrawStringWidth("Congratulations!") / 2, GetScreenHeight() / 2 - ResourceManager::getDrawStringHeight() / 2);
-    ResourceManager::drawString("Press enter to continue", GetScreenWidth() / 2 - ResourceManager::getDrawStringWidth("Press any key to continue") / 2, GetScreenHeight() / 2 + ResourceManager::getDrawStringHeight() / 2);
+    gameHud->draw();
+    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(BLACK, 0.5f));
+    // in cái gì đó ra cũng được ( texture hay dòng nhắn )
 }
