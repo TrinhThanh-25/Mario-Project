@@ -26,10 +26,10 @@ void MummyBeetle::update(Mario& mario, const std::vector<Sprite*>& collidables) 
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
-        if (checkCollision(collidables) != CollisionType::NONE) {
-            velocity.x = -velocity.x;
-            isFacingLeft = velocity.x < 0;
-        }
+        // if (checkCollision(collidables) != CollisionType::NONE) {
+        //     velocity.x = -velocity.x;
+        //     isFacingLeft = velocity.x < 0;
+        // }
 
         updateCollisionBoxes();
     }
@@ -137,7 +137,7 @@ void MummyBeetle::kickShell(bool faceLeft){
     }
 }
 
-bool MummyBeetle::isShellMoving(){
+bool MummyBeetle::isShellMoving() const {
     return shellMoving;
 }
 

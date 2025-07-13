@@ -17,9 +17,9 @@ void BulletBill::update(Mario& mario, const std::vector<Sprite*>& collidables){
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
-        if (checkCollision(collidables) != CollisionType::NONE) {
-            setState(SpriteState::TO_BE_REMOVED);
-        }
+        // if (checkCollision(collidables) != CollisionType::NONE) {
+        //     setState(SpriteState::TO_BE_REMOVED);
+        // }
 
         updateCollisionBoxes();
     }
@@ -50,7 +50,7 @@ void BulletBill::draw(){
     DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
 
     if (state == SpriteState::DYING) {
-        
+
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
         DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
     }
@@ -71,6 +71,6 @@ void BulletBill::beingHit(HitType type){
     }
 }
     
-void BulletBill::activeWhenMarioApproach(Mario& mario){
+void BulletBill::activeWhenMarioApproach(Mario& mario) {
 
 }

@@ -4,7 +4,7 @@
 
 Swooper::Swooper(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     : Enemy(pos, dim, vel, color) {
-    
+    startPosition = pos;                // Lưu vị trí bắt đầu
     setState(SpriteState::INACTIVE);     // Treo trên trần, chờ Mario đến gần
     isFacingLeft = vel.x < 0;                 
 
@@ -40,11 +40,13 @@ void Swooper::update(Mario& mario, const std::vector<Sprite*>& collidables){
     }
 
     if (state == SpriteState::ACTIVE){
-        CollisionType col = checkCollision(collidables);
+        // CollisionType col = checkCollision(collidables); // Tạm bỏ
+
         if (isDropping){
             position.y += velocity.y * delta;
 
-            if (col == CollisionType::SOUTH){
+            // Tạm thời giả định sau khi rơi một đoạn thì bắt đầu bay ngang
+            if (position.y - startPosition.y > 50.0f) {
                 isDropping = false;
                 velocity.y = 0;
                 isFlyingHorizontally = true;
@@ -54,14 +56,18 @@ void Swooper::update(Mario& mario, const std::vector<Sprite*>& collidables){
 
         if (isFlyingHorizontally){
             position.x += velocity.x * delta;
-            if (col == CollisionType::WEST || col == CollisionType::EAST) {
+
+            // Tạm thời đổi hướng nếu chạm rìa màn hình
+            if (position.x < 0 || position.x > 1000) {
                 velocity.x = -velocity.x;
                 isFacingLeft = !isFacingLeft;
             }
         }
+
         updateCollisionBoxes();
     }
 }
+
 
 void Swooper::draw() {
     std::string textureKey;

@@ -95,7 +95,7 @@ void Enemy::collisionTile(Tile* tile) {
 
 void Enemy::activeWhenMarioApproach(Mario& mario){}
 
-void Enemy::beingHit(){
+void Enemy::beingHit(HitType type) {
     setState(SpriteState::DYING);
     currentDyingFrame = 0;
     dyingFrameAcum = 0.0f;
@@ -106,19 +106,18 @@ void Enemy::followTheLeader(Sprite* leader){
 
 }
 
-CollisionType Enemy::checkCollision(const std::vector<Sprite*>& collidables) {
-    for (Sprite* sprite : collidables) {
-        if (sprite == nullptr) continue;
-        CollisionType result = this->checkCollision(sprite);
-        if (result != CollisionType::NONE) {
-            return result;
-        }
-    }
-    return CollisionType::NONE;
-}
-
-
-// void Enemy::collisionSound(){
-
+// CollisionType Enemy::checkCollision(const std::vector<Sprite*>& collidables) {
+//     for (Sprite* sprite : collidables) {
+//         if (sprite == nullptr) continue;
+//         CollisionType result = this->checkCollision(sprite);
+//         if (result != CollisionType::NONE) {
+//             return result;
+//         }
+//     }
+//     return CollisionType::NONE;
 // }
+
+void Enemy::collisionSound(){
+
+}
 

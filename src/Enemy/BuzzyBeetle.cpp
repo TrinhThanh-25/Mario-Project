@@ -53,10 +53,10 @@ void BuzzyBeetle::update(Mario& mario, const std::vector<Sprite*>& collidables) 
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
-        if (checkCollision(collidables) != CollisionType::NONE) {
-            velocity.x = -velocity.x;
-            isFacingLeft = velocity.x < 0;
-        }
+        // if (checkCollision(collidables) != CollisionType::NONE) {
+        //     velocity.x = -velocity.x;
+        //     isFacingLeft = velocity.x < 0;
+        // }
 
         updateCollisionBoxes();
     }

@@ -10,7 +10,7 @@ public:
     void update(Mario& mario, const std::vector<Sprite*>& collidables) override;
     void draw() override;
     void beingHit(HitType type) override;
-    void activeWhenMarioApproach(Mario& mario) override {}  // Không cần kích hoạt
+    void activeWhenMarioApproach(Mario& mario) override;
 };
 
 #endif
