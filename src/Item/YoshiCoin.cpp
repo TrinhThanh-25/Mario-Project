@@ -1,7 +1,7 @@
 #include "Item/YoshiCoin.h"
 
 YoshiCoin::YoshiCoin(Vector2 position, Vector2 size, Color color, int points):
-Item(position, size, Vector2(0, 0), color, 0.1f, 4, Direction::RIGHT, 0.1f, 4, false), points(points)
+Item(position, size, {0, 0}, color, 0.1f, 4, Direction::RIGHT, 0.1f, 4, false), points(points)
 {
 }
 
@@ -54,12 +54,12 @@ void YoshiCoin::draw()
 {
     if (this->getState() == SpriteState::ACTIVE || this->getState() == SpriteState::IDLE)
     {
-        DrawTexture(ResourceManager::getTexture()["YoshiCoin" + std::to_string(this->getCurrentFrame())], this->getX(), this->getY(), this->getColor());
+        DrawTexture(ResourceManager::getTexture()["YoshiCoin" + std::to_string(this->curFrame)], this->getX(), this->getY(), this->getColor());
     }
     else if (this->getState() == SpriteState::HIT)
     {
         //Draw point floating above the coin
-        DrawTexture(ResourceManager::getTexture()["Star" + std::to_string(this->getCurrentBeingHitFrame())], this->getX(), this->getY(), this->getColor());
+        DrawTexture(ResourceManager::getTexture()["Star" + std::to_string(this->currentBeingHitFrame)], this->getX(), this->getY(), this->getColor());
     }
 }
 
@@ -72,4 +72,8 @@ void YoshiCoin::updateCharacter(Character *character)
 {
     /*Add point here*/
     /*If there is 5 coins --> add one live*/
+}
+
+void YoshiCoin::collisionSouth(Character *character)
+{
 }

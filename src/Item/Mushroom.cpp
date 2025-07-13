@@ -1,7 +1,7 @@
 #include "Item/Mushroom.h"
 
 Mushroom::Mushroom(Vector2 position, Vector2 size, Color color, int points, bool isInInventory):
-Item(position, size, Vector2(320, 0), color, 0, 0, Direction::RIGHT, 0, 0, false), points(points), isInInventory(isInInventory)
+Item(position, size, {320, 0}, color, 0, 0, Direction::RIGHT, 0, 0, false), points(points), isInInventory(isInInventory)
 {
     pauseGameWhenHit = true;
     if (isInInventory) {
@@ -11,6 +11,7 @@ Item(position, size, Vector2(320, 0), color, 0, 0, Direction::RIGHT, 0, 0, false
 
 void Mushroom::update()
 {
+    float timeElapsed = GetFrameTime();
     if (getState() == SpriteState::ACTIVE) {
         updateWhenActive(timeElapsed);
     } else if (getState() == SpriteState::HIT) {
@@ -33,7 +34,7 @@ void Mushroom::updateWhenActive(float timeElapsed)
             appear = !appear; // Toggle appearance
         }
     } else {
-        setVelocityY(getVelocityY() + World::gravity * timeElapsed);
+        setVelocityY(getVelocityY() + gravity * timeElapsed);
         setY(getY() + getVelocityY() * timeElapsed);
         if (getDirection() == Direction::RIGHT)
         {

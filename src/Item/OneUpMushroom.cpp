@@ -1,7 +1,7 @@
 #include "Item/OneUpMushroom.h"
 
 OneUpMushroom::OneUpMushroom(Vector2 position, Vector2 size, Color color, int lives):
-Item(position, size, Vector2(320, 0), color, 0.1f, 2, Direction::RIGHT, 0, 0, false), lives(lives)
+Item(position, size, {320, 0}, color, 0.1f, 2, Direction::RIGHT, 0, 0, false), lives(lives)
 {
     pauseGameWhenHit = false;
 }
@@ -21,7 +21,7 @@ void OneUpMushroom::update()
 
 void OneUpMushroom::updateWhenActive(float timeElapsed)
 {
-    setVelocityY(getVelocityY() + World::gravity * timeElapsed);
+    setVelocityY(getVelocityY() + gravity * timeElapsed);
     setY(getY() + getVelocityY() * timeElapsed);
     if (getDirection() == Direction::RIGHT)
     {
@@ -61,7 +61,7 @@ void OneUpMushroom::draw()
     else if (this->getState() == SpriteState::HIT)
     {
         // Draw 1up mushroom hit effect
-        DrawTexture(ResourceManager::getTexture()["Star" + std::to_string(this->getCurrentBeingHitFrame())], this->getX(), this->getY(), this->getColor());
+        DrawTexture(ResourceManager::getTexture()["Star" + std::to_string(this->currentBeingHitFrame)], this->getX(), this->getY(), this->getColor());
     }
 }
 
@@ -73,4 +73,8 @@ void OneUpMushroom::playCollisionSound()
 void OneUpMushroom::updateCharacter(Character *character)
 {
     //Add lives to the character
+}
+
+void OneUpMushroom::collisionSouth(Character *character)
+{
 }

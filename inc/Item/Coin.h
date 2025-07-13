@@ -8,7 +8,7 @@ private:
     int points;
 public:
     Coin(Vector2 position, Vector2 size, Color color, int points);
-    ~Coin() override;
+    ~Coin() override = default;
 
     void update() override;
         void updateWhenActive(float timeElapsed) override;

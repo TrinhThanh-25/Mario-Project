@@ -1,7 +1,7 @@
 #include "Item/CourseClearToken.h"
 
 CourseClearToken::CourseClearToken(Vector2 position, Vector2 size, Color color):
-    Item(position, size, Vector2(0, 0), color, 0.0f, 0, Direction::NONE, 0.1f, 4, false),
+    Item(position, size, {0, 0}, color, 0.0f, 0, Direction::RIGHT, 0.1f, 4, false),
     minY(position.y),
     maxY(minY + 8 * size.y),
     points(10000)
@@ -23,10 +23,10 @@ void CourseClearToken::updateWhenActive(float timeElapsed)
 {
     if ( getY() < minY ) {
         setY(minY);
-        this->setVelocityY(-this->getVelocityY().y);
+        this->setVelocityY(-this->getVelocityY());
     } else if ( getY() > maxY ) {
         setY(maxY);
-        this->setVelocityY(-this->getVelocityY().y);
+        this->setVelocityY(-this->getVelocityY());
     }
     setY(getY() + this->getVelocityY() * timeElapsed);
 }
@@ -70,4 +70,8 @@ void CourseClearToken::updateCharacter(Character *character)
 {
     //Add points to the character
     character->setState(SpriteState::VICTORY);
+}
+
+void CourseClearToken::collisionSouth(Character *character)
+{
 }
