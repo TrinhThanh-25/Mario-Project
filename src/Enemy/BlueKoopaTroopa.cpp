@@ -149,7 +149,6 @@ bool BlueKoopaTroopa::isShellMoving() const {
     return shellMoving;
 }
 
-void BlueKoopaTroopa::activeWhenMarioApproach(Mario& mario)
- {
+void BlueKoopaTroopa::activeWhenMarioApproach(Mario& mario) {
     // Green Koopa luôn ACTIVE từ đầu → không cần xử lý gì ở đây
 }

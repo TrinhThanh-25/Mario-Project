@@ -71,6 +71,6 @@ void BulletBill::beingHit(HitType type){
     }
 }
     
-void BulletBill::activeWhenMarioApproach(Mario& mario){
+void BulletBill::activeWhenMarioApproach(Mario& mario) {
 
 }

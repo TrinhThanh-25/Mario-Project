@@ -152,7 +152,7 @@ void RedKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collidable
 }
 
 
-void RedKoopaTroopa::activeWhenMarioApproach(const Mario& mario) {
+void RedKoopaTroopa::activeWhenMarioApproach(Mario& mario) {
     float distanceX = std::abs(mario.getPosition().x - position.x);
     if (distanceX < 300.0f) { // tuỳ chỉnh khoảng cách
         setState(SpriteState::ACTIVE);
