@@ -67,9 +67,9 @@ void FireFlower::draw()
     if (this->getState() == SpriteState::ACTIVE)
     {
         if (isInInventory && appear) {
-            DrawTexture(ResourceManager::getTexture()["FireFlower" + std::to_string(this->getCurrentFrame())], this->getX(), this->getY(), this->getColor());
+            DrawTexture(ResourceManager::getTexture()["FireFlower" + std::to_string(this->curFrame)], this->getX(), this->getY(), this->getColor());
         } else if (!isInInventory) {
-            DrawTexture(ResourceManager::getTexture()["FireFlower" + std::to_string(this->getCurrentFrame())], this->getX(), this->getY(), this->getColor());
+            DrawTexture(ResourceManager::getTexture()["FireFlower" + std::to_string(this->curFrame)], this->getX(), this->getY(), this->getColor());
         }
     }
     else if (this->getState() == SpriteState::HIT)

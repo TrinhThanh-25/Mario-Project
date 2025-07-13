@@ -12,6 +12,7 @@ Item(position, size, {320, 0}, color, 0, 0, Direction::RIGHT, 0, 0, false), poin
 
 void Mushroom::update()
 {
+    float timeElapsed = GetFrameTime();
     if (getState() == SpriteState::ACTIVE) {
         updateWhenActive(timeElapsed);
     } else if (getState() == SpriteState::HIT) {
@@ -34,7 +35,7 @@ void Mushroom::updateWhenActive(float timeElapsed)
             appear = !appear; // Toggle appearance
         }
     } else {
-        setVelocityY(getVelocityY() + World::gravity * timeElapsed);
+        setVelocityY(getVelocityY() + gravity * timeElapsed);
         setY(getY() + getVelocityY() * timeElapsed);
         if (getDirection() == Direction::RIGHT)
         {

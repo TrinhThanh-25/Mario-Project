@@ -8,6 +8,7 @@
 #include "Tile/Tile.h"
 #include "Common/ResourceManager.h"
 
+
 class Item : public Sprite{
 protected:
     float beingHitFrameTime;
@@ -17,9 +18,8 @@ protected:
     float pointFrameAccum;
     float pointFrameTime;
     bool pauseGameWhenHit;
+    static float gravity;
 public:
-    Item();
-    Item(Vector2 position, Vector2 size, Color color);
     Item(Vector2 position, Vector2 size, Vector2 vel, Color color, float FrameTime, int MaxFrame, Direction direction,float HitFrameTime, int maxHitFrame, bool pause);
     ~Item() override;
     

@@ -11,7 +11,7 @@ void ThreeUpMoon::update()
     float timeElapsed = GetFrameTime();
     if (state == SpriteState::ACTIVE) {
         updateWhenActive(timeElapsed);
-    } else if (state == SpriteState::BEING_HIT) {
+    } else if (state == SpriteState::HIT) {
         updateWhenHit(timeElapsed);
     }
     updateCollisionBoxes();
@@ -52,7 +52,7 @@ void ThreeUpMoon::draw()
     else if (this->getState() == SpriteState::HIT)
     {
         //Draw 3up 
-        DrawTexture(ResourceManager::getTexture()["Star" + std::to_string(this->getCurrentBeingHitFrame())], this->getX(), this->getY(), this->getColor());
+        DrawTexture(ResourceManager::getTexture()["Star" + std::to_string(this->currentBeingHitFrame)], this->getX(), this->getY(), this->getColor());
     }
 }
 
@@ -64,4 +64,8 @@ void ThreeUpMoon::playCollisionSound()
 void ThreeUpMoon::updateCharacter(Character *character)
 {
     //Add 3 lives to character
+}
+
+void ThreeUpMoon::collisionSouth(Character *character)
+{
 }

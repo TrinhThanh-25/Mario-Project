@@ -14,7 +14,7 @@ private:
     bool appear = false;
 public:
     FireFlower(Vector2 position, Vector2 size, Color color, int points,bool isInInventory);
-    ~FireFlower() override;
+    ~FireFlower() override = default;
 
     void update() override;
         void updateWhenActive(float timeElapsed) override;

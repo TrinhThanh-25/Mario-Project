@@ -1,14 +1,9 @@
 #include "Item/Item.h"
 
-Item::Item() {}
-
-Item::Item(Vector2 position, Vector2 size, Color color): Sprite(position,size,color),beingHitFrameTime(0), 
-beingHitFrameAcum(0), maxBeingHitFrame(0) , currentBeingHitFrame(0), pointFrameAccum(0), pointFrameTime(0), pauseGameWhenHit(false)
-{
-}
+float Item::gravity = 1200.0f;
 
 Item::Item(Vector2 position, Vector2 size, Vector2 vel, Color color, float FrameTime, int MaxFrame, Direction direction, float HitFrameTime, int maxHitFrame, bool pause):
-Sprite(position,size,color,vel,frameTime,maxFrame,direction), beingHitFrameTime(HitFrameTime), maxBeingHitFrame(maxHitFrame), pauseGameWhenHit(pause)
+Sprite(position,size,vel,color,frameTime,maxFrame,direction), beingHitFrameTime(HitFrameTime), maxBeingHitFrame(maxHitFrame), pauseGameWhenHit(pause)
 {
 }
 
@@ -17,6 +12,12 @@ Item::~Item()
     Sprite::~Sprite();
 }
 
+void Item::update()
+{
+}
+void Item::draw()
+{
+}
 bool Item::isPausedGameWhenBeingHit()
 {
     return pauseGameWhenHit;
