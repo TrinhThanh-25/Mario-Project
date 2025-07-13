@@ -120,11 +120,11 @@ void RedKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collidable
         position.y += velocity.y * delta;
 
         // Va chạm ngang => đổi hướng
-        CollisionType collision = checkCollision(collidables);
-        if (collision == CollisionType::WEST || collision == CollisionType::EAST) {
-            velocity.x = -velocity.x;
-            isFacingLeft = velocity.x < 0;
-        }
+        // CollisionType collision = checkCollision(collidables);
+        // if (collision == CollisionType::WEST || collision == CollisionType::EAST) {
+        //     velocity.x = -velocity.x;
+        //     isFacingLeft = velocity.x < 0;
+        // }
 
         // Cập nhật hướng nhìn
         if (velocity.x != 0) {

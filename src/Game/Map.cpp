@@ -505,18 +505,4 @@ void Map::first() {
     reset();
 }
 
-std::vector<Sprite*> Map::getMapCollidables() {
-    std::vector<Sprite*> result;
-    
-    for (Tile* t : tile) {
-        result.push_back(t);
-    }
-    for (Block* b : block) {
-        result.push_back(b);
-    }
-    for (Block* m : messBlock) {
-        result.push_back(m);
-    }
 
-    return result;
-}

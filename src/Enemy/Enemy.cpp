@@ -106,19 +106,18 @@ void Enemy::followTheLeader(Sprite* leader){
 
 }
 
-CollisionType Enemy::checkCollision(const std::vector<Sprite*>& collidables) {
-    for (Sprite* sprite : collidables) {
-        if (sprite == nullptr) continue;
-        CollisionType result = this->checkCollision(sprite);
-        if (result != CollisionType::NONE) {
-            return result;
-        }
-    }
-    return CollisionType::NONE;
-}
-
-
-// void Enemy::collisionSound(){
-
+// CollisionType Enemy::checkCollision(const std::vector<Sprite*>& collidables) {
+//     for (Sprite* sprite : collidables) {
+//         if (sprite == nullptr) continue;
+//         CollisionType result = this->checkCollision(sprite);
+//         if (result != CollisionType::NONE) {
+//             return result;
+//         }
+//     }
+//     return CollisionType::NONE;
 // }
+
+void Enemy::collisionSound(){
+
+}
 

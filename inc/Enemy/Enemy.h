@@ -23,7 +23,7 @@ public:
     virtual void activeWhenMarioApproach(Mario& mario);
     virtual void beingHit(HitTyple type);
     virtual void followTheLeader(Sprite* leader);
-    virtual void collisionSound() = 0;
+    virtual void collisionSound();
 
     Rectangle getCollisionBox();
     // CollisionType checkCollision(Block* block);
@@ -34,7 +34,7 @@ public:
     void setMoveType(MoveType type) { movetype = type; }
     MoveType getMoveType() const { return movetype; }
 
-    CollisionType checkCollision(const std::vector<Sprite*>& collidables);
+    // CollisionType checkCollision(const std::vector<Sprite*>& collidables);
 
 
 protected:
