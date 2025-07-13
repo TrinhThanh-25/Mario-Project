@@ -2,7 +2,7 @@
 #include "Common/ResourceManager.h"
 
 GameOverState::GameOverState(World* world)
-    : GameState(world) {
+    : GameState(world, GameStateType::GAME_OVER) {
 }
 
 GameOverState::~GameOverState() {
@@ -16,6 +16,6 @@ void GameOverState::update() {
 
 void GameOverState::draw() {
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
-    Texture2D* texture = &ResourceManager::getTexture()["GuiGameOver"];
-    DrawTexture(*texture, GetScreenWidth() / 2 - texture->width / 2, GetScreenHeight() / 2 - texture->height / 2, WHITE);
+    Texture2D texture = ResourceManager::getTexture()["GuiGameOver"];
+    DrawTexture(texture, GetScreenWidth() / 2 - texture.width / 2, GetScreenHeight() / 2 - texture.height / 2, WHITE);
 }

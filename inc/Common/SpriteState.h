@@ -1,7 +1,7 @@
 #ifndef SPRITESTATE_H
 #define SPRITESTATE_H
 
-enum SpriteState {
+enum class SpriteState {
     //All objects
     DYING,
 
@@ -45,9 +45,9 @@ enum SpriteState {
 
 };
 
-enum MoveType{
+enum class MoveType{
     FLYING,
     WALKING,
-}
+};
 
 #endif

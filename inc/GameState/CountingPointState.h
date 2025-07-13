@@ -8,6 +8,9 @@ class CountingPointState : public GameState {
     private:
         int* remainTimePoint;
         GameHud* gameHud;
+        Map* map;
+        Camera2D* camera;
+        bool isGetRemainTimePoint = false;
     public:
         CountingPointState(World* world);
         ~CountingPointState() override;

@@ -6,7 +6,6 @@
 
 class FinishedState : public GameState {
     private:
-        GameHud* gameHud;
     public:
         FinishedState(World* world);
         ~FinishedState() override;
