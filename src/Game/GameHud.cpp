@@ -33,6 +33,7 @@ void GameHud::update() {
 }
 
 void GameHud::draw() const {
+    //
     std::unordered_map<std::string, Texture2D>& textures = ResourceManager::getTexture();
 
     DrawTexture( textures["GuiMario"], 34, 32, WHITE );
@@ -176,6 +177,7 @@ void GameHud::releasePowerUpItem() {
         Vector2 position = GetScreenToWorld2D({(float) GetScreenWidth() / 2 - ResourceManager::getTexture()["FireFlower0"].width / 2, 32}, *world->getCamera());
         // item = new flower
     }
+    powerUpItem = CharacterType::SMALL;   
 
     if(item) {
         item->setState(SpriteState::ACTIVE);
@@ -183,7 +185,6 @@ void GameHud::releasePowerUpItem() {
         map->getItem().push_back(item);
         PlaySound(ResourceManager::getSound()["ReleasePowerUpItem"]);
     }
-    powerUpItem = CharacterType::SMALL;   
 }
 
 void GameHud::reset(bool isPowerOff) {
@@ -199,5 +200,4 @@ void GameHud::resetGame() {
     lives = 5;
     coins = 0;
     points = 0;
-    maxTime = 200.0f;
 }

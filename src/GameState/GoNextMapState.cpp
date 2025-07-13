@@ -1,10 +1,11 @@
 #include "GameState/GoNextMapState.h"
 #include "GameState/PlayingState.h"
 #include "GameState/FinishedState.h"
+#include "GameState/SettingState.h"
 #include "Common/ResourceManager.h"
 
 GoNextMapState::GoNextMapState(World* world)
-    : GameState(world), 
+    : GameState(world, GameStateType::GO_NEXT_MAP), 
     irisOutTime(1.0f), 
     irisOutAcum(0.0f), 
     isIrisOutFinished(false), 
@@ -19,6 +20,12 @@ GoNextMapState::~GoNextMapState() {
 }
 
 void GoNextMapState::update() {
+    if(IsKeyPressed(KEY_ESCAPE)) {
+        SettingState* settingState = new SettingState(world);
+        settingState->setStateBeforeSetting(GameStateType::GO_NEXT_MAP);
+        world->setGameState(settingState);
+        return;
+    }
     float deltaTime = GetFrameTime();
     irisOutAcum += deltaTime;
     if (irisOutAcum >= irisOutTime) {
@@ -68,6 +75,9 @@ void GoNextMapState::draw() {
     ResourceManager::drawString( "=", resultPositionX, resultPositionY - 5 );
     resultPositionX += equalSignWidth;
     ResourceManager::drawWhiteSmallNumber( totalTimePoints, resultPositionX, resultPositionY );
+    
+    std::string message2 = "Total Points: " + std::to_string(gameHud->getPoints());
+    ResourceManager::drawString( message2, centerX - ResourceManager::getDrawStringWidth( message2 ) / 2, centerY + 40 );
 
     RenderTexture2D mask = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
 

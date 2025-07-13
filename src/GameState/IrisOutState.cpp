@@ -1,9 +1,10 @@
 #include "GameState/IrisOutState.h"
 #include "GameState/GoNextMapState.h"
+#include "GameState/SettingState.h"
 #include "Common/ResourceManager.h"
 
 IrisOutState::IrisOutState(World* world) 
-    : GameState(world),
+    : GameState(world, GameStateType::IRIS_OUT),
       gameHud(world->getGameHud()), 
       map(world->getMap()),
       camera(world->getCamera()) {
@@ -15,15 +16,20 @@ IrisOutState::~IrisOutState() {
 }
 
 void IrisOutState::update() {
-    if(!IsMusicStreamPlaying(ResourceManager::getMusic()["CourseClear"])) {
-        PlaySound(ResourceManager::getSound()["GoalIrisOut"]);
-        world->setGameState(new GoNextMapState(world));
+    if(IsKeyPressed(KEY_ESCAPE)) {
+        SettingState* settingState = new SettingState(world);
+        settingState->setStateBeforeSetting(GameStateType::IRIS_OUT);
+        world->setGameState(settingState);
+        return;
     }
-    else {
+    if (IsMusicStreamPlaying(ResourceManager::getMusic()["CourseClear"])) {
         UpdateMusicStream(ResourceManager::getMusic()["CourseClear"]);
         if ((int)GetMusicTimeLength(ResourceManager::getMusic()["CourseClear"]) == (int)GetMusicTimePlayed(ResourceManager::getMusic()["CourseClear"])) {
             StopMusicStream(ResourceManager::getMusic()["CourseClear"]);
         }
+    } else {
+        PlaySound(ResourceManager::getSound()["GoalIrisOut"]);
+        world->setGameState(new GoNextMapState(world));
     }
 }
 
@@ -66,4 +72,7 @@ void IrisOutState::draw() {
     ResourceManager::drawString( "=", resultPositionX, resultPositionY - 5 );
     resultPositionX += equalSignWidth;
     ResourceManager::drawWhiteSmallNumber( totalTimePoints, resultPositionX, resultPositionY );
+    
+    std::string message2 = "Total Points: " + std::to_string(gameHud->getPoints());
+    ResourceManager::drawString( message2, centerX - ResourceManager::getDrawStringWidth( message2 ) / 2, centerY + 40 );
 }

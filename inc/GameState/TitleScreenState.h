@@ -3,9 +3,15 @@
 
 #include "GameState/GameState.h"
 #include "Game/World.h"
+#include "Common/Button.h"
 
 class TitleScreenState : public GameState {
     private:
+        Button newGameButton;
+        Button continueButton;
+        Button optionsButton;
+        Button exitButton;
+        bool isSavedGameAvailable;
     public:
         TitleScreenState(World* world);
         ~TitleScreenState() override;

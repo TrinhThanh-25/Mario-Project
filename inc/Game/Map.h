@@ -65,8 +65,6 @@ class Map : virtual public Drawable {
         void first();
 
         void playMusic();
-
-        //add map function
 };
 
 #endif
