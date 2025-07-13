@@ -73,11 +73,11 @@ void FlyingGoomba::update(Mario& mario, const std::vector<Sprite*>& collidables)
 
 
         // Va chạm với map
-        CollisionType collision = checkCollision(collidables);
-        if (collision == CollisionType::WEST || collision == CollisionType::EAST) {
-            velocity.x = -velocity.x;
-            isFacingLeft = velocity.x < 0;
-        }
+        // CollisionType collision = checkCollision(collidables);
+        // if (collision == CollisionType::WEST || collision == CollisionType::EAST) {
+        //     velocity.x = -velocity.x;
+        //     isFacingLeft = velocity.x < 0;
+        // }
 
         updateCollisionBoxes();
     }
