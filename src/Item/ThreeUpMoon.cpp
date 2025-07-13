@@ -51,7 +51,12 @@ void ThreeUpMoon::draw()
     }
     else if (this->getState() == SpriteState::HIT)
     {
-        //Draw 3up 
+        DrawTexture(
+            ResourceManager::getTexture()["Gui3Up"],
+            this->getX() + this->getWidth() / 2 - ResourceManager::getTexture()["Gui3Up"].width / 2,
+            this->getY() - ResourceManager::getTexture()["Gui3Up"].height - (50 * pointFrameAccum / pointFrameTime),
+            WHITE
+        );
         DrawTexture(ResourceManager::getTexture()["Star" + std::to_string(this->currentBeingHitFrame)], this->getX(), this->getY(), this->getColor());
     }
 }
@@ -63,7 +68,7 @@ void ThreeUpMoon::playCollisionSound()
 
 void ThreeUpMoon::updateCharacter(Character *character)
 {
-    //Add 3 lives to character
+    GameHud::addLives(this->lives);
 }
 
 void ThreeUpMoon::collisionSouth(Character *character)

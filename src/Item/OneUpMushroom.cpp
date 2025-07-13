@@ -61,7 +61,12 @@ void OneUpMushroom::draw()
     }
     else if (this->getState() == SpriteState::HIT)
     {
-        // Draw 1up mushroom hit effect
+        DrawTexture(
+            ResourceManager::getTexture()["Gui1Up"],
+            this->getX() + this->getWidth() / 2 - ResourceManager::getTexture()["Gui1Up"].width / 2,
+            this->getY() - ResourceManager::getTexture()["Gui1Up"].height - (50 * pointFrameAccum / pointFrameTime),
+            WHITE
+        );
         DrawTexture(ResourceManager::getTexture()["Star" + std::to_string(this->currentBeingHitFrame)], this->getX(), this->getY(), this->getColor());
     }
 }
@@ -73,7 +78,7 @@ void OneUpMushroom::playCollisionSound()
 
 void OneUpMushroom::updateCharacter(Character *character)
 {
-    //Add lives to the character
+    GameHud::addLives(this->lives);
 }
 
 void OneUpMushroom::collisionSouth(Character *character)

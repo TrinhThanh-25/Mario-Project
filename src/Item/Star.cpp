@@ -59,7 +59,12 @@ void Star::draw()
     }
     else if (this->getState() == SpriteState::HIT)
     {
-        //Draw point floating above the star
+        DrawTexture(
+            ResourceManager::getTexture()["Gui400"],
+            this->getX() + this->getWidth() / 2 - ResourceManager::getTexture()["Gui400"].width / 2,
+            this->getY() - ResourceManager::getTexture()["Gui400"].height - (50 * pointFrameAccum / pointFrameTime),
+            WHITE
+        );
     }
 }
 
@@ -70,7 +75,7 @@ void Star::playCollisionSound()
 
 void Star::updateCharacter(Character *character)
 {
-    //Add points to the character
+    GameHud::addPoints(points);
     character->setInvincible(true);
 }
 

@@ -58,7 +58,12 @@ void YoshiCoin::draw()
     }
     else if (this->getState() == SpriteState::HIT)
     {
-        //Draw point floating above the coin
+        DrawTexture(
+            ResourceManager::getTexture()["Gui400"],
+            this->getX() + this->getWidth() / 2 - ResourceManager::getTexture()["Gui400"].width / 2,
+            this->getY() - ResourceManager::getTexture()["Gui400"].height - (50 * pointFrameAccum / pointFrameTime),
+            WHITE
+        );
         DrawTexture(ResourceManager::getTexture()["Star" + std::to_string(this->currentBeingHitFrame)], this->getX(), this->getY(), this->getColor());
     }
 }
@@ -71,7 +76,14 @@ void YoshiCoin::playCollisionSound()
 void YoshiCoin::updateCharacter(Character *character)
 {
     /*Add point here*/
+    GameHud::addPoints(points);
     /*If there is 5 coins --> add one live*/
+    GameHud::addYoshiCoins(1);
+    if (GameHud::getYoshiCoins() >= 5)
+    {
+        GameHud::addLives(1);
+        GameHud::setYoshiCoins(0); // Reset Yoshi coins after gaining a life
+    }
 }
 
 void YoshiCoin::collisionSouth(Character *character)

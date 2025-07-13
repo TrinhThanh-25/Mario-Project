@@ -1,5 +1,5 @@
 #include "Item/Item.h"
-
+#include "Game/World.h"
 float Item::gravity = 1200.0f;
 
 Item::Item(Vector2 position, Vector2 size, Vector2 vel, Color color, float FrameTime, int MaxFrame, Direction direction, float HitFrameTime, int maxHitFrame, bool pause):
@@ -43,7 +43,9 @@ void Item::collisionBlock(Block *block)
     case CollisionType::SOUTH:
         this->setVelocityY(0);
         this->setY(block->getY() - this->getHeight());
-        //collisionSouth(World::getCharacters());
+        for (int i = 0; i < World::getCharacters().size(); i++) {
+            collisionSouth(World::getCharacters()[i]);
+        }
         updateCollisionBoxes();
         break;
     default:
@@ -71,7 +73,9 @@ void Item::collisionTile(Tile* tile)
     case CollisionType::SOUTH:
         this->setVelocityY(0);
         this->setY(tile->getY() - this->getHeight());
-        //collisionSouth
+        for (int i = 0; i < World::getCharacters().size(); i++) {
+            collisionSouth(World::getCharacters()[i]);
+        }
         updateCollisionBoxes();
         break;
     default:
@@ -90,9 +94,8 @@ void Item::collisionCharacter(Character *character)
             }
             this->updateCharacter(character);
         } 
-        /*Fall out of the map
-        if (this->getY() > character->getWorld()->getMap()->getHeight()) {
+        if (this->getY() > Map::getHeight()) {
             this->setState(SpriteState::TO_BE_REMOVED);
-        }*/
+        }
     }
 }

@@ -7,6 +7,7 @@
 #include "Block/Block.h"
 #include "Tile/Tile.h"
 #include "Common/ResourceManager.h"
+#include "Game/GameHud.h"
 
 
 class Item : public Sprite{

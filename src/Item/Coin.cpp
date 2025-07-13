@@ -57,7 +57,12 @@ void Coin::draw()
     }
     else if (this->getState() == SpriteState::HIT)
     {
-        //Draw point floating above the coin
+        DrawTexture(
+            ResourceManager::getTexture()["Gui100"],
+            this->getX() + this->getWidth() / 2 - ResourceManager::getTexture()["Gui100"].width / 2,
+            this->getY() - ResourceManager::getTexture()["Gui100"].height - (50 * pointFrameAccum / pointFrameTime),
+            WHITE
+        );
         DrawTexture(ResourceManager::getTexture()["Star" + std::to_string(this->currentBeingHitFrame)], this->getX(), this->getY(), this->getColor());
     }
 }
@@ -69,8 +74,8 @@ void Coin::playCollisionSound()
 
 void Coin::updateCharacter(Character *character)
 {
-    //Add points to the character
-    //Add coin to the character's inventory
+    GameHud::addCoins(1);  
+    GameHud::addPoints(points);  
 }
 
 void Coin::collisionSouth(Character *character)
