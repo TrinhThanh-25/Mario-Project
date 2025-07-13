@@ -63,10 +63,8 @@ class Map : virtual public Drawable {
         void reset();
         bool next();
         void first();
-
-        std::vector<Sprite*> getMapCollidables();
-
-        //add map function
+  
+        void playMusic();
 };
 
 #endif

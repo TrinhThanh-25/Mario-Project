@@ -40,7 +40,6 @@ class Character : public Sprite {
         float dyingSpeed;
         bool isRunning;
         bool isDucking;
-        bool isLookingUp;
 
         //walking
         float frameTimeWalking;
@@ -81,9 +80,6 @@ class Character : public Sprite {
         std::vector<Fireball> fireball;
 
         float activateWidth;
-
-        // bool playerDownMusicStreamPlaying;
-        // bool gameOverMusicStreamPlaying;
         SpriteState previousState;
     public:
         Character(std::string name, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed);
@@ -93,7 +89,7 @@ class Character : public Sprite {
 
         void update() override;
         void draw() override;
-        void updateCollisionBoxes() override;
+        virtual void updateCollisionBoxes() override = 0;
 
         bool transition(float deltaTime);
         void movement(float deltaTime);
@@ -104,9 +100,9 @@ class Character : public Sprite {
         void collisionBlock(Block* block);
         void collisionEnemy(Enemy* enemy);
 
-        void transitionToSmall();
-        void transitionToSuper();
-        void transitionToFlower();
+        virtual void transitionToSmall() = 0;
+        virtual void transitionToSuper() = 0;
+        virtual void transitionToFlower() = 0;
 
         void setInvulnerable(bool invulnerable);
         bool isInvulnerable() const;
