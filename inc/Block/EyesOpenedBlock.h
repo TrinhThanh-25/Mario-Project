@@ -4,6 +4,7 @@
 #include "raylib.h"
 #include "Block/Block.h"
 #include "Game/Map.h"
+
 class EyesOpenedBlock : public Block {
 private:
 	float animationTime;

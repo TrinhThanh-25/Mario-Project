@@ -1,7 +1,8 @@
 #include "Item/Mushroom.h"
+#include "Game/World.h"
 
 Mushroom::Mushroom(Vector2 position, Vector2 size, Color color, int points, bool isInInventory):
-Item(position, size, Vector2(320, 0), color, 0, 0, Direction::RIGHT, 0, 0, false), points(points), isInInventory(isInInventory)
+Item(position, size, {320, 0}, color, 0, 0, Direction::RIGHT, 0, 0, false), points(points), isInInventory(isInInventory)
 {
     pauseGameWhenHit = true;
     if (isInInventory) {

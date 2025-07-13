@@ -12,7 +12,7 @@
 #include <vector>
 #include <string>
 
-enum ModePlayer{
+enum class ModePlayer{
     ONEPLAYER,
     FIRSTPLAYER,
     SECONDPLAYER

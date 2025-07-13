@@ -123,11 +123,11 @@ void PlayingState::update() {
                 b->update();
             }
             for (auto& e : backEnemy) {
-                e->update();
+                //e->update();
                 // follow character
             }
             for (auto& e : frontEnemy) {
-                e->update();
+                //e->update();
                 // follow character
             }
             for (auto& i : item) {

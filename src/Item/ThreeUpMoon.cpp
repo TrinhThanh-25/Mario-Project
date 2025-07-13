@@ -1,7 +1,7 @@
 #include "Item/ThreeUpMoon.h"
 
 ThreeUpMoon::ThreeUpMoon(Vector2 position, Vector2 size, Color color, int lives):
-Item(position, size, Vector2(0, 0), color, 0.1f, 2, Direction::RIGHT, 0.1f, 4, false), lives(lives)
+Item(position, size, {0, 0}, color, 0.1f, 2, Direction::RIGHT, 0.1f, 4, false), lives(lives)
 {
     pauseGameWhenHit = false;
 }

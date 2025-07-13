@@ -1,4 +1,3 @@
-
 #ifndef GLASSBLOCK_H
 #define GLASSBLOCK_H
 

@@ -1,9 +1,8 @@
 #ifndef MUMMYBETTLE_H
 #define MUMMYBETTLE_H
+
 #include "Enemy/Enemy.h"
 #include "Common/HitType.h"
-
-
 
 class MummyBeetle : public Enemy {
 public:

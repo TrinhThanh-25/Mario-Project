@@ -21,7 +21,7 @@ public:
     virtual void draw() = 0;
 
     virtual void activeWhenMarioApproach(Mario& mario);
-    virtual void beingHit(HitTyple type);
+    virtual void beingHit(HitType type);
     virtual void followTheLeader(Sprite* leader);
     virtual void collisionSound() = 0;
 

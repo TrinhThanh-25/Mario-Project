@@ -1,6 +1,11 @@
+#ifndef QUESTIONSTARBLOCK_H
+#define QUESTIONSTARBLOCK_H
+
 #include "Block/Block.h"
-#include "Game/Map.h"
 #include "Character/Character.h"
+
+class Map;
+class Item;
 
 class QuestionStarBlock : public Block {
 public:
@@ -18,3 +23,5 @@ private:
 	float itemMinY;
 	Map* map;
 };
+
+#endif
