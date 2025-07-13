@@ -13,6 +13,7 @@ class GoNextMapState : public GameState {
         Map* map;
         std::vector<Character*>& characters;
         GameHud* gameHud;
+        Camera2D* camera;
     public:
         GoNextMapState(World* world);
         ~GoNextMapState() override;

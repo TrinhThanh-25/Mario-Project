@@ -16,6 +16,6 @@ void GameOverState::update() {
 
 void GameOverState::draw() {
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
-    Texture2D* texture = &ResourceManager::getTexture()["GuiGameOver"];
-    DrawTexture(*texture, GetScreenWidth() / 2 - texture->width / 2, GetScreenHeight() / 2 - texture->height / 2, WHITE);
+    Texture2D texture = ResourceManager::getTexture()["GuiGameOver"];
+    DrawTexture(texture, GetScreenWidth() / 2 - texture.width / 2, GetScreenHeight() / 2 - texture.height / 2, WHITE);
 }
