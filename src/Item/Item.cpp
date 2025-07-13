@@ -28,19 +28,19 @@ void Item::collisionBlock(Block *block)
     CollisionType type = checkCollision(block);
     switch (type)
     {
-    case WEST:
+    case CollisionType::WEST:
         this->setX(block->getX() + block->getWidth());
         this->setVelocityX(-this->getVelocityX());
         updateCollisionBoxes();
         break;
-    case EAST:
+    case CollisionType::EAST:
         this->setX(block->getX() - this->getWidth());
         this->setVelocityX(-this->getVelocityX());
         updateCollisionBoxes();
         break;
-    case NORTH:
+    case CollisionType::NORTH:
         break;
-    case SOUTH:
+    case CollisionType::SOUTH:
         this->setVelocityY(0);
         this->setY(block->getY() - this->getHeight());
         //collisionSouth(World::getCharacters());
@@ -56,19 +56,19 @@ void Item::collisionTile(Tile* tile)
     CollisionType type = checkCollision(tile);
     switch (type)
     {
-    case WEST:
+    case CollisionType::WEST:
         this->setX(tile->getX() + tile->getWidth());
         this->setVelocityX(-this->getVelocityX());
         updateCollisionBoxes();
         break;
-    case EAST:
+    case CollisionType::EAST:
         this->setX(tile->getX() - this->getWidth());
         this->setVelocityX(-this->getVelocityX());
         updateCollisionBoxes();
         break;
-    case NORTH:
+    case CollisionType::NORTH:
         break;
-    case SOUTH:
+    case CollisionType::SOUTH:
         this->setVelocityY(0);
         this->setY(tile->getY() - this->getHeight());
         //collisionSouth

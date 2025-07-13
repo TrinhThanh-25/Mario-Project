@@ -18,7 +18,7 @@ float World::gravity = 1200.0f;
 World::World(int width, int height, const std::string& title, int FPS)
     : map(characters, this, 1), 
     camera(), 
-    gameHud(0, 0, 5, 0, 200.0f),
+    gameHud(this, 0, 0, 5, 0, 200.0f),
     width(width), 
     height(height), 
     title(title), 
@@ -30,10 +30,6 @@ World::World(int width, int height, const std::string& title, int FPS)
     gameOverMusicStreamPlaying(false),
     pausedForTransition(false),
     pausedUpdateCharacters(false) {
-        characters.push_back(new Mario( ModePlayer::FIRSTPLAYER, {64, 0}, {32, 40}, {0, 0}, BLUE, 260.0f, 360.0f, -600.0f));
-        characters[0]->setWorld(this);
-        characters.push_back(new Mario( ModePlayer::SECONDPLAYER, {64, 0}, {32, 40}, {0, 0}, GREEN, 260.0f, 360.0f, -600.0f));
-        characters[1]->setWorld(this);
         map.setCharacters(characters);
         modeWorld = ModeWorld::MULTIPLAYER;
         gameState = new TitleScreenState(this);
@@ -51,8 +47,10 @@ World::~World() {
 }
 
 void World::init() {
+
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+    SetConfigFlags(FLAG_WINDOW_HIGHDPI);
         // SetConfigFlags( FLAG_FULLSCREEN_MODE );
         // SetConfigFlags( FLAG_WINDOW_UNDECORATED );
     SetConfigFlags(FLAG_WINDOW_ALWAYS_RUN);
@@ -64,10 +62,6 @@ void World::init() {
 }
 
 void World::update() {
-    if(IsKeyPressed(KEY_ESCAPE)) {
-        characters[0]->setState(SpriteState::DYING);
-        characters[1]->setState(SpriteState::DYING);
-    }
     gameState->update();
     if(playerDownMusicStreamPlaying) {
         playPlayerDownMusic();
@@ -77,25 +71,33 @@ void World::update() {
     }
 }
 
+
 void World::draw() {
     BeginDrawing();
     ClearBackground(RAYWHITE);
-    
-    BeginMode2D(camera);
     gameState->draw();
-    EndMode2D();
-
     DrawFPS(10, 10);
     EndDrawing();
 }
 
 void World::updateCamera() {
-    camera.target = {0, 0};
-    camera.offset = {(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() - 104};
+    if (!characters.empty()) {
+        camera.target = {
+            characters[0]->getX() + characters[0]->getWidth() / 2.0f,
+            characters[0]->getY() + characters[0]->getHeight() / 2.0f
+        };
+    } else {
+        camera.target = {0, 0};
+    }
+
+    camera.offset = {(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f};
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
+
     setCamera(&camera);
 }
+
+
 
 void World::setGameState(GameState* newState) {
     if (gameState != nullptr) {
@@ -116,16 +118,20 @@ Camera2D* World::getCamera() {
     return &camera;
 }
 
+void World::setModeWorld(ModeWorld mode) {
+    modeWorld = mode;
+}
+
+ModeWorld* World::getModeWorld() {
+    return &modeWorld;
+}
+
 std::vector<Character*>& World::getCharacters() {
     return characters;
 }
 
 Map* World::getMap() {
     return &map;
-}
-
-ModeWorld* World::getModeWorld() {
-    return &modeWorld;
 }
 
 int* World::getRemainTimePoint() {
@@ -218,7 +224,6 @@ void World::nextMap() {
         for (Character* character : characters) {
             character->reset(false);
         }
-        gameHud.reset(false);
         setGameState(new PlayingState(this));
     } else {
         setGameState(new FinishedState(this));
@@ -230,13 +235,13 @@ void World::resetWhenCharacterDead() {
         if(gameHud.getLives() > 0) {
             resetMap();
         }
-        else if(gameHud.getLives() < 0) {
-            resetGame();
-        }
-        else {
+        else if (gameHud.getLives() == 0) {
             playGameOverMusic();
             setGameState(new GameOverState(this));
             gameHud.setLives(-1);
+        }
+        else {
+            resetGame();
         }
     }
 }

@@ -24,7 +24,6 @@ class World : public GameLoop {
         Camera2D camera;
         GameHud gameHud;
         
-        //Window
         int width;
         int height;
         std::string title;
@@ -34,7 +33,7 @@ class World : public GameLoop {
 
         GameState* gameState;
         ModeWorld modeWorld;
-
+        
         bool playerDownMusicStreamPlaying;
         bool gameOverMusicStreamPlaying;
         bool pausedForTransition;
@@ -55,9 +54,11 @@ class World : public GameLoop {
         void setCamera(Camera2D *camera);
         Camera2D* getCamera();
 
+        void setModeWorld(ModeWorld mode);
+        ModeWorld* getModeWorld();
+
         std::vector<Character*>& getCharacters();
         Map* getMap();
-        ModeWorld* getModeWorld();
         int* getRemainTimePoint();
         GameHud* getGameHud();
 
