@@ -21,5 +21,4 @@ public:
 	virtual void doHit(Character& mario, Map* map);
 	void resetHit();
 };
-
 #endif
