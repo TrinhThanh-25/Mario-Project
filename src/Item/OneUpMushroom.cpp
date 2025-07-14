@@ -78,7 +78,7 @@ void OneUpMushroom::playCollisionSound()
 
 void OneUpMushroom::updateCharacter(Character *character)
 {
-    GameHud::addLives(this->lives);
+    character->getGameHud()->addLives(this->lives);
 }
 
 void OneUpMushroom::collisionSouth(Character *character)

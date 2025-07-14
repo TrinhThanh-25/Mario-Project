@@ -70,7 +70,7 @@ void CourseClearToken::playCollisionSound()
 
 void CourseClearToken::updateCharacter(Character *character)
 {
-    GameHud::addPoints(points);
+    character->getGameHud()->addPoints(points);
     character->setState(SpriteState::VICTORY);
 }
 

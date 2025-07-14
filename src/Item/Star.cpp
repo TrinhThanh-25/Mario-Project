@@ -75,7 +75,7 @@ void Star::playCollisionSound()
 
 void Star::updateCharacter(Character *character)
 {
-    GameHud::addPoints(points);
+    character->getGameHud()->addPoints(points);
     character->setInvincible(true);
 }
 

@@ -93,7 +93,7 @@ void Mushroom::playCollisionSound()
 void Mushroom::updateCharacter(Character *character)
 {
 
-    GameHud::addPoints(points);
+    character->getGameHud()->addPoints(points);
     
     CharacterType type = character->getType();
     if (type == CharacterType::SMALL) {
@@ -101,10 +101,10 @@ void Mushroom::updateCharacter(Character *character)
         character->setPreviousState(character->getState());
         character->setState(SpriteState::SMALL_TO_SUPER);
     } else if (type == CharacterType::SUPER || type == CharacterType::FLOWER) {
-        CharacterType previousType = GameHud::getPowerUpItem;
+        CharacterType previousType = character->getGameHud()->getPowerUpItem();
         if (previousType == CharacterType::SMALL) {
             PlaySound(ResourceManager::getSound()["StorePowerUpItem"]);
-            GameHud::setPowerUpItem(CharacterType::MUSHROOM);
+            character->getGameHud()->setPowerUpItem(CharacterType::SUPER);
         }
     }
 }
@@ -112,7 +112,7 @@ void Mushroom::updateCharacter(Character *character)
 void Mushroom::collisionSouth(Character *character)
 {
     if (isInInventory) {
-        setDirection(character->getDirection());
+        setDirection(Direction::RIGHT);
         isInInventory = false;
     }
 }

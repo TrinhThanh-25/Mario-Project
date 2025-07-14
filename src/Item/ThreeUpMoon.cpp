@@ -68,7 +68,7 @@ void ThreeUpMoon::playCollisionSound()
 
 void ThreeUpMoon::updateCharacter(Character *character)
 {
-    GameHud::addLives(this->lives);
+    character->getGameHud()->addLives(this->lives);
 }
 
 void ThreeUpMoon::collisionSouth(Character *character)

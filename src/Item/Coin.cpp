@@ -1,4 +1,5 @@
 #include "Item/Coin.h"
+#include "Game/World.h"
 
 Coin::Coin(Vector2 position, Vector2 size, Color color, int points):
 
@@ -74,8 +75,8 @@ void Coin::playCollisionSound()
 
 void Coin::updateCharacter(Character *character)
 {
-    GameHud::addCoins(1);  
-    GameHud::addPoints(points);  
+    character->getGameHud()->addCoins(1);
+    character->getGameHud()->addPoints(points);
 }
 
 void Coin::collisionSouth(Character *character)

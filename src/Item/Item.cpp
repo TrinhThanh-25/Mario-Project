@@ -43,9 +43,7 @@ void Item::collisionBlock(Block *block)
     case CollisionType::SOUTH:
         this->setVelocityY(0);
         this->setY(block->getY() - this->getHeight());
-        for (int i = 0; i < World::getCharacters().size(); i++) {
-            collisionSouth(World::getCharacters()[i]);
-        }
+        collisionSouth(nullptr);
         updateCollisionBoxes();
         break;
     default:
@@ -73,9 +71,7 @@ void Item::collisionTile(Tile* tile)
     case CollisionType::SOUTH:
         this->setVelocityY(0);
         this->setY(tile->getY() - this->getHeight());
-        for (int i = 0; i < World::getCharacters().size(); i++) {
-            collisionSouth(World::getCharacters()[i]);
-        }
+        collisionSouth(nullptr);
         updateCollisionBoxes();
         break;
     default:
@@ -94,7 +90,7 @@ void Item::collisionCharacter(Character *character)
             }
             this->updateCharacter(character);
         } 
-        if (this->getY() > Map::getHeight()) {
+        if (this->getY() > character->getMap()->getHeight()) {
             this->setState(SpriteState::TO_BE_REMOVED);
         }
     }

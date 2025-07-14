@@ -85,7 +85,7 @@ void FireFlower::playCollisionSound()
 
 void FireFlower::updateCharacter(Character *character)
 {
-    GameHud::addPoints(points);
+    character->getGameHud()->addPoints(points);
     CharacterType type = character->getType();
     if (type == CharacterType::SMALL) {
         character->setY(character->getY() - 16); 
@@ -95,16 +95,16 @@ void FireFlower::updateCharacter(Character *character)
         character->setPreviousState(character->getState());
         character->setState(SpriteState::SUPER_TO_FLOWER);
         // ??? if inventory is empty, put mushroom into the inventory ???
-        CharacterType previousType = GameHud::getPowerUpItem
+        CharacterType previousType = character->getGameHud()->getPowerUpItem();
         if (previousType == CharacterType::SMALL) {
             PlaySound(ResourceManager::getSound()["StorePowerUpItem"]);
-            GameHud::setPowerUpItem(CharacterType::MUSHROOM);
+            character->getGameHud()->setPowerUpItem(CharacterType::SUPER);
         }
     } else if (type == CharacterType::FLOWER) {
-        CharacterType previousType = GameHud::getPowerUpItem();
+        CharacterType previousType = character->getGameHud()->getPowerUpItem();
         if (previousType == CharacterType::SMALL || previousType == CharacterType::SUPER) {
             PlaySound(ResourceManager::getSound()["StorePowerUpItem"]);
-            GameHud::setPowerUpItem(CharacterType::FLOWER);
+            character->getGameHud()->setPowerUpItem(CharacterType::FLOWER);
         }
     }
 }

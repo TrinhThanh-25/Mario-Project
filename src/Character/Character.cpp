@@ -603,3 +603,13 @@ void Character::reset(bool isPowerOff) {
 void Character::resetGame() {
     reset(true);
 }
+
+GameHud *Character::getGameHud() const
+{
+    return gameHud;
+}
+
+Map *Character::getMap() const
+{
+    return map;
+}

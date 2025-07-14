@@ -76,13 +76,13 @@ void YoshiCoin::playCollisionSound()
 void YoshiCoin::updateCharacter(Character *character)
 {
     /*Add point here*/
-    GameHud::addPoints(points);
+    character->getGameHud()->addPoints(points);
     /*If there is 5 coins --> add one live*/
-    GameHud::addYoshiCoins(1);
-    if (GameHud::getYoshiCoins() >= 5)
+    character->getGameHud()->addYoshiCoins(1);
+    if (character->getGameHud()->getYoshiCoins() >= 5)
     {
-        GameHud::addLives(1);
-        GameHud::setYoshiCoins(0); // Reset Yoshi coins after gaining a life
+        character->getGameHud()->addLives(1);
+        character->getGameHud()->setYoshiCoins(0); // Reset Yoshi coins after gaining a life
     }
 }
 
