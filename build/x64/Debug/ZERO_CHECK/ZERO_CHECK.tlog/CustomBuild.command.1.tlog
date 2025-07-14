@@ -1,0 +1,10 @@
+^C:\USERS\HUYEN\DOWNLOADS\MARIO-PROJECT\BUILD\CMAKEFILES\988A8F6F0DD27F585B0F602C90FEE634\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Huyen/Downloads/Mario-Project -BC:/Users/Huyen/Downloads/Mario-Project/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/Huyen/Downloads/Mario-Project/build/PROJECTMARIO.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

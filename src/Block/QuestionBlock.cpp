@@ -112,7 +112,7 @@ void QuestionBlock::doHit(Character& character, Map* map) {
 		hit = true;
 		coinAnimationRunning = true;
 		coinY = position.y;
-		//mario.addPoints(earnedPoints);
-		//mario.addCoins(1);
+		character.addPoints(earnedPoints);
+		character.addCoin(earnedPoints);
 	}
 }

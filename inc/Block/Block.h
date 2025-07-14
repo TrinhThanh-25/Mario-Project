@@ -18,7 +18,7 @@ public:
 
     void update() override = 0;
     void draw() override = 0;
-	virtual void doHit(Character& mario, Map* map);
+	virtual void doHit(Character& character, Map* map);
 	void resetHit();
 };
 

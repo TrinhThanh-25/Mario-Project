@@ -1,5 +1,5 @@
 #include "Block/QuestionOneUpMushroomBlock.h"
-//#include "Item/OneUpMushroom.h"
+#include "Item/OneUpMushroom.h"
 #include "Block/Block.h"
 #include "Character/Character.h"
 #include "Game/World.h"
@@ -51,9 +51,9 @@ void QuestionOneUpMushroomBlock::doHit(Character& character, Map* map) {
 	if (!hit) {
 		hit = true;
 		PlaySound(ResourceManager::getSound()["PowerUpAppear"]);
-		//item = new OneUpMushroom(Vector2{ position.x, position.y }, Vector2{ 32, 32 }, Vector2(250, 0), GREEN);
-		//itemVelocityY = -80.0f;
-		//item->setDirection(mario.getDirection());
+		item = new OneUpMushroom(Vector2{ position.x, position.y }, Vector2{ 32, 32 }, Vector2(250, 0), GREEN, 0, true);
+		itemVelocityY = -80.0f;
+		item->setDirection(character.getDirection());
 		itemMinY = position.y - 32.0f; // Set the minimum Y position for the item
 		this->map = map; // Store the map reference
 	}

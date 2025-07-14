@@ -53,9 +53,9 @@ void QuestionThreeUpMoonBlock::doHit(Character& character, Map* map) {
 	if (!hit) {
 		hit = true;
 		PlaySound(ResourceManager::getSound()["PowerUpAppear"]);
-		//item = new ThreeUpMoon(Vector2{ position.x, position.y }, Vector2{ 32, 32 }, Vector2(300, 0), YELLOW);
-		//itemVelocityY = -80.0f;
-        //item->setDirection(mario.getDirection());
+		item = new ThreeUpMoon(Vector2{ position.x, position.y }, Vector2{ 32, 32 }, Vector2(300, 0), YELLOW, 0, true);
+		itemVelocityY = -80.0f;
+        item->setDirection(character.getDirection());
 		itemMinY = position.y - 32.0f; // Set the minimum Y position for the item
 		this->map = map; // Store the map reference
 	}
