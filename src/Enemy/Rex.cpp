@@ -8,24 +8,23 @@
 Rex::Rex(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     : Enemy(pos, dim, vel, color), isShrunken(false), shrinkDuration(0.0f) {
     isFacingLeft = vel.x < 0;   
+    setState(SpriteState::INACTIVE);
 }
 
-void Rex::update(Mario& mario, const std::vector<Sprite*>& collidables) {
+void Rex::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
-    if (state == SpriteState::INACTIVE){
-        activeWhenMarioApproach(mario);
-        return;
+    if (state == SpriteState::INACTIVE) {
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+        }
+        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
     }
 
     if (state == SpriteState::ACTIVE){
         velocity.y += 981.0f * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
-
-        // if (checkCollision(collidables) != CollisionType::NONE) {
-        //     velocity.x = -velocity.x;
-        //     isFacingLeft = velocity.x < 0;
-        // }
 
         updateCollisionBoxes();
     }
@@ -113,14 +112,36 @@ void Rex::beingHit(HitType type) {
     }
 }
 
-void Rex::activeWhenMarioApproach(Mario& mario) {
-    if (state != SpriteState::INACTIVE) return;
+void Rex::activeWhenMarioApproach(Character& character) {
+    Enemy::activeWhenMarioApproach(character);
+}
 
-    Vector2 marioPos = mario.getPosition();
-    float dx = fabs(marioPos.x - position.x);
+void Rex::collisionTile(Tile* tile) {
+    CollisionType col = checkCollision(tile);
 
-    if (dx <= ACTIVATION_RANGE) {
-        setState(SpriteState::ACTIVE);
-        velocity.x = isFacingLeft ? -30.0f : 30.0f;
+    Enemy::collisionTile(tile);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+}
+
+void Rex::collisionBlock(Block* block) {
+    CollisionType col = checkCollision(block);
+
+    Enemy::collisionBlock(block);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
     }
 }

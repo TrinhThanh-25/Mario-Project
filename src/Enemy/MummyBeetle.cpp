@@ -11,14 +11,18 @@ MummyBeetle::MummyBeetle(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     shellSpeed = 150.0f;
     setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;   
+    shellMoving = false;
     }
 
-void MummyBeetle::update(Mario& mario, const std::vector<Sprite*>& collidables) {
+void MummyBeetle::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
 
     if (state == SpriteState::INACTIVE) {
-        activeWhenMarioApproach(mario);
-        return;
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+        }
+        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
     }
 
     if (state == SpriteState::ACTIVE) {
@@ -26,10 +30,6 @@ void MummyBeetle::update(Mario& mario, const std::vector<Sprite*>& collidables) 
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
-        // if (checkCollision(collidables) != CollisionType::NONE) {
-        //     velocity.x = -velocity.x;
-        //     isFacingLeft = velocity.x < 0;
-        // }
 
         updateCollisionBoxes();
     }
@@ -121,6 +121,13 @@ void MummyBeetle::beingHit(HitType type) {
             break;
 
         case HitType::SHELL_KICK:
+            if (state != SpriteState::DYING && state != SpriteState::TO_BE_REMOVED) {
+                setState(SpriteState::DYING);
+                diePosition = position;
+                dyingFrameAcum = 0.0f;
+                pointFrameAcum = 0.0f;
+                shellMoving = false;
+            }
             break;
 
         default:
@@ -141,14 +148,36 @@ bool MummyBeetle::isShellMoving(){
     return shellMoving;
 }
 
-void MummyBeetle::activeWhenMarioApproach(Mario& mario){
-    if (state != SpriteState::INACTIVE) return;
+void MummyBeetle::activeWhenMarioApproach(Character& character){
+    Enemy::activeWhenMarioApproach(character);
+}
 
-    Vector2 marioPos = mario.getPosition();
-    float dx = fabs(marioPos.x - position.x);
+void MummyBeetle::collisionTile(Tile* tile) {
+    CollisionType col = checkCollision(tile);
 
-    if (dx <= ACTIVATION_RANGE) {
-        setState(SpriteState::ACTIVE);
-        velocity.x = isFacingLeft ? -30.0f : 30.0f;
+    Enemy::collisionTile(tile);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+}
+
+void MummyBeetle::collisionBlock(Block* block) {
+    CollisionType col = checkCollision(block);
+
+    Enemy::collisionBlock(block);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
     }
 }

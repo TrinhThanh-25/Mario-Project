@@ -14,13 +14,16 @@ BanzaiBill::BanzaiBill(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     lifeTimer = 0.0f;
 }
 
-void BanzaiBill::update(Mario& mario, const std::vector<Sprite*>& collidables) {
+void BanzaiBill::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
 
     if (state == SpriteState::INACTIVE) {
-        activeWhenMarioApproach(mario);
-        return;
-    }
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+        }
+        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
+    }   
 
     if (state == SpriteState::ACTIVE) {
 
@@ -57,13 +60,13 @@ void BanzaiBill::draw() {
     std::string textureKey;
 
     if (state == SpriteState::ACTIVE) {
-        textureKey = isFacingLeft ?  "BobOmb0Left" :  "BobOmb0Right";
+        textureKey = isFacingLeft ?  "BanzaiBill0Left" :  "BanzaiBill0Right";
         DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);                  
     } 
 
     if (state == SpriteState::DYING) {
 
-        std::string dyingKey = isFacingLeft ? "BobOmb1Left" :  "BanzaiBill0Right"; 
+        std::string dyingKey = isFacingLeft ? "BanzaiBill1Left" :  "BanzaiBill0Right"; 
         DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
         DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
@@ -86,11 +89,30 @@ void BanzaiBill::beingHit(HitType type){
 }
 
 
-void BanzaiBill::activeWhenMarioApproach(Mario& mario) {
-    Vector2 marioPos = mario.getPosition();
-    float dx = fabs(marioPos.x - position.x);
+void BanzaiBill::activeWhenMarioApproach(Character& character){
+    Enemy::activeWhenMarioApproach(character);
+}
 
-    if (dx <= 300.0f) { // hoặc khoảng cách bạn mong muốn
-        setState(SpriteState::ACTIVE);
+void BanzaiBill::collisionTile(Tile* tile) {
+    CollisionType col = checkCollision(tile);
+
+    // Gọi xử lý gốc để vẫn giữ va chạm đất/trần
+    Enemy::collisionTile(tile);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+}
+
+void BanzaiBill::collisionBlock(Block* block) {
+    CollisionType col = checkCollision(block);
+
+    // Gọi xử lý gốc để vẫn giữ va chạm đất/trần
+    Enemy::collisionBlock(block);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
     }
 }

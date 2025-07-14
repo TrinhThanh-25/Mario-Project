@@ -12,11 +12,20 @@ BlueKoopaTroopa::BlueKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color co
     shellTimer = 0.0f;
     shellMoving = false;
 
-    setState(SpriteState::ACTIVE);
+    setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;
 }
 
-void BlueKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collidables) {
+void BlueKoopaTroopa::update(const std::vector<Character*>& characterList) {
+
+        if (state == SpriteState::INACTIVE) {
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+        }
+        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
+    }
+    
     float delta = GetFrameTime();
 
     if (state == SpriteState::ACTIVE) {
@@ -24,10 +33,6 @@ void BlueKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collidabl
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
-        // if (checkCollision(collidables) != CollisionType::NONE) {
-        //     velocity.x = -velocity.x;
-        //     isFacingLeft = velocity.x < 0;
-        // }
 
         updateCollisionBoxes();
     }
@@ -36,9 +41,6 @@ void BlueKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collidabl
         velocity.y += 981.0f * delta;
         position.y += velocity.y * delta;
 
-        if (checkCollision(collidables) == CollisionType::SOUTH) {
-            velocity.y = 0;
-        }
 
         shellTimer += delta;
         updateCollisionBoxes();
@@ -51,12 +53,10 @@ void BlueKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collidabl
     }
 
     else if (state == SpriteState::SHELL_MOVING) {
+        velocity.y += 981.0f * delta;
         float dir = isFacingLeft ? -1.0f : 1.0f;
         position.x += shellSpeed * dir * delta;
-
-        if (checkCollision(collidables) != CollisionType::NONE) {
-            isFacingLeft = !isFacingLeft;
-        }
+        position.y += velocity.y * delta;
 
         updateCollisionBoxes();
     }
@@ -149,7 +149,38 @@ bool BlueKoopaTroopa::isShellMoving() const {
     return shellMoving;
 }
 
-void BlueKoopaTroopa::activeWhenMarioApproach(Mario& mario)
- {
-    // Green Koopa luôn ACTIVE từ đầu → không cần xử lý gì ở đây
+void BlueKoopaTroopa::activeWhenMarioApproach(Character& character){
+    Enemy::activeWhenMarioApproach(character);
+}
+
+void BlueKoopaTroopa::collisionTile(Tile* tile) {
+    CollisionType col = checkCollision(tile);
+
+    // Gọi xử lý gốc để vẫn giữ va chạm đất/trần
+    Enemy::collisionTile(tile);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+}
+
+void BlueKoopaTroopa::collisionBlock(Block* block) {
+    CollisionType col = checkCollision(block);
+
+    // Gọi xử lý gốc để vẫn giữ va chạm đất/trần
+    Enemy::collisionBlock(block);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
 }

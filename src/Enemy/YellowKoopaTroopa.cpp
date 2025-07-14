@@ -12,22 +12,26 @@ YellowKoopaTroopa::YellowKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Colo
     shellTimer = 0.0f;
     shellMoving = false;
 
-    setState(SpriteState::ACTIVE);
+    setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;
 }
 
-void YellowKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collidables) {
+void YellowKoopaTroopa::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
+
+    if (state == SpriteState::INACTIVE) {
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+        }
+        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
+    }
 
     if (state == SpriteState::ACTIVE) {
         velocity.y += 981.0f * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
-        // if (checkCollision(collidables) != CollisionType::NONE) {
-        //     velocity.x = -velocity.x;
-        //     isFacingLeft = velocity.x < 0;
-        // }
 
         updateCollisionBoxes();
     }
@@ -145,6 +149,36 @@ bool YellowKoopaTroopa::isShellMoving() const {
     return shellMoving;
 }
 
-void YellowKoopaTroopa::activeWhenMarioApproach(Mario& mario) {
-    // Green Koopa luôn ACTIVE từ đầu → không cần xử lý gì ở đây
+void YellowKoopaTroopa::activeWhenMarioApproach(Character& character) {
+    Enemy::activeWhenMarioApproach(character);
+}
+
+void YellowKoopaTroopa::collisionTile(Tile* tile) {
+    CollisionType col = checkCollision(tile);
+
+    Enemy::collisionTile(tile);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+}
+
+void YellowKoopaTroopa::collisionBlock(Block* block) {
+    CollisionType col = checkCollision(block);
+
+    Enemy::collisionBlock(block);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
 }

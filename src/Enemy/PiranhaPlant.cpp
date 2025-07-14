@@ -6,7 +6,7 @@ PiranhaPlant::PiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     : Enemy(pos, dim, vel, color)
 {
     // Piranha luôn đứng yên tại chỗ (không cần gravity hay movement)
-    setState(SpriteState::ACTIVE);          // ACTIVE để tham gia vòng lặp update
+    setState(SpriteState::INACTIVE);          // ACTIVE để tham gia vòng lặp update
     piranhaState = PiranhaState::HIDING;
 
     hiddenY = pos.y;                        // Vị trí y khi ẩn hoàn toàn
@@ -40,7 +40,16 @@ void PiranhaPlant::draw() {
 }
 
 
-void PiranhaPlant::update(Mario& mario, const std::vector<Sprite*>& collidables){
+void PiranhaPlant::update(const std::vector<Character*>& characterList){
+
+    if (state == SpriteState::INACTIVE) {
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+        }
+        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
+    }
+    
     float delta = GetFrameTime();
     stateTimer += delta;
 
@@ -112,6 +121,14 @@ void PiranhaPlant::collisionSound(){
 
 }
     
-void PiranhaPlant::activeWhenMarioApproach(Mario& mario){
+void PiranhaPlant::activeWhenMarioApproach(Character& character){
+    Enemy::activeWhenMarioApproach(character);
+}
 
+void PiranhaPlant::collisionTile(Tile* tile) {
+    Enemy::collisionTile(tile);
+}
+
+void PiranhaPlant::collisionBlock(Block* block) {
+    Enemy::collisionBlock(block);
 }

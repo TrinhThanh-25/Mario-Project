@@ -10,8 +10,6 @@ FlyingGoomba::FlyingGoomba(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
 }
 
 
-FlyingGoomba::~FlyingGoomba(){}
-
 void FlyingGoomba::draw(){
     std::string textureKey;
     if (state == SpriteState::ACTIVE){
@@ -44,12 +42,15 @@ void FlyingGoomba::draw(){
 
 }
 
-void FlyingGoomba::update(Mario& mario, const std::vector<Sprite*>& collidables) {
+void FlyingGoomba::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
 
     if (state == SpriteState::INACTIVE) {
-        activeWhenMarioApproach(mario);
-        return;
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+        }
+        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
     }
 
     if (state == SpriteState::ACTIVE) {
@@ -71,13 +72,6 @@ void FlyingGoomba::update(Mario& mario, const std::vector<Sprite*>& collidables)
         position.y += velocity.y * delta;
 
 
-
-        // Va chạm với map
-        // CollisionType collision = checkCollision(collidables);
-        // if (collision == CollisionType::WEST || collision == CollisionType::EAST) {
-        //     velocity.x = -velocity.x;
-        //     isFacingLeft = velocity.x < 0;
-        // }
 
         updateCollisionBoxes();
     }
@@ -132,10 +126,40 @@ void FlyingGoomba::collisionSound(){
 
 }
 
-void FlyingGoomba::activeWhenMarioApproach(Mario& mario){
-    float distance = std::abs(mario.getPosition().x - position.x);
-    if (distance < 200.0f) {
+void FlyingGoomba::activeWhenMarioApproach(Character& character){
+    float distance = std::abs(character.getPosition().x - position.x);
+    if (distance < 3200.0f) {
         setState(SpriteState::ACTIVE);
         setMoveType(MoveType::FLYING);
     }
 }
+
+void FlyingGoomba::collisionTile(Tile* tile) {
+    CollisionType col = checkCollision(tile);
+
+    Enemy::collisionTile(tile);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+}
+
+void FlyingGoomba::collisionBlock(Block* block) {
+    CollisionType col = checkCollision(block);
+
+    Enemy::collisionBlock(block);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+} 

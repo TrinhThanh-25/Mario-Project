@@ -8,14 +8,16 @@ class BlueKoopaTroopa : public Enemy {
 public:
     BlueKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color color);
 
-    void update(Mario& mario, const std::vector<Sprite*>& collidables) override;
+    void update(const std::vector<Character*>& characterList) override;
     void draw() override;
 
     void beingHit(HitType type) override;
     void kickShell(bool faceLeft);
     bool isShellMoving() const;
 
-    void activeWhenMarioApproach(Mario& mario) override;
+    void activeWhenMarioApproach(Character& character) override;
+    void collisionBlock(Block* block);
+    void collisionTile(Tile* tile);
 
 private:
     bool shellMoving;        // Shell đang lăn không

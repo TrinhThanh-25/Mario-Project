@@ -10,10 +10,13 @@ public:
     ~MontyMole();
 
     void draw();
-    void update(Mario& mario, const std::vector<Sprite*>& collidables) override;
+    void update(const std::vector<Character*>& characterList) override;
     void beingHit(HitType type);
     void collisionSound();
-    void activeWhenMarioApproach(Mario& mario);
+    void activeWhenMarioApproach(Character& character);
+
+    void collisionBlock(Block* block);
+    void collisionTile(Tile* tile);
 
 private:
     float emergeDelay;   // thời gian chờ để chui lên

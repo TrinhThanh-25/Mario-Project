@@ -4,7 +4,7 @@
 JumpingPiranhaPlant::JumpingPiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     : Enemy(pos, dim, vel, color) 
 {
-    setState(SpriteState::ACTIVE);              // Luôn hoạt động
+    setState(SpriteState::INACTIVE);              // Luôn hoạt động
     jumpState = JumpingPiranhaState::IDLE;
 
     groundY = pos.y;                            // Mặt ống – vị trí đứng ban đầu
@@ -19,8 +19,16 @@ JumpingPiranhaPlant::JumpingPiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, 
 }
 
     
-void JumpingPiranhaPlant::update(Mario& mario, const std::vector<Sprite*>& collidables) {
+void JumpingPiranhaPlant::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
+
+    if (state == SpriteState::INACTIVE) {
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+        }
+        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
+    }
 
     if (jumpState == JumpingPiranhaState::IDLE) {
         waitTimer += delta;
@@ -106,7 +114,15 @@ void JumpingPiranhaPlant::draw() {
 }
 
 
-void activeWhenMarioApproach(Mario& mario){
-
+void JumpingPiranhaPlant::activeWhenMarioApproach(Character& character){
+    Enemy::activeWhenMarioApproach(character);
 }
 
+
+void JumpingPiranhaPlant::collisionTile(Tile* tile) {
+    Enemy::collisionTile(tile);
+}
+
+void JumpingPiranhaPlant::collisionBlock(Block* block) {
+    Enemy::collisionBlock(block);
+}

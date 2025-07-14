@@ -91,12 +91,15 @@ void RedKoopaTroopa::collisionSound(){
 
 }
     
-void RedKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collidables) {
+void RedKoopaTroopa::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
 
     if (state == SpriteState::INACTIVE) {
-        activeWhenMarioApproach(mario);
-        return;
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+        }
+        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
     }
 
     if (state == SpriteState::ACTIVE) {
@@ -119,12 +122,6 @@ void RedKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collidable
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
-        // Va chạm ngang => đổi hướng
-        // CollisionType collision = checkCollision(collidables);
-        // if (collision == CollisionType::WEST || collision == CollisionType::EAST) {
-        //     velocity.x = -velocity.x;
-        //     isFacingLeft = velocity.x < 0;
-        // }
 
         // Cập nhật hướng nhìn
         if (velocity.x != 0) {
@@ -152,11 +149,9 @@ void RedKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collidable
 }
 
 
-void RedKoopaTroopa::activeWhenMarioApproach(const Mario& mario) {
-    float distanceX = std::abs(mario.getPosition().x - position.x);
-    if (distanceX < 300.0f) { // tuỳ chỉnh khoảng cách
-        setState(SpriteState::ACTIVE);
-    }
+void RedKoopaTroopa::activeWhenMarioApproach(Character& character)
+{
+   Enemy::activeWhenMarioApproach(character);
 }
 
 void RedKoopaTroopa::followTheLeader(Sprite* leader) {
@@ -175,7 +170,35 @@ void RedKoopaTroopa::followTheLeader(Sprite* leader) {
     }
 }
 
+void RedKoopaTroopa::collisionTile(Tile* tile) {
+    CollisionType col = checkCollision(tile);
 
+    Enemy::collisionTile(tile);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+}
+
+void RedKoopaTroopa::collisionBlock(Block* block) {
+    CollisionType col = checkCollision(block);
+
+    Enemy::collisionBlock(block);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+}
 
 // bool RedKoopaTroopa::isNearEdge() {
 //     float checkOffsetX = isFacingLeft ? -1.0f : dimension.x + 1.0f;

@@ -8,14 +8,17 @@ class MummyBeetle : public Enemy {
 public:
     MummyBeetle(Vector2 pos, Vector2 dim, Vector2 vel, Color color);
 
-    void update(Mario& mario, const std::vector<Sprite*>& collidables) override;
+    void update(const std::vector<Character*>& characterListr) override;
     void draw() override;
 
     void beingHit(HitType type) override;
     void kickShell(bool faceLeft);
     bool isShellMoving() const;
 
-    void activeWhenMarioApproach(Mario& mario);
+    void activeWhenMarioApproach(Character& character);
+
+    void collisionBlock(Block* block);
+    void collisionTile(Tile* tile);
 
 private:
     bool shellMoving;
