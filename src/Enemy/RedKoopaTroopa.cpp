@@ -28,8 +28,19 @@ void RedKoopaTroopa::draw() {
         std::string dyingKey = isFacingLeft ? "RedKoopaTroopa1Left" : "RedKoopaTroopa1Right";
         DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
 
+    // Bay lên
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
-        DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
+
+    // Lấp lánh bằng alpha modulate (sin wave)
+        float alpha = 0.5f + 0.5f * sin(GetTime() * 10.0f); // dao động từ 0 → 1
+        Color glowColor = {255, 255, 255, (unsigned char)(255 * alpha)};
+
+        DrawTexture(
+            ResourceManager::getTexture()["Gui100"],
+            diePosition.x,
+            diePosition.y - offsetY,
+            glowColor
+        );
     }
 }
  

@@ -79,22 +79,38 @@ void MummyBeetle::draw(){
     if (state == SpriteState::ACTIVE) {
         textureKey = isFacingLeft ? (frame == 0 ? "MummyBeetle0Left" : "MummyBeetle1Left")
                                   : (frame == 0 ? "MummyBeetle0Right" : "MummyBeetle1Right");
-        
     } 
+
     DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
+
     // else if (state == SpriteState::SHELL || state == SpriteState::SHELL_MOVING || state == SpriteState::DYING) {
     //     textureKey = isFacingLeft ? "BuzzyBeetleShellLeft" : "BuzzyBeetleShellRight";
     // }
 
-
     if (state == SpriteState::DYING) {
-
         std::string dyingKey = isFacingLeft ? "MummyBeetle1Left" : "MummyBeetle1Right";
         DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
+
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
-        DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
+        float angle = sin(GetTime() * 10.0f) * 10.0f;
+
+        Texture2D& guiTex = ResourceManager::getTexture()["Gui100"];
+        DrawTexturePro(
+            guiTex,
+            Rectangle{0, 0, (float)guiTex.width, (float)guiTex.height},
+            Rectangle{
+                diePosition.x,
+                diePosition.y - offsetY,
+                (float)guiTex.width,
+                (float)guiTex.height
+            },
+            Vector2{guiTex.width / 2.0f, guiTex.height / 2.0f},
+            angle,
+            WHITE
+        );
     }
 }
+
 
 void MummyBeetle::beingHit(HitType type) {
     switch (type) {

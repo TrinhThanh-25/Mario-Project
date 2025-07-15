@@ -58,7 +58,6 @@ void Rex::draw() {
                 textureKey = (frame == 0) ? "Rex10Right" : "Rex11Right";
             }
         }
-
         else {
             if (isFacingLeft){
                 textureKey = (frame == 0) ? "Rex20Left" : "Rex21Left";
@@ -71,25 +70,30 @@ void Rex::draw() {
     }
 
     if (state == SpriteState::DYING) {
-        std::string dyingKey;
+        std::string dyingKey = isFacingLeft ? "Rex10Left" : "Rex10Right";
 
-        // Dùng hình Rex lùn (1) khi chết – giống behavior trong Super Mario World
-        if (isFacingLeft) {
-            dyingKey = "Rex10Left";
-        } 
-        else {
-            dyingKey = "Rex10Right";
-        }
-
-        // Vẽ hình chết
         DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
 
-        // Vẽ điểm bay lên
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
-        DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
-    }
+        float angle = sin(GetTime() * 10.0f) * 10.0f;
 
+        Texture2D& guiTex = ResourceManager::getTexture()["Gui100"];
+        DrawTexturePro(
+            guiTex,
+            Rectangle{0, 0, (float)guiTex.width, (float)guiTex.height},
+            Rectangle{
+                diePosition.x,
+                diePosition.y - offsetY,
+                (float)guiTex.width,
+                (float)guiTex.height
+            },
+            Vector2{guiTex.width / 2.0f, guiTex.height / 2.0f},
+            angle,
+            WHITE
+        );
+    }
 }
+
 
 void Rex::beingHit(HitType type) {
     if (type == HitType::STOMP){

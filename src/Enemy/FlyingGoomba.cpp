@@ -12,35 +12,51 @@ FlyingGoomba::FlyingGoomba(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
 
 void FlyingGoomba::draw(){
     std::string textureKey;
+
     if (state == SpriteState::ACTIVE){
         int frame = (int)(GetTime() * 6) % 2;
         if (movetype == MoveType::FLYING){
             if (isFacingLeft){
                 textureKey = (frame == 0) ? "FlyingGoomba0Left" : "FlyingGoomba1Left";
-            }
-            else {
+            } else {
                 textureKey = (frame == 0) ? "FlyingGoomba0Right" : "FlyingGoomba1Right";
             }
         }
         else if (movetype == MoveType::WALKING){
             if (isFacingLeft){
                 textureKey = (frame == 0) ? "FlyingGoomba2Left" : "FlyingGoomba3Left";
-            }
-            else {
+            } else {
                 textureKey = (frame == 0) ? "FlyingGoomba2Right" : "FlyingGoomba3Right";
             }
         }
+
         DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
     }
+
     else if (state == SpriteState::DYING){
         std::string dyingKey = isFacingLeft ? "FlyingGoomba1Left" : "FlyingGoomba1Right"; 
         DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
 
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
-        DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
-    }
+        float angle = sin(GetTime() * 10.0f) * 10.0f;
 
+        Texture2D& guiTex = ResourceManager::getTexture()["Gui100"];
+        DrawTexturePro(
+            guiTex,
+            Rectangle{ 0, 0, (float)guiTex.width, (float)guiTex.height },
+            Rectangle{
+                diePosition.x,
+                diePosition.y - offsetY,
+                (float)guiTex.width,
+                (float)guiTex.height
+            },
+            Vector2{ guiTex.width / 2.0f, guiTex.height / 2.0f },
+            angle,
+            WHITE
+        );
+    }
 }
+
 
 void FlyingGoomba::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();

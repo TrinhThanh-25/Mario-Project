@@ -58,11 +58,26 @@ void BulletBill::draw(){
     DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
 
     if (state == SpriteState::DYING) {
-
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
-        DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
+        float angle = sin(GetTime() * 10.0f) * 10.0f;
+
+        Texture2D& guiTex = ResourceManager::getTexture()["Gui100"];
+        DrawTexturePro(
+            guiTex,
+            Rectangle{ 0, 0, (float)guiTex.width, (float)guiTex.height },
+            Rectangle{
+                diePosition.x,
+                diePosition.y - offsetY,
+                (float)guiTex.width,
+                (float)guiTex.height
+            },
+            Vector2{ guiTex.width / 2.0f, guiTex.height / 2.0f },
+            angle,
+            WHITE
+        );
     }
 }
+
     
 void BulletBill::beingHit(HitType type){
     if (type == HitType::STOMP){

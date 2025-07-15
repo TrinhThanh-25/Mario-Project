@@ -27,13 +27,29 @@ void BuzzyBeetle::draw() {
     DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
 
     if (state == SpriteState::DYING) {
-
         std::string dyingKey = isFacingLeft ? "BuzzyBeetle0Left" : "BuzzyBeetle0Right"; 
         DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
+
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
-        DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
+        float angle = sin(GetTime() * 10.0f) * 10.0f;
+
+        Texture2D& guiTex = ResourceManager::getTexture()["Gui100"];
+        DrawTexturePro(
+            guiTex,
+            Rectangle{ 0, 0, (float)guiTex.width, (float)guiTex.height },
+            Rectangle{
+                diePosition.x,
+                diePosition.y - offsetY,
+                (float)guiTex.width,
+                (float)guiTex.height
+            },
+            Vector2{ guiTex.width / 2.0f, guiTex.height / 2.0f },
+            angle,
+            WHITE
+        );
     }
 }
+
 
 void BuzzyBeetle::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
@@ -55,11 +71,6 @@ void BuzzyBeetle::update(const std::vector<Character*>& characterList) {
         velocity.y += 981.0f * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
-
-        // if (checkCollision(collidables) != CollisionType::NONE) {
-        //     velocity.x = -velocity.x;
-        //     isFacingLeft = velocity.x < 0;
-        // }
 
         updateCollisionBoxes();
     }
