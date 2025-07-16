@@ -3,6 +3,7 @@
 #include "Game/World.h"
 #include "Common/ResourceManager.h"
 #include "GameState/TimeUpState.h"
+#include "Item/ItemFactory.h"
 
 GameHud::GameHud(World* world, int yoshiCoins, int coins, int lives, int points, float maxTime)
     : yoshiCoins(yoshiCoins), 
@@ -172,10 +173,10 @@ void GameHud::releasePowerUpItem() {
 
     if(powerUpItem == CharacterType::SUPER) {
         Vector2 position = GetScreenToWorld2D({(float) GetScreenWidth() / 2 - ResourceManager::getTexture()["Mushroom"].width / 2, 32}, *world->getCamera());
-        // item = new mushroom
+        item = ItemFactory::createItem(ItemType::MUSHROOM, Source::INVENTORY, position, Direction::RIGHT);
     } else if(powerUpItem == CharacterType::FLOWER) {
         Vector2 position = GetScreenToWorld2D({(float) GetScreenWidth() / 2 - ResourceManager::getTexture()["FireFlower0"].width / 2, 32}, *world->getCamera());
-        // item = new flower
+        item = ItemFactory::createItem(ItemType::FLOWER, Source::INVENTORY, position, Direction::RIGHT);
     }
     powerUpItem = CharacterType::SMALL;   
 

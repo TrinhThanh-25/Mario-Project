@@ -67,7 +67,7 @@ class World : public GameLoop {
         bool isPlayerDownMusicStreamPlaying() const;
         bool isGameOverMusicStreamPlaying() const;
 
-        void pausWorld(bool pausedForTransition, bool pausedUpdateCharacters);
+        void pauseWorld(bool pausedForTransition, bool pausedUpdateCharacters);
         void resumeWorld();
         bool* getPausedForTransition();
         bool* getPausedUpdateCharacters();

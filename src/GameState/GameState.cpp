@@ -12,6 +12,6 @@ void GameState::exit() {
     
 }
 
-GameStateType GameState::getType() const {
+GameStateType GameState::getGameStateType() const {
     return gameStateType;
 }

@@ -27,7 +27,7 @@ class GameState {
         virtual void enter();
         virtual void exit();
         virtual ~GameState() = default;
-        virtual GameStateType getType() const;
+        virtual GameStateType getGameStateType() const;
 };
 
 #endif
