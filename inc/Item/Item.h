@@ -9,6 +9,16 @@
 #include "Common/ResourceManager.h"
 #include "Game/GameHud.h"
 
+enum class ItemType {
+    COIN,
+    MUSHROOM,
+    FLOWER,
+    STAR,
+    YOSHI_COIN,
+    THREE_UP_MOON,
+    ONE_UP_MUSHROOM,
+    COURSE_CLEAR_TOKEN
+};
 
 class Item : public Sprite{
 protected:
@@ -19,7 +29,7 @@ protected:
     float pointFrameAccum;
     float pointFrameTime;
     bool pauseGameWhenHit;
-    static float gravity;
+    ItemType type;
 public:
     Item(Vector2 position, Vector2 size, Vector2 vel, Color color, float FrameTime, int MaxFrame, Direction direction,float HitFrameTime, int maxHitFrame, bool pause);
     ~Item() override;
@@ -37,6 +47,7 @@ public:
     void collisionBlock(Block* block);
     void collisionTile(Tile* tile);
     void collisionCharacter(Character* character);
+    ItemType getType();
 };
 
 #endif

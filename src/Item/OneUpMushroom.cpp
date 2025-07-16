@@ -2,9 +2,10 @@
 #include "Game/World.h"
 
 OneUpMushroom::OneUpMushroom(Vector2 position, Vector2 size, Color color, int lives):
-Item(position, size, {320, 0}, color, 0.1f, 2, Direction::RIGHT, 0, 0, false), lives(lives)
+Item(position, size, {320, 0}, color, 0, 0, Direction::RIGHT, 0, 0, false), lives(lives)
 {
     pauseGameWhenHit = false;
+    type = ItemType::ONE_UP_MUSHROOM;
 }
 
 void OneUpMushroom::update()
@@ -22,7 +23,7 @@ void OneUpMushroom::update()
 
 void OneUpMushroom::updateWhenActive(float timeElapsed)
 {
-    setVelocityY(getVelocityY() + gravity * timeElapsed);
+    setVelocityY(getVelocityY() + World::gravity * timeElapsed);
     setY(getY() + getVelocityY() * timeElapsed);
     if (getDirection() == Direction::RIGHT)
     {

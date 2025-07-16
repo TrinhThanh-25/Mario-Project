@@ -613,3 +613,8 @@ Map *Character::getMap() const
 {
     return map;
 }
+
+World *Character::getWorld() const
+{
+    return world;
+}

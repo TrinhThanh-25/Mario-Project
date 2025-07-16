@@ -3,6 +3,7 @@
 YoshiCoin::YoshiCoin(Vector2 position, Vector2 size, Color color, int points):
 Item(position, size, {0, 0}, color, 0.1f, 4, Direction::RIGHT, 0.1f, 4, false), points(points)
 {
+    type = ItemType::YOSHI_COIN;
 }
 
 void YoshiCoin::update()

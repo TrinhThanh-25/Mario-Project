@@ -6,6 +6,7 @@ CourseClearToken::CourseClearToken(Vector2 position, Vector2 size, Color color):
     maxY(minY + 8 * size.y),
     points(8000)
 {
+    type = ItemType::COURSE_CLEAR_TOKEN;
 }
 
 void CourseClearToken::update()

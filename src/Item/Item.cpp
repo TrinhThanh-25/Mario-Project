@@ -1,10 +1,10 @@
 #include "Item/Item.h"
 #include "Game/World.h"
-float Item::gravity = 1200.0f;
 
 Item::Item(Vector2 position, Vector2 size, Vector2 vel, Color color, float FrameTime, int MaxFrame, Direction direction, float HitFrameTime, int maxHitFrame, bool pause):
 Sprite(position,size,vel,color,frameTime,maxFrame,direction), beingHitFrameTime(HitFrameTime), maxBeingHitFrame(maxHitFrame), pauseGameWhenHit(pause)
 {
+    this->setState(SpriteState::ACTIVE);
 }
 
 Item::~Item()
@@ -86,7 +86,7 @@ void Item::collisionCharacter(Character *character)
             this->setState(SpriteState::HIT);
             this->playCollisionSound();
             if (this->isPausedGameWhenBeingHit()) {
-                // Pause the game
+                character->getWorld()->pausWorld(true, true);
             }
             this->updateCharacter(character);
         } 
@@ -94,4 +94,9 @@ void Item::collisionCharacter(Character *character)
             this->setState(SpriteState::TO_BE_REMOVED);
         }
     }
+}
+
+ItemType Item::getType()
+{
+    return type;
 }

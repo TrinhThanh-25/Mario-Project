@@ -2,8 +2,9 @@
 #include "Game/World.h"
 
 Star::Star(Vector2 position, Vector2 size, Color color, int points):
-Item(position, size, {300, 0}, color, 0.1f, 4, Direction::RIGHT, 0.1f, 4, false), points(points)
+Item(position, size, {300, 0}, color, 0, 0, Direction::RIGHT, 0, 0, false), points(points)
 {
+    type = ItemType::STAR;
 }
 
 void Star::update()
@@ -31,7 +32,7 @@ void Star::updateWhenActive(float timeElapsed)
         this->setX(this->getX() - this->getVelocityX() * timeElapsed);
     }
     this->setY(this->getY() + this->getVelocityY() * timeElapsed);
-    this->setVelocityY(this->getVelocityY() + gravity * timeElapsed);
+    this->setVelocityY(this->getVelocityY() + World::gravity * timeElapsed);
 }
 
 void Star::updateWhenHit(float timeElapsed)

@@ -7,6 +7,7 @@ Item(position, size, {0, 0}, color, 0.1f, 2, Direction::RIGHT, 0, 0, false), poi
     if (isInInventory) {
         setVelocityY(100);
     }
+    type = ItemType::FLOWER;
 }
 void FireFlower::update()
 {
