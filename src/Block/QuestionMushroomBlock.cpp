@@ -1,5 +1,5 @@
 #include "Block/QuestionMushroomBlock.h"
-#include "Item/Mushroom.h"
+#include "Item/ItemFactory.h"
 #include "Block/Block.h"
 #include "Character/Character.h"
 #include "Game/World.h"
@@ -52,9 +52,8 @@ void QuestionMushroomBlock::doHit(Character& character, Map* map) {
 	if (!hit) {
 		hit = true;
 		PlaySound(ResourceManager::getSound()["PowerUpAppear"]);
-		item = new Mushroom(Vector2{ position.x, position.y }, Vector2{ 32, 32 }, Vector2(200, 0), RED, 0, true);
+		item = ItemFactory::createItem(ItemType::MUSHROOM, Source::BLOCK, Vector2{ position.x, position.y }, character.getDirection());
 		itemVelocityY = -80.0f;
-        item->setDirection(character.getDirection());
 		itemMinY = position.y - 32.0f; // Set the minimum Y position for the item
 		this->map = map; // Store the map reference
 	}

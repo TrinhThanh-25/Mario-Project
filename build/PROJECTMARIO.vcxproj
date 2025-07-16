@@ -325,6 +325,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Block\Block.cpp" />
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Block\BlockFactory.cpp" />
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Block\CloudBlock.cpp" />
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Block\ExclamationBlock.cpp" />
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Block\EyesClosedBlock.cpp" />
@@ -341,9 +342,11 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Block\StoneBlock.cpp" />
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Block\WoodBlock.cpp" />
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Character\Character.cpp" />
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Character\CharacterTag.cpp" />
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Character\Fireball.cpp" />
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Character\Luigi.cpp" />
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Character\Mario.cpp" />
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Common\Button.cpp" />
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Common\CollisionBox.cpp" />
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Common\ResourceManager.cpp" />
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Common\Sprite.cpp" />
@@ -363,7 +366,17 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\GameState\SettingState.cpp" />
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\GameState\TimeUpState.cpp" />
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\GameState\TitleScreenState.cpp" />
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Item\Coin.cpp" />
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Item\CourseClearToken.cpp" />
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Item\FireFlower.cpp" />
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Item\Item.cpp" />
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Item\ItemFactory.cpp" />
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Item\Mushroom.cpp" />
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Item\OneUpMushroom.cpp" />
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Item\Star.cpp" />
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Item\ThreeUpMoon.cpp" />
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Item\YoshiCoin.cpp" />
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\SaveGame.cpp" />
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Tile\Tile.cpp" />
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\main.cpp" />
   </ItemGroup>

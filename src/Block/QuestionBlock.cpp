@@ -112,7 +112,7 @@ void QuestionBlock::doHit(Character& character, Map* map) {
 		hit = true;
 		coinAnimationRunning = true;
 		coinY = position.y;
-		character.addPoints(earnedPoints);
-		character.addCoin(earnedPoints);
+		character.getGameHud()->addPoints(earnedPoints);
+		character.getGameHud()->addCoins(earnedPoints);
 	}
 }

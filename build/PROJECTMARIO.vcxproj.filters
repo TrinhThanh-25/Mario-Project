@@ -4,6 +4,9 @@
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Block\Block.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Block\BlockFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Block\CloudBlock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -52,6 +55,9 @@
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Character\Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Character\CharacterTag.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Character\Fireball.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -59,6 +65,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Character\Mario.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Common\Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Common\CollisionBox.cpp">
@@ -118,7 +127,37 @@
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\GameState\TitleScreenState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Item\Coin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Item\CourseClearToken.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Item\FireFlower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Item\Item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Item\ItemFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Item\Mushroom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Item\OneUpMushroom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Item\Star.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Item\ThreeUpMoon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Item\YoshiCoin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\SaveGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="C:\Users\Huyen\Downloads\Mario-Project\src\Tile\Tile.cpp">

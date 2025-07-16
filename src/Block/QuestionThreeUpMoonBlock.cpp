@@ -2,7 +2,7 @@
 #include "Block/Block.h"
 #include "Character/Character.h"
 #include "Game/World.h"
-//#include "Item/ThreeUpMoon.h"
+#include "Item/ItemFactory.h"
 #include "raylib.h"
 #include "Common/ResourceManager.h"
 #include "Game/Map.h"	
@@ -53,9 +53,8 @@ void QuestionThreeUpMoonBlock::doHit(Character& character, Map* map) {
 	if (!hit) {
 		hit = true;
 		PlaySound(ResourceManager::getSound()["PowerUpAppear"]);
-		item = new ThreeUpMoon(Vector2{ position.x, position.y }, Vector2{ 32, 32 }, Vector2(300, 0), YELLOW, 0, true);
+		item = ItemFactory::createItem(ItemType::THREE_UP_MOON, Source::BLOCK, Vector2{ position.x, position.y }, character.getDirection());
 		itemVelocityY = -80.0f;
-        item->setDirection(character.getDirection());
 		itemMinY = position.y - 32.0f; // Set the minimum Y position for the item
 		this->map = map; // Store the map reference
 	}

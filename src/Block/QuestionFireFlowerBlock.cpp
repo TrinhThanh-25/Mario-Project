@@ -2,7 +2,7 @@
 #include "Block/Block.h"
 #include "Character/Character.h"
 #include "Game/World.h"
-#include "Item/FireFlower.h"
+#include "Item/ItemFactory.h"
 #include "raylib.h"
 #include "Common/ResourceManager.h"
 #include "Game/Map.h"	
@@ -53,7 +53,7 @@ void QuestionFireFlowerBlock::doHit(Character& character, Map* map) {
 	if (!hit) {
 		hit = true;
 		PlaySound(ResourceManager::getSound()["PowerUpAppear"]);
-		item = new FireFlower(Vector2{ position.x, position.y }, Vector2{ 32, 32 }, ORANGE, 0, true );
+		item = ItemFactory::createItem(ItemType::FLOWER, Source::BLOCK, Vector2{ position.x, position.y }, character.getDirection());
 		itemVelocityY = -80.0f;
         item->setDirection(character.getDirection());
 		itemMinY = position.y - 32.0f; // Set the minimum Y position for the item
