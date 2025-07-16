@@ -512,39 +512,3 @@ void Map::first() {
     mapNumber = 1;
     reset();
 }
-
-void Map::playMusic() {
-    std::unordered_map<std::string, Music> music = ResourceManager::getMusic();
-    std::string musicKey = "Music" + std::to_string(musicID);
-    bool checkInvincible = false;
-    if (IsMusicValid(music[musicKey])) {
-        for (auto& character : characters) {
-            if (character->isInvincible()) {
-                checkInvincible = true;
-                break;
-            }
-        }
-        if(checkInvincible) {
-            if (!IsMusicStreamPlaying(music["Invincible"])) {
-                PlayMusicStream(music["Invincible"]);
-            }
-            else {
-                UpdateMusicStream(music["Invincible"]);
-            }
-            if( IsMusicStreamPlaying(music[musicKey]) ) {
-                StopMusicStream(music[musicKey]);
-            }
-        }
-        else {
-            if (!IsMusicStreamPlaying(music[musicKey])) {
-                PlayMusicStream(music[musicKey]);
-            }
-            else {
-                UpdateMusicStream(music[musicKey]);
-            }
-            if( IsMusicStreamPlaying(music["Invincible"]) ) {
-                StopMusicStream(music["Invincible"]);
-            }
-        }
-    } 
-}

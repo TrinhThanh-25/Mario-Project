@@ -47,8 +47,10 @@ World::~World() {
 }
 
 void World::init() {
+
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+    SetConfigFlags(FLAG_WINDOW_HIGHDPI);
         // SetConfigFlags( FLAG_FULLSCREEN_MODE );
         // SetConfigFlags( FLAG_WINDOW_UNDECORATED );
     SetConfigFlags(FLAG_WINDOW_ALWAYS_RUN);
@@ -69,6 +71,7 @@ void World::update() {
     }
 }
 
+
 void World::draw() {
     BeginDrawing();
     ClearBackground(RAYWHITE);
@@ -78,12 +81,23 @@ void World::draw() {
 }
 
 void World::updateCamera() {
-    camera.target = {0, 0};
-    camera.offset = {(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() - 104};
+    if (!characters.empty()) {
+        camera.target = {
+            characters[0]->getX() + characters[0]->getWidth() / 2.0f,
+            characters[0]->getY() + characters[0]->getHeight() / 2.0f
+        };
+    } else {
+        camera.target = {0, 0};
+    }
+
+    camera.offset = {(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f};
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
+
     setCamera(&camera);
 }
+
+
 
 void World::setGameState(GameState* newState) {
     if (gameState != nullptr) {

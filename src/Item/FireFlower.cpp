@@ -1,7 +1,7 @@
 #include "Item/FireFlower.h"
 
 FireFlower::FireFlower(Vector2 position, Vector2 size, Color color, int points, bool isInInventory):
-Item(position, size, Vector2(0, 0), color, 0.1f, 2, Direction::RIGHT, 0, 0, false), points(points), isInInventory(isInInventory)
+Item(position, size, {0, 0}, color, 0.1f, 2, Direction::RIGHT, 0, 0, false), points(points), isInInventory(isInInventory)
 {
     pauseGameWhenHit = true;
     if (isInInventory) {
@@ -67,9 +67,9 @@ void FireFlower::draw()
     if (this->getState() == SpriteState::ACTIVE)
     {
         if (isInInventory && appear) {
-            DrawTexture(ResourceManager::getTexture()["FireFlower" + std::to_string(this->getCurrentFrame())], this->getX(), this->getY(), this->getColor());
+            DrawTexture(ResourceManager::getTexture()["FireFlower" + std::to_string(this->curFrame)], this->getX(), this->getY(), this->getColor());
         } else if (!isInInventory) {
-            DrawTexture(ResourceManager::getTexture()["FireFlower" + std::to_string(this->getCurrentFrame())], this->getX(), this->getY(), this->getColor());
+            DrawTexture(ResourceManager::getTexture()["FireFlower" + std::to_string(this->curFrame)], this->getX(), this->getY(), this->getColor());
         }
     }
     else if (this->getState() == SpriteState::HIT)

@@ -37,4 +37,4 @@ public:
 	void doHit(Character& character, Map* map) override;
 };
 	
-#endif // INVISIBLE_BLOCK_H
+#endif

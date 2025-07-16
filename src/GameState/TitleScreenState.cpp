@@ -44,7 +44,7 @@ void TitleScreenState::update() {
     }
     else if(continueButton.isPressed() && isSavedGameAvailable) {
         StopMusicStream(ResourceManager::getMusic()["Title"]);
-        SaveGame::loadGame(world);
+        SaveGame::loadGame(*world);
     }
     else if(exitButton.isPressed()) {
         CloseWindow();

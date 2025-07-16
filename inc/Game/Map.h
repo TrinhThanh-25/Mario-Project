@@ -63,7 +63,7 @@ class Map : virtual public Drawable {
         void reset();
         bool next();
         void first();
-
+  
         void playMusic();
 };
 

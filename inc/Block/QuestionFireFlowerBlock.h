@@ -2,8 +2,10 @@
 #define QUESTIONFIREFLOWERBLOCK_H
 
 #include "Block/Block.h"
-#include "Game/Map.h"
 #include "Character/Character.h"
+
+class Map;
+class Item;
 
 class QuestionFireFlowerBlock : public Block {
 public:
@@ -22,4 +24,4 @@ private:
 	Map* map;
 };
 
-#endif // QUESTIONFIREFLOWERBLOCK_H
+#endif 

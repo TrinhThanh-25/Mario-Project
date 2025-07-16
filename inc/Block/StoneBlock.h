@@ -14,4 +14,4 @@ public:
 
 };
 
-#endif // STONEBLOCK_H
+#endif

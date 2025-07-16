@@ -21,5 +21,4 @@ public:
 	virtual void doHit(Character& character, Map* map);
 	void resetHit();
 };
-
 #endif

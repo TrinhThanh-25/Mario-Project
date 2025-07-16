@@ -15,7 +15,7 @@ private:
 
 public:
     Mushroom(Vector2 position, Vector2 size, Color color, int points, bool isInInventory);
-    ~Mushroom() override;
+    ~Mushroom() override = default;
 
     void update() override;
         void updateWhenActive(float timeElapsed) override;

@@ -1,7 +1,7 @@
 #ifndef SPRITESTATE_H
 #define SPRITESTATE_H
 
-enum SpriteState {
+enum class SpriteState {
     //All objects
     DYING,
 
@@ -19,6 +19,7 @@ enum SpriteState {
     //Other objects
     IDLE,
     ACTIVE,
+    INACTIVE,
     TO_BE_REMOVED,
 
     HIT,
@@ -31,6 +32,22 @@ enum SpriteState {
 
     //
     NO_COLLIDABLE,
+
+    // New enemy state
+    SHELL,
+    SHELL_MOVING,
+    HIDDEN,
+
+    PRIMED,  // đã kích nỗ
+    IGNITED, // đếm ngược
+    EXPLODING, // đang nổ
+    
+
+};
+
+enum class MoveType{
+    FLYING,
+    WALKING,
 };
 
 #endif

@@ -6,7 +6,7 @@
 class OneUpMushroom : public Item {
 public:
     OneUpMushroom(Vector2 position, Vector2 size, Color color, int lives);
-    ~OneUpMushroom() override;
+    ~OneUpMushroom() override = default;
 
     void update() override;
         void updateWhenActive(float timeElapsed) override;
@@ -14,6 +14,7 @@ public:
     void draw() override;
     void playCollisionSound() override;
     void updateCharacter(Character *character) override;
+    void collisionSouth(Character *character) override;
 
 private:
     int lives;

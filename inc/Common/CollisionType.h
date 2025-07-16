@@ -1,7 +1,7 @@
-#ifndef CoLLISIONTYPE_H
-#define CoLLISIONTYPE_H
+#ifndef COLLISIONTYPE_H
+#define COLLISIONTYPE_H
 
-enum CollisionType {
+enum class CollisionType {
     NONE = 0,
     COLLIDED,
 

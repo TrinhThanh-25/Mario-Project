@@ -8,7 +8,7 @@ private:
     int lives;
 public:
     ThreeUpMoon(Vector2 position, Vector2 size, Color color, int lives);
-    ~ThreeUpMoon() override;
+    ~ThreeUpMoon() override = default;
 
     void update() override;
         void updateWhenActive(float timeElapsed) override;

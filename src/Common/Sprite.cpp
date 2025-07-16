@@ -53,12 +53,12 @@ Sprite::Sprite(Vector2 positon, Vector2 size, Color color)
 Sprite::~Sprite() = default;
 
 CollisionType Sprite::checkCollision(Sprite* sprite){
-    if (sprite == nullptr) return NONE;
-    if (this->north.checkCollision(sprite->getRect())) return NORTH;
-    if (this->south.checkCollision(sprite->getRect())) return SOUTH;
-    if (this->west.checkCollision(sprite->getRect())) return WEST;
-    if (this->east.checkCollision(sprite->getRect())) return EAST;
-    return NONE;
+    if (sprite == nullptr) return CollisionType::NONE;
+    if (this->north.checkCollision(sprite->getRect())) return CollisionType::NORTH;
+    if (this->south.checkCollision(sprite->getRect())) return CollisionType::SOUTH;
+    if (this->west.checkCollision(sprite->getRect())) return CollisionType::WEST;
+    if (this->east.checkCollision(sprite->getRect())) return CollisionType::EAST;
+    return CollisionType::NONE;
 }
 
 void Sprite::updateCollisionBoxes() {

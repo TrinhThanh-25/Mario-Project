@@ -1,0 +1,112 @@
+#include "Enemy/JumpingPiranhaPlant.h"
+#include "Common/ResourceManager.h"
+
+JumpingPiranhaPlant::JumpingPiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
+    : Enemy(pos, dim, vel, color) 
+{
+    setState(SpriteState::ACTIVE);              // Luôn hoạt động
+    jumpState = JumpingPiranhaState::IDLE;
+
+    groundY = pos.y;                            // Mặt ống – vị trí đứng ban đầu
+    waitDuration = 2.0f;                        // Chờ 2s giữa các cú nhảy
+    waitTimer = 0.0f;
+
+    jumpSpeed = 200.0f;                         // Tốc độ nhảy lên
+    gravity = 981.0f;                           // Gia tốc trọng lực
+
+    velocity = {0, 0};                          // Bắt đầu đứng yên
+    isFacingLeft = true;                        // Không quan trọng nhưng giữ cho đồng bộ
+}
+
+    
+void JumpingPiranhaPlant::update(Mario& mario, const std::vector<Sprite*>& collidables) {
+    float delta = GetFrameTime();
+
+    if (jumpState == JumpingPiranhaState::IDLE) {
+        waitTimer += delta;
+        if (waitTimer >= waitDuration) {
+            velocity.y = -jumpSpeed;
+            jumpState = JumpingPiranhaState::JUMPING;
+            waitTimer = 0.0f;
+        }
+    }
+
+    else if (jumpState == JumpingPiranhaState::JUMPING) {
+        velocity.y += gravity * delta;
+        position.y += velocity.y * delta;
+
+        if (velocity.y >= 0) {
+            jumpState = JumpingPiranhaState::FALLING;
+        }
+    }
+
+    else if (jumpState == JumpingPiranhaState::FALLING) {
+        velocity.y += gravity * delta;
+        position.y += velocity.y * delta;
+
+        if (position.y >= groundY) {
+            position.y = groundY;
+            velocity.y = 0;
+            jumpState = JumpingPiranhaState::IDLE;
+            waitTimer = 0.0f;
+        }
+    }
+
+    updateCollisionBoxes();
+    if (state == SpriteState::DYING) {
+    float delta = GetFrameTime();
+
+    dyingFrameAcum += delta;
+    if (dyingFrameAcum >= dyingFrameTime) {
+        dyingFrameAcum = 0.0f;
+        currentDyingFrame++;
+        if (currentDyingFrame >= maxDyingFrame) {
+            setState(SpriteState::TO_BE_REMOVED);
+        }
+    }
+
+    pointFrameAcum += delta;
+    if (pointFrameAcum >= pointFrameTime) {
+        pointFrameAcum = pointFrameTime;
+    }
+}
+
+}
+
+
+void JumpingPiranhaPlant::beingHit(HitType type){
+    if (type == HitType::STOMP) return;
+    
+    else if (type == HitType::FIREBALL || type == HitType::SHELL_KICK){
+        if (state == SpriteState::ACTIVE){
+            setState(SpriteState::DYING);
+            diePosition = position;
+            currentDyingFrame = 0;
+            dyingFrameAcum = 0.0f;
+        }
+    }
+}
+
+void JumpingPiranhaPlant::draw() {
+    std::string textureKey;
+    int frame = (int)(GetTime() * 6) % 2;
+
+    if (jumpState == JumpingPiranhaState::IDLE || jumpState == JumpingPiranhaState::FALLING) {
+        textureKey = frame == 0 ? "JumpingPiranhaPlant2" : "JumpingPiranhaPlant3";
+    } else if (jumpState == JumpingPiranhaState::JUMPING) {
+        textureKey = frame == 0 ? "JumpingPiranhaPlant0" : "JumpingPiranhaPlant1";
+    }
+
+    DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
+
+    if (state == SpriteState::DYING) {
+        float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
+        DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
+    }
+}
+
+
+void activeWhenMarioApproach(Mario& mario){
+
+}
+

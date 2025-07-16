@@ -10,7 +10,7 @@ private:
     int points;
 public:
     CourseClearToken(Vector2 position, Vector2 size, Color color);
-    ~CourseClearToken() override;
+    ~CourseClearToken() override = default;
 
     void update() override;
         void updateWhenActive(float timeElapsed) override;
