@@ -40,10 +40,6 @@ void YellowKoopaTroopa::update(const std::vector<Character*>& characterList) {
         velocity.y += 981.0f * delta;
         position.y += velocity.y * delta;
 
-        if (checkCollision(collidables) == CollisionType::SOUTH) {
-            velocity.y = 0;
-        }
-
         shellTimer += delta;
         updateCollisionBoxes();
 
@@ -57,10 +53,6 @@ void YellowKoopaTroopa::update(const std::vector<Character*>& characterList) {
     else if (state == SpriteState::SHELL_MOVING) {
         float dir = isFacingLeft ? -1.0f : 1.0f;
         position.x += shellSpeed * dir * delta;
-
-        if (checkCollision(collidables) != CollisionType::NONE) {
-            isFacingLeft = !isFacingLeft;
-        }
 
         updateCollisionBoxes();
     }

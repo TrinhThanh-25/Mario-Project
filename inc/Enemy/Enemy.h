@@ -34,6 +34,7 @@ public:
     MoveType movetype;
     void setMoveType(MoveType type) { movetype = type; }
     MoveType getMoveType() const { return movetype; }
+    EnemyType getType();
 
     // CollisionType checkCollision(const std::vector<Sprite*>& collidables);
 
@@ -48,6 +49,27 @@ protected:
     Vector2 diePosition;
 
     bool isFacingLeft;
+    EnemyType type;
 };
 
 #endif
+
+enum class EnemyType {
+    BANZAI_BILL,
+    BLUE_KOOPA_TROOPA,
+    BOB_OMB,
+    BULLET_BILL,
+    BUZZY_BEETLE,
+    FLYING_GOOMBA,
+    GOOMBA,
+    GREEN_KOOPA_TROOPA,
+    JUMPING_PIRANHA_PLANT,
+    MONTY_MOLE,
+    MUMMY_BEETLE,
+    MUNCHER,
+    PIRANHA_PLANT,
+    RED_KOOPA_TROOPA,
+    REX,
+    SWOOPER,
+    YELLOW_KOOPA_TROOPA
+};

@@ -130,3 +130,7 @@ void Enemy::collisionSound(){
 
 }
 
+EnemyType Enemy::getType(){
+    return type;
+}
+
