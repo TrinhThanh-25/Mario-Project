@@ -107,7 +107,7 @@ void ExclamationBlock::doHit(Character& character, Map* map) {
 		PlaySound(ResourceManager::getSound()["Coin"]);
 		hit = true;
 		coinAnimationRunning = true;
-		//mario.addPoints(earnedPoints);
-		//mario.addCoin(earnedPoints);
+		character.getGameHud()->addPoints(earnedPoints);
+		character.getGameHud()->addCoins(earnedPoints);
 	}
 }

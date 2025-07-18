@@ -1,0 +1,19 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/CMake/share/cmake-4.0/Modules/CPack.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/CPackComponent.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/FindOpenGL.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/FindPackageHandleStandardArgs.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/FindPackageMessage.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/GNUInstallDirs.cmake
+C:/Program Files/CMake/share/cmake-4.0/Templates/CPackConfig.cmake.in
+C:/Users/Huyen/Downloads/Mario-Project/raylib/cmake/CompileDefinitions.cmake
+C:/Users/Huyen/Downloads/Mario-Project/raylib/cmake/GlfwImport.cmake
+C:/Users/Huyen/Downloads/Mario-Project/raylib/cmake/InstallConfigurations.cmake
+C:/Users/Huyen/Downloads/Mario-Project/raylib/cmake/JoinPaths.cmake
+C:/Users/Huyen/Downloads/Mario-Project/raylib/cmake/LibraryConfigurations.cmake
+C:/Users/Huyen/Downloads/Mario-Project/raylib/cmake/LibraryPathToLinkerFlags.cmake
+C:/Users/Huyen/Downloads/Mario-Project/raylib/cmake/PackConfigurations.cmake
+C:/Users/Huyen/Downloads/Mario-Project/raylib/cmake/PopulateConfigVariablesLocally.cmake
+C:/Users/Huyen/Downloads/Mario-Project/raylib/cmake/raylib-config-version.cmake
+C:/Users/Huyen/Downloads/Mario-Project/raylib/raylib.pc.in
+C:/Users/Huyen/Downloads/Mario-Project/raylib/src/CMakeLists.txt

@@ -109,8 +109,8 @@ void InvisibleBlock::doHit(Character& character, Map *map) {
         hit = true;
         coinAnimationRunning = true;
 		coinY = position.y;
-		//mario.addCoins( 1 );
-		//mario.addPoints( earnedPoints );
+		character.getGameHud()->addPoints(earnedPoints);
+		character.getGameHud()->addCoins(earnedPoints);
 		setState(SpriteState::IDLE); // Set the block to idle state after being hit
     }
 }
