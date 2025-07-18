@@ -1,15 +1,10 @@
 #include "Item/Item.h"
-
-Item::Item() {}
-
-Item::Item(Vector2 position, Vector2 size, Color color): Sprite(position,size,color),beingHitFrameTime(0), 
-beingHitFrameAcum(0), maxBeingHitFrame(0) , currentBeingHitFrame(0), pointFrameAccum(0), pointFrameTime(0), pauseGameWhenHit(false)
-{
-}
+#include "Game/World.h"
 
 Item::Item(Vector2 position, Vector2 size, Vector2 vel, Color color, float FrameTime, int MaxFrame, Direction direction, float HitFrameTime, int maxHitFrame, bool pause):
-Sprite(position,size,color,vel,frameTime,maxFrame,direction), beingHitFrameTime(HitFrameTime), maxBeingHitFrame(maxHitFrame), pauseGameWhenHit(pause)
+Sprite(position,size,vel,color,frameTime,maxFrame,direction), beingHitFrameTime(HitFrameTime), maxBeingHitFrame(maxHitFrame), pauseGameWhenHit(pause)
 {
+    this->setState(SpriteState::ACTIVE);
 }
 
 Item::~Item()
@@ -17,6 +12,12 @@ Item::~Item()
     Sprite::~Sprite();
 }
 
+void Item::update()
+{
+}
+void Item::draw()
+{
+}
 bool Item::isPausedGameWhenBeingHit()
 {
     return pauseGameWhenHit;
@@ -27,22 +28,22 @@ void Item::collisionBlock(Block *block)
     CollisionType type = checkCollision(block);
     switch (type)
     {
-    case WEST:
+    case CollisionType::WEST:
         this->setX(block->getX() + block->getWidth());
         this->setVelocityX(-this->getVelocityX());
         updateCollisionBoxes();
         break;
-    case EAST:
+    case CollisionType::EAST:
         this->setX(block->getX() - this->getWidth());
         this->setVelocityX(-this->getVelocityX());
         updateCollisionBoxes();
         break;
-    case NORTH:
+    case CollisionType::NORTH:
         break;
-    case SOUTH:
+    case CollisionType::SOUTH:
         this->setVelocityY(0);
         this->setY(block->getY() - this->getHeight());
-        //collisionSouth(World::getCharacters());
+        collisionSouth(nullptr);
         updateCollisionBoxes();
         break;
     default:
@@ -55,22 +56,22 @@ void Item::collisionTile(Tile* tile)
     CollisionType type = checkCollision(tile);
     switch (type)
     {
-    case WEST:
+    case CollisionType::WEST:
         this->setX(tile->getX() + tile->getWidth());
         this->setVelocityX(-this->getVelocityX());
         updateCollisionBoxes();
         break;
-    case EAST:
+    case CollisionType::EAST:
         this->setX(tile->getX() - this->getWidth());
         this->setVelocityX(-this->getVelocityX());
         updateCollisionBoxes();
         break;
-    case NORTH:
+    case CollisionType::NORTH:
         break;
-    case SOUTH:
+    case CollisionType::SOUTH:
         this->setVelocityY(0);
         this->setY(tile->getY() - this->getHeight());
-        //collisionSouth
+        collisionSouth(nullptr);
         updateCollisionBoxes();
         break;
     default:
@@ -85,13 +86,17 @@ void Item::collisionCharacter(Character *character)
             this->setState(SpriteState::HIT);
             this->playCollisionSound();
             if (this->isPausedGameWhenBeingHit()) {
-                // Pause the game
+                character->getWorld()->pausWorld(true, true);
             }
             this->updateCharacter(character);
         } 
-        /*Fall out of the map
-        if (this->getY() > character->getWorld()->getMap()->getHeight()) {
+        if (this->getY() > character->getMap()->getHeight()) {
             this->setState(SpriteState::TO_BE_REMOVED);
-        }*/
+        }
     }
+}
+
+ItemType Item::getType()
+{
+    return type;
 }

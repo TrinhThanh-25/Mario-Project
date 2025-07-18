@@ -123,11 +123,11 @@ void PlayingState::update() {
                 b->update();
             }
             for (auto& e : backEnemy) {
-                e->update();
+                //e->update();
                 // follow character
             }
             for (auto& e : frontEnemy) {
-                e->update();
+                //e->update();
                 // follow character
             }
             for (auto& i : item) {
@@ -140,34 +140,78 @@ void PlayingState::update() {
                 for (auto& character : characters) {
                     character->collisionTile(t);
                 }
-                // enemy x tile
-                // item x tile
+                for (auto& i : item) {
+                    i->collisionTile(t);
+                }
+                for (auto& e : backEnemy) {
+                    e->collisionTile(t);
+                }
+                for (auto& e : frontEnemy) {
+                    e->collisionTile(t);
+                }
             }
             for (auto& b : block) {
                 for (auto& character : characters) {
                     character->collisionBlock(b);
                 }
-                // enemy x block
-                // item x block
+                for (auto& i : item) {
+                    i->collisionBlock(b);
+                }
+                for (auto& e : backEnemy) {
+                    e->collisionBlock(b);
+                }
+                for (auto& e : frontEnemy) {
+                    e->collisionBlock(b);
+                }
             }
-            // item x character
-            // delete removed item
-
-            // static item x character
-            // delete removed static item
-
+            for (auto& i : item) {
+                for (auto& character : characters) {
+                    i->collisionCharacter(character);
+                }
+            }
+            for (int i = 0; i < item.size(); ++i) {
+                if (item[i]->getState() == SpriteState::TO_BE_REMOVED) {
+                    delete item[i];
+                    item.erase(item.begin() + i);
+                    --i;
+                }
+            }
+            for (auto& i : staticItem) {
+                for (auto& character : characters) {
+                    i->collisionCharacter(character);
+                }
+            }
+            for (int i = 0; i < staticItem.size(); ++i) {
+                if (staticItem[i]->getState() == SpriteState::TO_BE_REMOVED) {
+                    delete staticItem[i];
+                    staticItem.erase(staticItem.begin() + i);
+                    --i;
+                }
+            }
             for (auto& e : backEnemy) {
                 for (auto& character : characters) {
                     character->collisionEnemy(e);
                 }
             }
-            // delete removed back enemy
+            for (int i = 0; i < backEnemy.size(); ++i) {
+                if (backEnemy[i]->getState() == SpriteState::TO_BE_REMOVED) {
+                    delete backEnemy[i];
+                    backEnemy.erase(backEnemy.begin() + i);
+                    --i;
+                }
+            }
             for (auto& e : frontEnemy) {
                 for (auto& character : characters) {
                     character->collisionEnemy(e);
                 }
             }
-            // delete removed front enemy
+            for (int i = 0; i < frontEnemy.size(); ++i) {
+                if (frontEnemy[i]->getState() == SpriteState::TO_BE_REMOVED) {
+                    delete frontEnemy[i];
+                    frontEnemy.erase(frontEnemy.begin() + i);
+                    --i;
+                }
+            }
         }
     }
     else if (isOneCharactersDead()) {

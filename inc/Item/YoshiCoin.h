@@ -8,7 +8,7 @@ private:
     int points;
 public:
     YoshiCoin(Vector2 position, Vector2 size, Color color, int points);
-    ~YoshiCoin() override;
+    ~YoshiCoin() override = default;
 
     void update() override;
         void updateWhenActive(float timeElapsed) override;

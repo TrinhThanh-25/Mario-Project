@@ -2,8 +2,10 @@
 #define QUESTION_ONE_UP_MUSHROOM_BLOCK_H
 
 #include "Block/Block.h"
-#include "Game/Map.h"
 #include "Character/Character.h"
+
+class Map;
+class Item;
 
 class QuestionOneUpMushroomBlock : public Block {
 public:
@@ -22,4 +24,4 @@ private:
 	Map* map;
 };
 
-#endif // QUESTION_ONE_UP_MUSHROOM_BLOCK_H
+#endif

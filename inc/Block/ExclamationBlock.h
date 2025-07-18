@@ -3,7 +3,6 @@
 
 #include "Block/Block.h"
 
-
 class ExclamationBlock : public Block {
 private:
 	float coinAnimationTime;

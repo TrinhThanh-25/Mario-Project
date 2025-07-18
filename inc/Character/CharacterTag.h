@@ -5,7 +5,7 @@
 #include "string"
 #include "Character/CharacterType.h"
 
-enum CharacterName {
+enum class CharacterName {
     MARIO,
     LUIGI
 };

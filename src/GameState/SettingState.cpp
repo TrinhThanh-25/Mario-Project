@@ -25,13 +25,13 @@ void SettingState::update() {
     }
     else if(returnButton.isPressed()) {
         if(stateBeforeSetting != GameStateType::TITLE_SCREEN) {
-            SaveGame::saveGame(world);
+            SaveGame::saveGame(*world);
         }
         world->setGameState(new TitleScreenState(world));
     }
     else if(exitButton.isPressed()) {
         if(stateBeforeSetting != GameStateType::TITLE_SCREEN) {
-            SaveGame::saveGame(world);
+            SaveGame::saveGame(*world);
         }
         CloseWindow();
     }

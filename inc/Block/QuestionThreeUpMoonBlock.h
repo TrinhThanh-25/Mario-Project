@@ -1,6 +1,11 @@
+#ifndef QUESTIONTHREEUPMOONBLOCK_H
+#define QUESTIONTHREEUPMOONBLOCK_H
+
 #include "Block/Block.h"
-#include "Game/Map.h"
 #include "Character/Character.h"
+
+class Map;
+class Item;
 
 class QuestionThreeUpMoonBlock : public Block {
 public:
@@ -18,3 +23,5 @@ private:
 	float itemMinY;
 	Map* map;
 };
+
+#endif 

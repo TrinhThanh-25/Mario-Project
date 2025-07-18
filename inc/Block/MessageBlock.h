@@ -5,6 +5,7 @@
 #include "Game/Map.h"
 #include "Character/Character.h"
 #include <string>
+
 class MessageBlock : public Block {
 private:
 	std::string message;
@@ -24,4 +25,4 @@ public:
 	void doHit(Character& character, Map* map) override;
 };
 
-#endif // MESSAGE_BLOCK_H
+#endif
