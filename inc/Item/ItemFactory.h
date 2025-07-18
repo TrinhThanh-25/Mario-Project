@@ -11,16 +11,6 @@
 #include "OneUpMushroom.h"
 #include "CourseClearToken.h"
 
-enum class ItemType {
-    COIN,
-    MUSHROOM,
-    FLOWER,
-    STAR,
-    YOSHI_COIN,
-    THREE_UP_MOON,
-    ONE_UP_MUSHROOM,
-    COURSE_CLEAR_TOKEN
-};
 
 enum class Source {
     BLOCK,

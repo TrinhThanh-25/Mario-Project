@@ -27,7 +27,7 @@ Item* ItemFactory::createItem(ItemType type, Source source, Vector2 position, Di
             item->setDirection(direction);
             break;
         case ItemType::YOSHI_COIN:
-            item = new YoshiCoin(position, {32, 32}, WHITE, 500); // Assuming default points for Yoshi coin
+            item = new YoshiCoin(position, {32, 32}, WHITE, 400); // Assuming default points for Yoshi coin
             break;
         case ItemType::THREE_UP_MOON:
             item = new ThreeUpMoon(position, {32, 32}, WHITE, 3); // Assuming 3 lives for Three Up Moon
