@@ -88,16 +88,18 @@ void QuestionBlock::draw() {
 		DrawTexture(ResourceManager::getTexture()["Coin" + std::to_string(coinAnimationFrame)],
 			position.x + 4, position.y + coinY, WHITE);
 	}
-	if (stardustAnimationRunning) {
-		DrawTexture(ResourceManager::getTexture()["Stardust" + std::to_string(stardustAnimationFrame)],
-			position.x, position.y - size.y, WHITE);
-	}	
+	//if (stardustAnimationRunning) {
+	//	DrawTexture(ResourceManager::getTexture()["Stardust" + std::to_string(stardustAnimationFrame)],
+	//		position.x, position.y - size.y, WHITE);
+	//}	//chua co stardust texture
 	if (pointsAnimationRunning) {
-		DrawTexture(ResourceManager::getTexture()["Points"],
-			position.x + size.x/2 - ResourceManager::getTexture()["Points"].width / 2,
-			position.y - size.y/2 - ResourceManager::getTexture()["Points"].height - ( 20 * pointsFrameAcum / pointsFrameTime ), WHITE);
+		std::string pointsTexture = "Gui" + std::to_string(earnedPoints);
+		Texture2D& texture = ResourceManager::getTexture()[pointsTexture];
+		DrawTexture(texture,
+			static_cast<int>(position.x + size.x / 2 - texture.width / 2),
+			static_cast<int>(position.y - size.y / 2 - texture.height - (20 * pointsFrameAcum / pointsFrameTime)),
+			WHITE);
 	}
-
 	if (hit) {
 		DrawTexture(ResourceManager::getTexture()["EyesClosed0"], position.x, position.y, WHITE);
 	}
