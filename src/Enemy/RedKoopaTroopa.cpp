@@ -159,7 +159,6 @@ void RedKoopaTroopa::update(const std::vector<Character*>& characterList) {
     }
 }
 
-
 void RedKoopaTroopa::activeWhenMarioApproach(Character& character)
 {
    Enemy::activeWhenMarioApproach(character);

@@ -160,7 +160,7 @@ void MummyBeetle::kickShell(bool faceLeft){
     }
 }
 
-bool MummyBeetle::isShellMoving(){
+bool MummyBeetle::isShellMoving() const {
     return shellMoving;
 }
 

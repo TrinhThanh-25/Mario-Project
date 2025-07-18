@@ -104,7 +104,7 @@ void Enemy::activeWhenMarioApproach(Character& character) {
 }
 
 
-void Enemy::beingHit(){
+void Enemy::beingHit(HitType type) {
     setState(SpriteState::DYING);
     currentDyingFrame = 0;
     dyingFrameAcum = 0.0f;

@@ -7,6 +7,7 @@ Item(position, size, {0, 0}, color, 0.1f, 2, Direction::RIGHT, 0, 0, false), poi
     if (isInInventory) {
         setVelocityY(100);
     }
+    type = ItemType::FLOWER;
 }
 void FireFlower::update()
 {
@@ -30,11 +31,7 @@ void FireFlower::updateWhenActive(float timeElapsed)
     }
 
     if (isInInventory) {
-        // Falling from the inventory
-        //Position
         setY(getY() + getVelocityY() * timeElapsed);
-
-        //Blinking effect
         blinkFrameAccum += timeElapsed;
         if (blinkFrameAccum >= blinkFrameTime) {
             blinkFrameAccum -= blinkFrameTime;
@@ -67,14 +64,18 @@ void FireFlower::draw()
     if (this->getState() == SpriteState::ACTIVE)
     {
         if (isInInventory && appear) {
-            DrawTexture(ResourceManager::getTexture()["FireFlower" + std::to_string(this->getCurrentFrame())], this->getX(), this->getY(), this->getColor());
+            DrawTexture(ResourceManager::getTexture()["FireFlower" + std::to_string(this->curFrame)], this->getX(), this->getY(), this->getColor());
         } else if (!isInInventory) {
-            DrawTexture(ResourceManager::getTexture()["FireFlower" + std::to_string(this->getCurrentFrame())], this->getX(), this->getY(), this->getColor());
+            DrawTexture(ResourceManager::getTexture()["FireFlower" + std::to_string(this->curFrame)], this->getX(), this->getY(), this->getColor());
         }
     }
     else if (this->getState() == SpriteState::HIT)
     {
-        //Draw point floating above the flower
+        // Draw point floating above the flower
+        DrawTexture(ResourceManager::getTexture()["Gui300"],
+                    this->getX() + this->getWidth() / 2 - ResourceManager::getTexture()["Gui300"].width / 2,
+                    this->getY() - ResourceManager::getTexture()["Gui300"].height - (50 * pointFrameAccum / pointFrameTime),
+                    WHITE);
     }
 }
 
@@ -85,8 +86,7 @@ void FireFlower::playCollisionSound()
 
 void FireFlower::updateCharacter(Character *character)
 {
-    /*Add point to the character*/
-
+    character->getGameHud()->addPoints(points);
     CharacterType type = character->getType();
     if (type == CharacterType::SMALL) {
         character->setY(character->getY() - 16); 
@@ -96,18 +96,17 @@ void FireFlower::updateCharacter(Character *character)
         character->setPreviousState(character->getState());
         character->setState(SpriteState::SUPER_TO_FLOWER);
         // ??? if inventory is empty, put mushroom into the inventory ???
-        // CharacterType previousType = character->getPreviousType();
-        // if (previousType == CharacterType::SMALL) {
-        //     PlaySound(ResourceManager::getSound()["StorePowerUpItem"]);
-        //     /*Put Mushroom into the inventory*/
-        // }
+        CharacterType previousType = character->getGameHud()->getPowerUpItem();
+        if (previousType == CharacterType::SMALL) {
+            PlaySound(ResourceManager::getSound()["StorePowerUpItem"]);
+            character->getGameHud()->setPowerUpItem(CharacterType::SUPER);
+        }
     } else if (type == CharacterType::FLOWER) {
-        // ??? if inventory is empty, put flower into the inventory ???
-        // CharacterType previousType = character->getPreviousType();
-        // if (previousType == CharacterType::SMALL || previousType == CharacterType::SUPER) {
-        //     PlaySound(ResourceManager::getSound()["StorePowerUpItem"]);
-        //     /*Put Fireflower into the inventory*/
-        // }
+        CharacterType previousType = character->getGameHud()->getPowerUpItem();
+        if (previousType == CharacterType::SMALL || previousType == CharacterType::SUPER) {
+            PlaySound(ResourceManager::getSound()["StorePowerUpItem"]);
+            character->getGameHud()->setPowerUpItem(CharacterType::FLOWER);
+        }
     }
 }
 

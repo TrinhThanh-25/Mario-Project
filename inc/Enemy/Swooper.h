@@ -17,6 +17,7 @@ public:
     void collisionTile(Tile* tile);
 
 private:
+    Vector2 startPosition;          // Vị trí bắt đầu rơi
     bool isDropping;            // Bắt đầu rơi xuống chưa
     bool isFlyingHorizontally;  // Bay ngang sau khi rơi xuống
     float dropSpeed;            // Tốc độ rơi
