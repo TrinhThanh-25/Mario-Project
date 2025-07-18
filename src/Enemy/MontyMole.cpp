@@ -11,14 +11,12 @@ MontyMole::MontyMole(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;   
 }
-    
-MontyMole::~MontyMole(){}
 
 void MontyMole::draw() {
     std::string textureKey;
     int frame = (int)(GetTime() * 6) % 2;
 
-    if (state == SpriteState::ACTIVE) {
+    if (state == SpriteState::ACTIVE && hasEmerge) {
         if (isFacingLeft) {
             textureKey = (frame == 0) ? "MontyMole0Left" : "MontyMole1Left";
         } else {
@@ -33,43 +31,67 @@ void MontyMole::draw() {
         DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
 
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
-        DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
+        float angle = sin(GetTime() * 10.0f) * 10.0f;
+
+        Texture2D& guiTex = ResourceManager::getTexture()["Gui100"];
+        DrawTexturePro(
+            guiTex,
+            Rectangle{ 0, 0, (float)guiTex.width, (float)guiTex.height },
+            Rectangle{
+                diePosition.x,
+                diePosition.y - offsetY,
+                (float)guiTex.width,
+                (float)guiTex.height
+            },
+            Vector2{ guiTex.width / 2.0f, guiTex.height / 2.0f },
+            angle,
+            WHITE
+        );
     }
 }
 
 
-void MontyMole::update(Mario& mario, const std::vector<Sprite*>& collidables) {
+
+
+void MontyMole::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
 
-    // Nếu chưa active, kiểm tra khoảng cách với Mario
     if (state == SpriteState::INACTIVE) {
-        activeWhenMarioApproach(mario);
-        return;
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+
+            if (state == SpriteState::ACTIVE && !hasEmerge) {
+                emergeTimer = 0.0f;
+                break;
+            }
+        }
+        if (state == SpriteState::INACTIVE) return;
     }
 
-    if (state == SpriteState::ACTIVE) {
 
-        // Di chuyển
+    if (state == SpriteState::ACTIVE && !hasEmerge) {
+        emergeTimer += delta;
+        if (emergeTimer >= emergeDelay) {
+            hasEmerge = true;
+            // Gán vận tốc sau khi emerge
+            velocity.x = isFacingLeft ? -30.0f : 30.0f;
+            velocity.y = 0.0f;
+        }
+        return; // chưa emerge thì chưa di chuyển
+    }
+
+    if (state == SpriteState::ACTIVE && hasEmerge) {
         velocity.y += 981.0f * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
-        // Cập nhật hướng nhìn
         if (velocity.x != 0) {
             isFacingLeft = velocity.x < 0;
         }
 
-        // Va chạm với map
-        // CollisionType collision = checkCollision(collidables);
-        // if (collision == CollisionType::WEST || collision == CollisionType::EAST) {
-        //     velocity.x = -velocity.x;
-        //     isFacingLeft = velocity.x < 0;
-        // }
-
         updateCollisionBoxes();
     }
 
-    // Đang bị tiêu diệt
     else if (state == SpriteState::DYING) {
         dyingFrameAcum += delta;
         if (dyingFrameAcum >= dyingFrameTime) {
@@ -80,7 +102,6 @@ void MontyMole::update(Mario& mario, const std::vector<Sprite*>& collidables) {
             }
         }
 
-        // Hiệu ứng point bay lên
         pointFrameAcum += delta;
         if (pointFrameAcum >= pointFrameTime) {
             pointFrameAcum = pointFrameTime;
@@ -90,6 +111,8 @@ void MontyMole::update(Mario& mario, const std::vector<Sprite*>& collidables) {
 
 
 void MontyMole::beingHit(HitType type) {
+    if (!hasEmerge) return; // Không thể bị đánh khi chưa lòi lên
+
     switch (type) {
         case HitType::STOMP:
         case HitType::FIREBALL:
@@ -100,27 +123,49 @@ void MontyMole::beingHit(HitType type) {
                 currentDyingFrame = 0;
                 dyingFrameAcum = 0.0f;
                 pointFrameAcum = 0.0f;
-                velocity.x = 0;
-                velocity.y = 0;
+                velocity = {0, 0};
             }
             break;
-
         default:
-            // Các kiểu tấn công khác (nếu có) xử lý sau
             break;
     }
-    // PlaySound(ResourceManager::getSound()["EnemyDefeat"]);
-}
-
-void MontyMole::activeWhenMarioApproach(Mario& mario) {
-    float distance = std::abs(mario.getPosition().x - position.x);
-    if (distance < 200.0f) {
-        setState(SpriteState::ACTIVE);
-    }
 }
 
 
+void MontyMole::activeWhenMarioApproach(Character& character) {
+    Enemy::activeWhenMarioApproach(character)
+}
 
 void MontyMole::collisionSound(){
 
+}
+
+void MontyMole::collisionTile(Tile* tile) {
+    CollisionType col = checkCollision(tile);
+
+    Enemy::collisionTile(tile);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+}
+
+void MontyMole::collisionBlock(Block* block) {
+    CollisionType col = checkCollision(block);
+
+    Enemy::collisionBlock(block);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
 }

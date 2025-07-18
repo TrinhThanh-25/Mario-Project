@@ -4,13 +4,21 @@
 BulletBill::BulletBill(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     : Enemy(pos, dim, vel, color)
 {
-    setState(SpriteState::ACTIVE);             // Luôn bắt đầu hoạt động
+    setState(SpriteState::INACTIVE);             // Luôn bắt đầu hoạt động
     isFacingLeft = vel.x < 0;                  // Xác định hướng bay
     velocity = vel;                            // Không thay đổi trong quá trình bay
 }
 
     
-void BulletBill::update(Mario& mario, const std::vector<Sprite*>& collidables){
+void BulletBill::update(const std::vector<Character*>& characterList){
+    if (state == SpriteState::INACTIVE) {
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+        }
+        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
+    }
+    
     float delta = GetFrameTime();
 
     if (state == SpriteState::ACTIVE) {
@@ -50,11 +58,26 @@ void BulletBill::draw(){
     DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
 
     if (state == SpriteState::DYING) {
-
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
-        DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
+        float angle = sin(GetTime() * 10.0f) * 10.0f;
+
+        Texture2D& guiTex = ResourceManager::getTexture()["Gui100"];
+        DrawTexturePro(
+            guiTex,
+            Rectangle{ 0, 0, (float)guiTex.width, (float)guiTex.height },
+            Rectangle{
+                diePosition.x,
+                diePosition.y - offsetY,
+                (float)guiTex.width,
+                (float)guiTex.height
+            },
+            Vector2{ guiTex.width / 2.0f, guiTex.height / 2.0f },
+            angle,
+            WHITE
+        );
     }
 }
+
     
 void BulletBill::beingHit(HitType type){
     if (type == HitType::STOMP){
@@ -71,6 +94,28 @@ void BulletBill::beingHit(HitType type){
     }
 }
     
-void BulletBill::activeWhenMarioApproach(Mario& mario) {
+void BulletBill::activeWhenMarioApproach(Character& character){
+    Enemy::activeWhenMarioApproach(character);
+}
 
+void BulletBill::collisionTile(Tile* tile) {
+    CollisionType col = checkCollision(tile);
+
+    // Gọi xử lý gốc để vẫn giữ va chạm đất/trần
+    Enemy::collisionTile(tile);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        setState(SpriteState::TO_BE_REMOVED);
+    }
+}
+
+void BulletBill::collisionBlock(Block* block) {
+    CollisionType col = checkCollision(block);
+
+    // Gọi xử lý gốc để vẫn giữ va chạm đất/trần
+    Enemy::collisionBlock(block);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        setState(SpriteState::TO_BE_REMOVED);
+    }
 }

@@ -93,7 +93,16 @@ void Enemy::collisionTile(Tile* tile) {
 
 
 
-void Enemy::activeWhenMarioApproach(Mario& mario){}
+void Enemy::activeWhenMarioApproach(Character& character) {
+    if (state != SpriteState::INACTIVE)
+        return;
+
+    float dx = std::abs(position.x - character.getPosition().x);
+    if (dx <= 3200.0f) {
+        setState(SpriteState::ACTIVE);
+    }
+}
+
 
 void Enemy::beingHit(HitType type) {
     setState(SpriteState::DYING);
@@ -119,5 +128,9 @@ void Enemy::followTheLeader(Sprite* leader){
 
 void Enemy::collisionSound(){
 
+}
+
+EnemyType Enemy::getType(){
+    return type;
 }
 

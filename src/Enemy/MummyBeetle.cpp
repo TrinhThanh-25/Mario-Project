@@ -11,14 +11,18 @@ MummyBeetle::MummyBeetle(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     shellSpeed = 150.0f;
     setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;   
+    shellMoving = false;
     }
 
-void MummyBeetle::update(Mario& mario, const std::vector<Sprite*>& collidables) {
+void MummyBeetle::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
 
     if (state == SpriteState::INACTIVE) {
-        activeWhenMarioApproach(mario);
-        return;
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+        }
+        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
     }
 
     if (state == SpriteState::ACTIVE) {
@@ -26,10 +30,6 @@ void MummyBeetle::update(Mario& mario, const std::vector<Sprite*>& collidables) 
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
-        // if (checkCollision(collidables) != CollisionType::NONE) {
-        //     velocity.x = -velocity.x;
-        //     isFacingLeft = velocity.x < 0;
-        // }
 
         updateCollisionBoxes();
     }
@@ -79,22 +79,38 @@ void MummyBeetle::draw(){
     if (state == SpriteState::ACTIVE) {
         textureKey = isFacingLeft ? (frame == 0 ? "MummyBeetle0Left" : "MummyBeetle1Left")
                                   : (frame == 0 ? "MummyBeetle0Right" : "MummyBeetle1Right");
-        
     } 
+
     DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
+
     // else if (state == SpriteState::SHELL || state == SpriteState::SHELL_MOVING || state == SpriteState::DYING) {
     //     textureKey = isFacingLeft ? "BuzzyBeetleShellLeft" : "BuzzyBeetleShellRight";
     // }
 
-
     if (state == SpriteState::DYING) {
-
         std::string dyingKey = isFacingLeft ? "MummyBeetle1Left" : "MummyBeetle1Right";
         DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
+
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
-        DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
+        float angle = sin(GetTime() * 10.0f) * 10.0f;
+
+        Texture2D& guiTex = ResourceManager::getTexture()["Gui100"];
+        DrawTexturePro(
+            guiTex,
+            Rectangle{0, 0, (float)guiTex.width, (float)guiTex.height},
+            Rectangle{
+                diePosition.x,
+                diePosition.y - offsetY,
+                (float)guiTex.width,
+                (float)guiTex.height
+            },
+            Vector2{guiTex.width / 2.0f, guiTex.height / 2.0f},
+            angle,
+            WHITE
+        );
     }
 }
+
 
 void MummyBeetle::beingHit(HitType type) {
     switch (type) {
@@ -121,6 +137,13 @@ void MummyBeetle::beingHit(HitType type) {
             break;
 
         case HitType::SHELL_KICK:
+            if (state != SpriteState::DYING && state != SpriteState::TO_BE_REMOVED) {
+                setState(SpriteState::DYING);
+                diePosition = position;
+                dyingFrameAcum = 0.0f;
+                pointFrameAcum = 0.0f;
+                shellMoving = false;
+            }
             break;
 
         default:
@@ -141,14 +164,36 @@ bool MummyBeetle::isShellMoving() const {
     return shellMoving;
 }
 
-void MummyBeetle::activeWhenMarioApproach(Mario& mario){
-    if (state != SpriteState::INACTIVE) return;
+void MummyBeetle::activeWhenMarioApproach(Character& character){
+    Enemy::activeWhenMarioApproach(character);
+}
 
-    Vector2 marioPos = mario.getPosition();
-    float dx = fabs(marioPos.x - position.x);
+void MummyBeetle::collisionTile(Tile* tile) {
+    CollisionType col = checkCollision(tile);
 
-    if (dx <= ACTIVATION_RANGE) {
-        setState(SpriteState::ACTIVE);
-        velocity.x = isFacingLeft ? -30.0f : 30.0f;
+    Enemy::collisionTile(tile);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+}
+
+void MummyBeetle::collisionBlock(Block* block) {
+    CollisionType col = checkCollision(block);
+
+    Enemy::collisionBlock(block);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
     }
 }

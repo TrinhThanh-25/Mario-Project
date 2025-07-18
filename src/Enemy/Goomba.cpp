@@ -5,11 +5,9 @@
     
 Goomba::Goomba(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     : Enemy(pos, dim, vel, color){
-    setState(SpriteState::ACTIVE);
+    setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;   
 }
-    
-Goomba::~Goomba(){}
 
 
 void Goomba::draw(){
@@ -19,8 +17,7 @@ void Goomba::draw(){
         int frame = (int)(GetTime() * 6) % 2; 
         if (isFacingLeft){
             textureKey = (frame == 0) ? "Goomba0Left" : "Goomba1Left";
-        }
-        else {
+        } else {
             textureKey = (frame == 0) ? "Goomba0Right" : "Goomba1Right";
         }
         DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
@@ -31,17 +28,36 @@ void Goomba::draw(){
         DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
 
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
-        DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
+        float angle = sin(GetTime() * 10.0f) * 10.0f;
+
+        Texture2D& guiTex = ResourceManager::getTexture()["Gui100"];
+        DrawTexturePro(
+            guiTex,
+            Rectangle{ 0, 0, (float)guiTex.width, (float)guiTex.height },
+            Rectangle{
+                diePosition.x,
+                diePosition.y - offsetY,
+                (float)guiTex.width,
+                (float)guiTex.height
+            },
+            Vector2{ guiTex.width / 2.0f, guiTex.height / 2.0f },
+            angle,
+            WHITE
+        );
     }
 }
 
-void Goomba::update(Mario& mario, const std::vector<Sprite*>& collidables) {
+
+void Goomba::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
 
     if (state == SpriteState::INACTIVE) {
-        activeWhenMarioApproach(mario);
-        return;
-    }
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+        }
+        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
+    }   
 
     if (state == SpriteState::ACTIVE) {
         // Cập nhật hướng nhìn
@@ -55,13 +71,6 @@ void Goomba::update(Mario& mario, const std::vector<Sprite*>& collidables) {
         // Di chuyển
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
-
-        // Va chạm với map
-        // CollisionType collision = checkCollision(collidables);
-        // if (collision == CollisionType::WEST || collision == CollisionType::EAST) {
-        //     velocity.x = -velocity.x;
-        //     isFacingLeft = velocity.x < 0;
-        // }
 
         updateCollisionBoxes();
     }
@@ -112,4 +121,36 @@ void Goomba::collisionSound(){
 
 }
     
-void Goomba::activeWhenMarioApproach(Mario& mario){}
+void Goomba::activeWhenMarioApproach(Character& character){
+    Enemy::activeWhenMarioApproach(character);
+}
+
+void Goomba::collisionTile(Tile* tile) {
+    CollisionType col = checkCollision(tile);
+
+    Enemy::collisionTile(tile);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+}
+
+void Goomba::collisionBlock(Block* block) {
+    CollisionType col = checkCollision(block);
+
+    Enemy::collisionBlock(block);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+}

@@ -8,10 +8,10 @@ class BanzaiBill : public Enemy {
 public:
     BanzaiBill(Vector2 pos, Vector2 dim, Vector2 vel, Color color);
 
-    void update(Mario& mario, const std::vector<Sprite*>& collidables) override;
+    void update(const std::vector<Character*>& characterList) override;
     void draw() override;
     void beingHit(HitType type) override;
-    void activeWhenMarioApproach(Mario& mario) override;
+    activeWhenMarioApproach(Character& character) override;
 
 private:
     float maxLifeTime;    // Tự biến mất sau 1 khoảng thời gian

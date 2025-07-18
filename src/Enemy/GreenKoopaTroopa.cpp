@@ -12,12 +12,20 @@ GreenKoopaTroopa::GreenKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color 
     shellTimer = 0.0f;
     shellMoving = false;
 
-    setState(SpriteState::ACTIVE);
+    setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;
 }
 
-void GreenKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collidables) {
+void GreenKoopaTroopa::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
+
+    if (state == SpriteState::INACTIVE) {
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+        }
+        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
+    }
 
     if (state == SpriteState::ACTIVE) {
 
@@ -98,9 +106,25 @@ void GreenKoopaTroopa::draw() {
         DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
 
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
-        DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
+        float angle = sin(GetTime() * 10.0f) * 10.0f;
+
+        Texture2D& guiTex = ResourceManager::getTexture()["Gui100"];
+        DrawTexturePro(
+            guiTex,
+            Rectangle{ 0, 0, (float)guiTex.width, (float)guiTex.height },
+            Rectangle{
+                diePosition.x,
+                diePosition.y - offsetY,
+                (float)guiTex.width,
+                (float)guiTex.height
+            },
+            Vector2{ guiTex.width / 2.0f, guiTex.height / 2.0f },
+            angle,
+            WHITE
+        );
     }
 }
+
 
 void GreenKoopaTroopa::beingHit(HitType type) {
     switch (type) {
@@ -149,8 +173,8 @@ bool GreenKoopaTroopa::isShellMoving() const {
     return shellMoving;
 }
 
-void GreenKoopaTroopa::activeWhenMarioApproach(Mario& mario) {
-    // Green Koopa luôn ACTIVE từ đầu → không cần xử lý gì ở đây
+void GreenKoopaTroopa::activeWhenMarioApproach(Character& character) {
+    Enemy::activeWhenMarioApproach(character);
 }
 
 void GreenKoopaTroopa::followTheLeader(Sprite* leader) {
@@ -168,3 +192,32 @@ void GreenKoopaTroopa::followTheLeader(Sprite* leader) {
     }
 }
 
+void GreenKoopaTroopa::collisionTile(Tile* tile) {
+    CollisionType col = checkCollision(tile);
+
+    Enemy::collisionTile(tile);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+}
+
+void GreenKoopaTroopa::collisionBlock(Block* block) {
+    CollisionType col = checkCollision(block);
+
+    Enemy::collisionBlock(block);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+}

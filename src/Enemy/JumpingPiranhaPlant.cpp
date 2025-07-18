@@ -4,7 +4,7 @@
 JumpingPiranhaPlant::JumpingPiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     : Enemy(pos, dim, vel, color) 
 {
-    setState(SpriteState::ACTIVE);              // Luôn hoạt động
+    setState(SpriteState::INACTIVE);              // Luôn hoạt động
     jumpState = JumpingPiranhaState::IDLE;
 
     groundY = pos.y;                            // Mặt ống – vị trí đứng ban đầu
@@ -19,8 +19,16 @@ JumpingPiranhaPlant::JumpingPiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, 
 }
 
     
-void JumpingPiranhaPlant::update(Mario& mario, const std::vector<Sprite*>& collidables) {
+void JumpingPiranhaPlant::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
+
+    if (state == SpriteState::INACTIVE) {
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+        }
+        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
+    }
 
     if (jumpState == JumpingPiranhaState::IDLE) {
         waitTimer += delta;
@@ -101,12 +109,36 @@ void JumpingPiranhaPlant::draw() {
 
     if (state == SpriteState::DYING) {
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
-        DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
+        float angle = sin(GetTime() * 10.0f) * 10.0f;
+
+        Texture2D& guiTex = ResourceManager::getTexture()["Gui100"];
+        DrawTexturePro(
+            guiTex,
+            Rectangle{ 0, 0, (float)guiTex.width, (float)guiTex.height },
+            Rectangle{
+                diePosition.x,
+                diePosition.y - offsetY,
+                (float)guiTex.width,
+                (float)guiTex.height
+            },
+            Vector2{ guiTex.width / 2.0f, guiTex.height / 2.0f },
+            angle,
+            WHITE
+        );
     }
 }
 
 
-void activeWhenMarioApproach(Mario& mario){
 
+void JumpingPiranhaPlant::activeWhenMarioApproach(Character& character){
+    Enemy::activeWhenMarioApproach(character);
 }
 
+
+void JumpingPiranhaPlant::collisionTile(Tile* tile) {
+    Enemy::collisionTile(tile);
+}
+
+void JumpingPiranhaPlant::collisionBlock(Block* block) {
+    Enemy::collisionBlock(block);
+}

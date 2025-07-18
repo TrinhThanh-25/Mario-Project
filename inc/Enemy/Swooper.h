@@ -8,10 +8,13 @@ class Swooper : public Enemy {
 public:
     Swooper(Vector2 pos, Vector2 dim, Vector2 vel, Color color);
 
-    void update(Mario& mario, const std::vector<Sprite*>& collidables) override;
+    void update(const std::vector<Character*>& characterList) override;
     void draw() override;
     void beingHit(HitType type) override;
-    void activeWhenMarioApproach(Mario& mario) override;
+    void activeWhenMarioApproach(Character& character) override;
+
+    void collisionBlock(Block* block);
+    void collisionTile(Tile* tile);
 
 private:
     Vector2 startPosition;          // Vị trí bắt đầu rơi
@@ -20,6 +23,7 @@ private:
     float dropSpeed;            // Tốc độ rơi
     float flySpeed;             // Tốc độ bay ngang
     float activationRangeY;     // Khoảng cách theo chiều dọc để kích hoạt
+    Vector2 startPosition;
 };
 
 #endif

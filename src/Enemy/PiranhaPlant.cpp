@@ -6,7 +6,7 @@ PiranhaPlant::PiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     : Enemy(pos, dim, vel, color)
 {
     // Piranha luôn đứng yên tại chỗ (không cần gravity hay movement)
-    setState(SpriteState::ACTIVE);          // ACTIVE để tham gia vòng lặp update
+    setState(SpriteState::INACTIVE);          // ACTIVE để tham gia vòng lặp update
     piranhaState = PiranhaState::HIDING;
 
     hiddenY = pos.y;                        // Vị trí y khi ẩn hoàn toàn
@@ -35,12 +35,37 @@ void PiranhaPlant::draw() {
 
     if (state == SpriteState::DYING) {
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
-        DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
+        float angle = sin(GetTime() * 10.0f) * 10.0f;
+
+        Texture2D& guiTex = ResourceManager::getTexture()["Gui100"];
+        DrawTexturePro(
+            guiTex,
+            Rectangle{0, 0, (float)guiTex.width, (float)guiTex.height},
+            Rectangle{
+                diePosition.x,
+                diePosition.y - offsetY,
+                (float)guiTex.width,
+                (float)guiTex.height
+            },
+            Vector2{guiTex.width / 2.0f, guiTex.height / 2.0f},
+            angle,
+            WHITE
+        );
     }
 }
 
 
-void PiranhaPlant::update(Mario& mario, const std::vector<Sprite*>& collidables){
+
+void PiranhaPlant::update(const std::vector<Character*>& characterList){
+
+    if (state == SpriteState::INACTIVE) {
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+        }
+        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
+    }
+    
     float delta = GetFrameTime();
     stateTimer += delta;
 
@@ -112,6 +137,14 @@ void PiranhaPlant::collisionSound(){
 
 }
     
-void PiranhaPlant::activeWhenMarioApproach(Mario& mario){
+void PiranhaPlant::activeWhenMarioApproach(Character& character){
+    Enemy::activeWhenMarioApproach(character);
+}
 
+void PiranhaPlant::collisionTile(Tile* tile) {
+    Enemy::collisionTile(tile);
+}
+
+void PiranhaPlant::collisionBlock(Block* block) {
+    Enemy::collisionBlock(block);
 }

@@ -28,8 +28,19 @@ void RedKoopaTroopa::draw() {
         std::string dyingKey = isFacingLeft ? "RedKoopaTroopa1Left" : "RedKoopaTroopa1Right";
         DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
 
+    // Bay lên
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
-        DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
+
+    // Lấp lánh bằng alpha modulate (sin wave)
+        float alpha = 0.5f + 0.5f * sin(GetTime() * 10.0f); // dao động từ 0 → 1
+        Color glowColor = {255, 255, 255, (unsigned char)(255 * alpha)};
+
+        DrawTexture(
+            ResourceManager::getTexture()["Gui100"],
+            diePosition.x,
+            diePosition.y - offsetY,
+            glowColor
+        );
     }
 }
  
@@ -91,12 +102,15 @@ void RedKoopaTroopa::collisionSound(){
 
 }
     
-void RedKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collidables) {
+void RedKoopaTroopa::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
 
     if (state == SpriteState::INACTIVE) {
-        activeWhenMarioApproach(mario);
-        return;
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+        }
+        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
     }
 
     if (state == SpriteState::ACTIVE) {
@@ -119,12 +133,6 @@ void RedKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collidable
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
-        // Va chạm ngang => đổi hướng
-        // CollisionType collision = checkCollision(collidables);
-        // if (collision == CollisionType::WEST || collision == CollisionType::EAST) {
-        //     velocity.x = -velocity.x;
-        //     isFacingLeft = velocity.x < 0;
-        // }
 
         // Cập nhật hướng nhìn
         if (velocity.x != 0) {
@@ -151,12 +159,9 @@ void RedKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collidable
     }
 }
 
-
-void RedKoopaTroopa::activeWhenMarioApproach(Mario& mario) {
-    float distanceX = std::abs(mario.getPosition().x - position.x);
-    if (distanceX < 300.0f) { // tuỳ chỉnh khoảng cách
-        setState(SpriteState::ACTIVE);
-    }
+void RedKoopaTroopa::activeWhenMarioApproach(Character& character)
+{
+   Enemy::activeWhenMarioApproach(character);
 }
 
 void RedKoopaTroopa::followTheLeader(Sprite* leader) {
@@ -175,7 +180,35 @@ void RedKoopaTroopa::followTheLeader(Sprite* leader) {
     }
 }
 
+void RedKoopaTroopa::collisionTile(Tile* tile) {
+    CollisionType col = checkCollision(tile);
 
+    Enemy::collisionTile(tile);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+}
+
+void RedKoopaTroopa::collisionBlock(Block* block) {
+    CollisionType col = checkCollision(block);
+
+    Enemy::collisionBlock(block);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+}
 
 // bool RedKoopaTroopa::isNearEdge() {
 //     float checkOffsetX = isFacingLeft ? -1.0f : dimension.x + 1.0f;
