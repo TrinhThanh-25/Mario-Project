@@ -120,6 +120,10 @@ class Character : public Sprite {
 
         void reset(bool isPowerOff);
         void resetGame();
+
+        GameHud* getGameHud() const;
+        Map* getMap() const;
+        World* getWorld() const;
 };
 
 #endif
