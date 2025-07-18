@@ -9,6 +9,9 @@ FlyingGoomba::FlyingGoomba(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     isFacingLeft = vel.x < 0;   
 }
 
+FlyingGoomba::~FlyingGoomba() {
+    // Destructor logic if needed
+}
 
 void FlyingGoomba::draw(){
     std::string textureKey;

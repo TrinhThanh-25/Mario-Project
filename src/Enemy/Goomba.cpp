@@ -9,6 +9,9 @@ Goomba::Goomba(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     isFacingLeft = vel.x < 0;   
 }
 
+Goomba::~Goomba() {
+    // Destructor logic if needed
+}
 
 void Goomba::draw(){
     std::string textureKey;

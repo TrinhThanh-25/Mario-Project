@@ -12,6 +12,10 @@ MontyMole::MontyMole(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     isFacingLeft = vel.x < 0;   
 }
 
+MontyMole::~MontyMole() {
+    // Destructor logic if needed
+}
+
 void MontyMole::draw() {
     std::string textureKey;
     int frame = (int)(GetTime() * 6) % 2;
@@ -133,7 +137,7 @@ void MontyMole::beingHit(HitType type) {
 
 
 void MontyMole::activeWhenMarioApproach(Character& character) {
-    Enemy::activeWhenMarioApproach(character)
+    Enemy::activeWhenMarioApproach(character);
 }
 
 void MontyMole::collisionSound(){

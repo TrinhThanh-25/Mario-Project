@@ -1,7 +1,7 @@
 #include "Character/Luigi.h"
 
 Luigi::Luigi(ModePlayer mode, Vector2 pos, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed) :
-    Character("Luigi", mode, pos, {32, 44}, vel, color, speedX, maxSpeedX, jumpSpeed) {
+    Character(NamePlayer::LUIGI, mode, pos, {32, 44}, vel, color, speedX, maxSpeedX, jumpSpeed) {
 }
 
 Luigi::~Luigi() {

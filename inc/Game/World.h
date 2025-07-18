@@ -8,7 +8,7 @@
 #include "Game/Map.h"
 #include "GameState/GameState.h"
 #include "Game/GameLoop.h"
-#include "Game/GameHud.h"
+#include "GUI/GameHud.h"
 #include <vector>
 #include <string>
 

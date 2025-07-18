@@ -7,8 +7,9 @@ RedKoopaTroopa::RedKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color colo
     isFacingLeft = vel.x < 0;   
 }
     
-RedKoopaTroopa::~RedKoopaTroopa(){}
+RedKoopaTroopa::~RedKoopaTroopa(){
 
+}
     
 void RedKoopaTroopa::draw() {
     std::string textureKey;
@@ -210,14 +211,13 @@ void RedKoopaTroopa::collisionBlock(Block* block) {
     }
 }
 
-// bool RedKoopaTroopa::isNearEdge() {
-//     float checkOffsetX = isFacingLeft ? -1.0f : dimension.x + 1.0f;
-//     Vector2 checkPos = {
-//         position.x + checkOffsetX,
-//         position.y + dimension.y + 1.0f
-//     };
+bool RedKoopaTroopa::isNearEdge() {
+    return true;
+    // float checkOffsetX = isFacingLeft ? -1.0f : dimension.x + 1.0f;
+    // Vector2 checkPos = {
+    //     position.x + checkOffsetX,
+    //     position.y + dimension.y + 1.0f
+    // };
 
-//     return !world->getMap()->isSolidTileAt(checkPos);
-// }
-
-
+    // return !world->getMap()->isSolidTileAt(checkPos);
+}

@@ -3,7 +3,7 @@
 
 #include "GameState/GameState.h"
 #include "Game/World.h"
-#include "Common/Button.h"
+#include "GUI/Button.h"
 #include "Character/CharacterTag.h"
 
 class ChooseCharacterState : public GameState {

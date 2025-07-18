@@ -19,6 +19,10 @@ Enemy::Enemy(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
 
 Enemy::~Enemy(){}
 
+void Enemy::update() {
+    
+}
+
 
 // ======================== COLLISIONBOX ==========================
 Rectangle Enemy::getCollisionBox(){

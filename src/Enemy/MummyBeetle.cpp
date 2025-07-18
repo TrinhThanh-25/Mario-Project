@@ -48,11 +48,6 @@ void MummyBeetle::update(const std::vector<Character*>& characterList) {
     else if (state == SpriteState::SHELL_MOVING) {
         float dir = isFacingLeft ? -1.0f : 1.0f;
         position.x += shellSpeed * dir * delta;
-
-        if (checkCollision(collidables) != CollisionType::NONE) {
-            isFacingLeft = !isFacingLeft;
-        }
-
         updateCollisionBoxes();
     }
 

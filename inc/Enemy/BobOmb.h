@@ -3,6 +3,12 @@
 
 #include "Enemy/Enemy.h"
 
+enum class BobOmbState {
+    IDLE,       // Bình thường
+    IGNITED,    // Đã kích hoạt, đang đếm giờ
+    EXPLODED    // Đã nổ
+};
+
 class BobOmb : public Enemy {
 public:
     BobOmb(Vector2 pos, Vector2 dim, Vector2 vel, Color color);
@@ -21,12 +27,6 @@ private:
     float explosionRadius;    // vùng gây sát thương
     BobOmbState bobombState;
 
-};
-
-enum class BobOmbState {
-    IDLE,       // Bình thường
-    IGNITED,    // Đã kích hoạt, đang đếm giờ
-    EXPLODED    // Đã nổ
 };
 
 

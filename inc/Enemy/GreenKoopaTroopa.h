@@ -8,14 +8,14 @@ class GreenKoopaTroopa : public Enemy {
 public:
     GreenKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color color);
 
-    void update(Character& character) override;
+    void update(const std::vector<Character*>& characterList) override;
     void draw() override;
 
     void beingHit(HitType type) override;
     void kickShell(bool faceLeft);
     bool isShellMoving() const;
 
-    void activeWhenMarioApproach(const std::vector<Character*>& characterList) override;
+    void activeWhenMarioApproach(Character& character) override;
 
     void followTheLeader(Sprite* leader);
 

@@ -512,3 +512,7 @@ void Map::first() {
     mapNumber = 1;
     reset();
 }
+
+void Map::playMusic() {
+    //
+}

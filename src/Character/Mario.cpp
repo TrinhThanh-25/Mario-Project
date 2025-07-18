@@ -1,7 +1,7 @@
 #include "Character/Mario.h"
 
 Mario::Mario(ModePlayer mode, Vector2 pos, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed) :
-    Character("Mario",mode , pos, {32, 40}, vel, color, speedX, maxSpeedX, jumpSpeed) {
+    Character(NamePlayer::MARIO, mode , pos, {32, 40}, vel, color, speedX, maxSpeedX, jumpSpeed) {
 }
 
 Mario::~Mario() {

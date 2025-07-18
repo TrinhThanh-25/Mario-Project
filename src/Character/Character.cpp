@@ -3,9 +3,9 @@
 #include "Game/World.h"
 #include <string>
 
-Character::Character(std::string name, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed) :
+Character::Character(NamePlayer namePlayer, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed) :
     Sprite(pos, dim, vel, color, 0, 2, Direction::RIGHT),
-    name(name),
+    namePlayer(namePlayer),
     modePlayer(mode),
     speed(speedX), 
     maxSpeed(maxSpeedX), 
@@ -84,6 +84,17 @@ void Character::draw() {
     std::unordered_map<std::string, Texture2D>& texture = ResourceManager::getTexture();
     std::string characterType;
     std::string direct;
+
+    std::string name;
+
+    switch (namePlayer) {
+        case NamePlayer::MARIO:
+            name = "Mario";
+            break;
+        case NamePlayer::LUIGI:
+            name = "Luigi";
+            break;
+    }
 
     if(type == CharacterType::SMALL) {
         characterType = "Small" + name;

@@ -11,6 +11,9 @@ public:
     void draw() override;
     void beingHit(HitType type) override;
     void activeWhenMarioApproach(Character& character) override; // Không cần kích hoạt
+
+    void collisionTile(Tile* tile) override;
+    void collisionBlock(Block* block) override;
 };
 
 #endif

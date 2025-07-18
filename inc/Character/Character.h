@@ -18,6 +18,11 @@ enum class ModePlayer{
     SECONDPLAYER
 };
 
+enum class NamePlayer {
+    MARIO,
+    LUIGI
+};
+
 class World;
 class Map;
 class Block;
@@ -30,7 +35,7 @@ class Character : public Sprite {
         World* world;
         Map* map;
         GameHud* gameHud;
-        std::string name;
+        NamePlayer namePlayer;
         ModePlayer modePlayer;
 
         //physics movement
@@ -82,7 +87,7 @@ class Character : public Sprite {
         float activateWidth;
         SpriteState previousState;
     public:
-        Character(std::string name, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed);
+        Character(NamePlayer namePlayer, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed);
         virtual ~Character() override;
 
         void setWorld(World* world);

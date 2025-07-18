@@ -34,7 +34,7 @@ class Sprite : public virtual Drawable {
         virtual ~Sprite() override;
 
         virtual void update() = 0;
-        void draw() override = 0;
+        virtual void draw() override = 0;
         virtual CollisionType checkCollision(Sprite* sprite);
         virtual void updateCollisionBoxes();
 

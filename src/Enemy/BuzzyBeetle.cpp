@@ -12,6 +12,10 @@ BuzzyBeetle::BuzzyBeetle(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     isFacingLeft = vel.x < 0;
 }
 
+BuzzyBeetle::~BuzzyBeetle() {
+    // Destructor logic if needed
+}
+
 void BuzzyBeetle::draw() {
     std::string textureKey;
     int frame = (int)(GetTime() * 6) % 2;

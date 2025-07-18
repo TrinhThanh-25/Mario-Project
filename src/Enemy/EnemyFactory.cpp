@@ -1,4 +1,4 @@
-#include "EnemyFactory.h"
+#include "Enemy/EnemyFactory.h"
 
 Enemy* EnemyFactory::createEnemy(EnemyType type, Vector2 position, Direction direction) {
     Enemy* enemy = nullptr;

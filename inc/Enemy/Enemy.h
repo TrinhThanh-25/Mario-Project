@@ -9,6 +9,25 @@
 #include "Tile/Tile.h"
 #include "Common/HitType.h"
 
+enum class EnemyType {
+    BANZAI_BILL,
+    BLUE_KOOPA_TROOPA,
+    BOB_OMB,
+    BULLET_BILL,
+    BUZZY_BEETLE,
+    FLYING_GOOMBA,
+    GOOMBA,
+    GREEN_KOOPA_TROOPA,
+    JUMPING_PIRANHA_PLANT,
+    MONTY_MOLE,
+    MUMMY_BEETLE,
+    MUNCHER,
+    PIRANHA_PLANT,
+    RED_KOOPA_TROOPA,
+    REX,
+    SWOOPER,
+    YELLOW_KOOPA_TROOPA
+};
 
 class Enemy : public Sprite {
 public:
@@ -17,8 +36,7 @@ public:
     virtual ~Enemy();
 
     virtual void update(const std::vector<Character*>& characterList) = 0;
- = 0;
-
+    virtual void update() override;
     virtual void draw() = 0;
 
     virtual void activeWhenMarioApproach(Character& character);
@@ -28,8 +46,8 @@ public:
 
     Rectangle getCollisionBox();
     // CollisionType checkCollision(Block* block);
-    void collisionBlock(Block* block);
-    void collisionTile(Tile* tile);
+    virtual void collisionBlock(Block* block);
+    virtual void collisionTile(Tile* tile);
 
     MoveType movetype;
     void setMoveType(MoveType type) { movetype = type; }
@@ -53,23 +71,3 @@ protected:
 };
 
 #endif
-
-enum class EnemyType {
-    BANZAI_BILL,
-    BLUE_KOOPA_TROOPA,
-    BOB_OMB,
-    BULLET_BILL,
-    BUZZY_BEETLE,
-    FLYING_GOOMBA,
-    GOOMBA,
-    GREEN_KOOPA_TROOPA,
-    JUMPING_PIRANHA_PLANT,
-    MONTY_MOLE,
-    MUMMY_BEETLE,
-    MUNCHER,
-    PIRANHA_PLANT,
-    RED_KOOPA_TROOPA,
-    REX,
-    SWOOPER,
-    YELLOW_KOOPA_TROOPA
-};

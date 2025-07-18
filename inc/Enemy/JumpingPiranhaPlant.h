@@ -17,6 +17,8 @@ public:
     void draw() override;
     void beingHit(HitType type) override;
     void activeWhenMarioApproach(Character& character) override;
+    void collisionBlock(Block* block) override;
+    void collisionTile(Tile* tile) override;
 
 private:
     JumpingPiranhaState jumpState;
