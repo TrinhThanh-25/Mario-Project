@@ -19,24 +19,6 @@
 #include "QuestionOneUpMushroomBlock.h"
 #include <string>
 
-enum class BlockType {
-		CLOUDBLOCK,
-		EXCLAMATIONBLOCK,
-		EYESCLOSED,
-		EYESOPENED,
-		GLASSBLOCK,
-		INVISIBLEBLOCK,
-		MESSAGEBLOCK,
-		STONEBLOCK,
-		WOODBLOCK,
-		QUESTIONBLOCK,
-		QUESTIONFIREFLOWERBLOCK,
-		QUESTIONMUSHROOMBLOCK,
-		QUESTIONSTARBLOCK,
-		QUESTIONTHREEUPMOONBLOCK,
-		QUESTIONONEUPMUSHROOMBLOCK
-	};
-
 class BlockFactory {
 public:
     static Block* createBlock(BlockType type, Vector2 position, const std::string& message = "");

@@ -11,7 +11,7 @@ QuestionFireFlowerBlock::QuestionFireFlowerBlock(Vector2 pos, Vector2 size, Colo
 	QuestionFireFlowerBlock(pos, size, color, 0.1f, 4) {}
 	
 QuestionFireFlowerBlock::QuestionFireFlowerBlock(Vector2 pos, Vector2 size, Color color, float frameTime, int maxFrames) :
-	Block(pos, size, color, frameTime, maxFrames), item(nullptr), itemVelocityY(0.0f), itemMinY(0.0f), map(nullptr) {}
+	Block(BlockType::QUESTIONFIREFLOWERBLOCK, pos, size, color, frameTime, maxFrames), item(nullptr), itemVelocityY(0.0f), itemMinY(0.0f), map(nullptr) {}
 
 QuestionFireFlowerBlock::~QuestionFireFlowerBlock() {}
 

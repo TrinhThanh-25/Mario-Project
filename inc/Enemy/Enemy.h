@@ -32,7 +32,7 @@ enum class EnemyType {
 class Enemy : public Sprite {
 public:
 
-    Enemy(Vector2 pos, Vector2 dim, Vector2 vel, Color color);
+    Enemy(EnemyType enemyType, Vector2 pos, Vector2 dim, Vector2 vel, Color color);
     virtual ~Enemy();
 
     virtual void update(const std::vector<Character*>& characterList) = 0;
@@ -52,7 +52,7 @@ public:
     MoveType movetype;
     void setMoveType(MoveType type) { movetype = type; }
     MoveType getMoveType() const { return movetype; }
-    EnemyType getType();
+    EnemyType getEnemyType();
 
     // CollisionType checkCollision(const std::vector<Sprite*>& collidables);
 

@@ -4,7 +4,7 @@
 #include "GameState/GameState.h"
 #include "Game/World.h"
 #include "GUI/Button.h"
-#include "Character/CharacterTag.h"
+#include "GUI/CharacterTag.h"
 
 class ChooseCharacterState : public GameState {
     private:

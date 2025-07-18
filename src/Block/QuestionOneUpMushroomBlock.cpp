@@ -11,7 +11,7 @@ QuestionOneUpMushroomBlock::QuestionOneUpMushroomBlock(Vector2 pos, Vector2 size
 	QuestionOneUpMushroomBlock(pos, size, color, 0.1f, 4) {}
 	
 QuestionOneUpMushroomBlock::QuestionOneUpMushroomBlock(Vector2 pos, Vector2 size, Color color, float frameTime, int maxFrames) :
-	Block(pos, size, color, frameTime, maxFrames), item(nullptr), itemVelocityY(0.0f), itemMinY(0.0f), map(nullptr) {}
+	Block(BlockType::QUESTIONONEUPMUSHROOMBLOCK, pos, size, color, frameTime, maxFrames), item(nullptr), itemVelocityY(0.0f), itemMinY(0.0f), map(nullptr) {}
 QuestionOneUpMushroomBlock::~QuestionOneUpMushroomBlock() {}
 void QuestionOneUpMushroomBlock::update() {
 	float deltaTime = GetFrameTime();

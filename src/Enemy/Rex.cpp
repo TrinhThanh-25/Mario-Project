@@ -6,7 +6,7 @@
 #define ACTIVATION_RANGE 300.0f
 
 Rex::Rex(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color), isShrunken(false), shrinkDuration(0.0f) {
+    : Enemy(EnemyType::REX, pos, dim, vel, color), isShrunken(false), shrinkDuration(0.0f) {
     isFacingLeft = vel.x < 0;   
     setState(SpriteState::INACTIVE);
 }

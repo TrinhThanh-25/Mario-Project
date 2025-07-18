@@ -11,7 +11,7 @@ InvisibleBlock::InvisibleBlock(Vector2 pos, Vector2 size, Color color) :
 	InvisibleBlock(pos, size, color, 0.1f, 4) {}
 			
 InvisibleBlock::InvisibleBlock(Vector2 pos, Vector2 size, Color color, float frameTime, int maxFrames) :
-	Block(pos, size, color, frameTime, maxFrames, 10),
+	Block(BlockType::INVISIBLEBLOCK, pos, size, color, frameTime, maxFrames, 10),
 	coinAnimationTime(0.6f),
 	coinAnimationAcum(0.0f),
 	coinFrameAcum(0.0f),

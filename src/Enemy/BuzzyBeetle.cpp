@@ -6,7 +6,7 @@
 #define WAKE_UP_TIME 5.0f // tự bật dậy sau 5s
 
 BuzzyBeetle::BuzzyBeetle(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color), shellMoving(false), shellSpeed(200.0f),
+    : Enemy(EnemyType::BUZZY_BEETLE, pos, dim, vel, color), shellMoving(false), shellSpeed(200.0f),
       shellTimer(0.0f) {
     setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;

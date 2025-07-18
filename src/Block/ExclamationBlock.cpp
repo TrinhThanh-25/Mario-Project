@@ -10,7 +10,7 @@ ExclamationBlock::ExclamationBlock( Vector2 pos, Vector2 size, Color color ) :
     ExclamationBlock( pos, size, color, 0.1, 4 ) {}
 
 ExclamationBlock::ExclamationBlock( Vector2 pos, Vector2 size, Color color, float frameTime, int maxFrames ) :
-    Block( pos, size, color, frameTime, maxFrames ),
+    Block(BlockType::EXCLAMATIONBLOCK, pos, size, color, frameTime, maxFrames ),
     coinAnimationTime( 0.6f ),
     coinAnimationAcum( 0.0f ),
     coinAnimationFrame( 0 ),

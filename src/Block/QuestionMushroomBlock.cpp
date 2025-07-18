@@ -10,7 +10,7 @@
 QuestionMushroomBlock::QuestionMushroomBlock(Vector2 pos, Vector2 size, Color color) :
 	QuestionMushroomBlock(pos, size, color, 0.1f, 4) {}
 QuestionMushroomBlock::QuestionMushroomBlock(Vector2 pos, Vector2 size, Color color, float frameTime, int maxFrames) :
-	Block(pos, size, color, frameTime, maxFrames), item(nullptr), itemVelocityY(0.0f), itemMinY(0.0f), map(nullptr) {}
+	Block(BlockType::QUESTIONMUSHROOMBLOCK, pos, size, color, frameTime, maxFrames), item(nullptr), itemVelocityY(0.0f), itemMinY(0.0f), map(nullptr) {}
 	
 QuestionMushroomBlock::~QuestionMushroomBlock() {}
 

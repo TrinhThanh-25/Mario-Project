@@ -11,7 +11,7 @@ QuestionThreeUpMoonBlock::QuestionThreeUpMoonBlock(Vector2 pos, Vector2 size, Co
 	QuestionThreeUpMoonBlock(pos, size, color, 0.1f, 4) {}
 
 QuestionThreeUpMoonBlock::QuestionThreeUpMoonBlock(Vector2 pos, Vector2 size, Color color, float frameTime, int maxFrames) :
-	Block(pos, size, color, frameTime, maxFrames), item(nullptr), itemVelocityY(0.0f), itemMinY(0.0f), map(nullptr) {}
+	Block(BlockType::QUESTIONTHREEUPMOONBLOCK, pos, size, color, frameTime, maxFrames), item(nullptr), itemVelocityY(0.0f), itemMinY(0.0f), map(nullptr) {}
 
 QuestionThreeUpMoonBlock::~QuestionThreeUpMoonBlock() {}
 

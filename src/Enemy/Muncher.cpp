@@ -2,7 +2,7 @@
 #include "Common/ResourceManager.h"
 
 Muncher::Muncher(Vector2 pos, Vector2 dim, Color color)
-    : Enemy(pos, dim, {0.0}, color){
+    : Enemy(EnemyType::MUNCHER, pos, dim, {0.0}, color){
     setState(SpriteState::INACTIVE); 
 }
 

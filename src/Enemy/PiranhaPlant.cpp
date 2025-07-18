@@ -3,7 +3,7 @@
 
 
 PiranhaPlant::PiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color)
+    : Enemy(EnemyType::PIRANHA_PLANT, pos, dim, vel, color)
 {
     // Piranha luôn đứng yên tại chỗ (không cần gravity hay movement)
     setState(SpriteState::INACTIVE);          // ACTIVE để tham gia vòng lặp update

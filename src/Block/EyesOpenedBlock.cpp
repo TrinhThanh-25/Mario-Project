@@ -8,7 +8,7 @@
 EyesOpenedBlock::EyesOpenedBlock(Vector2 pos, Vector2 size, Color color)
 	: EyesOpenedBlock(pos, size, color, 0.1, 1) {}
 EyesOpenedBlock::EyesOpenedBlock(Vector2 pos, Vector2 size, Color color, float frameTime, int maxFrames)
-	: Block(pos, size, color, frameTime, maxFrames), animationTime(3), animationAccumulated(0) {}
+	: Block(BlockType::EYESOPENED, pos, size, color, frameTime, maxFrames), animationTime(3), animationAccumulated(0) {}
 
 EyesOpenedBlock::~EyesOpenedBlock() = default;
 

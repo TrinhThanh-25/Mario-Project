@@ -6,7 +6,7 @@
 #define WAKE_UP_TIME 5.0f // tự bật dậy sau 5s
 
 MummyBeetle::MummyBeetle(Vector2 pos, Vector2 dim, Vector2 vel, Color color) 
-    : Enemy(pos, dim, vel, color) {
+    : Enemy(EnemyType::MUMMY_BEETLE, pos, dim, vel, color) {
     extraWakeUpTime = 2.0f;
     shellSpeed = 150.0f;
     setState(SpriteState::INACTIVE);

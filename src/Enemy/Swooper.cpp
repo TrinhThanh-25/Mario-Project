@@ -3,7 +3,7 @@
 
 
 Swooper::Swooper(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color) {
+    : Enemy(EnemyType::SWOOPER, pos, dim, vel, color) {
     startPosition = pos;                // Lưu vị trí bắt đầu
     setState(SpriteState::INACTIVE);     // Treo trên trần, chờ Mario đến gần
     isFacingLeft = vel.x < 0;                 

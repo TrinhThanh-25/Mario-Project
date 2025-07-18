@@ -43,15 +43,15 @@ Block* BlockFactory::createBlock(BlockType type, Vector2 position, const std::st
 		case BlockType::QUESTIONMUSHROOMBLOCK:
 			block = new QuestionMushroomBlock(position, size, color);
             break;
-		block = new QuestionStarBlock(position, size, color);
-		break;
-	case BlockType::QUESTIONTHREEUPMOONBLOCK:
-		block = new QuestionThreeUpMoonBlock(position, size, color);
-		break;
-	case BlockType::QUESTIONONEUPMUSHROOMBLOCK:
-		block = new QuestionOneUpMushroomBlock(position, size, color);
-		break;
+		case BlockType::QUESTIONSTARBLOCK:
+			block = new QuestionStarBlock(position, size, color);
+			break;
+		case BlockType::QUESTIONTHREEUPMOONBLOCK:
+			block = new QuestionThreeUpMoonBlock(position, size, color);
+			break;
+		case BlockType::QUESTIONONEUPMUSHROOMBLOCK:
+			block = new QuestionOneUpMushroomBlock(position, size, color);
+			break;
     }
-	
     return block;
 }

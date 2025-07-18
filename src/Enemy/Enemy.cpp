@@ -4,8 +4,9 @@
 #include <algorithm>
 
 // ======================== CONSTRUCTOR / DESTRUCTOR ==========================
-Enemy::Enemy(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
+Enemy::Enemy(EnemyType enemyType, Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     : Sprite(pos, dim, vel, color, 0, 2, Direction::LEFT),
+    type(enemyType),
     dyingFrameAcum(0.0f),
     dyingFrameTime(0.1f),
     maxDyingFrame(2),
@@ -37,7 +38,6 @@ void Enemy::collisionBlock(Block* block){
     case CollisionType::SOUTH:
         position.y = block->getY() - size.y;
         velocity.y = 0;
-        setState(SpriteState::ON_GROUND);
         updateCollisionBoxes();
         break;
     case CollisionType::NORTH:
@@ -65,7 +65,6 @@ void Enemy::collisionTile(Tile* tile) {
         case CollisionType::SOUTH:
             position.y = tile->getY() - size.y;
             velocity.y = 0;
-            setState(SpriteState::ON_GROUND);
             updateCollisionBoxes();
             break;
 
@@ -134,7 +133,7 @@ void Enemy::collisionSound(){
 
 }
 
-EnemyType Enemy::getType(){
+EnemyType Enemy::getEnemyType(){
     return type;
 }
 

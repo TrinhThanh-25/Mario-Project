@@ -1,10 +1,6 @@
 #include "Tile/Tile.h"
 #include "Common/ResourceManager.h"
 
-Tile::Tile(Vector2 position, Vector2 size, std::string nameTexture)
-    : Tile(position, size, nameTexture,TileType::SOLID) {
-};
-
 Tile::Tile(Vector2 position, Vector2 size, std::string nameTexture, TileType type)
     : Sprite(position, size, BLUE), 
     nameTexture(nameTexture), 

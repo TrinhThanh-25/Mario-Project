@@ -8,7 +8,7 @@ MessageBlock::MessageBlock(Vector2 pos, Vector2 size, Color color, std::string m
 	: MessageBlock(pos, size, color, 0, 1, std::move(message)) {}
 
 MessageBlock::MessageBlock(Vector2 pos, Vector2 size, Color color, float frameTime, int maxFrames, std::string message)
-	: Block(pos, size, color, frameTime, maxFrames), message(std::move(message)),
+	: Block(BlockType::MESSAGEBLOCK, pos, size, color, frameTime, maxFrames), message(std::move(message)),
 	moveTime(0.2f), moveAcum(0.0f), moveY(0.0f), hasMoved(false) {}
 
 MessageBlock::~MessageBlock() = default;

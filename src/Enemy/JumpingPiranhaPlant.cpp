@@ -2,7 +2,7 @@
 #include "Common/ResourceManager.h"
 
 JumpingPiranhaPlant::JumpingPiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color) 
+    : Enemy(EnemyType::JUMPING_PIRANHA_PLANT, pos, dim, vel, color) 
 {
     setState(SpriteState::INACTIVE);              // Luôn hoạt động
     jumpState = JumpingPiranhaState::IDLE;

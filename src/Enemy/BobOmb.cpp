@@ -4,7 +4,7 @@
 #include "Enemy/BobOmb.h"
 
 BobOmb::BobOmb(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color) {
+    : Enemy(EnemyType::BOB_OMB, pos, dim, vel, color) {
     
     setState(SpriteState::INACTIVE);
     bobombState = BobOmbState::IDLE;       // BobOmb luôn hoạt động ngay khi xuất hiện
