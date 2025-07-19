@@ -149,3 +149,28 @@ void PiranhaPlant::collisionTile(Tile* tile) {
 void PiranhaPlant::collisionBlock(Block* block) {
     Enemy::collisionBlock(block);
 }
+
+// =========================== SAVE GAME ===========================
+json PiranhaPlant::saveToJson() const {
+    json j = Enemy::saveToJson();
+
+    j["piranhaState"] = static_cast<int>(piranhaState);
+    j["stateTimer"] = stateTimer;
+    j["stateDuration"] = stateDuration;
+    j["riseSpeed"] = riseSpeed;
+    j["hiddenY"] = hiddenY;
+    j["shownY"] = shownY;
+
+    return j;
+}
+
+void PiranhaPlant::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);
+
+    piranhaState = static_cast<PiranhaState>(j["piranhaState"].get<int>());
+    stateTimer = j["stateTimer"].get<float>();
+    stateDuration = j["stateDuration"].get<float>();
+    riseSpeed = j["riseSpeed"].get<float>();
+    hiddenY = j["hiddenY"].get<float>();
+    shownY = j["shownY"].get<float>();
+}

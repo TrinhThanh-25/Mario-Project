@@ -151,3 +151,30 @@ void JumpingPiranhaPlant::collisionTile(Tile* tile) {
 void JumpingPiranhaPlant::collisionBlock(Block* block) {
     Enemy::collisionBlock(block);
 }
+
+// ======================= SAVE GAME =========================
+json JumpingPiranhaPlant::saveToJson() const {
+    json j = Enemy::saveToJson();
+
+    j["jumpState"] = static_cast<int>(jumpState);
+    j["jumpSpeed"] = jumpSpeed;
+    j["gravity"] = gravity;
+    j["waitDuration"] = waitDuration;
+    j["waitTimer"] = waitTimer;
+    j["groundY"] = groundY;
+    j["maxJumpHeight"] = maxJumpHeight;
+
+    return j;
+}
+
+void JumpingPiranhaPlant::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);
+
+    jumpState = static_cast<JumpingPiranhaState>(j["jumpState"].get<int>());
+    jumpSpeed = j["jumpSpeed"].get<float>();
+    gravity = j["gravity"].get<float>();
+    waitDuration = j["waitDuration"].get<float>();
+    waitTimer = j["waitTimer"].get<float>();
+    groundY = j["groundY"].get<float>();
+    maxJumpHeight = j["maxJumpHeight"].get<float>();
+}

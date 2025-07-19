@@ -174,3 +174,21 @@ void MontyMole::collisionBlock(Block* block) {
         velocity.y = 0;
     }
 }
+
+json MontyMole::saveToJson() const {
+    json j = Enemy::saveToJson();
+
+    j["emergeDelay"] = emergeDelay;
+    j["emergeTimer"] = emergeTimer;
+    j["hasEmerge"] = hasEmerge;
+
+    return j;
+}
+
+void MontyMole::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);
+
+    emergeDelay = j["emergeDelay"].get<float>();
+    emergeTimer = j["emergeTimer"].get<float>();
+    hasEmerge = j["hasEmerge"].get<bool>();
+}

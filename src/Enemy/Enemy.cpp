@@ -139,3 +139,33 @@ EnemyType Enemy::getEnemyType(){
 
 // ======================== SAVE GAME ==========================
 
+
+json Enemy::saveToJson() const {
+    json j = Sprite::saveToJson();
+    j["dyingFrameAcum"] = dyingFrameAcum;
+    j["dyingFrameTime"] = dyingFrameTime;
+    j["maxDyingFrame"] = maxDyingFrame;
+    j["currentDyingFrame"] = currentDyingFrame;
+    j["pointFrameAcum"] = pointFrameAcum;
+    j["pointFrameTime"] = pointFrameTime;
+    j["diePosition"] = {diePosition.x, diePosition.y};
+    j["isFacingLeft"] = isFacingLeft;
+    j["type"] = (int)type;
+    return j;
+}
+
+void Enemy::loadFromJson(const json& j){
+    Sprite::loadFromJson(j);
+    dyingFrameAcum = j["dyingFrameAcum"].get<float>();
+    dyingFrameTime = j["dyingFrameTime"].get<float>();
+    maxDyingFrame = (int)j["maxDyingFrame"];
+    currentDyingFrame = (int)j["currentDyingFrame"];
+    pointFrameAcum = j["pointFrameAcum"].get<float>();
+    pointFrameTime = j['pointFrameTime'].get<float>();
+    diePosition = {
+        j["diePosition"][0].get<float>(),
+        j["diePosition"][1].get<float>()
+    };
+    isFacingLeft = j["isFacingLeft"].get<bool>();
+    type = static_cast<EnemyType>(j["type"].get<int>());
+}

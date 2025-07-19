@@ -152,3 +152,21 @@ void Rex::collisionBlock(Block* block) {
         velocity.y = 0;
     }
 }
+
+// =============================== SAVE GAME =================================
+
+json Rex::saveToJson() const {
+    json j = Enemy::saveToJson();
+
+    j["isShrunken"] = isShrunken;
+    j["shrinkDuration"] = shrinkDuration;
+
+    return j;
+}
+
+void Rex::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);
+
+    isShrunken = j["isShrunken"].get<bool>();
+    shrinkDuration = j["shrinkDuration"].get<float>();
+}

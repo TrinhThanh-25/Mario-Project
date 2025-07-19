@@ -225,3 +225,21 @@ void BuzzyBeetle::collisionBlock(Block* block) {
     }
 }
 
+// ========================= SAVE GAME ============================
+json BuzzyBeetle::saveToJson() const {
+    json j = Enemy::saveToJson();  // Gọi hàm cha
+
+    j["shellMoving"] = shellMoving;
+    j["shellSpeed"] = shellSpeed;
+    j["shellTimer"] = shellTimer;
+
+    return j;
+}
+
+void BuzzyBeetle::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);  // Gọi hàm cha
+
+    shellMoving = j["shellMoving"].get<bool>();
+    shellSpeed = j["shellSpeed"].get<float>();
+    shellTimer = j["shellTimer"].get<float>();
+}

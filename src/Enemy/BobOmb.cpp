@@ -172,3 +172,25 @@ void BobOmb::collisionBlock(Block* block) {
         isFacingLeft = velocity.x < 0;
     }
 }
+
+json BobOmb::saveToJson() const {
+    json j = Enemy::saveToJson();  // Gọi hàm cha
+
+    j["isIgnited"] = isIgnited;
+    j["ignitionTimer"] = ignitionTimer;
+    j["maxIgniteTime"] = maxIgniteTime;
+    j["explosionRadius"] = explosionRadius;
+    j["bobombState"] = static_cast<int>(bobombState);  // enum nên lưu dưới dạng int
+
+    return j;
+}
+
+void BobOmb::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);  // Gọi hàm cha
+
+    isIgnited = j["isIgnited"].get<bool>();
+    ignitionTimer = j["ignitionTimer"].get<float>();
+    maxIgniteTime = j["maxIgniteTime"].get<float>();
+    explosionRadius = j["explosionRadius"].get<float>();
+    bobombState = static_cast<BobOmbState>(j["bobombState"].get<int>());  // enum
+}

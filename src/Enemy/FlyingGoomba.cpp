@@ -183,3 +183,22 @@ void FlyingGoomba::collisionBlock(Block* block) {
         velocity.y = 0;
     }
 } 
+
+// ============================= SAVE GAME ============================
+json FlyingGoomba::saveToJson() const {
+    json j = Enemy::saveToJson();  // Gọi hàm cha
+
+    j["jumpTimer"] = jumpTimer;
+    j["jumpInterval"] = jumpInterval;
+    j["jumpSpeed"] = jumpSpeed;
+
+    return j;
+}
+
+void FlyingGoomba::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);  // Gọi hàm cha
+
+    jumpTimer = j["jumpTimer"].get<float>();
+    jumpInterval = j["jumpInterval"].get<float>();
+    jumpSpeed = j["jumpSpeed"].get<float>();
+}

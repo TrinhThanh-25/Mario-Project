@@ -157,3 +157,31 @@ void Swooper::collisionBlock(Block* block){
 void Swooper::collisionTile(Tile* tile){
 
 }
+
+// ========================== SAVE GAME =============================
+json Swooper::saveToJson() const {
+    json j = Enemy::saveToJson();
+
+    j["startPosition"] = { startPosition.x, startPosition.y };
+    j["isDropping"] = isDropping;
+    j["isFlyingHorizontally"] = isFlyingHorizontally;
+    j["dropSpeed"] = dropSpeed;
+    j["flySpeed"] = flySpeed;
+    j["activationRangeY"] = activationRangeY;
+
+    return j;
+}
+
+void Swooper::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);
+
+    startPosition = {
+        j["startPosition"][0].get<float>(),
+        j["startPosition"][1].get<float>()
+    };
+    isDropping = j["isDropping"].get<bool>();
+    isFlyingHorizontally = j["isFlyingHorizontally"].get<bool>();
+    dropSpeed = j["dropSpeed"].get<float>();
+    flySpeed = j["flySpeed"].get<float>();
+    activationRangeY = j["activationRangeY"].get<float>();
+}

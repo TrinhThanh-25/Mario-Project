@@ -230,3 +230,21 @@ bool RedKoopaTroopa::isNearEdge() {
 
     // return !world->getMap()->isSolidTileAt(checkPos);
 }
+
+// =========================== SAVE GAME ====================
+json RedKoopaTroopa::saveToJson() const {
+    json j = Enemy::saveToJson();
+
+    j["shellMoving"] = shellMoving;
+    j["shellSpeed"] = shellSpeed;
+
+    return j;
+}
+
+void RedKoopaTroopa::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);
+
+    shellMoving = j["shellMoving"].get<bool>();
+    shellSpeed = j["shellSpeed"].get<float>();
+}
+
