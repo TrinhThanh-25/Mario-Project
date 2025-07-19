@@ -20,6 +20,9 @@ public:
 
     void collisionBlock(Block* block);
     void collisionTile(Tile* tile);
+
+    json saveToJson() const;
+    void loadFromJson(const json& j);
 private:
     bool isIgnited;           // Đã bị kích hoạt chưa
     float ignitionTimer;      // Thời gian đếm ngược trước khi nổ

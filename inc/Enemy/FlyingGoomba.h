@@ -16,6 +16,9 @@ public:
 
     void collisionBlock(Block* block);
     void collisionTile(Tile* tile);
+
+    json saveToJson() const;
+    void loadFromJson(const json& j);
 private:
     float jumpTimer = 0.0f;
     float jumpInterval = 1.5f; // mỗi 1.5s nhảy 1 lần

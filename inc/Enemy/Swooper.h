@@ -16,6 +16,9 @@ public:
     void collisionBlock(Block* block);
     void collisionTile(Tile* tile);
 
+    json saveToJson() const;
+    void loadFromJson(const json& j);
+
 private:
     Vector2 startPosition;          // Vị trí bắt đầu rơi
     bool isDropping;            // Bắt đầu rơi xuống chưa

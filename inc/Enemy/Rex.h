@@ -17,6 +17,9 @@ public:
     void collisionBlock(Block* block);
     void collisionTile(Tile* tile);
 
+    json saveToJson() const;
+    void loadFromJson(const json& j);
+
 private:
     bool isShrunken;          // Đã bị dẫm 1 lần chưa
     float shrinkDuration;     // Thời gian để giữ trạng thái thu nhỏ (có thể không cần nếu muốn giữ vĩnh viễn)

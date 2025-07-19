@@ -8,6 +8,7 @@
 #include "Block/Block.h"
 #include "Tile/Tile.h"
 #include "Common/HitType.h"
+#include "json.hpp"
 
 enum class EnemyType {
     BANZAI_BILL,
@@ -54,6 +55,9 @@ public:
     MoveType getMoveType() const { return movetype; }
     EnemyType getEnemyType();
 
+    virtual json saveToJson() const;
+    virtual void loadFromJson(const json& j);
+
     // CollisionType checkCollision(const std::vector<Sprite*>& collidables);
 
 
@@ -68,6 +72,7 @@ protected:
 
     bool isFacingLeft;
     EnemyType type;
+    
 };
 
 #endif

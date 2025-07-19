@@ -22,6 +22,9 @@ public:
 
     void collisionBlock(Block* block);
     void collisionTile(Tile* tile);
+
+    json saveToJson() const;
+    void loadFromJson(const json& j);
 private:
     bool shellMoving = false;
     float shellSpeed = 250.0f;
