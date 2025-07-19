@@ -75,3 +75,15 @@ void ThreeUpMoon::updateCharacter(Character *character)
 void ThreeUpMoon::collisionSouth(Character *character)
 {
 }
+void ThreeUpMoon::loadFromJson(const json &j)
+{
+    Item::loadFromJson(j);
+    lives = j.value("lives", 0);
+}
+
+json ThreeUpMoon::saveToJson() const
+{
+    json j = Item::saveToJson();
+    j["lives"] = lives;
+    return j;
+}

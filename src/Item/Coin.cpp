@@ -83,3 +83,16 @@ void Coin::updateCharacter(Character *character)
 void Coin::collisionSouth(Character *character)
 {
 }
+
+json Coin::saveToJson() const
+{
+    json j = Item::saveToJson();
+    j["points"] = points;
+    return j;
+}
+
+void Coin::loadFromJson(const json& j)
+{
+    Item::loadFromJson(j);
+    points = j.value("points", 0);
+}

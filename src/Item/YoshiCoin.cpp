@@ -90,3 +90,14 @@ void YoshiCoin::updateCharacter(Character *character)
 void YoshiCoin::collisionSouth(Character *character)
 {
 }
+void YoshiCoin::loadFromJson(const json &j)
+{
+    Item::loadFromJson(j);
+    points = j.value("points", 0);
+}
+json YoshiCoin::saveToJson() const
+{
+    json j = Item::saveToJson();
+    j["points"] = points;
+    return j;
+}
