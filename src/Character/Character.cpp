@@ -629,3 +629,83 @@ World *Character::getWorld() const
 {
     return world;
 }
+
+json Character::saveToJson() const {
+    json j = Sprite::saveToJson();
+    j["namePlayer"] = static_cast<int>(namePlayer);
+    j["modePlayer"] = static_cast<int>(modePlayer);
+    j["speed"] = speed;
+    j["maxSpeed"] = maxSpeed;
+    j["jumpSpeed"] = jumpSpeed;
+    j["dyingSpeed"] = dyingSpeed;
+    j["isRunning"] = isRunning;
+    j["isDucking"] = isDucking;
+    j["frameTimeWalking"] = frameTimeWalking;
+    j["walkingAcum"] = walkingAcum;
+    j["frameTimeRunning"] = frameTimeRunning;
+    j["walkingBeforeRunningTime"] = walkingBeforeRunningTime;
+    j["walkingBeforeRunningAcum"] = walkingBeforeRunningAcum;
+    j["drawRunning"] = drawRunning;
+    j["invulnerable"] = invulnerable;
+    j["invulnerableTime"] = invulnerableTime;
+    j["invulnerableAcum"] = invulnerableAcum;
+    j["invulnerableBlink"] = invulnerableBlink;
+    j["invincible"] = invincible;
+    j["invincibleTime"] = invincibleTime;
+    j["invincibleAcum"] = invincibleAcum;
+    j["transitionTime"] = transitionTime;
+    j["transitionAcum"] = transitionAcum;
+    j["normalTransitionSteps"] = normalTransitionSteps;
+    j["superToFlowerTransitionSteps"] = superToFlowerTransitionSteps;
+    j["transitionCurrentFrame"] = transitionCurrentFrame;
+    j["transitionCurrentIndex"] = transitionCurrentIndex;
+    j["oldPosition"] = {oldPosition.x, oldPosition.y};
+    j["type"] = static_cast<int>(type);
+    j["fireball"] = json::array();
+    for (const auto& fb : fireball) {
+        j["fireball"].push_back(fb.saveToJson());
+    }
+    j["previousState"] = static_cast<int>(previousState);
+    return j;
+}
+
+void Character::loadFromJson(const json& j) {
+    Sprite::loadFromJson(j);
+    namePlayer = static_cast<NamePlayer>(j["namePlayer"].get<int>());
+    modePlayer = static_cast<ModePlayer>(j["modePlayer"].get<int>());
+    speed = j["speed"].get<float>();
+    maxSpeed = j["maxSpeed"].get<float>();
+    jumpSpeed = j["jumpSpeed"].get<float>();
+    dyingSpeed = j["dyingSpeed"].get<float>();
+    isRunning = j["isRunning"].get<bool>();
+    isDucking = j["isDucking"].get<bool>();
+    frameTimeWalking = j["frameTimeWalking"].get<float>();
+    walkingAcum = j["walkingAcum"].get<float>();
+    frameTimeRunning = j["frameTimeRunning"].get<float>();
+    walkingBeforeRunningTime = j["walkingBeforeRunningTime"].get<float>();
+    walkingBeforeRunningAcum = j["walkingBeforeRunningAcum"].get<float>();
+    drawRunning = j["drawRunning"].get<bool>();
+    invulnerable = j["invulnerable"].get<bool>();
+    invulnerableTime = j["invulnerableTime"].get<float>();
+    invulnerableAcum = j["invulnerableAcum"].get<float>();
+    invulnerableBlink = j["invulnerableBlink"].get<bool>();
+    invincible = j["invincible"].get<bool>();
+    invincibleTime = j["invincibleTime"].get<float>();
+    invincibleAcum = j["invincibleAcum"].get<float>();
+    transitionTime = j["transitionTime"].get<float>();
+    transitionAcum = j["transitionAcum"].get<float>();
+    normalTransitionSteps = j["normalTransitionSteps"].get<int>();
+    superToFlowerTransitionSteps = j["superToFlowerTransitionSteps"].get<int>();
+    transitionCurrentFrame = j["transitionCurrentFrame"].get<int>();
+    transitionCurrentIndex = j["transitionCurrentIndex"].get<int>();
+    oldPosition.x = j["oldPosition"][0].get<float>();
+    oldPosition.y = j["oldPosition"][1].get<float>();
+    type = static_cast<CharacterType>(j["type"].get<int>());
+    fireball.clear();
+    for (const auto& fb : j.at("fireball")) {
+        Fireball fireballInstance;
+        fireballInstance.loadFromJson(fb);
+        fireball.push_back(fireballInstance);
+    }
+    previousState = static_cast<SpriteState>(j["previousState"].get<int>());
+}

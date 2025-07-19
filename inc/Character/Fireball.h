@@ -19,6 +19,9 @@ class Fireball : virtual public Sprite {
         void updatePosition();
         void updateVelocity();
         void updateState();
+
+        json saveToJson() const override;
+        void loadFromJson(const json& j) override;
 };
 
 #endif

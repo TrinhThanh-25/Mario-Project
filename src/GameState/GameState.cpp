@@ -15,3 +15,13 @@ void GameState::exit() {
 GameStateType GameState::getType() const {
     return gameStateType;
 }
+
+json GameState::saveToJson() const {
+    json j;
+    j["gameStateType"] = gameStateType;
+    return j;
+}
+
+void GameState::loadFromJson(const json& j) {
+
+}

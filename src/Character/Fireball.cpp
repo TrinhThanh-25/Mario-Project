@@ -52,3 +52,16 @@ void Fireball::updateState() {
         state = SpriteState::TO_BE_REMOVED;
     }
 }
+
+json Fireball::saveToJson() const {
+    json j = Sprite::saveToJson();
+    j["fireAcum"] = fireAcum;
+    j["fireTime"] = fireTime;
+    return j;
+}
+
+void Fireball::loadFromJson(const json& j) {
+    Sprite::loadFromJson(j);
+    fireAcum = j["fireAcum"];
+    fireTime = j["fireTime"];
+}

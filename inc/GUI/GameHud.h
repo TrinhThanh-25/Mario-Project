@@ -4,6 +4,9 @@
 #include "Character/CharacterType.h"
 #include "Character/Character.h"
 #include <vector>
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 class Map;
 class World;
@@ -57,6 +60,9 @@ class GameHud {
 
         void reset(bool isPowerOff);
         void resetGame();
+
+        json saveToJson() const;
+        void loadFromJson(const json& j);
 };
 
 #endif

@@ -71,3 +71,13 @@ void Luigi::transitionToFlower() {
     size = {32, 60};
     maxFrame = 3;
 }
+
+json Luigi::saveToJson() const {
+    json j = Character::saveToJson();
+    j["type"] = "Luigi";
+    return j;
+}
+
+void Luigi::loadFromJson(const json& j) {
+    Character::loadFromJson(j);
+}

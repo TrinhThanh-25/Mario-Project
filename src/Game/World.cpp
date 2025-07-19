@@ -245,3 +245,9 @@ void World::resetWhenCharacterDead() {
         }
     }
 }
+
+json World::saveToJson() const {
+    json j;
+    //
+    return j;
+}

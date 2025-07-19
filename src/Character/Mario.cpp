@@ -71,3 +71,13 @@ void Mario::transitionToFlower() {
     size = {32, 56};
     maxFrame = 3;
 }
+
+json Mario::saveToJson() const {
+    json j = Character::saveToJson();
+    j["type"] = "Mario";
+    return j;
+}
+
+void Mario::loadFromJson(const json& j) {
+    Character::loadFromJson(j);
+}

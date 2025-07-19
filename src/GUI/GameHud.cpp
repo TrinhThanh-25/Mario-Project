@@ -201,3 +201,25 @@ void GameHud::resetGame() {
     coins = 0;
     points = 0;
 }
+
+json GameHud::saveToJson() const {
+    json j;
+    j["lives"] = lives;
+    j["coins"] = coins;
+    j["yoshiCoins"] = yoshiCoins;
+    j["points"] = points;
+    j["maxTime"] = maxTime;
+    j["ellapsedTime"] = ellapsedTime;
+    j["powerUpItem"] = static_cast<int>(powerUpItem);
+    return j;
+}
+
+void GameHud::loadFromJson(const json& j) {
+    lives = j.value("lives", 5);
+    coins = j.value("coins", 0);
+    yoshiCoins = j.value("yoshiCoins", 0);
+    points = j.value("points", 0);
+    maxTime = j.value("maxTime", 200.0f);
+    ellapsedTime = j.value("ellapsedTime", 0.0f);
+    powerUpItem = static_cast<CharacterType>(j.value("powerUpItem", static_cast<int>(CharacterType::SMALL)));
+}

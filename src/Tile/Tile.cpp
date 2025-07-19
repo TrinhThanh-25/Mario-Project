@@ -18,3 +18,16 @@ void Tile::draw() {
 TileType Tile::getType() const {
     return type;
 }
+
+json Tile::saveToJson() const {
+    json j = Sprite::saveToJson();
+    j["nameTexture"] = nameTexture;
+    j["type"] = static_cast<int>(type);
+    return j;
+}
+
+void Tile::loadFromJson(const json& j) {
+    Sprite::loadFromJson(j);
+    nameTexture = j["nameTexture"].get<std::string>();
+    type = static_cast<TileType>(j["type"].get<int>());
+}

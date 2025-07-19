@@ -11,6 +11,9 @@
 #include "GUI/GameHud.h"
 #include <vector>
 #include <string>
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 enum ModeWorld {
     SINGLEPLAYER,
@@ -77,6 +80,8 @@ class World : public GameLoop {
         void nextMap();
         void resetWhenCharacterDead();
 
+        json saveToJson() const;
+        void loadFromJson(const json& j);
 };
 
 #endif

@@ -637,3 +637,83 @@ void Map::first() {
 void Map::playMusic() {
     //
 }
+
+json Map::saveToJson() const {
+    json j;
+    j["offset"] = offset;
+    j["mapNumber"] = mapNumber;
+    j["maxMapNumber"] = maxMapNumber;
+    j["width"] = width;
+    j["height"] = height;
+    j["backgroundID"] = backgroundID;
+    j["backgroundColor"] = {
+        {"r", backgroundColor.r},
+        {"g", backgroundColor.g},
+        {"b", backgroundColor.b},
+        {"a", backgroundColor.a}
+    };
+    j["musicID"] = musicID;
+    j["tiles"] = json::array();
+    for (const auto& t : tile) {
+        j["tiles"].push_back(t->saveToJson());
+    }
+    j["backTiles"] = json::array();
+    for (const auto& bT : backTile) {
+        j["backTiles"].push_back(bT->saveToJson());
+    }
+    j["frontTiles"] = json::array();
+    for (const auto& fT : frontTile) {
+        j["frontTiles"].push_back(fT->saveToJson());
+    }
+    j["blocks"] = json::array();
+    for (const auto& b : block) {
+        j["blocks"].push_back(b->saveToJson());
+    }
+    j["messBlocks"] = json::array();
+    for (const auto& mB : messBlock) {
+        j["messBlocks"].push_back(mB->saveToJson());
+    }
+    j["backEnemies"] = json::array();
+    for (const auto& bE : backEnemy) {
+        j["backEnemies"].push_back(bE->saveToJson());
+    }
+    j["frontEnemies"] = json::array();
+    for (const auto& fE : frontEnemy) {
+        j["frontEnemies"].push_back(fE->saveToJson());
+    }
+    j["items"] = json::array();
+    for (const auto& i : item) {
+        j["items"].push_back(i->saveToJson());
+    }
+    j["staticItems"] = json::array();
+    for (const auto& sI : staticItem) {
+        j["staticItems"].push_back(sI->saveToJson());
+    }
+    return j;
+}
+
+void Map::loadFromJson(const json& j) {
+    offset = j.at("offset").get<float>();
+    mapNumber = j.at("mapNumber").get<int>();
+    maxMapNumber = j.at("maxMapNumber").get<int>();
+    width = j.at("width").get<int>();
+    height = j.at("height").get<int>();
+    backgroundID = j.at("backgroundID").get<int>();
+    backgroundColor = {
+        j.at("backgroundColor").at("r").get<unsigned char>(),
+        j.at("backgroundColor").at("g").get<unsigned char>(),
+        j.at("backgroundColor").at("b").get<unsigned char>(),
+        j.at("backgroundColor").at("a").get<unsigned char>()
+    };
+    musicID = j.at("musicID").get<int>();
+    tile.clear();
+    backTile.clear();
+    frontTile.clear();
+    block.clear();
+    messBlock.clear();
+    backEnemy.clear();
+    frontEnemy.clear();
+    item.clear();
+    staticItem.clear();
+    // Load tiles
+}

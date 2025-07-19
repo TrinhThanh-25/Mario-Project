@@ -85,3 +85,14 @@ void CountingPointState::draw() {
     std::string message2 = "Total Points: " + std::to_string(gameHud->getPoints());
     ResourceManager::drawString( message2, centerX - ResourceManager::getDrawStringWidth( message2 ) / 2, centerY + 40 );
 }
+
+json CountingPointState::saveToJson() const {
+    json j = GameState::saveToJson();
+    j["isGetRemainTimePoint"] = isGetRemainTimePoint;
+    return j;
+}
+
+void CountingPointState::loadFromJson(const json& j) {
+    GameState::loadFromJson(j);
+    isGetRemainTimePoint = j["isGetRemainTimePoint"].get<bool>();
+}

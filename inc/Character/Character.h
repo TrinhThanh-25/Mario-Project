@@ -129,6 +129,9 @@ class Character : public Sprite {
         GameHud* getGameHud() const;
         Map* getMap() const;
         World* getWorld() const;
+
+        json saveToJson() const override;
+        void loadFromJson(const json& j) override;
 };
 
 #endif

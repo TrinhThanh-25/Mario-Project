@@ -1,6 +1,10 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
+#include "json.hpp"
+
+using json = nlohmann::json;
+
 enum GameStateType {
     CHOOSE_CHARACTER,
     COUNTING_POINT,
@@ -28,6 +32,9 @@ class GameState {
         virtual void exit();
         virtual ~GameState() = default;
         virtual GameStateType getType() const;
+
+        virtual json saveToJson() const;
+        virtual void loadFromJson(const json& j);
 };
 
 #endif

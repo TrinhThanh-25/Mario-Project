@@ -246,3 +246,12 @@ bool PlayingState::isAllCharactersVictory() const {
     }
     return true;
 }
+
+json PlayingState::saveToJson() const {
+    json j = GameState::saveToJson();
+    return j;
+}
+
+void PlayingState::loadFromJson(const json& j) {
+    GameState::loadFromJson(j);
+}

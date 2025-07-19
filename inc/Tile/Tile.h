@@ -26,6 +26,9 @@ class Tile : public Sprite {
         void draw() override;
 
         TileType getType() const;
+
+        json saveToJson() const override;
+        void loadFromJson(const json& j) override;
 };
 
 #endif
