@@ -2,7 +2,7 @@
 #include "Block/Block.h"
 #include "Character/Character.h"
 #include "Game/World.h"
-//#include "Item/ThreeUpMoon.h"
+#include "Item/ItemFactory.h"
 #include "raylib.h"
 #include "Common/ResourceManager.h"
 #include "Game/Map.h"	
@@ -11,7 +11,7 @@ QuestionThreeUpMoonBlock::QuestionThreeUpMoonBlock(Vector2 pos, Vector2 size, Co
 	QuestionThreeUpMoonBlock(pos, size, color, 0.1f, 4) {}
 
 QuestionThreeUpMoonBlock::QuestionThreeUpMoonBlock(Vector2 pos, Vector2 size, Color color, float frameTime, int maxFrames) :
-	Block(pos, size, color, frameTime, maxFrames), item(nullptr), itemVelocityY(0.0f), itemMinY(0.0f), map(nullptr) {}
+	Block(BlockType::QUESTIONTHREEUPMOONBLOCK, pos, size, color, frameTime, maxFrames), item(nullptr), itemVelocityY(0.0f), itemMinY(0.0f), map(nullptr) {}
 
 QuestionThreeUpMoonBlock::~QuestionThreeUpMoonBlock() {}
 
@@ -53,9 +53,8 @@ void QuestionThreeUpMoonBlock::doHit(Character& character, Map* map) {
 	if (!hit) {
 		hit = true;
 		PlaySound(ResourceManager::getSound()["PowerUpAppear"]);
-		//item = new ThreeUpMoon(Vector2{ position.x, position.y }, Vector2{ 32, 32 }, Vector2(300, 0), YELLOW);
-		//itemVelocityY = -80.0f;
-        //item->setDirection(mario.getDirection());
+		item = ItemFactory::createItem(ItemType::THREE_UP_MOON, Source::BLOCK, Vector2{ position.x, position.y }, character.getDirection());
+		itemVelocityY = -80.0f;
 		itemMinY = position.y - 32.0f; // Set the minimum Y position for the item
 		this->map = map; // Store the map reference
 	}

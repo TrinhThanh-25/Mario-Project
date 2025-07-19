@@ -5,7 +5,7 @@
 #define WAKE_UP_TIME 5.0f
 
 GreenKoopaTroopa::GreenKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color) {
+    : Enemy(EnemyType::GREEN_KOOPA_TROOPA, pos, dim, vel, color) {
     
     extraWakeUpTime = 2.0f;
     shellSpeed = 150.0f;
@@ -14,6 +14,7 @@ GreenKoopaTroopa::GreenKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color 
 
     setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;
+    type = EnemyType::GREEN_KOOPA_TROOPA;
 }
 
 void GreenKoopaTroopa::update(const std::vector<Character*>& characterList) {
@@ -48,10 +49,6 @@ void GreenKoopaTroopa::update(const std::vector<Character*>& characterList) {
         velocity.y += 981.0f * delta;
         position.y += velocity.y * delta;
 
-        if (checkCollision(collidables) == CollisionType::SOUTH) {
-            velocity.y = 0;
-        }
-
         shellTimer += delta;
         updateCollisionBoxes();
 
@@ -65,11 +62,6 @@ void GreenKoopaTroopa::update(const std::vector<Character*>& characterList) {
     else if (state == SpriteState::SHELL_MOVING) {
         float dir = isFacingLeft ? -1.0f : 1.0f;
         position.x += shellSpeed * dir * delta;
-
-        if (checkCollision(collidables) != CollisionType::NONE) {
-            isFacingLeft = !isFacingLeft;
-        }
-
         updateCollisionBoxes();
     }
 

@@ -100,3 +100,30 @@ ItemType Item::getType()
 {
     return type;
 }
+
+json Item::saveToJson() const
+{
+    json j = Sprite::saveToJson();
+    j["beingHitFrameTime"] = beingHitFrameTime;
+    j["beingHitFrameAcum"] = beingHitFrameAcum;
+    j["maxBeingHitFrame"] = maxBeingHitFrame;
+    j["currentBeingHitFrame"] = currentBeingHitFrame;
+    j["pointFrameAccum"] = pointFrameAccum;
+    j["pointFrameTime"] = pointFrameTime;
+    j["pauseGameWhenHit"] = pauseGameWhenHit;
+    j["type"] = (int)type;
+    return j;
+}
+
+void Item::loadFromJson(const json& j)
+{
+    Sprite::loadFromJson(j);
+    beingHitFrameTime = j.value("beingHitFrameTime", 0.0f);
+    beingHitFrameAcum = j.value("beingHitFrameAcum", 0.0f);
+    maxBeingHitFrame = j.value("maxBeingHitFrame", 0);
+    currentBeingHitFrame = j.value("currentBeingHitFrame", 0);
+    pointFrameAccum = j.value("pointFrameAccum", 0.0f);
+    pointFrameTime = j.value("pointFrameTime", 0.0f);
+    pauseGameWhenHit = j.value("pauseGameWhenHit", false);
+    type = static_cast<ItemType>(j.value("type", static_cast<int>(ItemType::COIN)));
+}

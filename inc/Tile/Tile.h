@@ -1,17 +1,24 @@
 #ifndef TILE_H
 #define TILE_H
 
-#include "Tile/TileType.h"
 #include "Common/Sprite.h"
 #include "raylib.h"
 #include <string>
+
+enum TileType {
+    SOLID,
+    SOLID_ONLY_ENEMY,
+    NOT_SOLID,
+    SOLID_ABOVE,
+    SLOPE_UP,
+    SLOPE_DOWN,
+};
 
 class Tile : public Sprite {
     private:
         std::string nameTexture;
         TileType type;
     public:
-        Tile(Vector2 position, Vector2 size, std::string nameTexture);
         Tile(Vector2 position, Vector2 size, std::string nameTexture, TileType type);
         ~Tile() override;
 
@@ -19,6 +26,9 @@ class Tile : public Sprite {
         void draw() override;
 
         TileType getType() const;
+
+        json saveToJson() const override;
+        void loadFromJson(const json& j) override;
 };
 
 #endif

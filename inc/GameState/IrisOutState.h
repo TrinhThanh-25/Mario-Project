@@ -14,6 +14,9 @@ class IrisOutState : public GameState {
         ~IrisOutState() override;
         void update() override;
         void draw() override;
+
+        json saveToJson() const override;
+        void loadFromJson(const json& j) override;
 };
 
 #endif

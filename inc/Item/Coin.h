@@ -18,6 +18,9 @@ public:
     void playCollisionSound() override;
     void updateCharacter(Character* character) override;
     void collisionSouth(Character* character) override;
+
+    json saveToJson() const override;
+    void loadFromJson(const json& j) override;
 };
 
 #endif 

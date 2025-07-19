@@ -17,6 +17,8 @@ public:
     void draw() override;
     void beingHit(HitType type) override;
     void activeWhenMarioApproach(Character& character) override;
+    void collisionBlock(Block* block) override;
+    void collisionTile(Tile* tile) override;
 
 private:
     JumpingPiranhaState jumpState;
@@ -27,6 +29,7 @@ private:
     float waitTimer;         // Thời gian đếm để bắt đầu nhảy
 
     float groundY;           // Vị trí y ban đầu (mặt ống)
+    float maxJumpHeight;
 };
 
 #endif

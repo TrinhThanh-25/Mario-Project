@@ -3,13 +3,18 @@
 
 
 MontyMole::MontyMole(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color){
+    : Enemy(EnemyType::MONTY_MOLE, pos, dim, vel, color){
 
     emergeDelay = 2.0f + (rand() % 1000) / 1000.0f; // Random 2.0 ~ 3.0s
     emergeTimer = 0;
     hasEmerge = false;
     setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;   
+    type = EnemyType::MONTY_MOLE;
+}
+
+MontyMole::~MontyMole() {
+    // Destructor logic if needed
 }
 
 void MontyMole::draw() {
@@ -133,7 +138,7 @@ void MontyMole::beingHit(HitType type) {
 
 
 void MontyMole::activeWhenMarioApproach(Character& character) {
-    Enemy::activeWhenMarioApproach(character)
+    Enemy::activeWhenMarioApproach(character);
 }
 
 void MontyMole::collisionSound(){

@@ -10,7 +10,7 @@ QuestionBlock::QuestionBlock(Vector2 pos, Vector2 size, Color color)
 	: QuestionBlock(pos, size, color, 0.1, 4) {}
 	
 QuestionBlock::QuestionBlock(Vector2 pos, Vector2 size, Color color, float frameTime, int maxFrames)
-	: Block(pos, size, color, frameTime, maxFrames),
+	: Block(BlockType::QUESTIONBLOCK, pos, size, color, frameTime, maxFrames),
 	coinAnimationTime(0.6),
 	coinAnimationAcum(0),
 	coinFrameAcum(0),
@@ -112,7 +112,7 @@ void QuestionBlock::doHit(Character& character, Map* map) {
 		hit = true;
 		coinAnimationRunning = true;
 		coinY = position.y;
-		//mario.addPoints(earnedPoints);
-		//mario.addCoins(1);
+		character.getGameHud()->addPoints(earnedPoints);
+		character.getGameHud()->addCoins(earnedPoints);
 	}
 }

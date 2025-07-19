@@ -20,6 +20,8 @@ public:
     void beingHit(HitType type);
     void collisionSound();
     void activeWhenMarioApproach(Character& character);
+    void collisionBlock(Block* block) override;
+    void collisionTile(Tile* tile) override;
 private:
     PiranhaState piranhaState;
 

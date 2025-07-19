@@ -5,7 +5,7 @@
 #define WAKE_UP_TIME 5.0f
 
 BlueKoopaTroopa::BlueKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color) {
+    : Enemy(EnemyType::BLUE_KOOPA_TROOPA, pos, dim, vel, color) {
     
     extraWakeUpTime = 2.0f;
     shellSpeed = 150.0f;
@@ -14,6 +14,7 @@ BlueKoopaTroopa::BlueKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color co
 
     setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;
+    type == EnemyType::BLUE_KOOPA_TROOPA;
 }
 
 void BlueKoopaTroopa::update(const std::vector<Character*>& characterList) {

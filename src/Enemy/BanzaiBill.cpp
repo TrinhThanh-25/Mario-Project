@@ -5,13 +5,14 @@
 
 
 BanzaiBill::BanzaiBill(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color) {
+    : Enemy(EnemyType::BANZAI_BILL, pos, dim, vel, color) {
     
     setState(SpriteState::INACTIVE);   // Chờ Mario đến gần mới active
     isFacingLeft = vel.x < 0;     // Dựa theo hướng bay ban đầu
 
     maxLifeTime = 8.0f;    // Sau 8 giây sẽ tự biến mất (có thể tùy chỉnh)
     lifeTimer = 0.0f;
+    type = EnemyType::BANZAI_BILL;
 }
 
 void BanzaiBill::update(const std::vector<Character*>& characterList) {

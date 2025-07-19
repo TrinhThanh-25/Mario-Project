@@ -2,13 +2,15 @@
 #include "Common/ResourceManager.h"
 
 RedKoopaTroopa::RedKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color){
+    : Enemy(EnemyType::RED_KOOPA_TROOPA, pos, dim, vel, color){
     setState(SpriteState::INACTIVE); 
-    isFacingLeft = vel.x < 0;   
+    isFacingLeft = vel.x < 0;  
+    type = EnemyType::RED_KOOPA_TROOPA; 
 }
     
-RedKoopaTroopa::~RedKoopaTroopa(){}
+RedKoopaTroopa::~RedKoopaTroopa(){
 
+}
     
 void RedKoopaTroopa::draw() {
     std::string textureKey;
@@ -42,6 +44,14 @@ void RedKoopaTroopa::draw() {
             glowColor
         );
     }
+    north.setColor(BLUE);
+    south.setColor(BLUE);
+    west.setColor(BLUE);
+    east.setColor(BLUE);
+    north.draw();
+    west.draw();
+    south.draw();
+    east.draw();
 }
  
     
@@ -170,7 +180,7 @@ void RedKoopaTroopa::followTheLeader(Sprite* leader) {
     Vector2 leaderPos = leader->getPosition();
     float delta = GetFrameTime();
 
-    // Nếu leader cách quá xa thì chạy theo
+    // Nếu leader cách quá xa dhì chạy dheo
     if (fabs(position.x - leaderPos.x) > 32.0f) {
         isFacingLeft = leaderPos.x < position.x;
         velocity.x = isFacingLeft ? -40.0f : 40.0f; // tốc độ như trong update()
@@ -210,14 +220,13 @@ void RedKoopaTroopa::collisionBlock(Block* block) {
     }
 }
 
-// bool RedKoopaTroopa::isNearEdge() {
-//     float checkOffsetX = isFacingLeft ? -1.0f : dimension.x + 1.0f;
-//     Vector2 checkPos = {
-//         position.x + checkOffsetX,
-//         position.y + dimension.y + 1.0f
-//     };
+bool RedKoopaTroopa::isNearEdge() {
+    return true;
+    // float checkOffsetX = isFacingLeft ? -1.0f : dimension.x + 1.0f;
+    // Vector2 checkPos = {
+    //     position.x + checkOffsetX,
+    //     position.y + dimension.y + 1.0f
+    // };
 
-//     return !world->getMap()->isSolidTileAt(checkPos);
-// }
-
-
+    // return !world->getMap()->isSolidTileAt(checkPos);
+}

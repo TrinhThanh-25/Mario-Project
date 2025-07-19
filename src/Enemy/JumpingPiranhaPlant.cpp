@@ -2,7 +2,7 @@
 #include "Common/ResourceManager.h"
 
 JumpingPiranhaPlant::JumpingPiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color) 
+    : Enemy(EnemyType::JUMPING_PIRANHA_PLANT, pos, dim, vel, color) 
 {
     setState(SpriteState::INACTIVE);              // Luôn hoạt động
     jumpState = JumpingPiranhaState::IDLE;
@@ -16,6 +16,8 @@ JumpingPiranhaPlant::JumpingPiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, 
 
     velocity = {0, 0};                          // Bắt đầu đứng yên
     isFacingLeft = true;                        // Không quan trọng nhưng giữ cho đồng bộ
+    type = EnemyType::JUMPING_PIRANHA_PLANT;
+    maxJumpHeight = 64.0f;
 }
 
     
@@ -42,6 +44,13 @@ void JumpingPiranhaPlant::update(const std::vector<Character*>& characterList) {
     else if (jumpState == JumpingPiranhaState::JUMPING) {
         velocity.y += gravity * delta;
         position.y += velocity.y * delta;
+
+         float jumpPeakY = groundY - maxJumpHeight;
+        if (position.y <= jumpPeakY) {
+            position.y = jumpPeakY;
+            velocity.y = 0;
+            jumpState = JumpingPiranhaState::FALLING;
+        }
 
         if (velocity.y >= 0) {
             jumpState = JumpingPiranhaState::FALLING;

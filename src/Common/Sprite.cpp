@@ -187,3 +187,33 @@ Direction Sprite::getDirection() const {
 Rectangle Sprite::getRect() const {
     return Rectangle{position.x, position.y, size.x, size.y};
 }
+
+json Sprite::saveToJson() const {
+    json j;
+    j["position"] = {position.x, position.y};
+    j["size"] = {size.x, size.y};
+    j["velocity"] = {velocity.x, velocity.y};
+    j["color"] = {color.r, color.g, color.b, color.a};
+    j["state"] = (int)state;
+    j["auxiliaryState"] = (int)auxiliaryState;
+    j["direction"] = (int)direction;
+    j["frameTime"] = frameTime;
+    j["frameAcum"] = frameAcum;
+    j["curFrame"] = curFrame;
+    j["maxFrame"] = maxFrame;
+    return j;
+}
+
+void Sprite::loadFromJson(const json& j) {
+    position = {j["position"][0], j["position"][1]};
+    size = {j["size"][0], j["size"][1]};
+    velocity = {j["velocity"][0], j["velocity"][1]};
+    color = {j["color"][0], j["color"][1], j["color"][2], j["color"][3]};
+    state = static_cast<SpriteState>(j["state"].get<int>());
+    auxiliaryState = static_cast<SpriteState>(j["auxiliaryState"].get<int>());
+    direction = static_cast<Direction>(j["direction"].get<int>());
+    frameTime = j["frameTime"].get<float>();
+    frameAcum = j["frameAcum"].get<float>();
+    curFrame = j["curFrame"].get<int>();
+    maxFrame = j["maxFrame"].get<int>();
+}

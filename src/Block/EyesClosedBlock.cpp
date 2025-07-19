@@ -8,7 +8,7 @@ EyesClosedBlock::EyesClosedBlock(Vector2 pos, Vector2 size, Color color) :
 	EyesClosedBlock(pos, size, color, 0.1f, 4) {}
 
 EyesClosedBlock::EyesClosedBlock(Vector2 pos, Vector2 size, Color color, float frameTime, int maxFrames) :
-	Block(pos, size, color, frameTime, maxFrames) {}
+	Block(BlockType::EYESCLOSED, pos, size, color, frameTime, maxFrames) {}
 
 EyesClosedBlock::~EyesClosedBlock() = default;
 

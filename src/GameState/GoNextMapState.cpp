@@ -102,3 +102,18 @@ void GoNextMapState::draw() {
     DrawTextureRec(mask.texture, { 0, 0, (float)mask.texture.width, -(float)mask.texture.height }, { 0, 0 }, WHITE);
     EndBlendMode();
 }
+
+json GoNextMapState::saveToJson() const {
+    json j = GameState::saveToJson();
+    j["irisOutTime"] = irisOutTime;
+    j["irisOutAcum"] = irisOutAcum;
+    j["isIrisOutFinished"] = isIrisOutFinished;
+    return j;
+}
+
+void GoNextMapState::loadFromJson(const json& j) {
+    GameState::loadFromJson(j);
+    irisOutTime = j["irisOutTime"].get<float>();
+    irisOutAcum = j["irisOutAcum"].get<float>();
+    isIrisOutFinished = j["isIrisOutFinished"].get<bool>();
+}

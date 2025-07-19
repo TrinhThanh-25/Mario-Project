@@ -285,6 +285,9 @@ void ResourceManager::loadTexture() {
     texture["PiranhaPlant0"] = LoadTexture("../resources/Enemy/PiranhaPlant_0.png");
     texture["PiranhaPlant1"] = LoadTexture("../resources/Enemy/PiranhaPlant_1.png");
     texture["RedKoopaTroopa0Right"] = LoadTexture("../resources/Enemy/RedKoopaTroopa_0.png");
+    if(texture["RedKoopaTroopa0Right"].id == 0) {
+        std::cerr << "Failed to load RedKoopaTroopa_0.png" << std::endl;
+    }
     texture["RedKoopaTroopa0Left"] = texture2DFlipHorizontal(texture["RedKoopaTroopa0Right"]);
     texture["RedKoopaTroopa1Right"] = LoadTexture("../resources/Enemy/RedKoopaTroopa_1.png");
     texture["RedKoopaTroopa1Left"] = texture2DFlipHorizontal(texture["RedKoopaTroopa1Right"]);

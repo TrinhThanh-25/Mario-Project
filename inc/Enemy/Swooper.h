@@ -23,7 +23,6 @@ private:
     float dropSpeed;            // Tốc độ rơi
     float flySpeed;             // Tốc độ bay ngang
     float activationRangeY;     // Khoảng cách theo chiều dọc để kích hoạt
-    Vector2 startPosition;
 };
 
 #endif

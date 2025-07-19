@@ -9,6 +9,9 @@
 #include "Enemy/Enemy.h"
 #include "Item/Item.h"
 #include <vector>
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 class World;
 class Character;
@@ -65,6 +68,9 @@ class Map : virtual public Drawable {
         void first();
   
         void playMusic();
+
+        json saveToJson() const;
+        void loadFromJson(const json& j);
 };
 
 #endif
