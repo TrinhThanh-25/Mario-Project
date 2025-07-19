@@ -22,7 +22,7 @@ void QuestionStarBlock::update() {
 		if (item->getY() < itemMinY) {
 			item->setY(itemMinY);
 			item->setState(SpriteState::ACTIVE);
-			//map->getItems().push_back(item);
+			map->getItem().push_back(item);
 			item = nullptr; // Clear the item pointer after it has been released
 			itemVelocityY = 0.0f;
 		}
@@ -57,5 +57,25 @@ void QuestionStarBlock::doHit(Character& character, Map* map) {
 		itemVelocityY = -80.0f;
 		itemMinY = position.y - 32.0f; // Set the minimum Y position for the item
 		this->map = map; // Store the map reference
+	}
+}
+
+json QuestionStarBlock::saveToJson() const {
+	json j = Block::saveToJson();
+	j["itemVelocityY"] = itemVelocityY;
+	j["itemMinY"] = itemMinY;
+	j["hit"] = hit;
+	return j;
+}
+void QuestionStarBlock::loadFromJson(const json& j) {
+	Block::loadFromJson(j);
+	itemVelocityY = j["itemVelocityY"].get<float>();
+	itemMinY = j["itemMinY"].get<float>();
+	hit = j["hit"].get<bool>();
+	if (j.contains("item")) {
+		item = ItemFactory::createItem(ItemType::STAR, Source::BLOCK, Vector2{ position.x, position.y }, Direction::RIGHT);
+		item->loadFromJson(j["item"]);	
+	} else {
+		item = nullptr; // Ensure item is null if not present in JSON
 	}
 }

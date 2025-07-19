@@ -29,3 +29,17 @@ void Block::resetHit() {
 BlockType Block::getBlockType() {
     return blockType;
 }
+json Block::saveToJson() const {
+	json j = Sprite::saveToJson();
+	j["blockType"] = static_cast<int>(blockType);
+	j["hit"] = hit;
+	j["earnedPoints"] = earnedPoints;
+	return j;
+}
+
+void Block::loadFromJson(const json& j) {
+	Sprite::loadFromJson(j);
+	blockType = static_cast<BlockType>(j["blockType"].get<int>());
+	hit = j["hit"].get<bool>();
+	earnedPoints = j["earnedPoints"].get<int>();
+}

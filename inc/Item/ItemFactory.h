@@ -20,6 +20,7 @@ enum class Source {
 class ItemFactory {
 public:
     static Item* createItem(ItemType type, Source source, Vector2 position, Direction direction);
+	
 };
 
 #endif // ITEMFACTORY_H

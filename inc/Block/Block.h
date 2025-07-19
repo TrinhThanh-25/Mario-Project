@@ -40,5 +40,7 @@ public:
 	virtual void doHit(Character& character, Map* map);
 	void resetHit();
 	BlockType getBlockType();
+	json saveToJson() const override;
+	void loadFromJson(const json& j) override;
 };
 #endif

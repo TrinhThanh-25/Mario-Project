@@ -22,7 +22,7 @@ void QuestionFireFlowerBlock::update() {
 		if (item->getY() < itemMinY) {
 			item->setY(itemMinY);
 			item->setState(SpriteState::ACTIVE);
-			//map->getItems().push_back(item);
+			map->getItem().push_back(item);
 			item = nullptr; // Clear the item pointer after it has been released
 			itemVelocityY = 0.0f;
 		}
@@ -59,4 +59,22 @@ void QuestionFireFlowerBlock::doHit(Character& character, Map* map) {
 		itemMinY = position.y - 32.0f; // Set the minimum Y position for the item
 		this->map = map; // Store the map reference
 	}
+}
+json QuestionFireFlowerBlock::saveToJson() const {
+	json j = Block::saveToJson();
+	j["item"] = item ? item->saveToJson() : nullptr;
+	j["itemVelocityY"] = itemVelocityY;
+	j["itemMinY"] = itemMinY;
+	return j;
+}
+void QuestionFireFlowerBlock::loadFromJson(const json& j) {
+	Block::loadFromJson(j);
+	if (j.contains("item") && !j["item"].is_null()) {
+		item = ItemFactory::createItem(ItemType::FLOWER, Source::BLOCK, Vector2{ position.x, position.y }, Direction::RIGHT);
+		item->loadFromJson(j["item"]);
+	} else {
+		item = nullptr;
+	}
+	itemVelocityY = j["itemVelocityY"].get<float>();
+	itemMinY = j["itemMinY"].get<float>();
 }

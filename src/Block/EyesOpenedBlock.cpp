@@ -44,3 +44,16 @@ void EyesOpenedBlock::doHit(Character& character, Map* map) {
 		state = SpriteState::HIT;
 	}
 }
+
+json EyesOpenedBlock::saveToJson() const {
+	json j = Block::saveToJson();
+	j["animationTime"] = animationTime;
+	j["animationAccumulated"] = animationAccumulated;
+	return j;
+}
+
+void EyesOpenedBlock::loadFromJson(const json& j) {
+	Block::loadFromJson(j);
+	animationTime = j["animationTime"].get<float>();
+	animationAccumulated = j["animationAccumulated"].get<float>();
+}

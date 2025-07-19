@@ -40,3 +40,21 @@ void MessageBlock::doHit(Character& character, Map* map) {
 		map->showMessage();
 	}
 }
+json MessageBlock::saveToJson() const {
+	json j = Block::saveToJson();
+	j["message"] = message;
+	j["moveTime"] = moveTime;
+	j["moveAcum"] = moveAcum;
+	j["moveY"] = moveY;
+	j["hasMoved"] = hasMoved;
+	return j;
+}
+
+void MessageBlock::loadFromJson(const json& j) {
+	Block::loadFromJson(j);
+	message = j["message"].get<std::string>();
+	moveTime = j["moveTime"].get<float>();
+	moveAcum = j["moveAcum"].get<float>();
+	moveY = j["moveY"].get<float>();
+	hasMoved = j["hasMoved"].get<bool>();
+}
