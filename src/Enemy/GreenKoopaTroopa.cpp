@@ -14,6 +14,7 @@ GreenKoopaTroopa::GreenKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color 
 
     setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;
+    type = EnemyType::GREEN_KOOPA_TROOPA;
 }
 
 void GreenKoopaTroopa::update(const std::vector<Character*>& characterList) {

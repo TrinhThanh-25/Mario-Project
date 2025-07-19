@@ -85,3 +85,16 @@ void OneUpMushroom::updateCharacter(Character *character)
 void OneUpMushroom::collisionSouth(Character *character)
 {
 }
+
+json OneUpMushroom::saveToJson() const
+{
+    json j = Item::saveToJson();
+    j["lives"] = lives;
+    return j;
+}
+
+void OneUpMushroom::loadFromJson(const json &j)
+{
+    Item::loadFromJson(j);
+    lives = j.value("lives", 0);
+}

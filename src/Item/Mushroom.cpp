@@ -117,3 +117,20 @@ void Mushroom::collisionSouth(Character *character)
         isInInventory = false;
     }
 }
+
+json Mushroom::saveToJson() const
+{
+    json j = Item::saveToJson();
+    j["points"] = points;
+    j["isInInventory"] = isInInventory;
+    j["appear"] = appear;
+    return j;
+}
+
+void Mushroom::loadFromJson(const json &j)
+{
+    Item::loadFromJson(j);
+    points = j.value("points", 0);
+    isInInventory = j.value("isInInventory", false);
+    appear = j.value("appear", false);
+}

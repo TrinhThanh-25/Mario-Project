@@ -10,6 +10,7 @@ BuzzyBeetle::BuzzyBeetle(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
       shellTimer(0.0f) {
     setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;
+    type = EnemyType::BUZZY_BEETLE;
 }
 
 BuzzyBeetle::~BuzzyBeetle() {

@@ -16,6 +16,8 @@ Swooper::Swooper(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     activationRangeY = 100.0f;           // Khoảng cách dọc để kích hoạt
     startPosition = position;
 
+    type = EnemyType::SWOOPER;
+
 }
 
 void Swooper::update(const std::vector<Character*>& characterList){

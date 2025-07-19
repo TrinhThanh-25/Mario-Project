@@ -7,6 +7,7 @@ FlyingGoomba::FlyingGoomba(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
         
     setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;   
+    type = EnemyType::FLYING_GOOMBA;
 }
 
 FlyingGoomba::~FlyingGoomba() {

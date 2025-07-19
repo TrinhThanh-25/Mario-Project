@@ -78,3 +78,20 @@ void CourseClearToken::updateCharacter(Character *character)
 void CourseClearToken::collisionSouth(Character *character)
 {
 }
+
+json CourseClearToken::saveToJson() const
+{
+    json j = Item::saveToJson();
+    j["minY"] = minY;
+    j["maxY"] = maxY;
+    j["points"] = points;
+    return j;
+}
+
+void CourseClearToken::loadFromJson(const json& j)
+{
+    Item::loadFromJson(j);
+    minY = j.value("minY", 0);
+    maxY = j.value("maxY", 0);
+    points = j.value("points", 0);
+}

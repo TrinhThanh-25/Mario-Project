@@ -84,3 +84,16 @@ void Star::collisionSouth(Character *character)
 {
     setVelocityY(-400);
 }
+
+json Star::saveToJson() const
+{
+    json j = Item::saveToJson();
+    j["points"] = points;
+    return j;
+}
+
+void Star::loadFromJson(const json &j)
+{
+    Item::loadFromJson(j);
+    points = j.value("points", 0);
+}

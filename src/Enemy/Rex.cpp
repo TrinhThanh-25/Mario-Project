@@ -9,6 +9,7 @@ Rex::Rex(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     : Enemy(EnemyType::REX, pos, dim, vel, color), isShrunken(false), shrinkDuration(0.0f) {
     isFacingLeft = vel.x < 0;   
     setState(SpriteState::INACTIVE);
+    type = EnemyType::REX;
 }
 
 void Rex::update(const std::vector<Character*>& characterList) {
@@ -100,6 +101,8 @@ void Rex::beingHit(HitType type) {
         if (!isShrunken){
             isShrunken = true;
             velocity.x = 0;
+            setSize({32, 32});
+            updateCollisionBoxes();
         }
         else {
             setState(SpriteState::DYING);

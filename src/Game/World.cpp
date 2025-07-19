@@ -248,6 +248,9 @@ void World::resetWhenCharacterDead() {
 
 json World::saveToJson() const {
     json j;
-    //
+    j["characters"] = json::array();
+    for (const auto& character : characters) {
+        j["characters"].push_back(character->saveToJson());
+    }
     return j;
 }

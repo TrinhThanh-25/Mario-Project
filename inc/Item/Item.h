@@ -8,6 +8,9 @@
 #include "Tile/Tile.h"
 #include "Common/ResourceManager.h"
 #include "GUI/GameHud.h"
+#include "../json.hpp"
+
+using json = nlohmann::json;
 
 enum class ItemType {
     COIN,
@@ -48,6 +51,9 @@ public:
     void collisionTile(Tile* tile);
     void collisionCharacter(Character* character);
     ItemType getType();
+
+    json saveToJson() const override;
+    void loadFromJson(const json& j) override;
 };
 
 #endif
