@@ -29,6 +29,7 @@ private:
     float waitTimer;         // Thời gian đếm để bắt đầu nhảy
 
     float groundY;           // Vị trí y ban đầu (mặt ống)
+    float maxJumpHeight;
 };
 
 #endif

@@ -101,6 +101,8 @@ void Rex::beingHit(HitType type) {
         if (!isShrunken){
             isShrunken = true;
             velocity.x = 0;
+            setSize({32, 32});
+            updateCollisionBoxes();
         }
         else {
             setState(SpriteState::DYING);

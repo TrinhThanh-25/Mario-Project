@@ -8,91 +8,100 @@ Enemy* EnemyFactory::createEnemy(EnemyType type, Vector2 position, Direction dir
 
     switch (type) {
         case EnemyType::BANZAI_BILL:
-            size = {64, 64};
-            velocity = {direction == Direction::LEFT ? -4.0f : 4.0f, 0};
+            size = {128, 128};
+            velocity = {direction == Direction::LEFT ? -200.0f : 200.0f, 0};
             enemy = new BanzaiBill(position, size, velocity, color);
             break;
 
         case EnemyType::BLUE_KOOPA_TROOPA:
-            velocity = {direction == Direction::LEFT ? -1.0f : 1.0f, 0};
+            size = {32, 54};
+            velocity = {direction == Direction::LEFT ? -100.0f : 100.0f, 0};
             enemy = new BlueKoopaTroopa(position, {32, 54}, velocity, color);
             break;
 
         case EnemyType::BOB_OMB:
-            velocity = {direction == Direction::LEFT ? -0.9f : 0.9f, 0};
+            size = {24, 30};
+            velocity = {direction == Direction::LEFT ? -100.0f : 100.0f, 0};
             enemy = new BobOmb(position, size, velocity, color);
             break;
 
         case EnemyType::BULLET_BILL:
-            size = {64, 32};
-            velocity = {direction == Direction::LEFT ? -5.0f : 5.0f, 0};
+            size = {32, 28};
+            velocity = {direction == Direction::LEFT ? -200.0f : 200.0f, 0};
             enemy = new BulletBill(position, size, velocity, color);
             break;
 
-        case EnemyType::BUZZY_BEETLE:
-            velocity = {direction == Direction::LEFT ? -1.1f : 1.1f, 0};
+        case EnemyType::BUZZY_BEETLE: 
+            velocity = {direction == Direction::LEFT ? -80.0f : 80.0f, 0};
             enemy = new BuzzyBeetle(position, size, velocity, color);
             break;
 
         case EnemyType::FLYING_GOOMBA:
-            velocity = {direction == Direction::LEFT ? -0.8f : 0.8f, -1.8f};
+            size = {66, 50};
+            velocity = {direction == Direction::LEFT ? -100.0f : 100.0f, -1.8f};
             enemy = new FlyingGoomba(position, size, velocity, color);
             break;
 
         case EnemyType::GOOMBA:
-            velocity = {direction == Direction::LEFT ? -1.2f : 1.2f, 0};
+            velocity = {direction == Direction::LEFT ? -100.0f : 100.0f, 0};
             enemy = new Goomba(position, size, velocity, color);
             break;
 
         case EnemyType::GREEN_KOOPA_TROOPA:
-            velocity = {direction == Direction::LEFT ? -1.0f : 1.0f, 0};
+            size = {32, 54};
+            velocity = {direction == Direction::LEFT ? -100.0f : 100.0f, 0};
             enemy = new GreenKoopaTroopa(position, size, velocity, color);
             break;
 
         case EnemyType::JUMPING_PIRANHA_PLANT:
-            size = {32, 48};
-            velocity = {0, -2.5f};
+            size = {32, 42};
+            velocity = {0, 0};  // con này chạy thử xem
             enemy = new JumpingPiranhaPlant(position, size, velocity, color);
             break;
 
         case EnemyType::MONTY_MOLE:
-            velocity = {direction == Direction::LEFT ? -1.5f : 1.5f, 0};
+            velocity = {direction == Direction::LEFT ? -200.0f : 200.0f, 0};
             enemy = new MontyMole(position, size, velocity, color);
             break;
 
         case EnemyType::MUMMY_BEETLE:
-            velocity = {direction == Direction::LEFT ? -1.2f : 1.2f, 0};
+            velocity = {direction == Direction::LEFT ? -80.0f : 80.0f, 0};
             enemy = new MummyBeetle(position, size, velocity, color);
             break;
 
         case EnemyType::MUNCHER:
             // Muncher đứng yên và không cần velocity
+            size = {32, 30};
             enemy = new Muncher(position, size, color);
             break;
 
         case EnemyType::PIRANHA_PLANT:
-            size = {32, 48};
-            velocity = {0, -1.2f};
+            size = {32, 66};  // chạy để xem
+            velocity = {0.0f, 0.0f};
             enemy = new PiranhaPlant(position, size, velocity, color);
             break;
 
         case EnemyType::RED_KOOPA_TROOPA:
-            velocity = {direction == Direction::LEFT ? -0.9f : 0.9f, 0};
+            size = {32, 54};
+            velocity = {direction == Direction::LEFT ? -100.0f : 100.0f, 0};
             enemy = new RedKoopaTroopa(position, size, velocity, color);
             break;
 
         case EnemyType::REX:
-            velocity = {direction == Direction::LEFT ? -1.8f : 1.8f, 0};
+            size = {40, 64};
+            velocity = {direction == Direction::LEFT ? -100.0f : 100.0f, 0};
             enemy = new Rex(position, size, velocity, color);
             break;
 
-        case EnemyType::SWOOPER:
-            velocity = {0, 1.5f};
+        case EnemyType::SWOOPER:  // để chạy thử
+            size = {32, 34};
+            velocity = {0.0f, 0.0f};
             enemy = new Swooper(position, size, velocity, color);
             break;
 
         case EnemyType::YELLOW_KOOPA_TROOPA:
-            velocity = {direction == Direction::LEFT ? -1.1f : 1.1f, 0};
+            size = {32, 54};
+            velocity = {direction == Direction::LEFT ? -100.0f : 100.0f, 0};
             enemy = new YellowKoopaTroopa(position, size, velocity, color);
             break;
     }
