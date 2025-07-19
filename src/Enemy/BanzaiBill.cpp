@@ -12,6 +12,7 @@ BanzaiBill::BanzaiBill(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
 
     maxLifeTime = 8.0f;    // Sau 8 giây sẽ tự biến mất (có thể tùy chỉnh)
     lifeTimer = 0.0f;
+    type = EnemyType::BANZAI_BILL;
 }
 
 void BanzaiBill::update(const std::vector<Character*>& characterList) {

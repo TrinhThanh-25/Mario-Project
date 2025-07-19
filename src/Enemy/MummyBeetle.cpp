@@ -12,6 +12,7 @@ MummyBeetle::MummyBeetle(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;   
     shellMoving = false;
+    type = EnemyType::MUMMY_BEETLE;
     }
 
 void MummyBeetle::update(const std::vector<Character*>& characterList) {

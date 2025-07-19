@@ -16,6 +16,7 @@ JumpingPiranhaPlant::JumpingPiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, 
 
     velocity = {0, 0};                          // Bắt đầu đứng yên
     isFacingLeft = true;                        // Không quan trọng nhưng giữ cho đồng bộ
+    type = EnemyType::JUMPING_PIRANHA_PLANT;
 }
 
     
