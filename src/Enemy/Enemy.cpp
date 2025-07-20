@@ -161,7 +161,7 @@ void Enemy::loadFromJson(const json& j){
     maxDyingFrame = (int)j["maxDyingFrame"];
     currentDyingFrame = (int)j["currentDyingFrame"];
     pointFrameAcum = j["pointFrameAcum"].get<float>();
-    pointFrameTime = j['pointFrameTime'].get<float>();
+    pointFrameTime = j["pointFrameTime"].get<float>();
     diePosition = {
         j["diePosition"][0].get<float>(),
         j["diePosition"][1].get<float>()

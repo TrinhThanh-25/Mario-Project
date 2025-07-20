@@ -528,6 +528,9 @@ void Map::draw() {
     for (auto& i : item) {
         i->draw();
     }
+    for (auto& sI : staticItem) {
+        sI->draw();
+    }
     for (auto& fE : frontEnemy) {
         fE->draw();
     }
@@ -770,20 +773,20 @@ void Map::loadFromJson(const json& j) {
     //     mB->loadFromJson(mBJson);
     //     messBlock.push_back(mB);
     // }
-    // for (const auto& bEJson : j["backEnemies"]) {
-    //     Enemy* bE = EnemyFactory::createEnemy(bEJson["enemyType"].get<EnemyType>(),
-    //                                            {bEJson["position"][0].get<float>(), bEJson["position"][1].get<float>()},
-    //                                            bEJson["direction"].get<Direction>());
-    //     bE->loadFromJson(bEJson);
-    //     backEnemy.push_back(bE);
-    // }
-    // for (const auto& fEJson : j["frontEnemies"]) {
-    //     Enemy* fE = EnemyFactory::createEnemy(fEJson["enemyType"].get<EnemyType>(),
-    //                                            {fEJson["position"][0].get<float>(), fEJson["position"][1].get<float>()},
-    //                                            fEJson["direction"].get<Direction>());
-    //     fE->loadFromJson(fEJson);
-    //     frontEnemy.push_back(fE);
-    // }
+    for (const auto& bEJson : j["backEnemies"]) {
+        Enemy* bE = EnemyFactory::createEnemy(bEJson["type"].get<EnemyType>(),
+                                               {bEJson["position"][0].get<float>(), bEJson["position"][1].get<float>()},
+                                               bEJson["direction"].get<Direction>());
+        bE->loadFromJson(bEJson);
+        backEnemy.push_back(bE);
+    }
+    for (const auto& fEJson : j["frontEnemies"]) {
+        Enemy* fE = EnemyFactory::createEnemy(fEJson["type"].get<EnemyType>(),
+                                               {fEJson["position"][0].get<float>(), fEJson["position"][1].get<float>()},
+                                               fEJson["direction"].get<Direction>());
+        fE->loadFromJson(fEJson);
+        frontEnemy.push_back(fE);
+    }
     for (const auto& iJson : j["items"]) {
         Item* i = ItemFactory::createItem(iJson["enemyType"].get<ItemType>(),
                                            iJson["source"].get<Source>(),

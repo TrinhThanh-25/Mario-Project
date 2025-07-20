@@ -505,9 +505,6 @@ void Character::collisionBlock(Block* block) {
 
 void Character::collisionEnemy(Enemy* enemy) {
     if(state == SpriteState::DYING || state == SpriteState::VICTORY) return;
-    if(enemy->getState() == SpriteState::IDLE){
-        // activate enemy
-    }
     if(enemy->getState() != SpriteState::DYING && enemy->getState() != SpriteState::TO_BE_REMOVED) {
         CollisionType collision = checkCollisionEnemy(enemy);
         if(invincible == true && collision != CollisionType::NONE){
