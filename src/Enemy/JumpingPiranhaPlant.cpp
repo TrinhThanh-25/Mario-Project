@@ -11,13 +11,13 @@ JumpingPiranhaPlant::JumpingPiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, 
     waitDuration = 2.0f;                        // Chờ 2s giữa các cú nhảy
     waitTimer = 0.0f;
 
-    jumpSpeed = 200.0f;                         // Tốc độ nhảy lên
-    gravity = 981.0f;                           // Gia tốc trọng lực
+    jumpSpeed = 200.0f;                         // Tốc độ nhảy lên                    
 
     velocity = {0, 0};                          // Bắt đầu đứng yên
     isFacingLeft = true;                        // Không quan trọng nhưng giữ cho đồng bộ
     type = EnemyType::JUMPING_PIRANHA_PLANT;
     maxJumpHeight = 64.0f;
+    point = 200;
 }
 
     
@@ -71,23 +71,22 @@ void JumpingPiranhaPlant::update(const std::vector<Character*>& characterList) {
 
     updateCollisionBoxes();
     if (state == SpriteState::DYING) {
-    float delta = GetFrameTime();
+        float delta = GetFrameTime();
 
-    dyingFrameAcum += delta;
-    if (dyingFrameAcum >= dyingFrameTime) {
-        dyingFrameAcum = 0.0f;
-        currentDyingFrame++;
-        if (currentDyingFrame >= maxDyingFrame) {
-            setState(SpriteState::TO_BE_REMOVED);
+        dyingFrameAcum += delta;
+        if (dyingFrameAcum >= dyingFrameTime) {
+            dyingFrameAcum = 0.0f;
+            currentDyingFrame++;
+            if (currentDyingFrame >= maxDyingFrame) {
+                setState(SpriteState::TO_BE_REMOVED);
+            }
+        }
+
+        pointFrameAcum += delta;
+        if (pointFrameAcum >= pointFrameTime) {
+            pointFrameAcum = pointFrameTime;
         }
     }
-
-    pointFrameAcum += delta;
-    if (pointFrameAcum >= pointFrameTime) {
-        pointFrameAcum = pointFrameTime;
-    }
-}
-
 }
 
 

@@ -10,6 +10,7 @@ Rex::Rex(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     isFacingLeft = vel.x < 0;   
     setState(SpriteState::INACTIVE);
     type = EnemyType::REX;
+    point = 200;
 }
 
 void Rex::update(const std::vector<Character*>& characterList) {

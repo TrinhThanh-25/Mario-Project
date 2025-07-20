@@ -17,6 +17,7 @@ Swooper::Swooper(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     startPosition = position;
 
     type = EnemyType::SWOOPER;
+    point = 200;
 
 }
 

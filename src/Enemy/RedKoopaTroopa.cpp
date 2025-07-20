@@ -6,6 +6,7 @@ RedKoopaTroopa::RedKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color colo
     setState(SpriteState::INACTIVE); 
     isFacingLeft = vel.x < 0;  
     type = EnemyType::RED_KOOPA_TROOPA; 
+    point = 100;
 }
     
 RedKoopaTroopa::~RedKoopaTroopa(){

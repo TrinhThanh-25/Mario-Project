@@ -137,6 +137,10 @@ EnemyType Enemy::getEnemyType(){
     return type;
 }
 
+int Enemy::getPoint() const {
+    return point;
+}
+
 // ======================== SAVE GAME ==========================
 
 

@@ -8,6 +8,8 @@ BulletBill::BulletBill(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     isFacingLeft = vel.x < 0;                  // Xác định hướng bay
     velocity = vel;                            // Không thay đổi trong quá trình bay
     type = EnemyType::BULLET_BILL;
+
+    point = 200;
 }
 
     
