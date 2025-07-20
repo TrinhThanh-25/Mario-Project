@@ -184,7 +184,7 @@ bool World::isGameOverMusicStreamPlaying() const {
     return gameOverMusicStreamPlaying;
 }
 
-void World::pausWorld(bool pausedForTransition, bool pausedUpdateCharacters) {
+void World::pauseWorld(bool pausedForTransition, bool pausedUpdateCharacters) {
     this->pausedForTransition = pausedForTransition;
     this->pausedUpdateCharacters = pausedUpdateCharacters;
 }

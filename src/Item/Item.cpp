@@ -86,7 +86,7 @@ void Item::collisionCharacter(Character *character)
             this->setState(SpriteState::HIT);
             this->playCollisionSound();
             if (this->isPausedGameWhenBeingHit()) {
-                character->getWorld()->pausWorld(true, true);
+                character->getWorld()->pauseWorld(true, true);
             }
             this->updateCharacter(character);
         } 
