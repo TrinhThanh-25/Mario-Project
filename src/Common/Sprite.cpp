@@ -187,3 +187,39 @@ Direction Sprite::getDirection() const {
 Rectangle Sprite::getRect() const {
     return Rectangle{position.x, position.y, size.x, size.y};
 }
+
+json Sprite::saveToJson() const {
+    json j;
+    j["position"] = {position.x, position.y};
+    j["size"] = {size.x, size.y};
+    j["velocity"] = {velocity.x, velocity.y};
+    j["color"] = {color.r, color.g, color.b, color.a};
+    j["state"] = static_cast<int>(state);
+    j["auxiliaryState"] = static_cast<int>(auxiliaryState);
+    j["direction"] = static_cast<int>(direction);
+    j["frameTime"] = frameTime;
+    j["frameAcum"] = frameAcum;
+    j["curFrame"] = curFrame;
+    j["maxFrame"] = maxFrame;
+    return j;
+}
+
+void Sprite::loadFromJson(const json& j) {
+    position.x = j["position"][0].get<float>();
+    position.y = j["position"][1].get<float>();
+    size.x = j["size"][0].get<float>();
+    size.y = j["size"][1].get<float>();
+    velocity.x = j["velocity"][0].get<float>();
+    velocity.y = j["velocity"][1].get<float>();
+    color.r = j["color"][0].get<unsigned char>();
+    color.g = j["color"][1].get<unsigned char>();
+    color.b = j["color"][2].get<unsigned char>();
+    color.a = j["color"][3].get<unsigned char>();
+    state = static_cast<SpriteState>(j["state"].get<int>());
+    auxiliaryState = static_cast<SpriteState>(j["auxiliaryState"].get<int>());
+    direction = static_cast<Direction>(j["direction"].get<int>());
+    frameTime = j["frameTime"].get<float>();
+    frameAcum = j["frameAcum"].get<float>();
+    curFrame = j["curFrame"].get<int>();
+    maxFrame = j["maxFrame"].get<int>();
+}

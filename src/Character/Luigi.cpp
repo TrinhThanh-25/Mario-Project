@@ -1,7 +1,7 @@
 #include "Character/Luigi.h"
 
 Luigi::Luigi(ModePlayer mode, Vector2 pos, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed) :
-    Character("Luigi", mode, pos, {32, 44}, vel, color, speedX, maxSpeedX, jumpSpeed) {
+    Character(NamePlayer::LUIGI, mode, pos, {32, 44}, vel, color, speedX, maxSpeedX, jumpSpeed) {
 }
 
 Luigi::~Luigi() {
@@ -70,4 +70,14 @@ void Luigi::transitionToFlower() {
     type = CharacterType::FLOWER;
     size = {32, 60};
     maxFrame = 3;
+}
+
+json Luigi::saveToJson() const {
+    json j = Character::saveToJson();
+    j["name"] = "Luigi";
+    return j;
+}
+
+void Luigi::loadFromJson(const json& j) {
+    Character::loadFromJson(j);
 }

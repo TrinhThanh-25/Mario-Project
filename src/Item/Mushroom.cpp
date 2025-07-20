@@ -8,6 +8,7 @@ Item(position, size, {320, 0}, color, 0, 0, Direction::RIGHT, 0, 0, false), poin
     if (isInInventory) {
         setVelocityY(100);
     }
+    type = ItemType::MUSHROOM;
 }
 
 void Mushroom::update()
@@ -35,7 +36,7 @@ void Mushroom::updateWhenActive(float timeElapsed)
             appear = !appear; // Toggle appearance
         }
     } else {
-        setVelocityY(getVelocityY() + gravity * timeElapsed);
+        setVelocityY(getVelocityY() + World::gravity * timeElapsed);
         setY(getY() + getVelocityY() * timeElapsed);
         if (getDirection() == Direction::RIGHT)
         {
@@ -76,7 +77,12 @@ void Mushroom::draw()
     }
     else if (getState() == SpriteState::HIT)
     {
-        // Draw point floating above the mushroom
+        DrawTexture(
+            ResourceManager::getTexture()["Gui200"],
+            getX() + getWidth() / 2 - ResourceManager::getTexture()["Gui200"].width / 2,
+            getY() - ResourceManager::getTexture()["Gui200"].height - (50 * pointFrameAccum / pointFrameTime),
+            WHITE
+        );
     }
 }
 
@@ -88,7 +94,7 @@ void Mushroom::playCollisionSound()
 void Mushroom::updateCharacter(Character *character)
 {
 
-    /*Add point here*/
+    character->getGameHud()->addPoints(points);
     
     CharacterType type = character->getType();
     if (type == CharacterType::SMALL) {
@@ -96,18 +102,35 @@ void Mushroom::updateCharacter(Character *character)
         character->setPreviousState(character->getState());
         character->setState(SpriteState::SMALL_TO_SUPER);
     } else if (type == CharacterType::SUPER || type == CharacterType::FLOWER) {
-        // CharacterType previousType = character->getPreviousType();
-        // if (previousType == CharacterType::SMALL) {
-        //     PlaySound(ResourceManager::getSound()["StorePowerUpItem"]);
-        //     /*Put mushroom into the inventory*/
-        // }
+        CharacterType previousType = character->getGameHud()->getPowerUpItem();
+        if (previousType == CharacterType::SMALL) {
+            PlaySound(ResourceManager::getSound()["StorePowerUpItem"]);
+            character->getGameHud()->setPowerUpItem(CharacterType::SUPER);
+        }
     }
 }
 
 void Mushroom::collisionSouth(Character *character)
 {
     if (isInInventory) {
-        setDirection(character->getDirection());
+        setDirection(Direction::RIGHT);
         isInInventory = false;
     }
+}
+
+json Mushroom::saveToJson() const
+{
+    json j = Item::saveToJson();
+    j["points"] = points;
+    j["isInInventory"] = isInInventory;
+    j["appear"] = appear;
+    return j;
+}
+
+void Mushroom::loadFromJson(const json &j)
+{
+    Item::loadFromJson(j);
+    points = j.value("points", 0);
+    isInInventory = j.value("isInInventory", false);
+    appear = j.value("appear", false);
 }

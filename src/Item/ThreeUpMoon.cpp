@@ -1,9 +1,10 @@
 #include "Item/ThreeUpMoon.h"
 
 ThreeUpMoon::ThreeUpMoon(Vector2 position, Vector2 size, Color color, int lives):
-Item(position, size, {0, 0}, color, 0.1f, 2, Direction::RIGHT, 0.1f, 4, false), lives(lives)
+Item(position, size, {0, 0}, color, 0, 0, Direction::RIGHT, 0, 0, false), lives(lives)
 {
     pauseGameWhenHit = false;
+    type = ItemType::THREE_UP_MOON;
 }
 
 void ThreeUpMoon::update()
@@ -51,7 +52,12 @@ void ThreeUpMoon::draw()
     }
     else if (this->getState() == SpriteState::HIT)
     {
-        //Draw 3up 
+        DrawTexture(
+            ResourceManager::getTexture()["Gui3Up"],
+            this->getX() + this->getWidth() / 2 - ResourceManager::getTexture()["Gui3Up"].width / 2,
+            this->getY() - ResourceManager::getTexture()["Gui3Up"].height - (50 * pointFrameAccum / pointFrameTime),
+            WHITE
+        );
         DrawTexture(ResourceManager::getTexture()["Star" + std::to_string(this->currentBeingHitFrame)], this->getX(), this->getY(), this->getColor());
     }
 }
@@ -63,9 +69,21 @@ void ThreeUpMoon::playCollisionSound()
 
 void ThreeUpMoon::updateCharacter(Character *character)
 {
-    //Add 3 lives to character
+    character->getGameHud()->addLives(this->lives);
 }
 
 void ThreeUpMoon::collisionSouth(Character *character)
 {
+}
+void ThreeUpMoon::loadFromJson(const json &j)
+{
+    Item::loadFromJson(j);
+    lives = j.value("lives", 0);
+}
+
+json ThreeUpMoon::saveToJson() const
+{
+    json j = Item::saveToJson();
+    j["lives"] = lives;
+    return j;
 }

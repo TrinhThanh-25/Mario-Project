@@ -1,10 +1,10 @@
 #include "Item/Item.h"
-
-float Item::gravity = 1200.0f;
+#include "Game/World.h"
 
 Item::Item(Vector2 position, Vector2 size, Vector2 vel, Color color, float FrameTime, int MaxFrame, Direction direction, float HitFrameTime, int maxHitFrame, bool pause):
 Sprite(position,size,vel,color,frameTime,maxFrame,direction), beingHitFrameTime(HitFrameTime), maxBeingHitFrame(maxHitFrame), pauseGameWhenHit(pause)
 {
+    this->setState(SpriteState::ACTIVE);
 }
 
 Item::~Item()
@@ -43,7 +43,7 @@ void Item::collisionBlock(Block *block)
     case CollisionType::SOUTH:
         this->setVelocityY(0);
         this->setY(block->getY() - this->getHeight());
-        //collisionSouth(World::getCharacters());
+        collisionSouth(nullptr);
         updateCollisionBoxes();
         break;
     default:
@@ -71,7 +71,7 @@ void Item::collisionTile(Tile* tile)
     case CollisionType::SOUTH:
         this->setVelocityY(0);
         this->setY(tile->getY() - this->getHeight());
-        //collisionSouth
+        collisionSouth(nullptr);
         updateCollisionBoxes();
         break;
     default:
@@ -86,13 +86,44 @@ void Item::collisionCharacter(Character *character)
             this->setState(SpriteState::HIT);
             this->playCollisionSound();
             if (this->isPausedGameWhenBeingHit()) {
-                // Pause the game
+                character->getWorld()->pauseWorld(true, true);
             }
             this->updateCharacter(character);
         } 
-        /*Fall out of the map
-        if (this->getY() > character->getWorld()->getMap()->getHeight()) {
+        if (this->getY() > character->getMap()->getHeight()) {
             this->setState(SpriteState::TO_BE_REMOVED);
-        }*/
+        }
     }
+}
+
+ItemType Item::getType()
+{
+    return type;
+}
+
+json Item::saveToJson() const
+{
+    json j = Sprite::saveToJson();
+    j["beingHitFrameTime"] = beingHitFrameTime;
+    j["beingHitFrameAcum"] = beingHitFrameAcum;
+    j["maxBeingHitFrame"] = maxBeingHitFrame;
+    j["currentBeingHitFrame"] = currentBeingHitFrame;
+    j["pointFrameAccum"] = pointFrameAccum;
+    j["pointFrameTime"] = pointFrameTime;
+    j["pauseGameWhenHit"] = pauseGameWhenHit;
+    j["type"] = (int)type;
+    return j;
+}
+
+void Item::loadFromJson(const json& j)
+{
+    Sprite::loadFromJson(j);
+    beingHitFrameTime = j.value("beingHitFrameTime", 0.0f);
+    beingHitFrameAcum = j.value("beingHitFrameAcum", 0.0f);
+    maxBeingHitFrame = j.value("maxBeingHitFrame", 0);
+    currentBeingHitFrame = j.value("currentBeingHitFrame", 0);
+    pointFrameAccum = j.value("pointFrameAccum", 0.0f);
+    pointFrameTime = j.value("pointFrameTime", 0.0f);
+    pauseGameWhenHit = j.value("pauseGameWhenHit", false);
+    type = static_cast<ItemType>(j.value("type", static_cast<int>(ItemType::COIN)));
 }

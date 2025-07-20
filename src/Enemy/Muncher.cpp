@@ -2,13 +2,20 @@
 #include "Common/ResourceManager.h"
 
 Muncher::Muncher(Vector2 pos, Vector2 dim, Color color)
-    : Enemy(pos, dim, {0.0}, color){
-    setState(SpriteState::ACTIVE); 
+    : Enemy(EnemyType::MUNCHER, pos, dim, {0.0}, color){
+    setState(SpriteState::INACTIVE); 
+    type = EnemyType::MUNCHER;
 }
 
     
-void Muncher::update(Mario& mario, const std::vector<Sprite*>& collidables){
- // không di chuyển
+void Muncher::update(const std::vector<Character*>& characterList){
+    if (state == SpriteState::INACTIVE) {
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+        }
+        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
+    }
 }
     
 void Muncher::draw(){
@@ -22,6 +29,14 @@ void Muncher::beingHit(HitType type){
     // không bị đánh
 }
     
-void Muncher::activeWhenMarioApproach(Mario& mario){
- // luôn active
+void Muncher::activeWhenMarioApproach(Character& character){
+    Enemy::activeWhenMarioApproach(character);
+}
+
+void Muncher::collisionTile(Tile* tile) {
+    Enemy::collisionTile(tile);
+}
+
+void Muncher::collisionBlock(Block* block) {
+    Enemy::collisionBlock(block);
 }

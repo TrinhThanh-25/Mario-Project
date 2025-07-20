@@ -20,6 +20,9 @@ class PlayingState : public GameState {
         void draw() override;
         bool isOneCharactersDead() const;
         bool isAllCharactersVictory() const;
+
+        json saveToJson() const override;
+        void loadFromJson(const json& j) override;
 };
 
 #endif

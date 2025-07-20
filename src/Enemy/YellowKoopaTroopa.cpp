@@ -5,40 +5,43 @@
 #define WAKE_UP_TIME 5.0f
 
 YellowKoopaTroopa::YellowKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color) {
+    : Enemy(EnemyType::YELLOW_KOOPA_TROOPA, pos, dim, vel, color) {
     
     extraWakeUpTime = 2.0f;
     shellSpeed = 150.0f;
     shellTimer = 0.0f;
     shellMoving = false;
 
-    setState(SpriteState::ACTIVE);
+    setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;
+    type = EnemyType::YELLOW_KOOPA_TROOPA;
+
+    point = 100;
 }
 
-void YellowKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collidables) {
+void YellowKoopaTroopa::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
 
+    if (state == SpriteState::INACTIVE) {
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+        }
+        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
+    }
+
     if (state == SpriteState::ACTIVE) {
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
-        // if (checkCollision(collidables) != CollisionType::NONE) {
-        //     velocity.x = -velocity.x;
-        //     isFacingLeft = velocity.x < 0;
-        // }
 
         updateCollisionBoxes();
     }
 
     else if (state == SpriteState::SHELL) {
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
         position.y += velocity.y * delta;
-
-        if (checkCollision(collidables) == CollisionType::SOUTH) {
-            velocity.y = 0;
-        }
 
         shellTimer += delta;
         updateCollisionBoxes();
@@ -53,10 +56,6 @@ void YellowKoopaTroopa::update(Mario& mario, const std::vector<Sprite*>& collida
     else if (state == SpriteState::SHELL_MOVING) {
         float dir = isFacingLeft ? -1.0f : 1.0f;
         position.x += shellSpeed * dir * delta;
-
-        if (checkCollision(collidables) != CollisionType::NONE) {
-            isFacingLeft = !isFacingLeft;
-        }
 
         updateCollisionBoxes();
     }
@@ -86,7 +85,6 @@ void YellowKoopaTroopa::draw() {
                                   : (frame == 0 ? "YellowKoopa0Right" : "YellowKoopa1Right");
     }
 
-    // Bạn có thể thêm shell / dying nếu có sprite riêng
     DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
 
     if (state == SpriteState::DYING) {
@@ -94,9 +92,25 @@ void YellowKoopaTroopa::draw() {
         DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
 
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
-        DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
+        float angle = sin(GetTime() * 10.0f) * 10.0f;
+
+        Texture2D& guiTex = ResourceManager::getTexture()["Gui100"];
+        DrawTexturePro(
+            guiTex,
+            Rectangle{0, 0, (float)guiTex.width, (float)guiTex.height},
+            Rectangle{
+                diePosition.x,
+                diePosition.y - offsetY,
+                (float)guiTex.width,
+                (float)guiTex.height
+            },
+            Vector2{guiTex.width / 2.0f, guiTex.height / 2.0f},
+            angle,
+            WHITE
+        );
     }
 }
+
 
 void YellowKoopaTroopa::beingHit(HitType type) {
     switch (type) {
@@ -145,6 +159,57 @@ bool YellowKoopaTroopa::isShellMoving() const {
     return shellMoving;
 }
 
-void YellowKoopaTroopa::activeWhenMarioApproach(Mario& mario) {
-    // Green Koopa luôn ACTIVE từ đầu → không cần xử lý gì ở đây
+void YellowKoopaTroopa::activeWhenMarioApproach(Character& character) {
+    Enemy::activeWhenMarioApproach(character);
+}
+
+void YellowKoopaTroopa::collisionTile(Tile* tile) {
+    CollisionType col = checkCollision(tile);
+
+    Enemy::collisionTile(tile);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+}
+
+void YellowKoopaTroopa::collisionBlock(Block* block) {
+    CollisionType col = checkCollision(block);
+
+    Enemy::collisionBlock(block);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+}
+
+// ============================= SAVE GAME ==================================
+json YellowKoopaTroopa::saveToJson() const {
+    json j = Enemy::saveToJson();
+
+    j["shellMoving"] = shellMoving;
+    j["shellTimer"] = shellTimer;
+    j["shellSpeed"] = shellSpeed;
+    j["extraWakeUpTime"] = extraWakeUpTime;
+
+    return j;
+}
+
+void YellowKoopaTroopa::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);
+
+    shellMoving = j["shellMoving"].get<bool>();
+    shellTimer = j["shellTimer"].get<float>();
+    shellSpeed = j["shellSpeed"].get<float>();
+    extraWakeUpTime = j["extraWakeUpTime"].get<float>();
 }

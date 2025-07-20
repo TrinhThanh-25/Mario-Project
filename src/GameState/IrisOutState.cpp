@@ -76,3 +76,12 @@ void IrisOutState::draw() {
     std::string message2 = "Total Points: " + std::to_string(gameHud->getPoints());
     ResourceManager::drawString( message2, centerX - ResourceManager::getDrawStringWidth( message2 ) / 2, centerY + 40 );
 }
+
+json IrisOutState::saveToJson() const {
+    json j = GameState::saveToJson();
+    return j;
+}
+
+void IrisOutState::loadFromJson(const json& j) {
+    GameState::loadFromJson(j);
+}

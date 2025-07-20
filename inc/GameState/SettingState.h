@@ -3,7 +3,7 @@
 
 #include "GameState/GameState.h"
 #include "Game/World.h"
-#include "Common/Button.h"
+#include "GUI/Button.h"
 
 class SettingState : public GameState {
     private:
@@ -22,6 +22,8 @@ class SettingState : public GameState {
         void draw() override;
 
         void setStateBeforeSetting(GameStateType stateBeforeSetting);
+
+        json saveToJson() const override;
 };
 
 #endif

@@ -7,6 +7,9 @@
 #include "Common/SpriteState.h"
 #include "Common/CollisionType.h"
 #include "Common/CollisionBox.h"
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 class Sprite : public virtual Drawable {
     protected:
@@ -34,7 +37,7 @@ class Sprite : public virtual Drawable {
         virtual ~Sprite() override;
 
         virtual void update() = 0;
-        void draw() override = 0;
+        virtual void draw() override = 0;
         virtual CollisionType checkCollision(Sprite* sprite);
         virtual void updateCollisionBoxes();
 
@@ -76,6 +79,9 @@ class Sprite : public virtual Drawable {
         Direction getDirection() const;
 
         Rectangle getRect() const;
+
+        virtual json saveToJson() const;
+        virtual void loadFromJson(const json& j);
 };
 
 #endif

@@ -8,7 +8,7 @@
 EyesOpenedBlock::EyesOpenedBlock(Vector2 pos, Vector2 size, Color color)
 	: EyesOpenedBlock(pos, size, color, 0.1, 1) {}
 EyesOpenedBlock::EyesOpenedBlock(Vector2 pos, Vector2 size, Color color, float frameTime, int maxFrames)
-	: Block(pos, size, color, frameTime, maxFrames), animationTime(3), animationAccumulated(0) {}
+	: Block(BlockType::EYESOPENED, pos, size, color, frameTime, maxFrames), animationTime(3), animationAccumulated(0) {}
 
 EyesOpenedBlock::~EyesOpenedBlock() = default;
 
@@ -43,4 +43,17 @@ void EyesOpenedBlock::doHit(Character& character, Map* map) {
 		hit = true;
 		state = SpriteState::HIT;
 	}
+}
+
+json EyesOpenedBlock::saveToJson() const {
+	json j = Block::saveToJson();
+	j["animationTime"] = animationTime;
+	j["animationAccumulated"] = animationAccumulated;
+	return j;
+}
+
+void EyesOpenedBlock::loadFromJson(const json& j) {
+	Block::loadFromJson(j);
+	animationTime = j["animationTime"].get<float>();
+	animationAccumulated = j["animationAccumulated"].get<float>();
 }

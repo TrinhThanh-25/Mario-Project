@@ -6,37 +6,39 @@
 #define WAKE_UP_TIME 5.0f // tự bật dậy sau 5s
 
 MummyBeetle::MummyBeetle(Vector2 pos, Vector2 dim, Vector2 vel, Color color) 
-    : Enemy(pos, dim, vel, color) {
+    : Enemy(EnemyType::MUMMY_BEETLE, pos, dim, vel, color) {
     extraWakeUpTime = 2.0f;
     shellSpeed = 150.0f;
     setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;   
-    }
+    shellMoving = false;
+    type = EnemyType::MUMMY_BEETLE;
+    point = 100;
+}
 
-void MummyBeetle::update(Mario& mario, const std::vector<Sprite*>& collidables) {
+void MummyBeetle::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
 
     if (state == SpriteState::INACTIVE) {
-        activeWhenMarioApproach(mario);
-        return;
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+        }
+        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
     }
 
     if (state == SpriteState::ACTIVE) {
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
-        // if (checkCollision(collidables) != CollisionType::NONE) {
-        //     velocity.x = -velocity.x;
-        //     isFacingLeft = velocity.x < 0;
-        // }
 
         updateCollisionBoxes();
     }
 
     else if (state == SpriteState::SHELL) {
         shellTimer += delta;
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
         position.y += velocity.y * delta;
         if (shellTimer >= WAKE_UP_TIME + extraWakeUpTime) {
             setState(SpriteState::ACTIVE);
@@ -48,11 +50,6 @@ void MummyBeetle::update(Mario& mario, const std::vector<Sprite*>& collidables) 
     else if (state == SpriteState::SHELL_MOVING) {
         float dir = isFacingLeft ? -1.0f : 1.0f;
         position.x += shellSpeed * dir * delta;
-
-        if (checkCollision(collidables) != CollisionType::NONE) {
-            isFacingLeft = !isFacingLeft;
-        }
-
         updateCollisionBoxes();
     }
 
@@ -79,22 +76,38 @@ void MummyBeetle::draw(){
     if (state == SpriteState::ACTIVE) {
         textureKey = isFacingLeft ? (frame == 0 ? "MummyBeetle0Left" : "MummyBeetle1Left")
                                   : (frame == 0 ? "MummyBeetle0Right" : "MummyBeetle1Right");
-        
     } 
+
     DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
+
     // else if (state == SpriteState::SHELL || state == SpriteState::SHELL_MOVING || state == SpriteState::DYING) {
     //     textureKey = isFacingLeft ? "BuzzyBeetleShellLeft" : "BuzzyBeetleShellRight";
     // }
 
-
     if (state == SpriteState::DYING) {
-
         std::string dyingKey = isFacingLeft ? "MummyBeetle1Left" : "MummyBeetle1Right";
         DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
+
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
-        DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
+        float angle = sin(GetTime() * 10.0f) * 10.0f;
+
+        Texture2D& guiTex = ResourceManager::getTexture()["Gui100"];
+        DrawTexturePro(
+            guiTex,
+            Rectangle{0, 0, (float)guiTex.width, (float)guiTex.height},
+            Rectangle{
+                diePosition.x,
+                diePosition.y - offsetY,
+                (float)guiTex.width,
+                (float)guiTex.height
+            },
+            Vector2{guiTex.width / 2.0f, guiTex.height / 2.0f},
+            angle,
+            WHITE
+        );
     }
 }
+
 
 void MummyBeetle::beingHit(HitType type) {
     switch (type) {
@@ -121,6 +134,13 @@ void MummyBeetle::beingHit(HitType type) {
             break;
 
         case HitType::SHELL_KICK:
+            if (state != SpriteState::DYING && state != SpriteState::TO_BE_REMOVED) {
+                setState(SpriteState::DYING);
+                diePosition = position;
+                dyingFrameAcum = 0.0f;
+                pointFrameAcum = 0.0f;
+                shellMoving = false;
+            }
             break;
 
         default:
@@ -141,14 +161,57 @@ bool MummyBeetle::isShellMoving() const {
     return shellMoving;
 }
 
-void MummyBeetle::activeWhenMarioApproach(Mario& mario){
-    if (state != SpriteState::INACTIVE) return;
+void MummyBeetle::activeWhenMarioApproach(Character& character){
+    Enemy::activeWhenMarioApproach(character);
+}
 
-    Vector2 marioPos = mario.getPosition();
-    float dx = fabs(marioPos.x - position.x);
+void MummyBeetle::collisionTile(Tile* tile) {
+    CollisionType col = checkCollision(tile);
 
-    if (dx <= ACTIVATION_RANGE) {
-        setState(SpriteState::ACTIVE);
-        velocity.x = isFacingLeft ? -30.0f : 30.0f;
+    Enemy::collisionTile(tile);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
     }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+}
+
+void MummyBeetle::collisionBlock(Block* block) {
+    CollisionType col = checkCollision(block);
+
+    Enemy::collisionBlock(block);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+}
+
+// ============================= SAVE GAME ===============================
+json MummyBeetle::saveToJson() const {
+    json j = Enemy::saveToJson();
+
+    j["shellMoving"] = shellMoving;
+    j["shellTimer"] = shellTimer;
+    j["shellSpeed"] = shellSpeed;
+    j["extraWakeUpTime"] = extraWakeUpTime;
+
+    return j;
+}
+
+void MummyBeetle::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);
+
+    shellMoving = j["shellMoving"].get<bool>();
+    shellTimer = j["shellTimer"].get<float>();
+    shellSpeed = j["shellSpeed"].get<float>();
+    extraWakeUpTime = j["extraWakeUpTime"].get<float>();
 }

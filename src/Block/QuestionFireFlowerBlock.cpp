@@ -2,7 +2,7 @@
 #include "Block/Block.h"
 #include "Character/Character.h"
 #include "Game/World.h"
-//#include "Item/FireFlower.h"
+#include "Item/ItemFactory.h"
 #include "raylib.h"
 #include "Common/ResourceManager.h"
 #include "Game/Map.h"	
@@ -11,7 +11,7 @@ QuestionFireFlowerBlock::QuestionFireFlowerBlock(Vector2 pos, Vector2 size, Colo
 	QuestionFireFlowerBlock(pos, size, color, 0.1f, 4) {}
 	
 QuestionFireFlowerBlock::QuestionFireFlowerBlock(Vector2 pos, Vector2 size, Color color, float frameTime, int maxFrames) :
-	Block(pos, size, color, frameTime, maxFrames), item(nullptr), itemVelocityY(0.0f), itemMinY(0.0f), map(nullptr) {}
+	Block(BlockType::QUESTIONFIREFLOWERBLOCK, pos, size, color, frameTime, maxFrames), item(nullptr), itemVelocityY(0.0f), itemMinY(0.0f), map(nullptr) {}
 
 QuestionFireFlowerBlock::~QuestionFireFlowerBlock() {}
 
@@ -22,7 +22,7 @@ void QuestionFireFlowerBlock::update() {
 		if (item->getY() < itemMinY) {
 			item->setY(itemMinY);
 			item->setState(SpriteState::ACTIVE);
-			//map->getItems().push_back(item);
+			map->getItem().push_back(item);
 			item = nullptr; // Clear the item pointer after it has been released
 			itemVelocityY = 0.0f;
 		}
@@ -53,10 +53,28 @@ void QuestionFireFlowerBlock::doHit(Character& character, Map* map) {
 	if (!hit) {
 		hit = true;
 		PlaySound(ResourceManager::getSound()["PowerUpAppear"]);
-		//item = new FireFlower(Vector2{ position.x, position.y }, Vector2{ 32, 32 }, ORANGE);
-		//itemVelocityY = -80.0f;
-        //item->setDirection(mario.getDirection());
+		item = ItemFactory::createItem(ItemType::FLOWER, Source::BLOCK, Vector2{ position.x, position.y }, character.getDirection());
+		itemVelocityY = -80.0f;
+        item->setDirection(character.getDirection());
 		itemMinY = position.y - 32.0f; // Set the minimum Y position for the item
 		this->map = map; // Store the map reference
 	}
+}
+json QuestionFireFlowerBlock::saveToJson() const {
+	json j = Block::saveToJson();
+	j["item"] = item ? item->saveToJson() : nullptr;
+	j["itemVelocityY"] = itemVelocityY;
+	j["itemMinY"] = itemMinY;
+	return j;
+}
+void QuestionFireFlowerBlock::loadFromJson(const json& j) {
+	Block::loadFromJson(j);
+	if (j.contains("item") && !j["item"].is_null()) {
+		item = ItemFactory::createItem(ItemType::FLOWER, Source::BLOCK, Vector2{ position.x, position.y }, Direction::RIGHT);
+		item->loadFromJson(j["item"]);
+	} else {
+		item = nullptr;
+	}
+	itemVelocityY = j["itemVelocityY"].get<float>();
+	itemMinY = j["itemMinY"].get<float>();
 }

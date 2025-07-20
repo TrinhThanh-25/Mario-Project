@@ -6,10 +6,17 @@
 #define WAKE_UP_TIME 5.0f // tự bật dậy sau 5s
 
 BuzzyBeetle::BuzzyBeetle(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color), shellMoving(false), shellSpeed(200.0f),
+    : Enemy(EnemyType::BUZZY_BEETLE, pos, dim, vel, color), shellMoving(false), shellSpeed(200.0f),
       shellTimer(0.0f) {
     setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;
+    type = EnemyType::BUZZY_BEETLE;
+
+    point = 100;
+}
+
+BuzzyBeetle::~BuzzyBeetle() {
+    // Destructor logic if needed
 }
 
 void BuzzyBeetle::draw() {
@@ -27,20 +34,39 @@ void BuzzyBeetle::draw() {
     DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
 
     if (state == SpriteState::DYING) {
-
         std::string dyingKey = isFacingLeft ? "BuzzyBeetle0Left" : "BuzzyBeetle0Right"; 
         DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
+
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
-        DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
+        float angle = sin(GetTime() * 10.0f) * 10.0f;
+
+        Texture2D& guiTex = ResourceManager::getTexture()["Gui100"];
+        DrawTexturePro(
+            guiTex,
+            Rectangle{ 0, 0, (float)guiTex.width, (float)guiTex.height },
+            Rectangle{
+                diePosition.x,
+                diePosition.y - offsetY,
+                (float)guiTex.width,
+                (float)guiTex.height
+            },
+            Vector2{ guiTex.width / 2.0f, guiTex.height / 2.0f },
+            angle,
+            WHITE
+        );
     }
 }
 
-void BuzzyBeetle::update(Mario& mario, const std::vector<Sprite*>& collidables) {
+
+void BuzzyBeetle::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
 
     if (state == SpriteState::INACTIVE) {
-        activeWhenMarioApproach(mario);
-        return;
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+        }
+        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
     }
 
     if (state == SpriteState::ACTIVE) {
@@ -52,11 +78,6 @@ void BuzzyBeetle::update(Mario& mario, const std::vector<Sprite*>& collidables) 
         velocity.y += 981.0f * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
-
-        // if (checkCollision(collidables) != CollisionType::NONE) {
-        //     velocity.x = -velocity.x;
-        //     isFacingLeft = velocity.x < 0;
-        // }
 
         updateCollisionBoxes();
     }
@@ -71,12 +92,10 @@ void BuzzyBeetle::update(Mario& mario, const std::vector<Sprite*>& collidables) 
     }
 
     else if (state == SpriteState::SHELL_MOVING) {
+        velocity.y += World::gravity * delta;
         float dir = isFacingLeft ? -1.0f : 1.0f;
         position.x += shellSpeed * dir * delta;
-
-        if (checkCollision(collidables) != CollisionType::NONE) {
-            isFacingLeft = !isFacingLeft;
-        }
+        position.y += velocity.y * delta;
 
         updateCollisionBoxes();
     }
@@ -151,16 +170,8 @@ bool BuzzyBeetle::isShellMoving() const {
     return shellMoving;
 }
 
-void BuzzyBeetle::activeWhenMarioApproach(Mario& mario) {
-    if (state != SpriteState::INACTIVE) return;
-
-    Vector2 marioPos = mario.getPosition();
-    float dx = fabs(marioPos.x - position.x);
-
-    if (dx <= ACTIVATION_RANGE) {
-        setState(SpriteState::ACTIVE);
-        velocity.x = isFacingLeft ? -50.0f : 50.0f;
-    }
+void BuzzyBeetle::activeWhenMarioApproach(Character& character) {
+    Enemy::activeWhenMarioApproach(character);
 }
 
 void BuzzyBeetle::collisionSound() {
@@ -182,3 +193,55 @@ void BuzzyBeetle::followTheLeader(Sprite* leader) {
     }
 }
 
+void BuzzyBeetle::collisionTile(Tile* tile) {
+    CollisionType col = checkCollision(tile);
+
+    // Gọi base xử lý va chạm cơ bản
+    Enemy::collisionTile(tile);
+
+    if ((state == SpriteState::ACTIVE || state == SpriteState::SHELL_MOVING) &&
+        (col == CollisionType::WEST || col == CollisionType::EAST)) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH) {
+        velocity.y = 0;
+    }
+}
+
+void BuzzyBeetle::collisionBlock(Block* block) {
+    CollisionType col = checkCollision(block);
+
+    // Gọi base xử lý va chạm cơ bản
+    Enemy::collisionBlock(block);
+
+    if ((state == SpriteState::ACTIVE || state == SpriteState::SHELL_MOVING) &&
+        (col == CollisionType::WEST || col == CollisionType::EAST)) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH) {
+        velocity.y = 0;
+    }
+}
+
+// ========================= SAVE GAME ============================
+json BuzzyBeetle::saveToJson() const {
+    json j = Enemy::saveToJson();  // Gọi hàm cha
+
+    j["shellMoving"] = shellMoving;
+    j["shellSpeed"] = shellSpeed;
+    j["shellTimer"] = shellTimer;
+
+    return j;
+}
+
+void BuzzyBeetle::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);  // Gọi hàm cha
+
+    shellMoving = j["shellMoving"].get<bool>();
+    shellSpeed = j["shellSpeed"].get<float>();
+    shellTimer = j["shellTimer"].get<float>();
+}

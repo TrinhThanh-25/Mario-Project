@@ -6,26 +6,27 @@
 #define ACTIVATION_RANGE 300.0f
 
 Rex::Rex(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color), isShrunken(false), shrinkDuration(0.0f) {
+    : Enemy(EnemyType::REX, pos, dim, vel, color), isShrunken(false), shrinkDuration(0.0f) {
     isFacingLeft = vel.x < 0;   
+    setState(SpriteState::INACTIVE);
+    type = EnemyType::REX;
+    point = 200;
 }
 
-void Rex::update(Mario& mario, const std::vector<Sprite*>& collidables) {
+void Rex::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
-    if (state == SpriteState::INACTIVE){
-        activeWhenMarioApproach(mario);
-        return;
+    if (state == SpriteState::INACTIVE) {
+        for (Character* c : characterList) {
+            activeWhenMarioApproach(*c);
+            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+        }
+        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
     }
 
     if (state == SpriteState::ACTIVE){
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
-
-        // if (checkCollision(collidables) != CollisionType::NONE) {
-        //     velocity.x = -velocity.x;
-        //     isFacingLeft = velocity.x < 0;
-        // }
 
         updateCollisionBoxes();
     }
@@ -59,7 +60,6 @@ void Rex::draw() {
                 textureKey = (frame == 0) ? "Rex10Right" : "Rex11Right";
             }
         }
-
         else {
             if (isFacingLeft){
                 textureKey = (frame == 0) ? "Rex20Left" : "Rex21Left";
@@ -72,31 +72,38 @@ void Rex::draw() {
     }
 
     if (state == SpriteState::DYING) {
-        std::string dyingKey;
+        std::string dyingKey = isFacingLeft ? "Rex10Left" : "Rex10Right";
 
-        // Dùng hình Rex lùn (1) khi chết – giống behavior trong Super Mario World
-        if (isFacingLeft) {
-            dyingKey = "Rex10Left";
-        } 
-        else {
-            dyingKey = "Rex10Right";
-        }
-
-        // Vẽ hình chết
         DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
 
-        // Vẽ điểm bay lên
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
-        DrawTexture(ResourceManager::getTexture()["Point100"], diePosition.x, diePosition.y - offsetY, WHITE);
-    }
+        float angle = sin(GetTime() * 10.0f) * 10.0f;
 
+        Texture2D& guiTex = ResourceManager::getTexture()["Gui100"];
+        DrawTexturePro(
+            guiTex,
+            Rectangle{0, 0, (float)guiTex.width, (float)guiTex.height},
+            Rectangle{
+                diePosition.x,
+                diePosition.y - offsetY,
+                (float)guiTex.width,
+                (float)guiTex.height
+            },
+            Vector2{guiTex.width / 2.0f, guiTex.height / 2.0f},
+            angle,
+            WHITE
+        );
+    }
 }
+
 
 void Rex::beingHit(HitType type) {
     if (type == HitType::STOMP){
         if (!isShrunken){
             isShrunken = true;
             velocity.x = 0;
+            setSize({32, 32});
+            updateCollisionBoxes();
         }
         else {
             setState(SpriteState::DYING);
@@ -113,14 +120,54 @@ void Rex::beingHit(HitType type) {
     }
 }
 
-void Rex::activeWhenMarioApproach(Mario& mario) {
-    if (state != SpriteState::INACTIVE) return;
+void Rex::activeWhenMarioApproach(Character& character) {
+    Enemy::activeWhenMarioApproach(character);
+}
 
-    Vector2 marioPos = mario.getPosition();
-    float dx = fabs(marioPos.x - position.x);
+void Rex::collisionTile(Tile* tile) {
+    CollisionType col = checkCollision(tile);
 
-    if (dx <= ACTIVATION_RANGE) {
-        setState(SpriteState::ACTIVE);
-        velocity.x = isFacingLeft ? -30.0f : 30.0f;
+    Enemy::collisionTile(tile);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
     }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+}
+
+void Rex::collisionBlock(Block* block) {
+    CollisionType col = checkCollision(block);
+
+    Enemy::collisionBlock(block);
+
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        velocity.x = -velocity.x;
+        isFacingLeft = velocity.x < 0;
+    }
+
+    if (col == CollisionType::SOUTH){
+        velocity.y = 0;
+    }
+}
+
+// =============================== SAVE GAME =================================
+
+json Rex::saveToJson() const {
+    json j = Enemy::saveToJson();
+
+    j["isShrunken"] = isShrunken;
+    j["shrinkDuration"] = shrinkDuration;
+
+    return j;
+}
+
+void Rex::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);
+
+    isShrunken = j["isShrunken"].get<bool>();
+    shrinkDuration = j["shrinkDuration"].get<float>();
 }

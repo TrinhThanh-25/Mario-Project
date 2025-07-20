@@ -1,5 +1,6 @@
 #include "GameState/FinishedState.h"
 #include "Common/ResourceManager.h"
+#include "SaveGame.h"
 
 FinishedState::FinishedState(World* world)
     : GameState(world, GameStateType::FINISHED) {
@@ -20,6 +21,7 @@ void FinishedState::update() {
     if (IsKeyPressed(KEY_ENTER)) {
         world->resetGame();
     }
+    SaveGame::deleteSaveGame();
 }
 
 void FinishedState::draw() {

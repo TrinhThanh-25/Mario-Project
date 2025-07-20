@@ -1,6 +1,10 @@
 #include "GameState/PlayingState.h"
 #include "GameState/CountingPointState.h"
 #include "GameState/SettingState.h"
+#include "Block/Block.h"
+#include "Tile/Tile.h"
+#include "Enemy/Enemy.h"
+#include "Item/Item.h"
 #include "raylib.h"
 #include <algorithm>
 
@@ -39,20 +43,22 @@ void PlayingState::update() {
             float centerY = GetScreenHeight() / 2.0f;
             float charactersX = characters[0]->getX() + characters[0]->getWidth() / 2.0f;
             float charactersY = characters[0]->getY() + characters[0]->getHeight() / 2.0f;
+            float mapWidth = map->getWidth();
+            float mapHeight = map->getHeight();
             camera->offset = {centerX, centerY};
-            if(charactersX < centerX) {
+            if(charactersX <= centerX) {
                 camera->target.x = centerX; 
                 map->setOffset(0);
-            } else if(charactersX >= map->getWidth() - centerX) {
-                camera->target.x = map->getWidth() - GetScreenWidth() / 2.0f;
+            } else if(charactersX >= mapWidth - centerX) {
+                camera->target.x = mapWidth - centerX;
             } else {
                 camera->target.x = charactersX;
                 map->setOffset(charactersX - centerX);
             }
-            if(charactersY < centerY) {
+            if(charactersY <= centerY) {
                 camera->target.y = centerY;
-            } else if(charactersY >= map->getHeight() - centerY) {
-                camera->target.y = map->getHeight() - GetScreenHeight() / 2.0f;
+            } else if(charactersY >= mapHeight - centerY) {
+                camera->target.y = mapHeight - centerY;
             } else {
                 camera->target.y = charactersY;
             }
@@ -123,12 +129,10 @@ void PlayingState::update() {
                 b->update();
             }
             for (auto& e : backEnemy) {
-                //e->update();
-                // follow character
+                e->update(characters);
             }
             for (auto& e : frontEnemy) {
-                //e->update();
-                // follow character
+                e->update(characters);
             }
             for (auto& i : item) {
                 i->update();
@@ -245,4 +249,13 @@ bool PlayingState::isAllCharactersVictory() const {
         }
     }
     return true;
+}
+
+json PlayingState::saveToJson() const {
+    json j = GameState::saveToJson();
+    return j;
+}
+
+void PlayingState::loadFromJson(const json& j) {
+    GameState::loadFromJson(j);
 }

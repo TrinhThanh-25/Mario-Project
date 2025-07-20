@@ -2,6 +2,7 @@
 #define PIRANHAPLANT_H
 
 #include "Enemy.h"
+#include "Game/World.h"
 
 enum class PiranhaState {
     HIDING,            // ẩn/đóng miệng
@@ -16,10 +17,16 @@ public:
     PiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, Color color);
 
     void draw();
-    void update(Mario& mario, const std::vector<Sprite*>& collidables) override;
+    void update(const std::vector<Character*>& characterList) override;
     void beingHit(HitType type);
     void collisionSound();
-    void activeWhenMarioApproach(Mario& mario);
+    void activeWhenMarioApproach(Character& character);
+    void collisionBlock(Block* block) override;
+    void collisionTile(Tile* tile) override;
+
+
+    json saveToJson() const;
+    void loadFromJson(const json& j);
 private:
     PiranhaState piranhaState;
 

@@ -1,4 +1,4 @@
-#include "Character/CharacterTag.h"
+#include "GUI/CharacterTag.h"
 #include "Common/ResourceManager.h"
 
 CharacterTag::CharacterTag(CharacterName name, Rectangle rec) 
