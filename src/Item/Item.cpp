@@ -1,9 +1,14 @@
 #include "Item/Item.h"
 #include "Game/World.h"
 
-Item::Item(Vector2 position, Vector2 size, Vector2 vel, Color color, float FrameTime, int MaxFrame, Direction direction, float HitFrameTime, int maxHitFrame, bool pause):
+Item::Item(Vector2 position, Vector2 size, Vector2 vel, Color color, float frameTime, int maxFrame, Direction direction, float HitFrameTime, int maxHitFrame, bool pause):
 Sprite(position,size,vel,color,frameTime,maxFrame,direction), beingHitFrameTime(HitFrameTime), maxBeingHitFrame(maxHitFrame), pauseGameWhenHit(pause)
 {
+    pointFrameAccum = 0.0f;
+    pointFrameTime = 0.5f;
+    beingHitFrameAcum = 0.0f;
+    currentBeingHitFrame = 0;
+    curFrame = 0;
     this->setState(SpriteState::ACTIVE);
 }
 

@@ -9,7 +9,7 @@ Item(position, size, {0,0}, color, 0.1f, 4, Direction::RIGHT, 0.1f, 4, false), p
 void Coin::update()
 {
     float timeElapsed = GetFrameTime();
-    if (this->getState() == SpriteState::IDLE)
+    if (this->getState() == SpriteState::IDLE || this->getState() == SpriteState::ACTIVE)
     {
         this->updateWhenActive(timeElapsed);
     }

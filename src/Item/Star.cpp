@@ -56,7 +56,7 @@ void Star::draw()
 {
     if (this->getState() == SpriteState::ACTIVE || this->getState() == SpriteState::IDLE)
     {
-        DrawTexture(ResourceManager::getTexture()["Star" + std::to_string(this->curFrame)], this->getX(), this->getY(), this->getColor());
+        DrawTexture(ResourceManager::getTexture()["Star"], this->getX(), this->getY(), this->getColor());
     }
     else if (this->getState() == SpriteState::HIT)
     {
