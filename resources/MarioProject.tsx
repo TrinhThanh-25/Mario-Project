@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<<<<<<< HEAD
-<tileset version="1.10" tiledversion="1.11.2" name="MarioProject" tilewidth="128" tileheight="128" tilecount="142" columns="0">
-=======
 <tileset version="1.10" tiledversion="1.11.2" name="MarioProject" tilewidth="128" tileheight="128" tilecount="144" columns="0">
->>>>>>> main
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="111">
   <image source="Tile/1/tile_A.png" width="32" height="32"/>
@@ -317,122 +313,6 @@
  <tile id="214">
   <image source="Tile/4/tile_Z.png" width="32" height="32"/>
  </tile>
-<<<<<<< HEAD
- <tile id="224">
-  <image source="Tile/scenario/tile_CourseClearPoleBackBody.png" width="32" height="32"/>
- </tile>
- <tile id="225">
-  <image source="Tile/scenario/tile_CourseClearPoleBackTop.png" width="32" height="32"/>
- </tile>
- <tile id="226">
-  <image source="Tile/scenario/tile_CourseClearPoleFrontBody.png" width="32" height="32"/>
- </tile>
- <tile id="227">
-  <image source="Tile/scenario/tile_CourseClearPoleFrontTop.png" width="32" height="32"/>
- </tile>
- <tile id="228">
-  <image source="Item/1UpMushroom.png" width="32" height="32"/>
- </tile>
- <tile id="229">
-  <image source="Item/3UpMoon.png" width="30" height="32"/>
- </tile>
- <tile id="230">
-  <image source="Item/Coin_0.png" width="24" height="32"/>
- </tile>
- <tile id="231">
-  <image source="Item/CourseClearToken.png" width="64" height="32"/>
- </tile>
- <tile id="232">
-  <image source="Item/FireFlower_0.png" width="32" height="32"/>
- </tile>
- <tile id="233">
-  <image source="Item/Mushroom.png" width="32" height="32"/>
- </tile>
- <tile id="234">
-  <image source="Item/Star.png" width="30" height="32"/>
- </tile>
- <tile id="235">
-  <image source="Item/YoshiCoin_0.png" width="32" height="50"/>
- </tile>
- <tile id="236">
-  <image source="Block/Cloud_0.png" width="32" height="32"/>
- </tile>
- <tile id="237">
-  <image source="Block/Exclamation_0.png" width="32" height="32"/>
- </tile>
- <tile id="238">
-  <image source="Block/EyesClosed_0.png" width="32" height="32"/>
- </tile>
- <tile id="239">
-  <image source="Block/EyesOpened_0.png" width="32" height="32"/>
- </tile>
- <tile id="240">
-  <image source="Block/Glass_0.png" width="32" height="32"/>
- </tile>
- <tile id="241">
-  <image source="Block/Message_0.png" width="32" height="32"/>
- </tile>
- <tile id="242">
-  <image source="Block/Question_0.png" width="32" height="32"/>
- </tile>
- <tile id="243">
-  <image source="Block/Stone_0.png" width="32" height="32"/>
- </tile>
- <tile id="244">
-  <image source="Block/Wood_0.png" width="32" height="32"/>
- </tile>
- <tile id="245">
-  <image source="Enemy/BanzaiBill_0.png" width="128" height="128"/>
- </tile>
- <tile id="246">
-  <image source="Enemy/BlueKoopaTroopa_0.png" width="32" height="54"/>
- </tile>
- <tile id="247">
-  <image source="Enemy/BobOmb_0.png" width="24" height="30"/>
- </tile>
- <tile id="248">
-  <image source="Enemy/BulletBill_0.png" width="32" height="28"/>
- </tile>
- <tile id="249">
-  <image source="Enemy/BuzzyBeetle_0.png" width="32" height="32"/>
- </tile>
- <tile id="250">
-  <image source="Enemy/FlyingGoomba_0.png" width="66" height="50"/>
- </tile>
- <tile id="251">
-  <image source="Enemy/Goomba_0.png" width="32" height="32"/>
- </tile>
- <tile id="252">
-  <image source="Enemy/GreenKoopaTroopa_0.png" width="32" height="54"/>
- </tile>
- <tile id="253">
-  <image source="Enemy/JumpingPiranhaPlant_0.png" width="32" height="42"/>
- </tile>
- <tile id="254">
-  <image source="Enemy/MontyMole_0.png" width="32" height="32"/>
- </tile>
- <tile id="255">
-  <image source="Enemy/MummyBeetle_0.png" width="32" height="32"/>
- </tile>
- <tile id="256">
-  <image source="Enemy/Muncher_0.png" width="32" height="30"/>
- </tile>
- <tile id="257">
-  <image source="Enemy/PiranhaPlant_0.png" width="32" height="66"/>
- </tile>
- <tile id="258">
-  <image source="Enemy/RedKoopaTroopa_0.png" width="32" height="54"/>
- </tile>
- <tile id="259">
-  <image source="Enemy/Rex_2_0.png" width="40" height="64"/>
- </tile>
- <tile id="260">
-  <image source="Enemy/Swooper_0.png" width="32" height="34"/>
- </tile>
- <tile id="261">
-  <image source="Enemy/YellowKoopaTroopa_0.png" width="32" height="54"/>
- </tile>
-=======
  <tile id="251">
   <image source="Tile/scenario/tile_CourseClearPoleBackBody.png" width="32" height="32"/>
  </tile>
@@ -553,5 +433,4 @@
  <tile id="290">
   <image source="Mario/SmallMario_0.png" width="32" height="40"/>
  </tile>
->>>>>>> main
 </tileset>
