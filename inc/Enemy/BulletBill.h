@@ -2,6 +2,7 @@
 #define BULLETBILL_H
 
 #include "Enemy/Enemy.h"
+#include "Game/World.h"
 
 class BulletBill : public Enemy {
 public:

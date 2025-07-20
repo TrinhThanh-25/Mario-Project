@@ -30,7 +30,7 @@ void BlueKoopaTroopa::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
 
     if (state == SpriteState::ACTIVE) {
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
@@ -200,4 +200,25 @@ void BlueKoopaTroopa::collisionBlock(Block* block) {
     if (col == CollisionType::SOUTH){
         velocity.y = 0;
     }
+}
+
+// ============================ SAVE GAME =========================
+json BlueKoopaTroopa::saveToJson() const {
+    json j = Enemy::saveToJson();  // Gọi hàm cha để lưu dữ liệu chung
+
+    j["shellMoving"] = shellMoving;
+    j["shellTimer"] = shellTimer;
+    j["shellSpeed"] = shellSpeed;
+    j["extraWakeUpTime"] = extraWakeUpTime;
+
+    return j;
+}
+
+void BlueKoopaTroopa::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);  // Gọi hàm cha để nạp dữ liệu chung
+
+    shellMoving = j["shellMoving"].get<bool>();
+    shellTimer = j["shellTimer"].get<float>();
+    shellSpeed = j["shellSpeed"].get<float>();
+    extraWakeUpTime = j["extraWakeUpTime"].get<float>();
 }

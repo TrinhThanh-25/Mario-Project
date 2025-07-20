@@ -3,6 +3,7 @@
 
 #include "Enemy/Enemy.h"
 #include "Common/HitType.h"
+#include "Game/World.h"
 
 class GreenKoopaTroopa : public Enemy {
 public:
@@ -24,7 +25,8 @@ public:
     void collisionBlock(Block* block);
     void collisionTile(Tile* tile);
 
-
+    json saveToJson() const;
+    void loadFromJson(const json& j);
 private:
     bool shellMoving;        // Shell đang lăn không
     float shellTimer;        // Thời gian trong shell

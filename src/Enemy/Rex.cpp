@@ -23,7 +23,7 @@ void Rex::update(const std::vector<Character*>& characterList) {
     }
 
     if (state == SpriteState::ACTIVE){
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
@@ -151,4 +151,22 @@ void Rex::collisionBlock(Block* block) {
     if (col == CollisionType::SOUTH){
         velocity.y = 0;
     }
+}
+
+// =============================== SAVE GAME =================================
+
+json Rex::saveToJson() const {
+    json j = Enemy::saveToJson();
+
+    j["isShrunken"] = isShrunken;
+    j["shrinkDuration"] = shrinkDuration;
+
+    return j;
+}
+
+void Rex::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);
+
+    isShrunken = j["isShrunken"].get<bool>();
+    shrinkDuration = j["shrinkDuration"].get<float>();
 }

@@ -2,6 +2,7 @@
 #define MUNCHER_H
 
 #include "Enemy/Enemy.h"
+#include "Game/World.h"
 
 class Muncher : public Enemy {
 public:

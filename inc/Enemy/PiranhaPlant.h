@@ -2,6 +2,7 @@
 #define PIRANHAPLANT_H
 
 #include "Enemy.h"
+#include "Game/World.h"
 
 enum class PiranhaState {
     HIDING,            // ẩn/đóng miệng
@@ -22,6 +23,10 @@ public:
     void activeWhenMarioApproach(Character& character);
     void collisionBlock(Block* block) override;
     void collisionTile(Tile* tile) override;
+
+
+    json saveToJson() const;
+    void loadFromJson(const json& j);
 private:
     PiranhaState piranhaState;
 

@@ -46,7 +46,7 @@ void GreenKoopaTroopa::update(const std::vector<Character*>& characterList) {
     }
 
     else if (state == SpriteState::SHELL) {
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
         position.y += velocity.y * delta;
 
         shellTimer += delta;
@@ -212,4 +212,25 @@ void GreenKoopaTroopa::collisionBlock(Block* block) {
     if (col == CollisionType::SOUTH){
         velocity.y = 0;
     }
+}
+
+// ================== SAVE GAME =====================
+json GreenKoopaTroopa::saveToJson() const {
+    json j = Enemy::saveToJson();
+
+    j["shellMoving"] = shellMoving;
+    j["shellTimer"] = shellTimer;
+    j["shellSpeed"] = shellSpeed;
+    j["extraWakeUpTime"] = extraWakeUpTime;
+
+    return j;
+}
+
+void GreenKoopaTroopa::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);
+
+    shellMoving = j["shellMoving"].get<bool>();
+    shellTimer = j["shellTimer"].get<float>();
+    shellSpeed = j["shellSpeed"].get<float>();
+    extraWakeUpTime = j["extraWakeUpTime"].get<float>();
 }

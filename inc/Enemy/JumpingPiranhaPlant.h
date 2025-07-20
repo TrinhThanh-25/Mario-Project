@@ -2,6 +2,7 @@
 #define JUMPING_PIRANHA_PLANT_H
 
 #include "Enemy/Enemy.h"
+#include "Game/World.h"
 
 enum class JumpingPiranhaState {
     IDLE,       // Đứng chờ dưới ống
@@ -19,6 +20,9 @@ public:
     void activeWhenMarioApproach(Character& character) override;
     void collisionBlock(Block* block) override;
     void collisionTile(Tile* tile) override;
+
+    json saveToJson() const;
+    void loadFromJson(const json& j);
 
 private:
     JumpingPiranhaState jumpState;

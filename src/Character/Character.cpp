@@ -480,7 +480,7 @@ void Character::collisionBlock(Block* block) {
             position.y = block->getY() + block->getHeight();
             velocity.y = 0;
             updateCollisionBoxes();
-            // block hit
+            block->doHit(*this, map);
             break;
         case CollisionType::SOUTH:
             position.y = block->getY() - size.y;

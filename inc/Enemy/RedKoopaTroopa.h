@@ -2,6 +2,7 @@
 #define REDKOOPATROOPA_H
 
 #include "Enemy/Enemy.h"
+#include "Game/World.h"
 
 class RedKoopaTroopa : public Enemy {
 public:
@@ -22,6 +23,9 @@ public:
 
     void collisionBlock(Block* block);
     void collisionTile(Tile* tile);
+
+    json saveToJson() const;
+    void loadFromJson(const json& j);
 private:
     bool shellMoving = false;
     float shellSpeed = 250.0f;

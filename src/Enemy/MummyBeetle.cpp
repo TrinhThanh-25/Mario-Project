@@ -27,7 +27,7 @@ void MummyBeetle::update(const std::vector<Character*>& characterList) {
     }
 
     if (state == SpriteState::ACTIVE) {
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
@@ -37,7 +37,7 @@ void MummyBeetle::update(const std::vector<Character*>& characterList) {
 
     else if (state == SpriteState::SHELL) {
         shellTimer += delta;
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
         position.y += velocity.y * delta;
         if (shellTimer >= WAKE_UP_TIME + extraWakeUpTime) {
             setState(SpriteState::ACTIVE);
@@ -192,4 +192,25 @@ void MummyBeetle::collisionBlock(Block* block) {
     if (col == CollisionType::SOUTH){
         velocity.y = 0;
     }
+}
+
+// ============================= SAVE GAME ===============================
+json MummyBeetle::saveToJson() const {
+    json j = Enemy::saveToJson();
+
+    j["shellMoving"] = shellMoving;
+    j["shellTimer"] = shellTimer;
+    j["shellSpeed"] = shellSpeed;
+    j["extraWakeUpTime"] = extraWakeUpTime;
+
+    return j;
+}
+
+void MummyBeetle::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);
+
+    shellMoving = j["shellMoving"].get<bool>();
+    shellTimer = j["shellTimer"].get<float>();
+    shellSpeed = j["shellSpeed"].get<float>();
+    extraWakeUpTime = j["extraWakeUpTime"].get<float>();
 }

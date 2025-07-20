@@ -86,7 +86,7 @@ void MontyMole::update(const std::vector<Character*>& characterList) {
     }
 
     if (state == SpriteState::ACTIVE && hasEmerge) {
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
@@ -173,4 +173,22 @@ void MontyMole::collisionBlock(Block* block) {
     if (col == CollisionType::SOUTH){
         velocity.y = 0;
     }
+}
+
+json MontyMole::saveToJson() const {
+    json j = Enemy::saveToJson();
+
+    j["emergeDelay"] = emergeDelay;
+    j["emergeTimer"] = emergeTimer;
+    j["hasEmerge"] = hasEmerge;
+
+    return j;
+}
+
+void MontyMole::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);
+
+    emergeDelay = j["emergeDelay"].get<float>();
+    emergeTimer = j["emergeTimer"].get<float>();
+    hasEmerge = j["hasEmerge"].get<bool>();
 }

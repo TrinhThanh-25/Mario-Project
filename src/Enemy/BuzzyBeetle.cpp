@@ -90,7 +90,7 @@ void BuzzyBeetle::update(const std::vector<Character*>& characterList) {
     }
 
     else if (state == SpriteState::SHELL_MOVING) {
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
         float dir = isFacingLeft ? -1.0f : 1.0f;
         position.x += shellSpeed * dir * delta;
         position.y += velocity.y * delta;
@@ -225,3 +225,21 @@ void BuzzyBeetle::collisionBlock(Block* block) {
     }
 }
 
+// ========================= SAVE GAME ============================
+json BuzzyBeetle::saveToJson() const {
+    json j = Enemy::saveToJson();  // Gọi hàm cha
+
+    j["shellMoving"] = shellMoving;
+    j["shellSpeed"] = shellSpeed;
+    j["shellTimer"] = shellTimer;
+
+    return j;
+}
+
+void BuzzyBeetle::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);  // Gọi hàm cha
+
+    shellMoving = j["shellMoving"].get<bool>();
+    shellSpeed = j["shellSpeed"].get<float>();
+    shellTimer = j["shellTimer"].get<float>();
+}

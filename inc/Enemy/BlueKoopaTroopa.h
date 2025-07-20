@@ -3,6 +3,7 @@
 
 #include "Enemy/Enemy.h"
 #include "Common/HitType.h"
+#include "Game/World.h"
 
 class BlueKoopaTroopa : public Enemy {
 public:
@@ -18,6 +19,9 @@ public:
     void activeWhenMarioApproach(Character& character) override;
     void collisionBlock(Block* block);
     void collisionTile(Tile* tile);
+
+    json saveToJson() const;
+    void loadFromJson(const json& j);
 
 private:
     bool shellMoving;        // Shell đang lăn không

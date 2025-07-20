@@ -54,7 +54,7 @@ void BobOmb::update(const std::vector<Character*>& characterList) {
     if (state == SpriteState::ACTIVE) {
         switch (bobombState) {
             case BobOmbState::IDLE:
-                velocity.y += 981.0f * delta;
+                velocity.y += World::gravity * delta;
                 position.x += velocity.x * delta;
                 position.y += velocity.y * delta;
                 updateCollisionBoxes();
@@ -171,4 +171,26 @@ void BobOmb::collisionBlock(Block* block) {
         velocity.x = -velocity.x;
         isFacingLeft = velocity.x < 0;
     }
+}
+
+json BobOmb::saveToJson() const {
+    json j = Enemy::saveToJson();  // Gọi hàm cha
+
+    j["isIgnited"] = isIgnited;
+    j["ignitionTimer"] = ignitionTimer;
+    j["maxIgniteTime"] = maxIgniteTime;
+    j["explosionRadius"] = explosionRadius;
+    j["bobombState"] = static_cast<int>(bobombState);  // enum nên lưu dưới dạng int
+
+    return j;
+}
+
+void BobOmb::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);  // Gọi hàm cha
+
+    isIgnited = j["isIgnited"].get<bool>();
+    ignitionTimer = j["ignitionTimer"].get<float>();
+    maxIgniteTime = j["maxIgniteTime"].get<float>();
+    explosionRadius = j["explosionRadius"].get<float>();
+    bobombState = static_cast<BobOmbState>(j["bobombState"].get<int>());  // enum
 }

@@ -133,3 +133,17 @@ void BanzaiBill::collisionBlock(Block* block) {
         isFacingLeft = velocity.x < 0;
     }
 }
+
+// =========================== SAVE GAME ==========================
+json BanzaiBill::saveToJson() const {
+    json j = Enemy::saveToJson();
+    j["maxLifeTime"] = maxLifeTime;
+    j["lifeTimer"] = lifeTimer;
+    return j;
+}
+
+void BanzaiBill::loadFromJson(const json& j){
+    Enemy::loadFromJson(j);
+    maxLifeTime = j["maxLifeTime"].get<float>();
+    lifeTimer = j["lifeTimer"].get<float>();
+}

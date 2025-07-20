@@ -3,6 +3,7 @@
 
 #include "Enemy/Enemy.h"
 #include "Common/HitType.h"
+#include "Game/World.h"
 
 class MontyMole : public Enemy{
 public:
@@ -17,6 +18,9 @@ public:
 
     void collisionBlock(Block* block);
     void collisionTile(Tile* tile);
+
+    json saveToJson() const;
+    void loadFromJson(const json& j);
 
 private:
     float emergeDelay;   // thời gian chờ để chui lên

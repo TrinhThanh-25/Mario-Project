@@ -3,6 +3,7 @@
 
 #include "Enemy/Enemy.h"
 #include "Common/HitType.h"
+#include "Game/World.h"
 
 class BanzaiBill : public Enemy {
 public:
@@ -14,6 +15,9 @@ public:
     void activeWhenMarioApproach(Character& character) override;
     void collisionBlock(Block* block) override;
     void collisionTile(Tile* tile) override;
+
+    json saveToJson() const;
+    void loadFromJson(const json& j);
 
 private:
     float maxLifeTime;    // Tự biến mất sau 1 khoảng thời gian
