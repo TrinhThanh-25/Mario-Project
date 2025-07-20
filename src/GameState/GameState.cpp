@@ -23,5 +23,5 @@ json GameState::saveToJson() const {
 }
 
 void GameState::loadFromJson(const json& j) {
-
+    gameStateType = static_cast<GameStateType>(j["gameStateType"].get<int>());
 }

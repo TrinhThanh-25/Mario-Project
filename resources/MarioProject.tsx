@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="MarioProject" tilewidth="128" tileheight="128" tilecount="143" columns="0">
+<tileset version="1.10" tiledversion="1.11.2" name="MarioProject" tilewidth="128" tileheight="128" tilecount="144" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="111">
   <image source="Tile/1/tile_A.png" width="32" height="32"/>
@@ -365,7 +365,7 @@
   <image source="Item/Star.png" width="30" height="32"/>
  </tile>
  <tile id="268">
-  <image source="C:/Users/TrinhThanh/Pictures/Screenshots/Screenshot 2025-07-18 183130.png" width="32" height="32"/>
+  <image source="C:/Users/TrinhThanh/Pictures/Screenshots/Screenshot 2025-07-18 183130.png"/>
  </tile>
  <tile id="269">
   <image source="Block/Message_0.png" width="32" height="32"/>
@@ -429,5 +429,8 @@
  </tile>
  <tile id="289">
   <image source="Enemy/YellowKoopaTroopa_0.png" width="32" height="54"/>
+ </tile>
+ <tile id="290">
+  <image source="Mario/SmallMario_0.png" width="32" height="40"/>
  </tile>
 </tileset>

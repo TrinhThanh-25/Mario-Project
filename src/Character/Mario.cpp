@@ -74,7 +74,7 @@ void Mario::transitionToFlower() {
 
 json Mario::saveToJson() const {
     json j = Character::saveToJson();
-    j["type"] = "Mario";
+    j["name"] = "Mario";
     return j;
 }
 

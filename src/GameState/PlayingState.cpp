@@ -1,6 +1,10 @@
 #include "GameState/PlayingState.h"
 #include "GameState/CountingPointState.h"
 #include "GameState/SettingState.h"
+#include "Block/Block.h"
+#include "Tile/Tile.h"
+#include "Enemy/Enemy.h"
+#include "Item/Item.h"
 #include "raylib.h"
 #include <algorithm>
 

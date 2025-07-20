@@ -74,7 +74,7 @@ void Luigi::transitionToFlower() {
 
 json Luigi::saveToJson() const {
     json j = Character::saveToJson();
-    j["type"] = "Luigi";
+    j["name"] = "Luigi";
     return j;
 }
 

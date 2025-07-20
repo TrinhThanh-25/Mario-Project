@@ -14,14 +14,9 @@ Enemy* EnemyFactory::createEnemy(EnemyType type, Vector2 position, Direction dir
             break;
 
         case EnemyType::BLUE_KOOPA_TROOPA:
-<<<<<<< HEAD
-            velocity = {direction == Direction::LEFT ? -1.0f : 1.0f, 0};
-            enemy = new BlueKoopaTroopa(position, size, velocity, color);
-=======
             size = {32, 54};
             velocity = {direction == Direction::LEFT ? -100.0f : 100.0f, 0};
             enemy = new BlueKoopaTroopa(position, {32, 54}, velocity, color);
->>>>>>> 61c96372c37f6dcbc7eddb26abd27043492e4338
             break;
 
         case EnemyType::BOB_OMB:

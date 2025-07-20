@@ -10,6 +10,8 @@
 #include <fstream>
 #include <iostream>
 
+using json = nlohmann::json;
+
 Map::Map(std::vector<Character*>& characters, World* world, int mapNumber)
     : characters(characters), 
     world(world), 
@@ -23,7 +25,6 @@ Map::Map(std::vector<Character*>& characters, World* world, int mapNumber)
     backgroundColor(WHITE),
     backgroundID(0),
     musicID(0){
-    loadMap(mapNumber);
 }
 
 Map::~Map() {
@@ -484,6 +485,10 @@ void Map::loadMap(int mapNumber) {
             case 290:
                 frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::YELLOW_KOOPA_TROOPA, {x * tilewidth, y * tilewidth}, Direction::LEFT));
                 break;
+            case 291:
+                for (auto& character : characters) {
+                    character->setPosition({x * tilewidth, y * tilewidth});
+                }
             default:
                 std::cerr << "Unknown tile type: " << data[y * width + x] << " at (" << x << ", " << y << ")" << std::endl;
                 break;
@@ -635,7 +640,27 @@ void Map::first() {
 }
 
 void Map::playMusic() {
-    //
+    if (musicID > 0) {
+        std::unordered_map<std::string, Music>& music = ResourceManager::getMusic();
+        bool check = false;
+        for (auto& character : characters) {
+            if (character->isInvincible()) {
+                check = true;
+                break;
+            }
+        }
+        if(check) {
+            if (!IsMusicStreamPlaying(music["Invincible"])) {
+                StopMusicStream(music["Music" + std::to_string(musicID)]);
+                PlayMusicStream(music["Invincible"]);
+            }
+        } else {
+            if (!IsMusicStreamPlaying(music["Music" + std::to_string(musicID)])) {
+                StopMusicStream(music["Invincible"]);
+                PlayMusicStream(music["Music" + std::to_string(musicID)]);
+            }
+        }
+    }
 }
 
 json Map::saveToJson() const {
@@ -715,5 +740,64 @@ void Map::loadFromJson(const json& j) {
     frontEnemy.clear();
     item.clear();
     staticItem.clear();
-    // Load tiles
+    for (const auto& tJson : j["tiles"]) {
+        Tile* t = TileFactory::createTile({tJson["position"][0].get<float>(), tJson["position"][1].get<float>()},
+                                             tJson["nameTexture"].get<std::string>());
+        t->loadFromJson(tJson);
+        tile.push_back(t);
+    }
+    for (const auto& bTJson : j["backTiles"]) {
+        Tile* bT = TileFactory::createTile({bTJson["position"][0].get<float>(), bTJson["position"][1].get<float>()},
+                                             bTJson["nameTexture"].get<std::string>());
+        bT->loadFromJson(bTJson);
+        backTile.push_back(bT);
+    }
+    for (const auto& fTJson : j["frontTiles"]) {
+        Tile* fT = TileFactory::createTile({fTJson["position"][0].get<float>(), fTJson["position"][1].get<float>()},
+                                             fTJson["nameTexture"].get<std::string>());
+        fT->loadFromJson(fTJson);
+        frontTile.push_back(fT);
+    }
+    // for (const auto& bJson : j["blocks"]) {
+    //     Block* b = BlockFactory::createBlock(bJson["blockType"].get<BlockType>(),
+    //                                          {bJson["position"][0].get<float>(), bJson["position"][1].get<float>()});
+    //     b->loadFromJson(bJson);
+    //     block.push_back(b);
+    // }
+    // for (const auto& mBJson : j["messBlocks"]) {
+    //     Block* mB = BlockFactory::createBlock(mBJson["blockType"].get<BlockType>(),
+    //                                            {mBJson["position"][0].get<float>(), mBJson["position"][1].get<float>()});
+    //     mB->loadFromJson(mBJson);
+    //     messBlock.push_back(mB);
+    // }
+    // for (const auto& bEJson : j["backEnemies"]) {
+    //     Enemy* bE = EnemyFactory::createEnemy(bEJson["enemyType"].get<EnemyType>(),
+    //                                            {bEJson["position"][0].get<float>(), bEJson["position"][1].get<float>()},
+    //                                            bEJson["direction"].get<Direction>());
+    //     bE->loadFromJson(bEJson);
+    //     backEnemy.push_back(bE);
+    // }
+    // for (const auto& fEJson : j["frontEnemies"]) {
+    //     Enemy* fE = EnemyFactory::createEnemy(fEJson["enemyType"].get<EnemyType>(),
+    //                                            {fEJson["position"][0].get<float>(), fEJson["position"][1].get<float>()},
+    //                                            fEJson["direction"].get<Direction>());
+    //     fE->loadFromJson(fEJson);
+    //     frontEnemy.push_back(fE);
+    // }
+    for (const auto& iJson : j["items"]) {
+        Item* i = ItemFactory::createItem(iJson["enemyType"].get<ItemType>(),
+                                           iJson["source"].get<Source>(),
+                                           {iJson["position"][0].get<float>(), iJson["position"][1].get<float>()},
+                                           iJson["direction"].get<Direction>());
+        i->loadFromJson(iJson);
+        item.push_back(i);
+    }
+    for (const auto& sIJson : j["staticItems"]) {
+        Item* sI = ItemFactory::createItem(sIJson["type"].get<ItemType>(),
+                                             sIJson["source"].get<Source>(),
+                                             {sIJson["position"][0].get<float>(), sIJson["position"][1].get<float>()},
+                                             sIJson["direction"].get<Direction>());
+        sI->loadFromJson(sIJson);
+        staticItem.push_back(sI);
+    }
 }

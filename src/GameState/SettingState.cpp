@@ -1,6 +1,10 @@
 #include "GameState/SettingState.h"
 #include "GameState/PlayingState.h"
 #include "GameState/TitleScreenState.h"
+#include "GameState/CountingPointState.h"
+#include "GameState/GoNextMapState.h"
+#include "GameState/IrisOutState.h"
+#include "GameState/TimeUpState.h"
 #include "SaveGame.h"
 
 SettingState::SettingState(World* world)
@@ -21,7 +25,6 @@ void SettingState::update() {
     }
     else if(restartButton.isPressed() && stateBeforeSetting != GameStateType::TITLE_SCREEN) {
         world->resetMap();
-        world->setGameState(new PlayingState(world));
     }
     else if(returnButton.isPressed()) {
         if(stateBeforeSetting != GameStateType::TITLE_SCREEN) {
@@ -63,4 +66,34 @@ void SettingState::setStateBeforeSetting(GameStateType stateBeforeSetting) {
         returnButton.setPosition({(float)GetScreenWidth() / 2 - 100, (float)GetScreenHeight() / 2 + 70});
         exitButton.setPosition({(float)GetScreenWidth() / 2 - 100, (float)GetScreenHeight() / 2 + 130});
     }
+}
+
+json SettingState::saveToJson() const {
+    json j;
+    GameState* tempState = nullptr;
+    switch (stateBeforeSetting) {
+        case GameStateType::COUNTING_POINT:
+            tempState = new CountingPointState(world);
+            break;
+        case GameStateType::GO_NEXT_MAP:
+            tempState = new GoNextMapState(world);
+            break;
+        case GameStateType::IRIS_OUT:
+            tempState = new IrisOutState(world);
+            break;
+        case GameStateType::TIME_UP:
+            tempState = new TimeUpState(world);
+            break;
+        case GameStateType::PLAYING:
+            tempState = new PlayingState(world);
+            break;
+        default:
+            tempState = nullptr;
+            break;
+    }
+    if (tempState) {
+        j = tempState->saveToJson();
+        delete tempState;
+    }
+    return j;
 }

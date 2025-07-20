@@ -1,4 +1,5 @@
 #include "SaveGame.h"
+#include <iostream>
 
 void SaveGame::saveGame(const World& world, const std::string& filename) {
     json j = world.saveToJson();

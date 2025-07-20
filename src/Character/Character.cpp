@@ -1,5 +1,8 @@
 #include "Character/Character.h"
 #include "Common/ResourceManager.h"
+#include "Enemy/Enemy.h"
+#include "Block/Block.h"
+#include "Tile/Tile.h"
 #include "Game/World.h"
 #include <string>
 
@@ -703,7 +706,9 @@ void Character::loadFromJson(const json& j) {
     type = static_cast<CharacterType>(j["type"].get<int>());
     fireball.clear();
     for (const auto& fb : j.at("fireball")) {
-        Fireball fireballInstance;
+        Fireball fireballInstance({fb["position"][0].get<float>(), fb["position"][1].get<float>()}, 
+                                    static_cast<Direction>(fb["direction"].get<int>()), 
+                                    fb["fireTime"].get<float>());
         fireballInstance.loadFromJson(fb);
         fireball.push_back(fireballInstance);
     }

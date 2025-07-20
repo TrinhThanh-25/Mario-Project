@@ -22,6 +22,8 @@ class SettingState : public GameState {
         void draw() override;
 
         void setStateBeforeSetting(GameStateType stateBeforeSetting);
+
+        json saveToJson() const override;
 };
 
 #endif

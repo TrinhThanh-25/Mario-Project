@@ -1,4 +1,6 @@
 #include "Game/World.h"
+#include "Character/Character.h"
+#include "GameState/GameState.h"
 #include "GameState/TitleScreenState.h"
 #include "GameState/ChooseCharacterState.h"
 #include "GameState/PlayingState.h"
@@ -252,5 +254,105 @@ json World::saveToJson() const {
     for (const auto& character : characters) {
         j["characters"].push_back(character->saveToJson());
     }
+    j["map"] = map.saveToJson();
+    j["camera"] = {
+        {"target", {camera.target.x, camera.target.y}},
+        {"offset", {camera.offset.x, camera.offset.y}},
+        {"rotation", camera.rotation},
+        {"zoom", camera.zoom}
+    };
+    j["gameHud"] = gameHud.saveToJson();
+    j["remainTimePoint"] = remainTimePoint;
+    j["gameState"] = gameState->saveToJson();
+    j["modeWorld"] = static_cast<int>(modeWorld);
+    j["playerDownMusicStreamPlaying"] = playerDownMusicStreamPlaying;
+    j["gameOverMusicStreamPlaying"] = gameOverMusicStreamPlaying;
+    j["pausedForTransition"] = pausedForTransition;
+    j["pausedUpdateCharacters"] = pausedUpdateCharacters;
     return j;
+}
+
+void World::loadFromJson(const json& j) {
+    characters.clear();
+    for (const auto& characterJson : j["characters"]) {
+        if (characterJson["name"] == "Mario") {
+            Mario* mario = new Mario(
+                static_cast<ModePlayer>(characterJson["modePlayer"].get<int>()),
+                {characterJson["position"][0], characterJson["position"][1]},
+                {characterJson["velocity"][0], characterJson["velocity"][1]},
+                {characterJson["color"][0], characterJson["color"][1], characterJson["color"][2], characterJson["color"][3]},
+                characterJson["speed"],
+                characterJson["maxSpeed"],
+                characterJson["jumpSpeed"]
+            );
+            mario->loadFromJson(characterJson);
+            mario->setWorld(this);
+            characters.push_back(mario);
+        }
+        else if( characterJson["name"] == "Luigi") {
+            Luigi* luigi = new Luigi(
+                static_cast<ModePlayer>(characterJson["modePlayer"].get<int>()),
+                {characterJson["position"][0], characterJson["position"][1]},
+                {characterJson["velocity"][0], characterJson["velocity"][1]},
+                {characterJson["color"][0], characterJson["color"][1], characterJson["color"][2], characterJson["color"][3]},
+                characterJson["speed"],
+                characterJson["maxSpeed"],
+                characterJson["jumpSpeed"]
+            );
+            luigi->loadFromJson(characterJson);
+            luigi->setWorld(this);
+            characters.push_back(luigi);
+        }
+    }
+    map.loadFromJson(j["map"]);
+    
+    camera.target = {j["camera"]["target"][0], j["camera"]["target"][1]};
+    camera.offset = {j["camera"]["offset"][0], j["camera"]["offset"][1]};
+    camera.rotation = j["camera"]["rotation"];
+    camera.zoom = j["camera"]["zoom"];
+    
+    gameHud.loadFromJson(j["gameHud"]);
+    
+    remainTimePoint = j["remainTimePoint"];
+    
+    gameState->loadFromJson(j["gameState"]);
+    
+    modeWorld = static_cast<ModeWorld>(j["modeWorld"].get<int>());
+    playerDownMusicStreamPlaying = j["playerDownMusicStreamPlaying"];
+    gameOverMusicStreamPlaying = j["gameOverMusicStreamPlaying"];
+    pausedForTransition = j["pausedForTransition"];
+    pausedUpdateCharacters = j["pausedUpdateCharacters"];
+    
+    switch (static_cast<GameStateType>(j["gameState"]["gameStateType"].get<int>())) {
+        case GameStateType::TITLE_SCREEN:
+            setGameState(new TitleScreenState(this));
+            break;
+        case GameStateType::CHOOSE_CHARACTER:
+            setGameState(new ChooseCharacterState(this));
+            break;
+        case GameStateType::PLAYING:
+            setGameState(new PlayingState(this));
+            break;
+        case GameStateType::COUNTING_POINT:
+            setGameState(new CountingPointState(this));
+            break;
+        case GameStateType::FINISHED:
+            setGameState(new FinishedState(this));
+            break;
+        case GameStateType::GAME_OVER:
+            setGameState(new GameOverState(this));
+            break;
+        case GameStateType::GO_NEXT_MAP:
+            setGameState(new GoNextMapState(this));
+            break;
+        case GameStateType::IRIS_OUT:
+            setGameState(new IrisOutState(this));
+            break;
+        case GameStateType::SETTING:
+            setGameState(new SettingState(this));
+            break;
+        case GameStateType::TIME_UP:
+            setGameState(new TimeUpState(this));
+            break;
+    }
 }

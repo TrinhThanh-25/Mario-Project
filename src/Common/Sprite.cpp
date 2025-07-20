@@ -194,9 +194,9 @@ json Sprite::saveToJson() const {
     j["size"] = {size.x, size.y};
     j["velocity"] = {velocity.x, velocity.y};
     j["color"] = {color.r, color.g, color.b, color.a};
-    j["state"] = (int)state;
-    j["auxiliaryState"] = (int)auxiliaryState;
-    j["direction"] = (int)direction;
+    j["state"] = static_cast<int>(state);
+    j["auxiliaryState"] = static_cast<int>(auxiliaryState);
+    j["direction"] = static_cast<int>(direction);
     j["frameTime"] = frameTime;
     j["frameAcum"] = frameAcum;
     j["curFrame"] = curFrame;
@@ -205,10 +205,16 @@ json Sprite::saveToJson() const {
 }
 
 void Sprite::loadFromJson(const json& j) {
-    position = {j["position"][0], j["position"][1]};
-    size = {j["size"][0], j["size"][1]};
-    velocity = {j["velocity"][0], j["velocity"][1]};
-    color = {j["color"][0], j["color"][1], j["color"][2], j["color"][3]};
+    position.x = j["position"][0].get<float>();
+    position.y = j["position"][1].get<float>();
+    size.x = j["size"][0].get<float>();
+    size.y = j["size"][1].get<float>();
+    velocity.x = j["velocity"][0].get<float>();
+    velocity.y = j["velocity"][1].get<float>();
+    color.r = j["color"][0].get<unsigned char>();
+    color.g = j["color"][1].get<unsigned char>();
+    color.b = j["color"][2].get<unsigned char>();
+    color.a = j["color"][3].get<unsigned char>();
     state = static_cast<SpriteState>(j["state"].get<int>());
     auxiliaryState = static_cast<SpriteState>(j["auxiliaryState"].get<int>());
     direction = static_cast<Direction>(j["direction"].get<int>());
