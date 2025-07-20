@@ -70,7 +70,7 @@ void Goomba::update(const std::vector<Character*>& characterList) {
         }
 
         //  Gravity
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
 
         // Di chuyển
         position.x += velocity.x * delta;

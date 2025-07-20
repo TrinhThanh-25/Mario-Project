@@ -90,7 +90,7 @@ void BuzzyBeetle::update(const std::vector<Character*>& characterList) {
     }
 
     else if (state == SpriteState::SHELL_MOVING) {
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
         float dir = isFacingLeft ? -1.0f : 1.0f;
         position.x += shellSpeed * dir * delta;
         position.y += velocity.y * delta;

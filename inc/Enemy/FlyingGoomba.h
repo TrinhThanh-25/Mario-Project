@@ -2,6 +2,7 @@
 #define FLYINGGOOMBA_H
 
 #include "Enemy.h"
+#include "Game/World.h"
 
 class FlyingGoomba : public Enemy {
 public:

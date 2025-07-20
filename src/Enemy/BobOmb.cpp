@@ -54,7 +54,7 @@ void BobOmb::update(const std::vector<Character*>& characterList) {
     if (state == SpriteState::ACTIVE) {
         switch (bobombState) {
             case BobOmbState::IDLE:
-                velocity.y += 981.0f * delta;
+                velocity.y += World::gravity * delta;
                 position.x += velocity.x * delta;
                 position.y += velocity.y * delta;
                 updateCollisionBoxes();

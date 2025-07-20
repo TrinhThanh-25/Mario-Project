@@ -85,7 +85,7 @@ void FlyingGoomba::update(const std::vector<Character*>& characterList) {
                 jumpTimer = 0.0f;
             }
         }
-        velocity.y += 500.0f * delta;
+        velocity.y += World::gravity * delta;
 
         // Cập nhật vị trí
         position.x += velocity.x * delta;

@@ -27,7 +27,7 @@ void MummyBeetle::update(const std::vector<Character*>& characterList) {
     }
 
     if (state == SpriteState::ACTIVE) {
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
@@ -37,7 +37,7 @@ void MummyBeetle::update(const std::vector<Character*>& characterList) {
 
     else if (state == SpriteState::SHELL) {
         shellTimer += delta;
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
         position.y += velocity.y * delta;
         if (shellTimer >= WAKE_UP_TIME + extraWakeUpTime) {
             setState(SpriteState::ACTIVE);

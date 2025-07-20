@@ -58,7 +58,7 @@ void JumpingPiranhaPlant::update(const std::vector<Character*>& characterList) {
     }
 
     else if (jumpState == JumpingPiranhaState::FALLING) {
-        velocity.y += gravity * delta;
+        velocity.y += World::gravity * delta;
         position.y += velocity.y * delta;
 
         if (position.y >= groundY) {

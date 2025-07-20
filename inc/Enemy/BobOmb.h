@@ -2,6 +2,7 @@
 #define BOBOMB_H
 
 #include "Enemy/Enemy.h"
+#include "Game/World.h"
 
 enum class BobOmbState {
     IDLE,       // Bình thường

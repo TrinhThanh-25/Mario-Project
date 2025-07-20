@@ -86,7 +86,7 @@ void MontyMole::update(const std::vector<Character*>& characterList) {
     }
 
     if (state == SpriteState::ACTIVE && hasEmerge) {
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 

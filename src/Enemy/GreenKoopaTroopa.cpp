@@ -46,7 +46,7 @@ void GreenKoopaTroopa::update(const std::vector<Character*>& characterList) {
     }
 
     else if (state == SpriteState::SHELL) {
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
         position.y += velocity.y * delta;
 
         shellTimer += delta;

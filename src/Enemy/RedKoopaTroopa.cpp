@@ -130,7 +130,7 @@ void RedKoopaTroopa::update(const std::vector<Character*>& characterList) {
         }
 
         // Gravity
-        velocity.y += 980.0f * delta;
+        velocity.y += World::gravity * delta;
 
         // Đổi hướng nếu gần mép (đặc trưng Red Koopa)
         if (isNearEdge()) {
@@ -139,7 +139,7 @@ void RedKoopaTroopa::update(const std::vector<Character*>& characterList) {
         }
 
         // Di chuyển
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 

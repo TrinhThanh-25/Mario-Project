@@ -2,6 +2,7 @@
 #define PIRANHAPLANT_H
 
 #include "Enemy.h"
+#include "Game/World.h"
 
 enum class PiranhaState {
     HIDING,            // ẩn/đóng miệng

@@ -2,6 +2,7 @@
 #define REDKOOPATROOPA_H
 
 #include "Enemy/Enemy.h"
+#include "Game/World.h"
 
 class RedKoopaTroopa : public Enemy {
 public:

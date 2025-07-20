@@ -2,6 +2,7 @@
 #define JUMPING_PIRANHA_PLANT_H
 
 #include "Enemy/Enemy.h"
+#include "Game/World.h"
 
 enum class JumpingPiranhaState {
     IDLE,       // Đứng chờ dưới ống
