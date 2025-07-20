@@ -20,6 +20,7 @@ PiranhaPlant::PiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     velocity = { 0, 0 };                    // Không di chuyển theo X/Y
     isFacingLeft = true;                    // Không quan trọng, vẫn cần nếu dùng chung Enemy
     type = EnemyType::PIRANHA_PLANT;
+    point = 200;
 }
 
 

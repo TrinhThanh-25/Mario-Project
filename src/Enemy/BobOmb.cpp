@@ -16,6 +16,8 @@ BobOmb::BobOmb(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
 
     isFacingLeft = vel.x < 0;            // Hướng ban đầu dựa theo velocity
     type = EnemyType::BOB_OMB;
+
+    point = 200;
 }
 
 void BobOmb::update(const std::vector<Character*>& characterList) {

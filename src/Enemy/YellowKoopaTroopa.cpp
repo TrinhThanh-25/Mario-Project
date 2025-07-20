@@ -15,6 +15,8 @@ YellowKoopaTroopa::YellowKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Colo
     setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;
     type = EnemyType::YELLOW_KOOPA_TROOPA;
+
+    point = 100;
 }
 
 void YellowKoopaTroopa::update(const std::vector<Character*>& characterList) {

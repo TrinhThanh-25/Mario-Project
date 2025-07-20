@@ -58,6 +58,8 @@ public:
     virtual json saveToJson() const;
     virtual void loadFromJson(const json& j);
 
+    virtual int getPoint() const;
+
     // CollisionType checkCollision(const std::vector<Sprite*>& collidables);
 
 
@@ -72,6 +74,8 @@ protected:
 
     bool isFacingLeft;
     EnemyType type;
+
+    int point = 0;
     
 };
 

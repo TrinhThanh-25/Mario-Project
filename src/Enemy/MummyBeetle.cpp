@@ -13,7 +13,8 @@ MummyBeetle::MummyBeetle(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     isFacingLeft = vel.x < 0;   
     shellMoving = false;
     type = EnemyType::MUMMY_BEETLE;
-    }
+    point = 100;
+}
 
 void MummyBeetle::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
