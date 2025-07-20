@@ -63,21 +63,10 @@ json QuestionThreeUpMoonBlock::saveToJson() const {
 	json j = Block::saveToJson();
 	j["itemVelocityY"] = itemVelocityY;
 	j["itemMinY"] = itemMinY;
-	if (item) {
-		j["item"] = item->saveToJson(); // Save the item state if it exists
-	} else {
-		j["item"] = nullptr; // Indicate that there is no item
-	}
 	return j;
 }
 void QuestionThreeUpMoonBlock::loadFromJson(const json& j) {
 	Block::loadFromJson(j);
 	itemVelocityY = j["itemVelocityY"].get<float>();
 	itemMinY = j["itemMinY"].get<float>();
-	if (j.contains("item")) {
-		item = ItemFactory::createItem(ItemType::THREE_UP_MOON, Source::BLOCK, Vector2{ position.x, position.y }, Direction::RIGHT);
-		item->loadFromJson(j["item"]);
-	} else {
-		item = nullptr; // Ensure item is null if not present in JSON
-	}
 }

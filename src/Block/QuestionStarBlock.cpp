@@ -64,18 +64,10 @@ json QuestionStarBlock::saveToJson() const {
 	json j = Block::saveToJson();
 	j["itemVelocityY"] = itemVelocityY;
 	j["itemMinY"] = itemMinY;
-	j["hit"] = hit;
 	return j;
 }
 void QuestionStarBlock::loadFromJson(const json& j) {
 	Block::loadFromJson(j);
 	itemVelocityY = j["itemVelocityY"].get<float>();
 	itemMinY = j["itemMinY"].get<float>();
-	hit = j["hit"].get<bool>();
-	if (j.contains("item")) {
-		item = ItemFactory::createItem(ItemType::STAR, Source::BLOCK, Vector2{ position.x, position.y }, Direction::RIGHT);
-		item->loadFromJson(j["item"]);	
-	} else {
-		item = nullptr; // Ensure item is null if not present in JSON
-	}
 }

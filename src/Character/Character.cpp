@@ -211,10 +211,14 @@ bool Character::transition(float deltaTime) {
             transitionCurrentIndex = 0;
             if(state == SpriteState::SMALL_TO_SUPER) {
                 transitionToSuper();
+                world->resumeWorld();
             } else if(state == SpriteState::SUPER_TO_FLOWER || state == SpriteState::SMALL_TO_FLOWER) {
                 transitionToFlower();
+                world->resumeWorld();
             } else if(state == SpriteState::SUPER_TO_SMALL || state == SpriteState::FLOWER_TO_SMALL) {
                 transitionToSmall();
+                world->resumeWorld();
+                gameHud->releasePowerUpItem();
             }
             state = previousState;
         }
@@ -224,6 +228,12 @@ bool Character::transition(float deltaTime) {
         return true;
     }
     return true;
+}
+
+bool Character::isTransitioning() const {
+    return state == SpriteState::SMALL_TO_SUPER || state == SpriteState::SMALL_TO_FLOWER ||
+           state == SpriteState::SUPER_TO_FLOWER || state == SpriteState::SUPER_TO_SMALL ||
+           state == SpriteState::FLOWER_TO_SMALL;
 }
 
 void Character::movement(float deltaTime) {
@@ -508,12 +518,12 @@ void Character::collisionEnemy(Enemy* enemy) {
     if(enemy->getState() != SpriteState::DYING && enemy->getState() != SpriteState::TO_BE_REMOVED) {
         CollisionType collision = checkCollisionEnemy(enemy);
         if(invincible == true && collision != CollisionType::NONE){
-            // enemy is defeated
+            enemy->beingHit(HitType::STOMP);
             PlaySound(ResourceManager::getSound()["Stomp"]);
             // character earn points of enemy
         }
         else if (collision == CollisionType::FIREBALL) {
-            // enemy is defeated by fireball
+            enemy->beingHit(HitType::FIREBALL);
             PlaySound(ResourceManager::getSound()["Stomp"]);
             // character earn points of enemy 
         }
@@ -527,7 +537,7 @@ void Character::collisionEnemy(Enemy* enemy) {
                     velocity.y = -200.0f;
                 }
                 state = SpriteState::JUMPING;
-                // enemy is defeated
+                enemy->beingHit(HitType::STOMP);
                 PlaySound(ResourceManager::getSound()["Stomp"]);
                 // character earn points of enemy
             }

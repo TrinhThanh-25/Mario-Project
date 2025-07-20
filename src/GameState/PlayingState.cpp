@@ -113,10 +113,23 @@ void PlayingState::update() {
     }
 
     if (!*pausedUpdateCharacters) {
-        for (auto& character : characters) {
-            if((!isOneCharactersDead() || (isOneCharactersDead() && character->getState() == SpriteState::DYING)) && character->getState() != SpriteState::VICTORY) {
-                character->update();
-                character->setActivateWidth(GetScreenWidth() * 2.0f);
+        if(isOneCharactersTransitioning()) {
+            for (auto& character : characters) {
+                if(character->getState() == SpriteState::SMALL_TO_SUPER || 
+                   character->getState() == SpriteState::SMALL_TO_FLOWER || 
+                   character->getState() == SpriteState::SUPER_TO_FLOWER || 
+                   character->getState() == SpriteState::SUPER_TO_SMALL || 
+                   character->getState() == SpriteState::FLOWER_TO_SMALL) {
+                    character->update();
+                }
+            }
+        }
+        else {
+            for (auto& character : characters) {
+                if((!isOneCharactersDead() || (isOneCharactersDead() && character->getState() == SpriteState::DYING)) && character->getState() != SpriteState::VICTORY) {
+                    character->update();
+                    character->setActivateWidth(GetScreenWidth() * 2.0f);
+                }
             }
         }
     }
@@ -249,6 +262,19 @@ bool PlayingState::isAllCharactersVictory() const {
         }
     }
     return true;
+}
+
+bool PlayingState::isOneCharactersTransitioning() const {
+    for (const auto& character : characters) {
+        if (character->getState() == SpriteState::SMALL_TO_SUPER || 
+            character->getState() == SpriteState::SMALL_TO_FLOWER || 
+            character->getState() == SpriteState::SUPER_TO_FLOWER || 
+            character->getState() == SpriteState::SUPER_TO_SMALL || 
+            character->getState() == SpriteState::FLOWER_TO_SMALL) {
+            return true;
+        }
+    }
+    return false;
 }
 
 json PlayingState::saveToJson() const {

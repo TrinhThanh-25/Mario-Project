@@ -761,18 +761,18 @@ void Map::loadFromJson(const json& j) {
         fT->loadFromJson(fTJson);
         frontTile.push_back(fT);
     }
-    // for (const auto& bJson : j["blocks"]) {
-    //     Block* b = BlockFactory::createBlock(bJson["blockType"].get<BlockType>(),
-    //                                          {bJson["position"][0].get<float>(), bJson["position"][1].get<float>()});
-    //     b->loadFromJson(bJson);
-    //     block.push_back(b);
-    // }
-    // for (const auto& mBJson : j["messBlocks"]) {
-    //     Block* mB = BlockFactory::createBlock(mBJson["blockType"].get<BlockType>(),
-    //                                            {mBJson["position"][0].get<float>(), mBJson["position"][1].get<float>()});
-    //     mB->loadFromJson(mBJson);
-    //     messBlock.push_back(mB);
-    // }
+    for (const auto& bJson : j["blocks"]) {
+        Block* b = BlockFactory::createBlock(bJson["blockType"].get<BlockType>(),
+                                             {bJson["position"][0].get<float>(), bJson["position"][1].get<float>()});
+        b->loadFromJson(bJson);
+        block.push_back(b);
+    }
+    for (const auto& mBJson : j["messBlocks"]) {
+        Block* mB = BlockFactory::createBlock(mBJson["blockType"].get<BlockType>(),
+                                               {mBJson["position"][0].get<float>(), mBJson["position"][1].get<float>()});
+        mB->loadFromJson(mBJson);
+        messBlock.push_back(mB);
+    }
     for (const auto& bEJson : j["backEnemies"]) {
         Enemy* bE = EnemyFactory::createEnemy(bEJson["type"].get<EnemyType>(),
                                                {bEJson["position"][0].get<float>(), bEJson["position"][1].get<float>()},
@@ -788,8 +788,8 @@ void Map::loadFromJson(const json& j) {
         frontEnemy.push_back(fE);
     }
     for (const auto& iJson : j["items"]) {
-        Item* i = ItemFactory::createItem(iJson["enemyType"].get<ItemType>(),
-                                           iJson["source"].get<Source>(),
+        Item* i = ItemFactory::createItem(iJson["type"].get<ItemType>(),
+                                           Source::BLOCK,
                                            {iJson["position"][0].get<float>(), iJson["position"][1].get<float>()},
                                            iJson["direction"].get<Direction>());
         i->loadFromJson(iJson);
@@ -797,7 +797,7 @@ void Map::loadFromJson(const json& j) {
     }
     for (const auto& sIJson : j["staticItems"]) {
         Item* sI = ItemFactory::createItem(sIJson["type"].get<ItemType>(),
-                                             sIJson["source"].get<Source>(),
+                                             Source::BLOCK,
                                              {sIJson["position"][0].get<float>(), sIJson["position"][1].get<float>()},
                                              sIJson["direction"].get<Direction>());
         sI->loadFromJson(sIJson);

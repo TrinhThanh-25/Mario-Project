@@ -30,6 +30,11 @@ void SettingState::update() {
         if(stateBeforeSetting != GameStateType::TITLE_SCREEN) {
             SaveGame::saveGame(*world);
         }
+        std::vector<Character*>& characters = world->getCharacters();
+        for (Character* character : characters) {
+            delete character;
+        }
+        characters.clear();
         world->setGameState(new TitleScreenState(world));
     }
     else if(exitButton.isPressed()) {

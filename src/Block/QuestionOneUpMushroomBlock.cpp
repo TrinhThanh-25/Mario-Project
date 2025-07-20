@@ -59,19 +59,12 @@ void QuestionOneUpMushroomBlock::doHit(Character& character, Map* map) {
 }
 json QuestionOneUpMushroomBlock::saveToJson() const {
 	json j = Block::saveToJson();
-	j["item"] = item ? item->saveToJson() : nullptr; // Save item state if it exists
 	j["itemVelocityY"] = itemVelocityY;
 	j["itemMinY"] = itemMinY;
 	return j;
 }
 void QuestionOneUpMushroomBlock::loadFromJson(const json& j) {
 	Block::loadFromJson(j);
-	if (j.contains("item")) {
-		item = ItemFactory::createItem(ItemType::ONE_UP_MUSHROOM, Source::BLOCK, Vector2{ position.x, position.y }, Direction::RIGHT);
-		item->loadFromJson(j["item"]);
-	} else {
-		item = nullptr;
-	}
 	itemVelocityY = j["itemVelocityY"].get<float>();
 	itemMinY = j["itemMinY"].get<float>();
 }

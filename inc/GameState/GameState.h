@@ -31,7 +31,7 @@ class GameState {
         virtual void enter();
         virtual void exit();
         virtual ~GameState() = default;
-        virtual GameStateType getType() const;
+        virtual GameStateType getGameStateType() const;
 
         virtual json saveToJson() const;
         virtual void loadFromJson(const json& j);

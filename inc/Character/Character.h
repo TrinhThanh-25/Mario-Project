@@ -97,6 +97,7 @@ class Character : public Sprite {
         virtual void updateCollisionBoxes() override = 0;
 
         bool transition(float deltaTime);
+        bool isTransitioning() const;
         void movement(float deltaTime);
 
         CollisionType checkCollision(Sprite* sprite) override;
