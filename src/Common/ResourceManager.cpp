@@ -23,7 +23,7 @@ std::unordered_map<std::string, Music>& ResourceManager::getMusic() {
 }
 
 void ResourceManager::loadTexture() {
-    texture["Logo"] = LoadTexture("../resources/logo.png");
+    texture["TitleScreenBackground"] = LoadTexture("../resources/MenuBackground.png");
 
     // Tags
     texture["SmallMarioTag"] = LoadTexture("../resources/Mario/SmallMario.png");
@@ -360,10 +360,10 @@ void ResourceManager::loadTexture() {
     texture["Puft1"] = LoadTexture("../resources/Effect/Puft_1.png");
     texture["Puft2"] = LoadTexture("../resources/Effect/Puft_2.png");
     texture["Puft3"] = LoadTexture("../resources/Effect/Puft_3.png");
-    texture["Start0"] = LoadTexture("../resources/Effect/Start_0.png");
-    texture["Start1"] = LoadTexture("../resources/Effect/Start_1.png");
-    texture["Start2"] = LoadTexture("../resources/Effect/Start_2.png");
-    texture["Start3"] = LoadTexture("../resources/Effect/Start_3.png");
+    texture["Stardust0"] = LoadTexture("../resources/Effect/Star_0.png");
+    texture["Stardust1"] = LoadTexture("../resources/Effect/Star_1.png");
+    texture["Stardust2"] = LoadTexture("../resources/Effect/Star_2.png");
+    texture["Stardust3"] = LoadTexture("../resources/Effect/Star_3.png");
 
     //GUI
     texture["Gui1Up"] = LoadTexture("../resources/gui/gui1Up.png");
@@ -399,6 +399,8 @@ void ResourceManager::loadTexture() {
     texture["GuiTime"] = LoadTexture("../resources/gui/guiTime.png");
     texture["GuiTimeUp"] = LoadTexture("../resources/gui/guiTimeUp.png");
     texture["GuiX"] = LoadTexture("../resources/gui/guiX.png");
+    texture["GuiArrowRight"] = LoadTexture("../resources/gui/guiArrow.png");
+    texture["GuiArrowLeft"] = texture2DFlipHorizontal(texture["GuiArrowRight"]);
 };
 
 void ResourceManager::loadSound() {
@@ -428,6 +430,7 @@ void ResourceManager::loadMusic() {
     music["CourseClear"] = LoadMusicStream("../resources/Music/courseClear.mp3");
     music["Ending"] = LoadMusicStream("../resources/Music/ending.mp3");
     music["GameOver"] = LoadMusicStream("../resources/Music/gameOver.mp3");
+    music["Invincible"] = LoadMusicStream("../resources/Music/invincible.mp3");
     music["Music1"] = LoadMusicStream("../resources/Music/music1.mp3");
     music["Music2"] = LoadMusicStream("../resources/Music/music2.mp3");
     music["Music3"] = LoadMusicStream("../resources/Music/music3.mp3");
@@ -577,12 +580,66 @@ void ResourceManager::drawString(std::string str, int x, int y) {
     }
 }
 
+void ResourceManager::drawBigString( std::string str, int x, int y, int size ) {
+    Texture2D texture = ResourceManager::getTexture()["GuiAlfa"];
+    int width = 18;
+    int height = 20;
+    int px = x;
+    for ( char i : str ) {
+        int code = std::toupper( i );
+        bool space = false;
+        int textureY;
+        bool undefined = false;
+        if ( code >= '0' && code <= '9' ) {
+            code -= '0';
+            textureY = 0;
+        } else if ( code >= 'A' && code <= 'Z' ) {
+            code -= 'A';
+            textureY = 20;
+        } else {
+            switch ( code ) {
+                case '.':  code = 0; break;
+                case ',':  code = 1; break;
+                case '-':  code = 2; break;
+                case '!':  code = 3; break;
+                case '?':  code = 4; break;
+                case '=':  code = 5; break;
+                case ':':  code = 6; break;
+                case '\'': code = 7; break;
+                case '"':  code = 8; break;
+                case ' ':  space = true; break;
+                default:   undefined = true; break;
+            }
+            textureY = 60;
+        }
+        if ( undefined ) {
+            code = 4;
+            textureY = 60;
+        }
+        if ( !space ) {
+            DrawTexturePro( texture, 
+                            { float(code * width), float(textureY), float(width), float(height) }, 
+                            { float(px), float(y), float(width*size/height), float(size) }, 
+                            { 0.0f, 0.0f }, 0.0f, WHITE );
+        }
+        px += (width - 2)*size/height;
+    }
+}
+
 int ResourceManager::getDrawStringWidth(std::string str) {
     return 16 * str.length(); 
 }
 
 int ResourceManager::getDrawStringHeight() {
     return 20;
+}
+
+int ResourceManager::getDrawBigStringWidth(std::string str, int size) {
+    return 16 * size * str.length() / 20;
+}
+
+int ResourceManager::getDrawBigStringHeight(int size) {
+    return  size;
 }
 
 void ResourceManager::drawMessageString(std::string str, int x, int y) {
