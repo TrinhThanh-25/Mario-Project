@@ -24,9 +24,9 @@ void Rex::update(const std::vector<Character*>& characterList) {
     }
 
     if (state == SpriteState::ACTIVE){
-        velocity.y += World::gravity * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
+        velocity.y += World::gravity * delta;
 
         updateCollisionBoxes();
     }
@@ -122,6 +122,10 @@ void Rex::beingHit(HitType type) {
 
 void Rex::activeWhenMarioApproach(Character& character) {
     Enemy::activeWhenMarioApproach(character);
+
+    if (state == SpriteState::ACTIVE && velocity.x == 0) {
+        velocity.x = isFacingLeft ? -100.0f : 100.0f;
+    }
 }
 
 void Rex::collisionTile(Tile* tile) {
@@ -130,11 +134,12 @@ void Rex::collisionTile(Tile* tile) {
     Enemy::collisionTile(tile);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        }
     }
-
-    if (col == CollisionType::SOUTH){
+    if (col == CollisionType::SOUTH) {
         velocity.y = 0;
     }
 }
@@ -145,11 +150,12 @@ void Rex::collisionBlock(Block* block) {
     Enemy::collisionBlock(block);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        }
     }
-
-    if (col == CollisionType::SOUTH){
+    if (col == CollisionType::SOUTH) {
         velocity.y = 0;
     }
 }

@@ -75,9 +75,9 @@ void BuzzyBeetle::update(const std::vector<Character*>& characterList) {
             followTheLeader(leader);
         }
 
-        velocity.y += 981.0f * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
+        velocity.y = World::gravity * delta;
 
         updateCollisionBoxes();
     }
@@ -92,10 +92,10 @@ void BuzzyBeetle::update(const std::vector<Character*>& characterList) {
     }
 
     else if (state == SpriteState::SHELL_MOVING) {
-        velocity.y += World::gravity * delta;
         float dir = isFacingLeft ? -1.0f : 1.0f;
         position.x += shellSpeed * dir * delta;
         position.y += velocity.y * delta;
+        velocity.y += World::gravity * delta;
 
         updateCollisionBoxes();
     }
@@ -195,37 +195,41 @@ void BuzzyBeetle::followTheLeader(Sprite* leader) {
 
 void BuzzyBeetle::collisionTile(Tile* tile) {
     CollisionType col = checkCollision(tile);
-
-    // Gọi base xử lý va chạm cơ bản
     Enemy::collisionTile(tile);
 
-    if ((state == SpriteState::ACTIVE || state == SpriteState::SHELL_MOVING) &&
-        (col == CollisionType::WEST || col == CollisionType::EAST)) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        } else if (state == SpriteState::SHELL_MOVING) {
+            shellSpeed = isFacingLeft ? -200.0f : 200.0f;
+        }
     }
 
     if (col == CollisionType::SOUTH) {
         velocity.y = 0;
     }
 }
+
 
 void BuzzyBeetle::collisionBlock(Block* block) {
     CollisionType col = checkCollision(block);
-
-    // Gọi base xử lý va chạm cơ bản
     Enemy::collisionBlock(block);
 
-    if ((state == SpriteState::ACTIVE || state == SpriteState::SHELL_MOVING) &&
-        (col == CollisionType::WEST || col == CollisionType::EAST)) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+    if (col == CollisionType::WEST || col == CollisionType::EAST) {
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        } else if (state == SpriteState::SHELL_MOVING) {
+            shellSpeed = isFacingLeft ? -200.0f : 200.0f;
+        }
     }
 
     if (col == CollisionType::SOUTH) {
         velocity.y = 0;
     }
 }
+
 
 // ========================= SAVE GAME ============================
 json BuzzyBeetle::saveToJson() const {

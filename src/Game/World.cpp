@@ -52,7 +52,7 @@ void World::init() {
 
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-    SetConfigFlags(FLAG_WINDOW_HIGHDPI);
+    // SetConfigFlags(FLAG_WINDOW_HIGHDPI);
         // SetConfigFlags( FLAG_FULLSCREEN_MODE );
         // SetConfigFlags( FLAG_WINDOW_UNDECORATED );
     SetConfigFlags(FLAG_WINDOW_ALWAYS_RUN);
