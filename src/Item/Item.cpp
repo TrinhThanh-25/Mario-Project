@@ -90,8 +90,10 @@ void Item::collisionCharacter(Character *character)
         if (checkCollision(character) != CollisionType::NONE) {
             this->setState(SpriteState::HIT);
             this->playCollisionSound();
-            if (this->isPausedGameWhenBeingHit()) {
-                character->getWorld()->pauseWorld(true, false);
+            if (character->getType() == CharacterType::SMALL || (character->getType() == CharacterType::SUPER && getType() == ItemType::FLOWER)) {
+                if (this->isPausedGameWhenBeingHit()) {
+                    character->getWorld()->pauseWorld(true, false);
+                }
             }
             this->updateCharacter(character);
         } 

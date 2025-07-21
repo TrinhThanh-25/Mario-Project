@@ -2,7 +2,7 @@
 #include "Game/World.h"
 
 OneUpMushroom::OneUpMushroom(Vector2 position, Vector2 size, Color color, int lives):
-Item(position, size, {320, 0}, color, 0, 0, Direction::RIGHT, 0.1f, 4, false), lives(lives)
+Item(position, size, {240, 0}, color, 0, 0, Direction::RIGHT, 0.1f, 4, false), lives(lives)
 {
     pauseGameWhenHit = false;
     type = ItemType::ONE_UP_MUSHROOM;
