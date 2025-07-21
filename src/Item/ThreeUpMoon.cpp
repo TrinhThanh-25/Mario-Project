@@ -58,7 +58,7 @@ void ThreeUpMoon::draw()
             this->getY() - ResourceManager::getTexture()["Gui3Up"].height - (50 * pointFrameAccum / pointFrameTime),
             WHITE
         );
-        DrawTexture(ResourceManager::getTexture()["Star" + std::to_string(this->currentBeingHitFrame)], this->getX(), this->getY(), this->getColor());
+        DrawTexture(ResourceManager::getTexture()["Stardust" + std::to_string(this->currentBeingHitFrame)], this->getX(), this->getY(), this->getColor());
     }
 }
 
