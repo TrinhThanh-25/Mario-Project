@@ -38,8 +38,11 @@ class ResourceManager {
         static int getBigNumberHeight();
 
         static void drawString( std::string str, int x, int y );
+        static void drawBigString( std::string str, int x, int y , int size = 18 );
         static int getDrawStringWidth( std::string str );
         static int getDrawStringHeight();
+        static int getDrawBigStringWidth( std::string str, int size = 18 );
+        static int getDrawBigStringHeight(int size = 18);
         static void drawMessageString( std::string str, int x, int y );
         static int getMessageStringWidth( std::string str );
         static int getMessageStringHeight();
