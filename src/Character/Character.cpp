@@ -6,9 +6,9 @@
 #include "Game/World.h"
 #include <string>
 
-Character::Character(NamePlayer namePlayer, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed) :
+Character::Character(CharacterName characterName, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed) :
     Sprite(pos, dim, vel, color, 0, 2, Direction::RIGHT),
-    namePlayer(namePlayer),
+    characterName(characterName),
     modePlayer(mode),
     speed(speedX), 
     maxSpeed(maxSpeedX), 
@@ -88,15 +88,11 @@ void Character::draw() {
     std::string characterType;
     std::string direct;
 
-    std::string name;
-
-    switch (namePlayer) {
-        case NamePlayer::MARIO:
-            name = "Mario";
-            break;
-        case NamePlayer::LUIGI:
-            name = "Luigi";
-            break;
+    if(modePlayer == ModePlayer::SECONDPLAYER) {
+        DrawTexture(texture["Gui"+name + "SecondPlayer"], position.x + size.x / 2 - texture["Gui"+name + "SecondPlayer"].width / 2, position.y - texture["Gui"+name + "SecondPlayer"].height - 5, WHITE);
+    }
+    else {
+        DrawTexture(texture["Gui"+name + "FirstPlayer"], position.x + size.x / 2 - texture["Gui"+name + "FirstPlayer"].width / 2, position.y - texture["Gui"+name + "FirstPlayer"].height - 5, WHITE);
     }
 
     if(type == CharacterType::SMALL) {
@@ -144,7 +140,7 @@ void Character::draw() {
                     DrawTexture(texture[characterType + "Running" + std::to_string(curFrame) + direct], position.x, position.y, curColor);
                 }
                 else{
-                    if((modePlayer == ModePlayer::FIRSTPLAYER|| *(world->getModeWorld()) == SINGLEPLAYER) && type==CharacterType::FLOWER){
+                    if((modePlayer == ModePlayer::FIRSTPLAYER|| *(world->getModeWorld()) == ModeWorld::SINGLEPLAYER) && type==CharacterType::FLOWER){
                         if(IsKeyPressed(KEY_LEFT_CONTROL)) {
                             DrawTexture(texture[characterType +"ThrowingFireball0" + direct], position.x, position.y, curColor);
                         }
@@ -237,6 +233,12 @@ bool Character::isTransitioning() const {
 }
 
 void Character::movement(float deltaTime) {
+    if (state != SpriteState::DYING && position.y + size.y >= map->getHeight()) {
+            state = SpriteState::DYING;
+            gameHud->removeLives(1);
+            world->playPlayerDownMusic();
+            return;
+    }
     KeyboardKey up, down, left, right, control;
     if(modePlayer == ModePlayer::ONEPLAYER) {
         up = KEY_SPACE;
@@ -642,7 +644,7 @@ World *Character::getWorld() const
 
 json Character::saveToJson() const {
     json j = Sprite::saveToJson();
-    j["namePlayer"] = static_cast<int>(namePlayer);
+    j["characterName"] = static_cast<int>(characterName);
     j["modePlayer"] = static_cast<int>(modePlayer);
     j["speed"] = speed;
     j["maxSpeed"] = maxSpeed;
@@ -681,7 +683,7 @@ json Character::saveToJson() const {
 
 void Character::loadFromJson(const json& j) {
     Sprite::loadFromJson(j);
-    namePlayer = static_cast<NamePlayer>(j["namePlayer"].get<int>());
+    characterName = static_cast<CharacterName>(j["characterName"].get<int>());
     modePlayer = static_cast<ModePlayer>(j["modePlayer"].get<int>());
     speed = j["speed"].get<float>();
     maxSpeed = j["maxSpeed"].get<float>();

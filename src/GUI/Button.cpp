@@ -1,3 +1,4 @@
+#include "Common/ResourceManager.h"
 #include <GUI/Button.h>
 
 Button::Button(){}
@@ -26,10 +27,13 @@ void Button::update(){
 }
 
 void Button::draw(){
-    //
-    DrawRectangleRec(this->rectangle, (this->selected || this->isPressed()) ? RED : (this->isHovered() ? LIGHTGRAY : GRAY));
+    std::unordered_map<std::string, Texture2D>& texture = ResourceManager::getTexture();
     if (this->text) {
-        DrawTextEx(GetFontDefault(), this->text, {this->rectangle.x + (this->rectangle.width - MeasureTextEx(GetFontDefault(), this->text, this->fontSize, 0).x) / 2.0f, this->rectangle.y + (this->rectangle.height - MeasureTextEx(GetFontDefault(), this->text, this->fontSize, 0).y) / 2.0f}, this->fontSize, 0, WHITE);
+        ResourceManager::drawBigString(this->text, this->rectangle.x + (this->rectangle.width - ResourceManager::getDrawBigStringWidth(this->text, fontSize)) / 2, this->rectangle.y + (this->rectangle.height - ResourceManager::getDrawBigStringHeight(fontSize)) / 2, fontSize);
+    }
+    if(selected) {
+        DrawTexture(texture["GuiArrowLeft"], this->rectangle.x -texture["GuiArrowLeft"].width, this->rectangle.y + (this->rectangle.height - texture["GuiArrowLeft"].height) / 2, WHITE);
+        DrawTexture(texture["GuiArrowRight"], this->rectangle.x + this->rectangle.width, this->rectangle.y + (this->rectangle.height - texture["GuiArrowRight"].height) / 2, WHITE);
     }
 }
 

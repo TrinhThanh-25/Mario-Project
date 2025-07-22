@@ -2,7 +2,10 @@
 #define COUNTINGPOINTSTATE_H
 
 #include "GameState/GameState.h"
-#include "Game/World.h"
+
+class GameHud;
+class Map;
+class Camera2D;
 
 class CountingPointState : public GameState {
     private:

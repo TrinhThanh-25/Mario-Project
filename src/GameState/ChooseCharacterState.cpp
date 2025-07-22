@@ -1,78 +1,53 @@
 #include "GameState/ChooseCharacterState.h"
 #include "GameState/PlayingState.h"
-#include "Character/Mario.h"
-#include "Character/Luigi.h"
+#include "GameState/TitleScreenState.h"
+#include "Character/CharacterFactory.h"
+#include "Common/ResourceManager.h"
 
 ChooseCharacterState::ChooseCharacterState(World* world)
     : GameState(world, GameStateType::CHOOSE_CHARACTER),
-    modeWorld(ModeWorld::SINGLEPLAYER),
-    singlePlayerTag(CharacterName::MARIO, {650, 100, 300, 500}),
-    firstPlayerTag(CharacterName::MARIO, {300, 100, 300, 500}),
-    secondPlayerTag(CharacterName::LUIGI, {1000, 100, 300, 500}),
-    onePlayerButton({350, 700, 200, 50}, "One Player", 20),
-    twoPlayersButton({1050, 700, 200, 50}, "Two Players", 20) {
-        singlePlayerTag.setKeys(KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN);
-        firstPlayerTag.setKeys(KEY_A, KEY_D, KEY_W, KEY_S);
-        secondPlayerTag.setKeys(KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN);
-        onePlayerButton.Selected();
+      modeWorld(ModeWorld::SINGLEPLAYER),
+      characterTags({
+            new CharacterTag(CharacterName::MARIO, {800-50-150-100-150, 500, 150, 200}),
+            new CharacterTag(CharacterName::LUIGI, {800-50-150, 500, 150, 200}),
+            new CharacterTag(CharacterName::TOAD, {800 + 50, 500, 150, 200}),
+            new CharacterTag(CharacterName::PEACH, {800 + 50 + 150 + 100, 500, 150, 200})
+      }) {
 }
 
 ChooseCharacterState::~ChooseCharacterState() {
-
+    for (CharacterTag* tag : characterTags) {
+        delete tag;
+    }
+    characterTags.clear();
 }
 
 void ChooseCharacterState::update() {
-    onePlayerButton.update();
-    twoPlayersButton.update();
-    if(onePlayerButton.isPressed()) {
-        modeWorld = ModeWorld::SINGLEPLAYER;
-        onePlayerButton.Selected();
-        twoPlayersButton.deSelected();
+    std::vector<Character*>& characters = world->getCharacters();
+    if(IsKeyPressed(KEY_ESCAPE)) {
+        world->setGameState(new TitleScreenState(world));
+        return;
     }
-    else if(twoPlayersButton.isPressed()) {
-        modeWorld = ModeWorld::MULTIPLAYER;
-        twoPlayersButton.Selected();
-        onePlayerButton.deSelected();
-    }
-    if(modeWorld == ModeWorld::SINGLEPLAYER) {
-        singlePlayerTag.update();
-    } 
-    else if(modeWorld == ModeWorld::MULTIPLAYER) {
-        firstPlayerTag.update();
-        secondPlayerTag.update();
+    for (CharacterTag* tag : characterTags) {
+        tag->update();
     }
     if(IsKeyPressed(KEY_ENTER)) {
-        if (modeWorld == ModeWorld::SINGLEPLAYER) {
-            switch (singlePlayerTag.getName()) {
-                case CharacterName::MARIO:
-                    world->getCharacters().push_back(new Mario(ModePlayer::ONEPLAYER, {64, 0}, {0, 0}, RED, 260.0f, 360.0f, -600.0f));
-                    world->getCharacters().back()->setWorld(world);
-                    break;
-                case CharacterName::LUIGI:
-                    world->getCharacters().push_back(new Luigi(ModePlayer::ONEPLAYER, {64, 0}, {0, 0}, GREEN, 260.0f, 360.0f, -600.0f));
-                    world->getCharacters().back()->setWorld(world);
-                    break;
+        for (CharacterTag* tag : characterTags) {
+            if (modeWorld == ModeWorld::SINGLEPLAYER && (tag->getState() == TagState::FIRSTPLAYERSELECTING || tag->getState() == TagState::FIRSTPLAYERSELECTED)) {
+                characters.push_back(CharacterFactory::createCharacter(tag->getName(), ModePlayer::ONEPLAYER));
+            } 
+            else if (modeWorld == ModeWorld::MULTIPLAYER && (tag->getState() == TagState::FIRSTPLAYERSELECTING || tag->getState() == TagState::FIRSTPLAYERSELECTED)) {
+                characters.push_back(CharacterFactory::createCharacter(tag->getName(), ModePlayer::FIRSTPLAYER));
+            } 
+            else if (modeWorld == ModeWorld::MULTIPLAYER && (tag->getState() == TagState::SECONDPLAYERSELECTING || tag->getState() == TagState::SECONDPLAYERSELECTED)) {
+                characters.push_back(CharacterFactory::createCharacter(tag->getName(), ModePlayer::SECONDPLAYER));
             }
-        } else {
-            switch (firstPlayerTag.getName()) {
-                case CharacterName::MARIO:
-                    world->getCharacters().push_back(new Mario(ModePlayer::FIRSTPLAYER, {64, 0}, {0, 0}, RED, 260.0f, 360.0f, -600.0f));
-                    world->getCharacters().back()->setWorld(world);
-                    break;
-                case CharacterName::LUIGI:
-                    world->getCharacters().push_back(new Luigi(ModePlayer::FIRSTPLAYER, {64, 0}, {0, 0}, GREEN, 260.0f, 360.0f, -600.0f));
-                    world->getCharacters().back()->setWorld(world);
-                    break;
+            else if(modeWorld == ModeWorld::MULTIPLAYER && (tag->getState() == TagState::BOTHPLAYERSELECTING || tag->getState() == TagState::BOTHPLAYERSELECTED || tag->getState() == TagState::FIRSTPLAYERSELECTED_SECONDPLAYERSELECTING || tag->getState() == TagState::SECONDPLAYERSECLECTED_FIRSTPLAYERSELECTING)) {
+                characters.push_back(CharacterFactory::createCharacter(tag->getName(), ModePlayer::FIRSTPLAYER));
+                characters.push_back(CharacterFactory::createCharacter(tag->getName(), ModePlayer::SECONDPLAYER));
             }
-            switch (secondPlayerTag.getName()) {
-                case CharacterName::MARIO:
-                    world->getCharacters().push_back(new Mario(ModePlayer::SECONDPLAYER, {200, 100}, {0, 0}, RED, 260.0f, 360.0f, -600.0f));
-                    world->getCharacters().back()->setWorld(world);
-                    break;
-                case CharacterName::LUIGI:
-                    world->getCharacters().push_back(new Luigi(ModePlayer::SECONDPLAYER, {200, 100}, {0, 0}, GREEN, 260.0f, 360.0f, -600.0f));
-                    world->getCharacters().back()->setWorld(world);
-                    break;
+            for (Character* character : characters) {
+                character->setWorld(world);
             }
         }
         world->getMap()->loadMap(1);
@@ -80,15 +55,77 @@ void ChooseCharacterState::update() {
         world->setModeWorld(modeWorld);
         world->setGameState(new PlayingState(world));
     }
+    if(modeWorld == ModeWorld::SINGLEPLAYER) {
+        if(characterTags[curP1]->getState() != TagState::FIRSTPLAYERSELECTED && characterTags[curP1]->getState() != TagState::FIRSTPLAYERSELECTED_SECONDPLAYERSELECTING && characterTags[curP1]->getState() != TagState::BOTHPLAYERSELECTED) {
+            if(IsKeyPressed(KEY_LEFT)) {
+                characterTags[curP1]->removeSelect(TagState::FIRSTPLAYERSELECTING);
+                curP1 = (curP1 - 1 + characterTags.size()) % characterTags.size();
+                characterTags[curP1]->addSelect(TagState::FIRSTPLAYERSELECTING);
+            }
+            else if(IsKeyPressed(KEY_RIGHT)) {
+                characterTags[curP1]->removeSelect(TagState::FIRSTPLAYERSELECTING);
+                curP1 = (curP1 + 1) % characterTags.size();
+                characterTags[curP1]->addSelect(TagState::FIRSTPLAYERSELECTING);
+            }
+        }
+    }
+    else if(modeWorld == ModeWorld::MULTIPLAYER) {
+        if(characterTags[curP1]->getState() != TagState::FIRSTPLAYERSELECTED && characterTags[curP1]->getState() != TagState::FIRSTPLAYERSELECTED_SECONDPLAYERSELECTING && characterTags[curP1]->getState() != TagState::BOTHPLAYERSELECTED) {
+            if(IsKeyPressed(KEY_A)) {
+                characterTags[curP1]->removeSelect(TagState::FIRSTPLAYERSELECTING);
+                curP1 = (curP1 - 1 + characterTags.size()) % characterTags.size();
+                characterTags[curP1]->addSelect(TagState::FIRSTPLAYERSELECTING);
+            }
+            else if(IsKeyPressed(KEY_D)) {
+                characterTags[curP1]->removeSelect(TagState::FIRSTPLAYERSELECTING);
+                curP1 = (curP1 + 1) % characterTags.size();
+                characterTags[curP1]->addSelect(TagState::FIRSTPLAYERSELECTING);
+            }
+        }
+        if(characterTags[curP2]->getState() != TagState::SECONDPLAYERSELECTED && characterTags[curP2]->getState() != TagState::SECONDPLAYERSECLECTED_FIRSTPLAYERSELECTING && characterTags[curP2]->getState() != TagState::BOTHPLAYERSELECTED) {
+            if(IsKeyPressed(KEY_LEFT)) {
+                characterTags[curP2]->removeSelect(TagState::SECONDPLAYERSELECTING);
+                curP2 = (curP2 - 1 + characterTags.size()) % characterTags.size();
+                characterTags[curP2]->addSelect(TagState::SECONDPLAYERSELECTING);
+            }
+            else if(IsKeyPressed(KEY_RIGHT)) {
+                characterTags[curP2]->removeSelect(TagState::SECONDPLAYERSELECTING);
+                curP2 = (curP2 + 1) % characterTags.size();
+                characterTags[curP2]->addSelect(TagState::SECONDPLAYERSELECTING);
+            }
+        }
+    }
+    if(IsKeyPressed(KEY_LEFT_CONTROL)) {
+        characterTags[curP1]->selected(TagState::FIRSTPLAYERSELECTED);
+    }
+    if(IsKeyPressed(KEY_RIGHT_CONTROL)) {
+        characterTags[curP2]->selected(TagState::SECONDPLAYERSELECTED);
+    }
 }
 
 void ChooseCharacterState::draw() {
-    onePlayerButton.draw();
-    twoPlayersButton.draw();
-    if(modeWorld == ModeWorld::SINGLEPLAYER) {
-        singlePlayerTag.draw();
+    std::unordered_map<std::string, Texture2D>& texture = ResourceManager::getTexture();
+    DrawTexture(texture["ChooseCharacterBackground"], 0, 0, WHITE);
+    ResourceManager::drawBigString("Please select your character", GetScreenWidth() / 2 - ResourceManager::getDrawBigStringWidth("Please select your character", 40) / 2.0f, 200, 40);
+    for (CharacterTag* tag : characterTags) {
+        tag->draw();
+    }
+}
+
+void ChooseCharacterState::setModeWorld(ModeWorld mode) {
+    modeWorld = mode;
+    for (CharacterTag* tag : characterTags) {
+        tag->setModeWorld(modeWorld);
+    }
+    if (modeWorld == ModeWorld::SINGLEPLAYER) {
+        curP1 = 0;
+        curP2 = 1;
+        characterTags[curP1]->addSelect(TagState::FIRSTPLAYERSELECTING);
+        characterTags[curP2]->removeSelect(TagState::SECONDPLAYERSELECTING);
     } else {
-        firstPlayerTag.draw();
-        secondPlayerTag.draw();
+        curP1 = 0;
+        curP2 = 1;
+        characterTags[curP1]->addSelect(TagState::FIRSTPLAYERSELECTING);
+        characterTags[curP2]->addSelect(TagState::SECONDPLAYERSELECTING);
     }
 }

@@ -4,6 +4,9 @@
 #include "Common/Drawable.h"
 
 class GameLoop : virtual public Drawable {
+    protected:
+        bool isClosed;
+        GameLoop() : isClosed(false) {}
     public:
         void run();
         virtual void init() = 0;

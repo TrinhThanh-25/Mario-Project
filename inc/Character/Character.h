@@ -2,12 +2,8 @@
 #define CHARACTER_H
 
 #include "Character/Fireball.h"
-#include "Common/Sprite.h"
-#include "Common/Direction.h"
-#include "Common/SpriteState.h"
-#include "Common/CollisionType.h"
-#include "Common/CollisionBox.h"
 #include "Character/CharacterType.h"
+#include "Character/CharacterName.h"
 #include "raylib.h"
 #include <vector>
 #include <string>
@@ -16,11 +12,6 @@ enum class ModePlayer{
     ONEPLAYER,
     FIRSTPLAYER,
     SECONDPLAYER
-};
-
-enum class NamePlayer {
-    MARIO,
-    LUIGI
 };
 
 class World;
@@ -35,8 +26,10 @@ class Character : public Sprite {
         World* world;
         Map* map;
         GameHud* gameHud;
-        NamePlayer namePlayer;
+        CharacterName characterName;
         ModePlayer modePlayer;
+
+        std::string name;
 
         //physics movement
         float speed;
@@ -87,7 +80,7 @@ class Character : public Sprite {
         float activateWidth;
         SpriteState previousState;
     public:
-        Character(NamePlayer namePlayer, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed);
+        Character(CharacterName characterName, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed);
         virtual ~Character() override;
 
         void setWorld(World* world);

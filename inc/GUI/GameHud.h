@@ -2,7 +2,6 @@
 #define GAMEHUD_H
 
 #include "Character/CharacterType.h"
-#include "Character/Character.h"
 #include <vector>
 #include "json.hpp"
 
@@ -10,6 +9,7 @@ using json = nlohmann::json;
 
 class Map;
 class World;
+class Character;
 
 class GameHud {
     private:

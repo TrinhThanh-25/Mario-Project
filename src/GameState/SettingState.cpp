@@ -5,14 +5,15 @@
 #include "GameState/GoNextMapState.h"
 #include "GameState/IrisOutState.h"
 #include "GameState/TimeUpState.h"
+#include "Common/ResourceManager.h"
 #include "SaveGame.h"
 
 SettingState::SettingState(World* world)
     : GameState(world, GameStateType::SETTING),
-    resumeButton({(float)GetScreenWidth() / 2 - 100, (float)GetScreenHeight() / 2 - 50, 200, 50}, "Resume", 20),
-    restartButton({(float)GetScreenWidth() / 2 - 100, (float)GetScreenHeight() / 2 + 10, 200, 50}, "Restart", 20),
-    returnButton({(float)GetScreenWidth() / 2 - 100, (float)GetScreenHeight() / 2 + 70, 200, 50}, "Return", 20),
-    exitButton({(float)GetScreenWidth() / 2 - 100, (float)GetScreenHeight() / 2 + 130, 200, 50}, "Exit", 20) {
+    resumeButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 - 50, 300, 50}, "Resume", 36),
+    restartButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 10, 300, 50}, "Restart", 36),
+    returnButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 70, 300, 50}, "Return", 36),
+    exitButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 130, 300, 50}, "Exit", 36) {
 }
 
 SettingState::~SettingState() {
@@ -20,13 +21,28 @@ SettingState::~SettingState() {
 }
 
 void SettingState::update() {
+    if(stateBeforeSetting == GameStateType::TITLE_SCREEN) {
+        returnButton.update();
+        exitButton.update();
+        if(!IsMusicStreamPlaying(ResourceManager::getMusic()["Title"])) {
+            PlayMusicStream(ResourceManager::getMusic()["Title"]);
+        }
+        else {
+            UpdateMusicStream(ResourceManager::getMusic()["Title"]);
+        }
+    } else {
+        resumeButton.update();
+        restartButton.update();
+        returnButton.update();
+        exitButton.update();
+    }
     if(resumeButton.isPressed() && stateBeforeSetting != GameStateType::TITLE_SCREEN) {
         world->setGameState(new PlayingState(world));
     }
     else if(restartButton.isPressed() && stateBeforeSetting != GameStateType::TITLE_SCREEN) {
         world->resetMap();
     }
-    else if(returnButton.isPressed()) {
+    else if(returnButton.isPressed() || IsKeyPressed(KEY_ESCAPE)) {
         if(stateBeforeSetting != GameStateType::TITLE_SCREEN) {
             SaveGame::saveGame(*world);
         }
@@ -35,13 +51,13 @@ void SettingState::update() {
             delete character;
         }
         characters.clear();
-        world->setGameState(new TitleScreenState(world));
+        world->resetGame();
     }
     else if(exitButton.isPressed()) {
         if(stateBeforeSetting != GameStateType::TITLE_SCREEN) {
             SaveGame::saveGame(*world);
         }
-        CloseWindow();
+        world->setIsClosed(true);
     }
     // music / sfx
 }

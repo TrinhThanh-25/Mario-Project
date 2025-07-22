@@ -2,21 +2,9 @@
 #define GAMESTATE_H
 
 #include "json.hpp"
+#include "GameState/GameStateType.h"
 
 using json = nlohmann::json;
-
-enum GameStateType {
-    CHOOSE_CHARACTER,
-    COUNTING_POINT,
-    FINISHED,
-    GAME_OVER,
-    GO_NEXT_MAP,
-    IRIS_OUT,
-    PLAYING,
-    SETTING,
-    TIME_UP,
-    TITLE_SCREEN,
-};
 
 class World;
 

@@ -2,7 +2,6 @@
 #define FINISHEDSTATE_H
 
 #include "GameState/GameState.h"
-#include "Game/World.h"
 
 class FinishedState : public GameState {
     private:
