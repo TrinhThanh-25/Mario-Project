@@ -1,4 +1,5 @@
 #include "Item/CourseClearToken.h"
+#include "Game/World.h"
 
 CourseClearToken::CourseClearToken(Vector2 position, Vector2 size, Color color):
     Item(position, size, {0, 200}, color, 0.0f, 0, Direction::RIGHT, 0.1f, 4, false),
@@ -73,6 +74,10 @@ void CourseClearToken::updateCharacter(Character *character)
 {
     character->getGameHud()->addPoints(points);
     character->setState(SpriteState::VICTORY);
+    World* world = character->getWorld();
+    for (Character* character : world->getCharacters()) {
+        if (character->getState() != SpriteState::VICTORY) setState(SpriteState::ACTIVE);
+    }
 }
 
 void CourseClearToken::collisionSouth(Character *character)
