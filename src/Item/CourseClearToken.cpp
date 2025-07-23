@@ -72,11 +72,17 @@ void CourseClearToken::playCollisionSound()
 
 void CourseClearToken::updateCharacter(Character *character)
 {
-    character->getGameHud()->addPoints(points);
+    if (character->getState() == SpriteState::VICTORY) return;
+    //character->getGameHud()->addPoints(points);
     character->setState(SpriteState::VICTORY);
     World* world = character->getWorld();
+    bool finish = true;
     for (Character* character : world->getCharacters()) {
-        if (character->getState() != SpriteState::VICTORY) setState(SpriteState::ACTIVE);
+        if (character->getState() != SpriteState::VICTORY) finish = false;
+    }
+    if (finish) {
+        this->setState(SpriteState::HIT);
+        character->getGameHud()->addPoints(points);
     }
 }
 
@@ -100,3 +106,4 @@ void CourseClearToken::loadFromJson(const json& j)
     maxY = j.value("maxY", 0);
     points = j.value("points", 0);
 }
+

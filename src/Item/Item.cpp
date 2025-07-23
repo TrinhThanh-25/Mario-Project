@@ -88,7 +88,9 @@ void Item::collisionCharacter(Character *character)
 {
     if (this->getState() != SpriteState::TO_BE_REMOVED && this->getState() != SpriteState::HIT) {
         if (checkCollision(character) != CollisionType::NONE) {
-            this->setState(SpriteState::HIT);
+            if (this->getType() != ItemType::COURSE_CLEAR_TOKEN) {
+                this->setState(SpriteState::HIT);
+            }
             this->playCollisionSound();
             if (character->getType() == CharacterType::SMALL || (character->getType() == CharacterType::SUPER && getType() == ItemType::FLOWER)) {
                 if (this->isPausedGameWhenBeingHit()) {
