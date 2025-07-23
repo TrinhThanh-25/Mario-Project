@@ -25,6 +25,7 @@ std::unordered_map<std::string, Music>& ResourceManager::getMusic() {
 void ResourceManager::loadTexture() {
     texture["TitleScreenBackground"] = LoadTexture("../resources/Background/MenuBackground.png");
     texture["ChooseCharacterBackground"] = LoadTexture("../resources/Background/ChooseCharacterBackground.png");
+    texture["SettingBackground"] = LoadTexture("../resources/Background/SettingBackground.png");
 
     // Tags
     texture["SmallMarioTag"] = LoadTexture("../resources/Mario/SmallMario.png");
@@ -281,8 +282,8 @@ void ResourceManager::loadTexture() {
     texture["FlowerToad1Left"] = texture2DFlipHorizontal(texture["FlowerToad1Right"]);
     texture["FlowerToad2Right"] = LoadTexture("../resources/Toad/FlowerToad_2.png");
     texture["FlowerToad2Left"] = texture2DFlipHorizontal(texture["FlowerToad2Right"]);
-    texture["FlowerToadDucking0Left"] = texture2DFlipHorizontal(texture["FlowerToadDucking0Right"]);
     texture["FlowerToadDucking0Right"] = LoadTexture("../resources/Toad/FlowerToadDucking_0.png");
+    texture["FlowerToadDucking0Left"] = texture2DFlipHorizontal(texture["FlowerToadDucking0Right"]);
 
     //Small Peach
     texture["SmallPeach0Right"] = LoadTexture("../resources/Peach/SmallPeach_0.png");
@@ -483,9 +484,6 @@ void ResourceManager::loadTexture() {
     texture["PiranhaPlant0"] = LoadTexture("../resources/Enemy/PiranhaPlant_0.png");
     texture["PiranhaPlant1"] = LoadTexture("../resources/Enemy/PiranhaPlant_1.png");
     texture["RedKoopaTroopa0Right"] = LoadTexture("../resources/Enemy/RedKoopaTroopa_0.png");
-    if(texture["RedKoopaTroopa0Right"].id == 0) {
-        std::cerr << "Failed to load RedKoopaTroopa_0.png" << std::endl;
-    }
     texture["RedKoopaTroopa0Left"] = texture2DFlipHorizontal(texture["RedKoopaTroopa0Right"]);
     texture["RedKoopaTroopa1Right"] = LoadTexture("../resources/Enemy/RedKoopaTroopa_1.png");
     texture["RedKoopaTroopa1Left"] = texture2DFlipHorizontal(texture["RedKoopaTroopa1Right"]);
@@ -507,6 +505,38 @@ void ResourceManager::loadTexture() {
     texture["YellowKoopaTroopa0Left"] = texture2DFlipHorizontal(texture["YellowKoopaTroopa0Right"]);
     texture["YellowKoopaTroopa1Right"] = LoadTexture("../resources/Enemy/YellowKoopaTroopa_1.png");
     texture["YellowKoopaTroopa1Left"] = texture2DFlipHorizontal(texture["YellowKoopaTroopa1Right"]);
+    texture["BlueKoopaShield0"] = LoadTexture("../resources/Enemy/BlueKoopaShield_0.png");
+    texture["BlueKoopaShield1"] = LoadTexture("../resources/Enemy/BlueKoopaShield_1.png");
+    texture["BlueKoopaShield2"] = LoadTexture("../resources/Enemy/BlueKoopaShield_2.png");
+    texture["BlueKoopaShield3"] = texture2DFlipHorizontal(texture["BlueKoopaShield1"]);
+    texture["BlueKoopaShield4"] = LoadTexture("../resources/Enemy/BlueKoopaShield_4.png");
+    texture["BlueKoopaShield5"] = texture["BlueKoopaShield1"];
+    texture["BlueKoopaShield6"] = texture["BlueKoopaShield2"];
+    texture["BlueKoopaShield7"] = texture["BlueKoopaShield3"];
+    texture["GreenKoopaShield0"] = LoadTexture("../resources/Enemy/GreenKoopaShield_0.png");
+    texture["GreenKoopaShield1"] = LoadTexture("../resources/Enemy/GreenKoopaShield_1.png");
+    texture["GreenKoopaShield2"] = LoadTexture("../resources/Enemy/GreenKoopaShield_2.png");
+    texture["GreenKoopaShield3"] = texture2DFlipHorizontal(texture["GreenKoopaShield1"]);
+    texture["GreenKoopaShield4"] = LoadTexture("../resources/Enemy/GreenKoopaShield_4.png");
+    texture["GreenKoopaShield5"] = texture["GreenKoopaShield1"];
+    texture["GreenKoopaShield6"] = texture["GreenKoopaShield2"];
+    texture["GreenKoopaShield7"] = texture["GreenKoopaShield3"];
+    texture["RedKoopaShield0"] = LoadTexture("../resources/Enemy/RedKoopaShield_0.png");
+    texture["RedKoopaShield1"] = LoadTexture("../resources/Enemy/RedKoopaShield_1.png");
+    texture["RedKoopaShield2"] = LoadTexture("../resources/Enemy/RedKoopaShield_2.png");
+    texture["RedKoopaShield3"] = texture2DFlipHorizontal(texture["RedKoopaShield1"]);
+    texture["RedKoopaShield4"] = LoadTexture("../resources/Enemy/RedKoopaShield_4.png");
+    texture["RedKoopaShield5"] = texture["RedKoopaShield1"];
+    texture["RedKoopaShield6"] = texture["RedKoopaShield2"];
+    texture["RedKoopaShield7"] = texture["RedKoopaShield3"];
+    texture["YellowKoopaShield0"] = LoadTexture("../resources/Enemy/YellowKoopaShield_0.png");
+    texture["YellowKoopaShield1"] = LoadTexture("../resources/Enemy/YellowKoopaShield_1.png");
+    texture["YellowKoopaShield2"] = LoadTexture("../resources/Enemy/YellowKoopaShield_2.png");
+    texture["YellowKoopaShield3"] = texture2DFlipHorizontal(texture["YellowKoopaShield1"]);
+    texture["YellowKoopaShield4"] = LoadTexture("../resources/Enemy/YellowKoopaShield_4.png");
+    texture["YellowKoopaShield5"] = texture["YellowKoopaShield1"];
+    texture["YellowKoopaShield6"] = texture["YellowKoopaShield2"];
+    texture["YellowKoopaShield7"] = texture["YellowKoopaShield3"];
 
     //Block
     texture["Cloud0"] = LoadTexture("../resources/Block/Cloud_0.png");
@@ -648,6 +678,8 @@ void ResourceManager::loadSound() {
     sound["ShellRicochet"] = LoadSound("../resources/Sound/shell_ricochet.wav");
     sound["StompNoDamage"] = LoadSound("../resources/Sound/stomp_no_damage.wav");
     sound["Stomp"] = LoadSound("../resources/Sound/stomp.wav");
+    sound["HoverButton"] = LoadSound("../resources/Sound/hoverButton.wav");
+    sound["ClickButton"] = LoadSound("../resources/Sound/clickButton.wav");
 }
 
 void ResourceManager::loadMusic() {
@@ -666,6 +698,7 @@ void ResourceManager::loadMusic() {
     music["Music9"] = LoadMusicStream("../resources/Music/music9.mp3");
     music["PlayerDown"] = LoadMusicStream("../resources/Music/playerDown.mp3");
     music["Title"] = LoadMusicStream("../resources/Music/title.mp3");
+    music["ChooseCharacterMusic"] = LoadMusicStream("../resources/Music/chooseCharacterMusic.mp3");
 }
 
 void ResourceManager::unloadTexture() {
@@ -842,7 +875,7 @@ void ResourceManager::drawBigString( std::string str, int x, int y, int size ) {
         }
         if ( !space ) {
             DrawTexturePro( texture, 
-                            { float(code * width), float(textureY), float(width), float(height) }, 
+                            { float(code * width), float(textureY) + 4, float(width), float(height) - 4 }, 
                             { float(px), float(y), float(width*size/height), float(size) }, 
                             { 0.0f, 0.0f }, 0.0f, WHITE );
         }
