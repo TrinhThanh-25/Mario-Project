@@ -52,8 +52,6 @@ World::~World() {
 
 void World::init() {
     SetConfigFlags(FLAG_MSAA_4X_HINT);
-    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-    // SetConfigFlags( FLAG_FULLSCREEN_MODE );
     // SetConfigFlags( FLAG_WINDOW_UNDECORATED );
     SetConfigFlags(FLAG_WINDOW_ALWAYS_RUN);
     InitWindow(width, height, title.c_str());

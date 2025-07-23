@@ -3,6 +3,7 @@
 #include "GameState/TitleScreenState.h"
 #include "Character/CharacterFactory.h"
 #include "Common/ResourceManager.h"
+#include "raylib.h"
 
 ChooseCharacterState::ChooseCharacterState(World* world)
     : GameState(world, GameStateType::CHOOSE_CHARACTER),
@@ -23,6 +24,12 @@ ChooseCharacterState::~ChooseCharacterState() {
 }
 
 void ChooseCharacterState::update() {
+    std::unordered_map<std::string, Music>& music = ResourceManager::getMusic();
+    if(!IsMusicStreamPlaying(music["ChooseCharacterMusic"])) {
+        PlayMusicStream(music["ChooseCharacterMusic"]);
+    } else {
+        UpdateMusicStream(music["ChooseCharacterMusic"]);
+    }
     std::vector<Character*>& characters = world->getCharacters();
     if(IsKeyPressed(KEY_ESCAPE)) {
         world->setGameState(new TitleScreenState(world));
@@ -128,4 +135,12 @@ void ChooseCharacterState::setModeWorld(ModeWorld mode) {
         characterTags[curP1]->addSelect(TagState::FIRSTPLAYERSELECTING);
         characterTags[curP2]->addSelect(TagState::SECONDPLAYERSELECTING);
     }
+}
+
+void ChooseCharacterState::enter() {
+    PlayMusicStream(ResourceManager::getMusic()["ChooseCharacterMusic"]);
+}
+
+void ChooseCharacterState::exit() {
+    StopMusicStream(ResourceManager::getMusic()["ChooseCharacterMusic"]);
 }

@@ -13,7 +13,8 @@ SettingState::SettingState(World* world)
     resumeButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 - 50, 300, 50}, "Resume", 36),
     restartButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 10, 300, 50}, "Restart", 36),
     returnButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 70, 300, 50}, "Return", 36),
-    exitButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 130, 300, 50}, "Exit", 36) {
+    exitButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 130, 300, 50}, "Exit", 36),
+    backgroundPositionx(0.0f), speed(40.0f) {
 }
 
 SettingState::~SettingState() {
@@ -21,15 +22,16 @@ SettingState::~SettingState() {
 }
 
 void SettingState::update() {
+    if(backgroundPositionx >= 400) {
+        speed *=(-1.0f);
+    } else if(backgroundPositionx <= 0) {
+        speed *=(-1.0f);
+    }
+    float deltaTime = GetFrameTime();
+    backgroundPositionx += speed * deltaTime;
     if(stateBeforeSetting == GameStateType::TITLE_SCREEN) {
         returnButton.update();
         exitButton.update();
-        if(!IsMusicStreamPlaying(ResourceManager::getMusic()["Title"])) {
-            PlayMusicStream(ResourceManager::getMusic()["Title"]);
-        }
-        else {
-            UpdateMusicStream(ResourceManager::getMusic()["Title"]);
-        }
     } else {
         resumeButton.update();
         restartButton.update();
@@ -63,6 +65,9 @@ void SettingState::update() {
 }
 
 void SettingState::draw() {
+    DrawTextureRec(ResourceManager::getTexture()["SettingBackground"], 
+        Rectangle{(float)backgroundPositionx, 0, (float)GetScreenWidth(), (float)GetScreenHeight()}, 
+        Vector2{0, 0}, WHITE);
     if(stateBeforeSetting == GameStateType::TITLE_SCREEN) {
         returnButton.draw();
         exitButton.draw();
@@ -78,14 +83,14 @@ void SettingState::draw() {
 void SettingState::setStateBeforeSetting(GameStateType stateBeforeSetting) {
     this->stateBeforeSetting = stateBeforeSetting;
     if (stateBeforeSetting == GameStateType::TITLE_SCREEN) {
-        returnButton.setPosition({(float)GetScreenWidth() / 2 - 100, (float)GetScreenHeight() / 2 - 50});
-        exitButton.setPosition({(float)GetScreenWidth() / 2 - 100, (float)GetScreenHeight() / 2 + 10});
+        returnButton.setPosition({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 - 50});
+        exitButton.setPosition({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 10});
     }
     else {
-        resumeButton.setPosition({(float)GetScreenWidth() / 2 - 100, (float)GetScreenHeight() / 2 - 50});
-        restartButton.setPosition({(float)GetScreenWidth() / 2 - 100, (float)GetScreenHeight() / 2 + 10});
-        returnButton.setPosition({(float)GetScreenWidth() / 2 - 100, (float)GetScreenHeight() / 2 + 70});
-        exitButton.setPosition({(float)GetScreenWidth() / 2 - 100, (float)GetScreenHeight() / 2 + 130});
+        resumeButton.setPosition({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 - 50});
+        restartButton.setPosition({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 10});
+        returnButton.setPosition({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 70});
+        exitButton.setPosition({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 130});
     }
 }
 

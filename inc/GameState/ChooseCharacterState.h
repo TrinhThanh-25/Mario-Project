@@ -17,6 +17,8 @@ class ChooseCharacterState : public GameState {
         void update() override;
         void draw() override;
         void setModeWorld(ModeWorld mode);
+        void enter() override;
+        void exit() override;
 };
 
 #endif
