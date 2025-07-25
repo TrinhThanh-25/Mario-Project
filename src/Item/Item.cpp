@@ -1,9 +1,14 @@
 #include "Item/Item.h"
 #include "Game/World.h"
 
-Item::Item(Vector2 position, Vector2 size, Vector2 vel, Color color, float FrameTime, int MaxFrame, Direction direction, float HitFrameTime, int maxHitFrame, bool pause):
+Item::Item(Vector2 position, Vector2 size, Vector2 vel, Color color, float frameTime, int maxFrame, Direction direction, float HitFrameTime, int maxHitFrame, bool pause):
 Sprite(position,size,vel,color,frameTime,maxFrame,direction), beingHitFrameTime(HitFrameTime), maxBeingHitFrame(maxHitFrame), pauseGameWhenHit(pause)
 {
+    pointFrameAccum = 0.0f;
+    pointFrameTime = 0.5f;
+    beingHitFrameAcum = 0.0f;
+    currentBeingHitFrame = 0;
+    curFrame = 0;
     this->setState(SpriteState::ACTIVE);
 }
 
@@ -83,10 +88,14 @@ void Item::collisionCharacter(Character *character)
 {
     if (this->getState() != SpriteState::TO_BE_REMOVED && this->getState() != SpriteState::HIT) {
         if (checkCollision(character) != CollisionType::NONE) {
-            this->setState(SpriteState::HIT);
+            if (this->getType() != ItemType::COURSE_CLEAR_TOKEN) {
+                this->setState(SpriteState::HIT);
+            }
             this->playCollisionSound();
-            if (this->isPausedGameWhenBeingHit()) {
-                character->getWorld()->pauseWorld(true, false);
+            if (character->getType() == CharacterType::SMALL || (character->getType() == CharacterType::SUPER && getType() == ItemType::FLOWER)) {
+                if (this->isPausedGameWhenBeingHit()) {
+                    character->getWorld()->pauseWorld(true, false);
+                }
             }
             this->updateCharacter(character);
         } 
