@@ -1,8 +1,6 @@
 #ifndef WORLD_H
 #define WORLD_H
 
-#include "Character/Mario.h"
-#include "Character/Luigi.h"
 #include "Common/Drawable.h"
 #include "Game/Map.h"
 #include "Game/GameLoop.h"
@@ -10,13 +8,9 @@
 #include <vector>
 #include <string>
 #include "json.hpp"
+#include "Game/ModeWorld.h"
 
 using json = nlohmann::json;
-
-enum ModeWorld {
-    SINGLEPLAYER,
-    MULTIPLAYER,
-};
 
 class Character;
 class GameState;
@@ -81,6 +75,8 @@ class World : public GameLoop {
         void newGame();
         void nextMap();
         void resetWhenCharacterDead();
+
+        void setIsClosed(bool isClosed);
 
         json saveToJson() const;
         void loadFromJson(const json& j);

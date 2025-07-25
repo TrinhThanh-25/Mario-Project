@@ -7,7 +7,8 @@
 
 class TitleScreenState : public GameState {
     private:
-        Button newGameButton;
+        Button onePlayerGameButton;
+        Button twoPlayersGameButton;
         Button continueButton;
         Button optionsButton;
         Button exitButton;

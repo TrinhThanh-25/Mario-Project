@@ -3,6 +3,7 @@
 #include "GameState/FinishedState.h"
 #include "GameState/SettingState.h"
 #include "Common/ResourceManager.h"
+#include "Character/Character.h"
 
 GoNextMapState::GoNextMapState(World* world)
     : GameState(world, GameStateType::GO_NEXT_MAP), 

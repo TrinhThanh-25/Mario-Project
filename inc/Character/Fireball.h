@@ -2,7 +2,6 @@
 #define FIREBALL_H
 
 #include "Common/Sprite.h"
-#include "Common/Direction.h"
 #include "raylib.h"
 
 class Fireball : virtual public Sprite {

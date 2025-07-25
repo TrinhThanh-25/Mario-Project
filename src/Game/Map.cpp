@@ -657,10 +657,16 @@ void Map::playMusic() {
                 StopMusicStream(music["Music" + std::to_string(musicID)]);
                 PlayMusicStream(music["Invincible"]);
             }
+            else {
+                UpdateMusicStream(music["Invincible"]);
+            }
         } else {
             if (!IsMusicStreamPlaying(music["Music" + std::to_string(musicID)])) {
                 StopMusicStream(music["Invincible"]);
                 PlayMusicStream(music["Music" + std::to_string(musicID)]);
+            }
+            else {
+                UpdateMusicStream(music["Music" + std::to_string(musicID)]);
             }
         }
     }
@@ -762,44 +768,44 @@ void Map::loadFromJson(const json& j) {
         frontTile.push_back(fT);
     }
     for (const auto& bJson : j["blocks"]) {
-        Block* b = BlockFactory::createBlock(bJson["blockType"].get<BlockType>(),
+        Block* b = BlockFactory::createBlock(static_cast<BlockType>(bJson["blockType"].get<int>()),
                                              {bJson["position"][0].get<float>(), bJson["position"][1].get<float>()});
         b->loadFromJson(bJson);
         block.push_back(b);
     }
     for (const auto& mBJson : j["messBlocks"]) {
-        Block* mB = BlockFactory::createBlock(mBJson["blockType"].get<BlockType>(),
+        Block* mB = BlockFactory::createBlock(static_cast<BlockType>(mBJson["blockType"].get<int>()),
                                                {mBJson["position"][0].get<float>(), mBJson["position"][1].get<float>()});
         mB->loadFromJson(mBJson);
         messBlock.push_back(mB);
     }
     for (const auto& bEJson : j["backEnemies"]) {
-        Enemy* bE = EnemyFactory::createEnemy(bEJson["type"].get<EnemyType>(),
+        Enemy* bE = EnemyFactory::createEnemy(static_cast<EnemyType>(bEJson["type"].get<int>()),
                                                {bEJson["position"][0].get<float>(), bEJson["position"][1].get<float>()},
-                                               bEJson["direction"].get<Direction>());
+                                               static_cast<Direction>(bEJson["direction"].get<int>()));
         bE->loadFromJson(bEJson);
         backEnemy.push_back(bE);
     }
     for (const auto& fEJson : j["frontEnemies"]) {
-        Enemy* fE = EnemyFactory::createEnemy(fEJson["type"].get<EnemyType>(),
+        Enemy* fE = EnemyFactory::createEnemy(static_cast<EnemyType>(fEJson["type"].get<int>()),
                                                {fEJson["position"][0].get<float>(), fEJson["position"][1].get<float>()},
-                                               fEJson["direction"].get<Direction>());
+                                               static_cast<Direction>(fEJson["direction"].get<int>()));
         fE->loadFromJson(fEJson);
         frontEnemy.push_back(fE);
     }
     for (const auto& iJson : j["items"]) {
-        Item* i = ItemFactory::createItem(iJson["type"].get<ItemType>(),
+        Item* i = ItemFactory::createItem(static_cast<ItemType>(iJson["type"].get<int>()),
                                            Source::BLOCK,
                                            {iJson["position"][0].get<float>(), iJson["position"][1].get<float>()},
-                                           iJson["direction"].get<Direction>());
+                                           static_cast<Direction>(iJson["direction"].get<int>()));
         i->loadFromJson(iJson);
         item.push_back(i);
     }
     for (const auto& sIJson : j["staticItems"]) {
-        Item* sI = ItemFactory::createItem(sIJson["type"].get<ItemType>(),
+        Item* sI = ItemFactory::createItem(static_cast<ItemType>(sIJson["type"].get<int>()),
                                              Source::BLOCK,
                                              {sIJson["position"][0].get<float>(), sIJson["position"][1].get<float>()},
-                                             sIJson["direction"].get<Direction>());
+                                             static_cast<Direction>(sIJson["direction"].get<int>()));
         sI->loadFromJson(sIJson);
         staticItem.push_back(sI);
     }

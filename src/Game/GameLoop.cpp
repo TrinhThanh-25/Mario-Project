@@ -8,6 +8,9 @@ void GameLoop::run() {
     while (!WindowShouldClose()) {
         update();
         draw();
+        if(isClosed) {
+            break;
+        }
     }
     ResourceManager::unloadResources();
     CloseAudioDevice();

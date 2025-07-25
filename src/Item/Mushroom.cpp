@@ -2,11 +2,11 @@
 #include "Game/World.h"
 
 Mushroom::Mushroom(Vector2 position, Vector2 size, Color color, int points, bool isInInventory):
-Item(position, size, {320, 0}, color, 0, 0, Direction::RIGHT, 0, 0, false), points(points), isInInventory(isInInventory)
+Item(position, size, {240, 0}, color, 0, 0, Direction::RIGHT, 0, 0, false), points(points), isInInventory(isInInventory)
 {
     pauseGameWhenHit = true;
     if (isInInventory) {
-        setVelocityY(100);
+        setVelocityY(150);
     }
     type = ItemType::MUSHROOM;
 }
@@ -98,6 +98,7 @@ void Mushroom::updateCharacter(Character *character)
     
     CharacterType type = character->getType();
     if (type == CharacterType::SMALL) {
+        
         character->setY(character->getY() - 16); 
         character->setPreviousState(character->getState());
         character->setState(SpriteState::SMALL_TO_SUPER);

@@ -12,6 +12,7 @@
 #include "GameState/SettingState.h"
 #include "GameState/TimeUpState.h"
 #include "Common/ResourceManager.h"
+#include "Character/CharacterFactory.h"
 #include <unordered_map>
 
 
@@ -31,7 +32,8 @@ World::World(int width, int height, const std::string& title, int FPS)
     playerDownMusicStreamPlaying(false),
     gameOverMusicStreamPlaying(false),
     pausedForTransition(false),
-    pausedUpdateCharacters(false) {
+    pausedUpdateCharacters(false),
+    GameLoop() {
         map.setCharacters(characters);
         modeWorld = ModeWorld::MULTIPLAYER;
         gameState = new TitleScreenState(this);
@@ -49,12 +51,13 @@ World::~World() {
 }
 
 void World::init() {
-
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+
     // SetConfigFlags(FLAG_WINDOW_HIGHDPI);
         // SetConfigFlags( FLAG_FULLSCREEN_MODE );
         // SetConfigFlags( FLAG_WINDOW_UNDECORATED );
+
     SetConfigFlags(FLAG_WINDOW_ALWAYS_RUN);
     InitWindow(width, height, title.c_str());
     SetWindowIcon(LoadImage("../resources/icon.png"));
@@ -77,8 +80,8 @@ void World::update() {
 void World::draw() {
     BeginDrawing();
     ClearBackground(RAYWHITE);
-    gameState->draw();
     DrawFPS(10, 10);
+    gameState->draw();
     EndDrawing();
 }
 
@@ -151,6 +154,7 @@ void World::playPlayerDownMusic() {
     }
     if (!IsMusicStreamPlaying(music["PlayerDown"])) {
         PlayMusicStream(music["PlayerDown"]);
+        SeekMusicStream(music["PlayerDown"], 0.7f);
     } else {
         UpdateMusicStream(music["PlayerDown"]);
         if ((int)GetMusicTimeLength(music["PlayerDown"]) == (int)GetMusicTimePlayed(music["PlayerDown"])) {
@@ -209,16 +213,21 @@ void World::resetMap() {
     map.reset();
     gameHud.reset(true);
     setGameState(new PlayingState(this));
+    pausedForTransition = false;
+    pausedUpdateCharacters = false;
 }
 
 void World::resetGame() {
     for (Character* character : characters) {
-        character->resetGame();
+        delete character;
     }
+    characters.clear();
     map.first();
     map.reset();
     gameHud.resetGame();
     setGameState(new TitleScreenState(this));
+    pausedForTransition = false;
+    pausedUpdateCharacters = false;
 }
 
 void World::nextMap() {
@@ -248,6 +257,10 @@ void World::resetWhenCharacterDead() {
     }
 }
 
+void World::setIsClosed(bool isClosed) {
+    this->isClosed=isClosed;
+}
+
 json World::saveToJson() const {
     json j;
     j["characters"] = json::array();
@@ -269,40 +282,33 @@ json World::saveToJson() const {
     j["gameOverMusicStreamPlaying"] = gameOverMusicStreamPlaying;
     j["pausedForTransition"] = pausedForTransition;
     j["pausedUpdateCharacters"] = pausedUpdateCharacters;
+    j["music"] = json::array();
+    std::unordered_map<std::string, Music>& music = ResourceManager::getMusic();
+    for (const auto& [name, musicStream] : music) {
+        j["music"].push_back({
+            {"name", name},
+            {"isPlaying", IsMusicStreamPlaying(musicStream)},
+            {"timePlayed", GetMusicTimePlayed(musicStream)}
+        });
+    }
+    j["sound"] = json::array();
+    std::unordered_map<std::string, Sound>& sound = ResourceManager::getSound();
+    for (const auto& [name, soundEffect] : sound) {
+        j["sound"].push_back({
+            {"name", name},
+            {"isPlaying", IsSoundPlaying(soundEffect)}
+        });
+    }
     return j;
 }
 
 void World::loadFromJson(const json& j) {
     characters.clear();
     for (const auto& characterJson : j["characters"]) {
-        if (characterJson["name"] == "Mario") {
-            Mario* mario = new Mario(
-                static_cast<ModePlayer>(characterJson["modePlayer"].get<int>()),
-                {characterJson["position"][0], characterJson["position"][1]},
-                {characterJson["velocity"][0], characterJson["velocity"][1]},
-                {characterJson["color"][0], characterJson["color"][1], characterJson["color"][2], characterJson["color"][3]},
-                characterJson["speed"],
-                characterJson["maxSpeed"],
-                characterJson["jumpSpeed"]
-            );
-            mario->loadFromJson(characterJson);
-            mario->setWorld(this);
-            characters.push_back(mario);
-        }
-        else if( characterJson["name"] == "Luigi") {
-            Luigi* luigi = new Luigi(
-                static_cast<ModePlayer>(characterJson["modePlayer"].get<int>()),
-                {characterJson["position"][0], characterJson["position"][1]},
-                {characterJson["velocity"][0], characterJson["velocity"][1]},
-                {characterJson["color"][0], characterJson["color"][1], characterJson["color"][2], characterJson["color"][3]},
-                characterJson["speed"],
-                characterJson["maxSpeed"],
-                characterJson["jumpSpeed"]
-            );
-            luigi->loadFromJson(characterJson);
-            luigi->setWorld(this);
-            characters.push_back(luigi);
-        }
+        Character* character = CharacterFactory::createCharacter( static_cast<CharacterName>(characterJson["characterName"].get<int>()), static_cast<ModePlayer>(characterJson["modePlayer"].get<int>()) );
+        character->loadFromJson(characterJson);
+        character->setWorld(this);
+        characters.push_back(character);
     }
     map.loadFromJson(j["map"]);
     
@@ -322,6 +328,28 @@ void World::loadFromJson(const json& j) {
     gameOverMusicStreamPlaying = j["gameOverMusicStreamPlaying"];
     pausedForTransition = j["pausedForTransition"];
     pausedUpdateCharacters = j["pausedUpdateCharacters"];
+
+    std::unordered_map<std::string, Music>& music = ResourceManager::getMusic();
+    for (const auto& musicJson : j["music"]) {
+        if (music.find(musicJson["name"]) != music.end()) {
+            if (musicJson["isPlaying"]) {
+                PlayMusicStream(music[musicJson["name"]]);
+            } else {
+                StopMusicStream(music[musicJson["name"]]);
+            }
+            SeekMusicStream(music[musicJson["name"]], musicJson["timePlayed"]);
+        }
+    }
+    std::unordered_map<std::string, Sound>& sound = ResourceManager::getSound();
+    for (const auto& soundJson : j["sound"]) {
+        if (sound.find(soundJson["name"]) != sound.end()) {
+            if (soundJson["isPlaying"]) {
+                PlaySound(sound[soundJson["name"]]);
+            } else {
+                StopSound(sound[soundJson["name"]]);
+            }
+        }
+    }
     
     switch (static_cast<GameStateType>(j["gameState"]["gameStateType"].get<int>())) {
         case GameStateType::TITLE_SCREEN:
