@@ -34,14 +34,10 @@ void GreenKoopaTroopa::update(const std::vector<Character*>& characterList) {
         if (leader) {
             followTheLeader(leader);
         }
-        velocity.y += 981.0f * delta;
+        
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
-
-        // if (checkCollision(collidables) != CollisionType::NONE) {
-        //     velocity.x = -velocity.x;
-        //     isFacingLeft = velocity.x < 0;
-        // }
+        velocity.y = World::gravity * delta;
 
         updateCollisionBoxes();
     }
@@ -61,9 +57,14 @@ void GreenKoopaTroopa::update(const std::vector<Character*>& characterList) {
     }
 
     else if (state == SpriteState::SHELL_MOVING) {
+        
         float dir = isFacingLeft ? -1.0f : 1.0f;
         position.x += shellSpeed * dir * delta;
+        position.y += velocity.y * delta;
+        velocity.y += World::gravity * delta;
+
         updateCollisionBoxes();
+
     }
 
     else if (state == SpriteState::DYING) {
@@ -187,33 +188,41 @@ void GreenKoopaTroopa::followTheLeader(Sprite* leader) {
 
 void GreenKoopaTroopa::collisionTile(Tile* tile) {
     CollisionType col = checkCollision(tile);
-
     Enemy::collisionTile(tile);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        } else if (state == SpriteState::SHELL_MOVING) {
+            shellSpeed = fabs(shellSpeed);  // giữ nguyên speed, chỉ đổi hướng bằng isFacingLeft
+        }
     }
 
-    if (col == CollisionType::SOUTH){
+    if (col == CollisionType::SOUTH) {
         velocity.y = 0;
     }
 }
+
 
 void GreenKoopaTroopa::collisionBlock(Block* block) {
     CollisionType col = checkCollision(block);
-
     Enemy::collisionBlock(block);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        } else if (state == SpriteState::SHELL_MOVING) {
+            shellSpeed = fabs(shellSpeed); // giữ dương, điều khiển bằng isFacingLeft
+        }
     }
 
-    if (col == CollisionType::SOUTH){
+    if (col == CollisionType::SOUTH) {
         velocity.y = 0;
     }
 }
+
 
 // ================== SAVE GAME =====================
 json GreenKoopaTroopa::saveToJson() const {
