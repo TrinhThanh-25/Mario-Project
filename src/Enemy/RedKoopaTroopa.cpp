@@ -130,19 +130,16 @@ void RedKoopaTroopa::update(const std::vector<Character*>& characterList) {
             followTheLeader(leader);
         }
 
-        // Gravity
-        velocity.y += World::gravity * delta;
-
         // Đổi hướng nếu gần mép (đặc trưng Red Koopa)
-        if (isNearEdge()) {
-            velocity.x = -velocity.x;
-            isFacingLeft = !isFacingLeft;
-        }
+        // if (isNearEdge()) {
+        //     velocity.x = -velocity.x;
+        //     isFacingLeft = !isFacingLeft;
+        // }
 
         // Di chuyển
-        velocity.y += World::gravity * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
+        velocity.y += World::gravity * delta;
 
 
         // Cập nhật hướng nhìn
@@ -193,15 +190,15 @@ void RedKoopaTroopa::followTheLeader(Sprite* leader) {
 
 void RedKoopaTroopa::collisionTile(Tile* tile) {
     CollisionType col = checkCollision(tile);
-
     Enemy::collisionTile(tile);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        }
     }
-
-    if (col == CollisionType::SOUTH){
+    if (col == CollisionType::SOUTH) {
         velocity.y = 0;
     }
 }
@@ -212,25 +209,26 @@ void RedKoopaTroopa::collisionBlock(Block* block) {
     Enemy::collisionBlock(block);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        }
     }
-
-    if (col == CollisionType::SOUTH){
+    if (col == CollisionType::SOUTH) {
         velocity.y = 0;
     }
 }
 
-bool RedKoopaTroopa::isNearEdge() {
-    return true;
-    // float checkOffsetX = isFacingLeft ? -1.0f : dimension.x + 1.0f;
-    // Vector2 checkPos = {
-    //     position.x + checkOffsetX,
-    //     position.y + dimension.y + 1.0f
-    // };
+// bool RedKoopaTroopa::isNearEdge() {
+//     return true;
+//     // float checkOffsetX = isFacingLeft ? -1.0f : dimension.x + 1.0f;
+//     // Vector2 checkPos = {
+//     //     position.x + checkOffsetX,
+//     //     position.y + dimension.y + 1.0f
+//     // };
 
-    // return !world->getMap()->isSolidTileAt(checkPos);
-}
+//     // return !world->getMap()->isSolidTileAt(checkPos);
+// }
 
 // =========================== SAVE GAME ====================
 json RedKoopaTroopa::saveToJson() const {
