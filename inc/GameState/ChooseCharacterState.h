@@ -2,23 +2,21 @@
 #define CHOOSECHARACTERSTATE_H 
 
 #include "GameState/GameState.h"
-#include "Game/World.h"
-#include "Common/Button.h"
-#include "Character/CharacterTag.h"
+#include "GUI/CharacterTag.h"
+#include "Game/ModeWorld.h"
 
 class ChooseCharacterState : public GameState {
     private:
         ModeWorld modeWorld;
-        CharacterTag singlePlayerTag;
-        CharacterTag firstPlayerTag;
-        CharacterTag secondPlayerTag;
-        Button onePlayerButton;
-        Button twoPlayersButton;
+        std::vector<CharacterTag*> characterTags;
+        int curP1 = 0;
+        int curP2 = 1;
     public:
         ChooseCharacterState(World* world);
         ~ChooseCharacterState() override;
         void update() override;
         void draw() override;
+        void setModeWorld(ModeWorld mode);
 };
 
 #endif

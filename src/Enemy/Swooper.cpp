@@ -3,7 +3,7 @@
 
 
 Swooper::Swooper(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color) {
+    : Enemy(EnemyType::SWOOPER, pos, dim, vel, color) {
     startPosition = pos;                // Lưu vị trí bắt đầu
     setState(SpriteState::INACTIVE);     // Treo trên trần, chờ Mario đến gần
     isFacingLeft = vel.x < 0;                 
@@ -15,6 +15,9 @@ Swooper::Swooper(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     flySpeed = 60.0f;                    // Tốc độ bay ngang 
     activationRangeY = 100.0f;           // Khoảng cách dọc để kích hoạt
     startPosition = position;
+
+    type = EnemyType::SWOOPER;
+    point = 200;
 
 }
 
@@ -154,4 +157,32 @@ void Swooper::collisionBlock(Block* block){
 
 void Swooper::collisionTile(Tile* tile){
 
+}
+
+// ========================== SAVE GAME =============================
+json Swooper::saveToJson() const {
+    json j = Enemy::saveToJson();
+
+    j["startPosition"] = { startPosition.x, startPosition.y };
+    j["isDropping"] = isDropping;
+    j["isFlyingHorizontally"] = isFlyingHorizontally;
+    j["dropSpeed"] = dropSpeed;
+    j["flySpeed"] = flySpeed;
+    j["activationRangeY"] = activationRangeY;
+
+    return j;
+}
+
+void Swooper::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);
+
+    startPosition = {
+        j["startPosition"][0].get<float>(),
+        j["startPosition"][1].get<float>()
+    };
+    isDropping = j["isDropping"].get<bool>();
+    isFlyingHorizontally = j["isFlyingHorizontally"].get<bool>();
+    dropSpeed = j["dropSpeed"].get<float>();
+    flySpeed = j["flySpeed"].get<float>();
+    activationRangeY = j["activationRangeY"].get<float>();
 }

@@ -5,7 +5,7 @@
 #define WAKE_UP_TIME 5.0f
 
 BlueKoopaTroopa::BlueKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color) {
+    : Enemy(EnemyType::BLUE_KOOPA_TROOPA, pos, dim, vel, color) {
     
     extraWakeUpTime = 2.0f;
     shellSpeed = 150.0f;
@@ -14,11 +14,13 @@ BlueKoopaTroopa::BlueKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color co
 
     setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;
+    type = EnemyType::BLUE_KOOPA_TROOPA;
+    point = 100;
 }
 
 void BlueKoopaTroopa::update(const std::vector<Character*>& characterList) {
 
-        if (state == SpriteState::INACTIVE) {
+    if (state == SpriteState::INACTIVE) {
         for (Character* c : characterList) {
             activeWhenMarioApproach(*c);
             if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
@@ -29,17 +31,17 @@ void BlueKoopaTroopa::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
 
     if (state == SpriteState::ACTIVE) {
-        velocity.y += 981.0f * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
+        velocity.y += World::gravity * delta;
 
 
         updateCollisionBoxes();
     }
 
     else if (state == SpriteState::SHELL) {
-        velocity.y += 981.0f * delta;
         position.y += velocity.y * delta;
+        velocity.y += World::gravity * delta;
 
 
         shellTimer += delta;
@@ -53,10 +55,11 @@ void BlueKoopaTroopa::update(const std::vector<Character*>& characterList) {
     }
 
     else if (state == SpriteState::SHELL_MOVING) {
-        velocity.y += 981.0f * delta;
+        
         float dir = isFacingLeft ? -1.0f : 1.0f;
         position.x += shellSpeed * dir * delta;
         position.y += velocity.y * delta;
+        velocity.y += World::gravity * delta;
 
         updateCollisionBoxes();
     }
@@ -172,12 +175,17 @@ void BlueKoopaTroopa::activeWhenMarioApproach(Character& character){
 void BlueKoopaTroopa::collisionTile(Tile* tile) {
     CollisionType col = checkCollision(tile);
 
-    // Gọi xử lý gốc để vẫn giữ va chạm đất/trần
+    // Gọi xử lý gốc để giữ va chạm trần và đất
     Enemy::collisionTile(tile);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        } else if (state == SpriteState::SHELL_MOVING) {
+            // Shell tự đổi hướng
+            shellSpeed = fabs(shellSpeed); // Đảm bảo dương
+        }
     }
 
     if (col == CollisionType::SOUTH){
@@ -185,18 +193,46 @@ void BlueKoopaTroopa::collisionTile(Tile* tile) {
     }
 }
 
+
 void BlueKoopaTroopa::collisionBlock(Block* block) {
     CollisionType col = checkCollision(block);
 
-    // Gọi xử lý gốc để vẫn giữ va chạm đất/trần
+    // Gọi xử lý gốc để giữ va chạm trần và đất
     Enemy::collisionBlock(block);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        } else if (state == SpriteState::SHELL_MOVING) {
+            // Shell tự đổi hướng
+            shellSpeed = fabs(shellSpeed); // đảm bảo là dương
+        }
     }
 
     if (col == CollisionType::SOUTH){
         velocity.y = 0;
     }
+}
+
+
+// ============================ SAVE GAME =========================
+json BlueKoopaTroopa::saveToJson() const {
+    json j = Enemy::saveToJson();  // Gọi hàm cha để lưu dữ liệu chung
+
+    j["shellMoving"] = shellMoving;
+    j["shellTimer"] = shellTimer;
+    j["shellSpeed"] = shellSpeed;
+    j["extraWakeUpTime"] = extraWakeUpTime;
+
+    return j;
+}
+
+void BlueKoopaTroopa::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);  // Gọi hàm cha để nạp dữ liệu chung
+
+    shellMoving = j["shellMoving"].get<bool>();
+    shellTimer = j["shellTimer"].get<float>();
+    shellSpeed = j["shellSpeed"].get<float>();
+    extraWakeUpTime = j["extraWakeUpTime"].get<float>();
 }

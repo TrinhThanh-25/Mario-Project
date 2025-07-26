@@ -1,18 +1,10 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
-enum GameStateType {
-    CHOOSE_CHARACTER,
-    COUNTING_POINT,
-    FINISHED,
-    GAME_OVER,
-    GO_NEXT_MAP,
-    IRIS_OUT,
-    PLAYING,
-    SETTING,
-    TIME_UP,
-    TITLE_SCREEN,
-};
+#include "json.hpp"
+#include "GameState/GameStateType.h"
+
+using json = nlohmann::json;
 
 class World;
 
@@ -27,7 +19,10 @@ class GameState {
         virtual void enter();
         virtual void exit();
         virtual ~GameState() = default;
-        virtual GameStateType getType() const;
+        virtual GameStateType getGameStateType() const;
+
+        virtual json saveToJson() const;
+        virtual void loadFromJson(const json& j);
 };
 
 #endif

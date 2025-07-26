@@ -11,6 +11,9 @@ class Luigi : public Character {
         void transitionToSmall() override;
         void transitionToSuper() override;
         void transitionToFlower() override;
+
+        json saveToJson() const override;
+        void loadFromJson(const json& j) override;
 };
 
 #endif

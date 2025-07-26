@@ -3,12 +3,17 @@
 
 
 FlyingGoomba::FlyingGoomba(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color){
+    : Enemy(EnemyType::FLYING_GOOMBA, pos, dim, vel, color){
         
     setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;   
+    type = EnemyType::FLYING_GOOMBA;
+    point = 200;
 }
 
+FlyingGoomba::~FlyingGoomba() {
+    // Destructor logic if needed
+}
 
 void FlyingGoomba::draw(){
     std::string textureKey;
@@ -81,7 +86,7 @@ void FlyingGoomba::update(const std::vector<Character*>& characterList) {
                 jumpTimer = 0.0f;
             }
         }
-        velocity.y += 500.0f * delta;
+        velocity.y += World::gravity * delta;
 
         // Cập nhật vị trí
         position.x += velocity.x * delta;
@@ -156,8 +161,10 @@ void FlyingGoomba::collisionTile(Tile* tile) {
     Enemy::collisionTile(tile);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        }
     }
 
     if (col == CollisionType::SOUTH){
@@ -171,11 +178,32 @@ void FlyingGoomba::collisionBlock(Block* block) {
     Enemy::collisionBlock(block);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        }
     }
 
     if (col == CollisionType::SOUTH){
         velocity.y = 0;
     }
 } 
+
+// ============================= SAVE GAME ============================
+json FlyingGoomba::saveToJson() const {
+    json j = Enemy::saveToJson();  // Gọi hàm cha
+
+    j["jumpTimer"] = jumpTimer;
+    j["jumpInterval"] = jumpInterval;
+    j["jumpSpeed"] = jumpSpeed;
+
+    return j;
+}
+
+void FlyingGoomba::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);  // Gọi hàm cha
+
+    jumpTimer = j["jumpTimer"].get<float>();
+    jumpInterval = j["jumpInterval"].get<float>();
+    jumpSpeed = j["jumpSpeed"].get<float>();
+}

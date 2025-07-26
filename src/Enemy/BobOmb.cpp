@@ -4,7 +4,7 @@
 #include "Enemy/BobOmb.h"
 
 BobOmb::BobOmb(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color) {
+    : Enemy(EnemyType::BOB_OMB, pos, dim, vel, color) {
     
     setState(SpriteState::INACTIVE);
     bobombState = BobOmbState::IDLE;       // BobOmb luôn hoạt động ngay khi xuất hiện
@@ -15,6 +15,9 @@ BobOmb::BobOmb(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     explosionRadius = 48.0f;             // Phạm vi nổ (có thể chỉnh tùy gameplay)
 
     isFacingLeft = vel.x < 0;            // Hướng ban đầu dựa theo velocity
+    type = EnemyType::BOB_OMB;
+
+    point = 200;
 }
 
 void BobOmb::update(const std::vector<Character*>& characterList) {
@@ -53,9 +56,9 @@ void BobOmb::update(const std::vector<Character*>& characterList) {
     if (state == SpriteState::ACTIVE) {
         switch (bobombState) {
             case BobOmbState::IDLE:
-                velocity.y += 981.0f * delta;
                 position.x += velocity.x * delta;
                 position.y += velocity.y * delta;
+                velocity.y += World::gravity * delta;
                 updateCollisionBoxes();
                 break;
 
@@ -155,8 +158,10 @@ void BobOmb::collisionTile(Tile* tile) {
     Enemy::collisionTile(tile);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE){
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        }
     }
 }
 
@@ -167,7 +172,31 @@ void BobOmb::collisionBlock(Block* block) {
     Enemy::collisionBlock(block);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        }
     }
+}
+
+json BobOmb::saveToJson() const {
+    json j = Enemy::saveToJson();  // Gọi hàm cha
+
+    j["isIgnited"] = isIgnited;
+    j["ignitionTimer"] = ignitionTimer;
+    j["maxIgniteTime"] = maxIgniteTime;
+    j["explosionRadius"] = explosionRadius;
+    j["bobombState"] = static_cast<int>(bobombState);  // enum nên lưu dưới dạng int
+
+    return j;
+}
+
+void BobOmb::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);  // Gọi hàm cha
+
+    isIgnited = j["isIgnited"].get<bool>();
+    ignitionTimer = j["ignitionTimer"].get<float>();
+    maxIgniteTime = j["maxIgniteTime"].get<float>();
+    explosionRadius = j["explosionRadius"].get<float>();
+    bobombState = static_cast<BobOmbState>(j["bobombState"].get<int>());  // enum
 }

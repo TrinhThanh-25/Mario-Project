@@ -2,7 +2,7 @@
 #include "Common/ResourceManager.h"
 
 JumpingPiranhaPlant::JumpingPiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color) 
+    : Enemy(EnemyType::JUMPING_PIRANHA_PLANT, pos, dim, vel, color) 
 {
     setState(SpriteState::INACTIVE);              // Luôn hoạt động
     jumpState = JumpingPiranhaState::IDLE;
@@ -11,11 +11,13 @@ JumpingPiranhaPlant::JumpingPiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, 
     waitDuration = 2.0f;                        // Chờ 2s giữa các cú nhảy
     waitTimer = 0.0f;
 
-    jumpSpeed = 200.0f;                         // Tốc độ nhảy lên
-    gravity = 981.0f;                           // Gia tốc trọng lực
+    jumpSpeed = 200.0f;                         // Tốc độ nhảy lên                    
 
     velocity = {0, 0};                          // Bắt đầu đứng yên
     isFacingLeft = true;                        // Không quan trọng nhưng giữ cho đồng bộ
+    type = EnemyType::JUMPING_PIRANHA_PLANT;
+    maxJumpHeight = 64.0f;
+    point = 200;
 }
 
     
@@ -43,13 +45,20 @@ void JumpingPiranhaPlant::update(const std::vector<Character*>& characterList) {
         velocity.y += gravity * delta;
         position.y += velocity.y * delta;
 
+         float jumpPeakY = groundY - maxJumpHeight;
+        if (position.y <= jumpPeakY) {
+            position.y = jumpPeakY;
+            velocity.y = 0;
+            jumpState = JumpingPiranhaState::FALLING;
+        }
+
         if (velocity.y >= 0) {
             jumpState = JumpingPiranhaState::FALLING;
         }
     }
 
     else if (jumpState == JumpingPiranhaState::FALLING) {
-        velocity.y += gravity * delta;
+        velocity.y += World::gravity * delta;
         position.y += velocity.y * delta;
 
         if (position.y >= groundY) {
@@ -62,23 +71,22 @@ void JumpingPiranhaPlant::update(const std::vector<Character*>& characterList) {
 
     updateCollisionBoxes();
     if (state == SpriteState::DYING) {
-    float delta = GetFrameTime();
+        float delta = GetFrameTime();
 
-    dyingFrameAcum += delta;
-    if (dyingFrameAcum >= dyingFrameTime) {
-        dyingFrameAcum = 0.0f;
-        currentDyingFrame++;
-        if (currentDyingFrame >= maxDyingFrame) {
-            setState(SpriteState::TO_BE_REMOVED);
+        dyingFrameAcum += delta;
+        if (dyingFrameAcum >= dyingFrameTime) {
+            dyingFrameAcum = 0.0f;
+            currentDyingFrame++;
+            if (currentDyingFrame >= maxDyingFrame) {
+                setState(SpriteState::TO_BE_REMOVED);
+            }
+        }
+
+        pointFrameAcum += delta;
+        if (pointFrameAcum >= pointFrameTime) {
+            pointFrameAcum = pointFrameTime;
         }
     }
-
-    pointFrameAcum += delta;
-    if (pointFrameAcum >= pointFrameTime) {
-        pointFrameAcum = pointFrameTime;
-    }
-}
-
 }
 
 
@@ -141,4 +149,31 @@ void JumpingPiranhaPlant::collisionTile(Tile* tile) {
 
 void JumpingPiranhaPlant::collisionBlock(Block* block) {
     Enemy::collisionBlock(block);
+}
+
+// ======================= SAVE GAME =========================
+json JumpingPiranhaPlant::saveToJson() const {
+    json j = Enemy::saveToJson();
+
+    j["jumpState"] = static_cast<int>(jumpState);
+    j["jumpSpeed"] = jumpSpeed;
+    j["gravity"] = gravity;
+    j["waitDuration"] = waitDuration;
+    j["waitTimer"] = waitTimer;
+    j["groundY"] = groundY;
+    j["maxJumpHeight"] = maxJumpHeight;
+
+    return j;
+}
+
+void JumpingPiranhaPlant::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);
+
+    jumpState = static_cast<JumpingPiranhaState>(j["jumpState"].get<int>());
+    jumpSpeed = j["jumpSpeed"].get<float>();
+    gravity = j["gravity"].get<float>();
+    waitDuration = j["waitDuration"].get<float>();
+    waitTimer = j["waitTimer"].get<float>();
+    groundY = j["groundY"].get<float>();
+    maxJumpHeight = j["maxJumpHeight"].get<float>();
 }

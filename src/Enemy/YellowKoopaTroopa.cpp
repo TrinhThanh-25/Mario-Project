@@ -5,7 +5,7 @@
 #define WAKE_UP_TIME 5.0f
 
 YellowKoopaTroopa::YellowKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color) {
+    : Enemy(EnemyType::YELLOW_KOOPA_TROOPA, pos, dim, vel, color) {
     
     extraWakeUpTime = 2.0f;
     shellSpeed = 150.0f;
@@ -14,6 +14,9 @@ YellowKoopaTroopa::YellowKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Colo
 
     setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;
+    type = EnemyType::YELLOW_KOOPA_TROOPA;
+
+    point = 100;
 }
 
 void YellowKoopaTroopa::update(const std::vector<Character*>& characterList) {
@@ -28,16 +31,16 @@ void YellowKoopaTroopa::update(const std::vector<Character*>& characterList) {
     }
 
     if (state == SpriteState::ACTIVE) {
-        velocity.y += 981.0f * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
+        velocity.y += World::gravity * delta;
 
 
         updateCollisionBoxes();
     }
 
     else if (state == SpriteState::SHELL) {
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
         position.y += velocity.y * delta;
 
         shellTimer += delta;
@@ -166,11 +169,12 @@ void YellowKoopaTroopa::collisionTile(Tile* tile) {
     Enemy::collisionTile(tile);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        }
     }
-
-    if (col == CollisionType::SOUTH){
+    if (col == CollisionType::SOUTH) {
         velocity.y = 0;
     }
 }
@@ -181,11 +185,33 @@ void YellowKoopaTroopa::collisionBlock(Block* block) {
     Enemy::collisionBlock(block);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        }
     }
-
-    if (col == CollisionType::SOUTH){
+    if (col == CollisionType::SOUTH) {
         velocity.y = 0;
     }
+}
+
+// ============================= SAVE GAME ==================================
+json YellowKoopaTroopa::saveToJson() const {
+    json j = Enemy::saveToJson();
+
+    j["shellMoving"] = shellMoving;
+    j["shellTimer"] = shellTimer;
+    j["shellSpeed"] = shellSpeed;
+    j["extraWakeUpTime"] = extraWakeUpTime;
+
+    return j;
+}
+
+void YellowKoopaTroopa::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);
+
+    shellMoving = j["shellMoving"].get<bool>();
+    shellTimer = j["shellTimer"].get<float>();
+    shellSpeed = j["shellSpeed"].get<float>();
+    extraWakeUpTime = j["extraWakeUpTime"].get<float>();
 }

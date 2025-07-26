@@ -2,6 +2,7 @@
 #define BULLETBILL_H
 
 #include "Enemy/Enemy.h"
+#include "Game/World.h"
 
 class BulletBill : public Enemy {
 public:
@@ -11,6 +12,9 @@ public:
     void draw() override;
     void beingHit(HitType type) override;
     void activeWhenMarioApproach(Character& character) override; // Không cần kích hoạt
+
+    void collisionTile(Tile* tile) override;
+    void collisionBlock(Block* block) override;
 };
 
 #endif

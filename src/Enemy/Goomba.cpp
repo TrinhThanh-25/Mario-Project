@@ -4,11 +4,16 @@
 
     
 Goomba::Goomba(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color){
+    : Enemy(EnemyType::GOOMBA, pos, dim, vel, color){
     setState(SpriteState::INACTIVE);
-    isFacingLeft = vel.x < 0;   
+    isFacingLeft = vel.x < 0;  
+    type = EnemyType::GOOMBA; 
+    point = 100;
 }
 
+Goomba::~Goomba() {
+    // Destructor logic if needed
+}
 
 void Goomba::draw(){
     std::string textureKey;
@@ -66,7 +71,7 @@ void Goomba::update(const std::vector<Character*>& characterList) {
         }
 
         //  Gravity
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
 
         // Di chuyển
         position.x += velocity.x * delta;

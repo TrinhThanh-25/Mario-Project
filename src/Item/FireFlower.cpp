@@ -5,7 +5,7 @@ Item(position, size, {0, 0}, color, 0.1f, 2, Direction::RIGHT, 0, 0, false), poi
 {
     pauseGameWhenHit = true;
     if (isInInventory) {
-        setVelocityY(100);
+        setVelocityY(150);
     }
     type = ItemType::FLOWER;
 }
@@ -115,4 +115,21 @@ void FireFlower::collisionSouth(Character *character)
     if (isInInventory) {
         isInInventory = false;
     }
+}
+
+json FireFlower::saveToJson() const
+{
+    json j = Item::saveToJson();
+    j["points"] = points;
+    j["isInInventory"] = isInInventory;
+    j["appear"] = appear;
+    return j;
+}
+
+void FireFlower::loadFromJson(const json &j)
+{
+    Item::loadFromJson(j);
+    points = j.value("points", 0);
+    isInInventory = j.value("isInInventory", false);
+    appear = j.value("appear", false);
 }

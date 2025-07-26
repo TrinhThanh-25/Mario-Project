@@ -4,14 +4,16 @@
 #include <vector>
 #include "raylib.h"
 #include "Common/Drawable.h"
-#include "Tile/Tile.h"
-#include "Block/Block.h"
-#include "Enemy/Enemy.h"
-#include "Item/Item.h"
-#include <vector>
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 class World;
 class Character;
+class Tile;
+class Block;
+class Enemy;
+class Item;
 
 class Map : virtual public Drawable {
     private:
@@ -65,6 +67,9 @@ class Map : virtual public Drawable {
         void first();
   
         void playMusic();
+
+        json saveToJson() const;
+        void loadFromJson(const json& j);
 };
 
 #endif

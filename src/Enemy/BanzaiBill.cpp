@@ -5,13 +5,16 @@
 
 
 BanzaiBill::BanzaiBill(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color) {
+    : Enemy(EnemyType::BANZAI_BILL, pos, dim, vel, color) {
     
     setState(SpriteState::INACTIVE);   // Chờ Mario đến gần mới active
     isFacingLeft = vel.x < 0;     // Dựa theo hướng bay ban đầu
 
     maxLifeTime = 8.0f;    // Sau 8 giây sẽ tự biến mất (có thể tùy chỉnh)
     lifeTimer = 0.0f;
+    type = EnemyType::BANZAI_BILL;
+    
+    point = 500;
 }
 
 void BanzaiBill::update(const std::vector<Character*>& characterList) {
@@ -131,4 +134,18 @@ void BanzaiBill::collisionBlock(Block* block) {
         velocity.x = -velocity.x;
         isFacingLeft = velocity.x < 0;
     }
+}
+
+// =========================== SAVE GAME ==========================
+json BanzaiBill::saveToJson() const {
+    json j = Enemy::saveToJson();
+    j["maxLifeTime"] = maxLifeTime;
+    j["lifeTimer"] = lifeTimer;
+    return j;
+}
+
+void BanzaiBill::loadFromJson(const json& j){
+    Enemy::loadFromJson(j);
+    maxLifeTime = j["maxLifeTime"].get<float>();
+    lifeTimer = j["lifeTimer"].get<float>();
 }

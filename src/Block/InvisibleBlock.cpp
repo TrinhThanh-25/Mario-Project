@@ -11,7 +11,7 @@ InvisibleBlock::InvisibleBlock(Vector2 pos, Vector2 size, Color color) :
 	InvisibleBlock(pos, size, color, 0.1f, 4) {}
 			
 InvisibleBlock::InvisibleBlock(Vector2 pos, Vector2 size, Color color, float frameTime, int maxFrames) :
-	Block(pos, size, color, frameTime, maxFrames, 10),
+	Block(BlockType::INVISIBLEBLOCK, pos, size, color, frameTime, maxFrames, 10),
 	coinAnimationTime(0.6f),
 	coinAnimationAcum(0.0f),
 	coinFrameAcum(0.0f),
@@ -109,8 +109,46 @@ void InvisibleBlock::doHit(Character& character, Map *map) {
         hit = true;
         coinAnimationRunning = true;
 		coinY = position.y;
-		//mario.addCoins( 1 );
-		//mario.addPoints( earnedPoints );
+		character.getGameHud()->addPoints(earnedPoints);
+		character.getGameHud()->addCoins(earnedPoints);
 		setState(SpriteState::IDLE); // Set the block to idle state after being hit
     }
+}
+json InvisibleBlock::saveToJson() const {
+	json j = Block::saveToJson();
+	j["coinAnimationTime"] = coinAnimationTime;
+	j["coinAnimationAcum"] = coinAnimationAcum;
+	j["coinFrameAcum"] = coinFrameAcum;
+	j["coinAnimationFrame"] = coinAnimationFrame;
+	j["coinAnimationRunning"] = coinAnimationRunning;
+	j["coinY"] = coinY;
+	j["coinVelocityY"] = coinVelocityY;
+	j["stardustAnimationTime"] = stardustAnimationTime;
+	j["stardustAnimationAcum"] = stardustAnimationAcum;
+	j["stardustAnimationFrame"] = stardustAnimationFrame;
+	j["maxStardustAnimationFrame"] = maxStardustAnimationFrame;
+	j["stardustAnimationRunning"] = stardustAnimationRunning;
+	j["pointsFrameAcum"] = pointsFrameAcum;
+	j["pointsFrameTime"] = pointsFrameTime;
+	j["pointsAnimationRunning"] = pointsAnimationRunning;
+	return j;
+}
+
+void InvisibleBlock::loadFromJson(const json& j) {
+	Block::loadFromJson(j);
+	coinAnimationTime = j["coinAnimationTime"].get<float>();
+	coinAnimationAcum = j["coinAnimationAcum"].get<float>();
+	coinFrameAcum = j["coinFrameAcum"].get<float>();
+	coinAnimationFrame = j["coinAnimationFrame"].get<int>();
+	coinAnimationRunning = j["coinAnimationRunning"].get<bool>();
+	coinY = j["coinY"].get<float>();
+	coinVelocityY = j["coinVelocityY"].get<float>();
+	stardustAnimationTime = j["stardustAnimationTime"].get<float>();
+	stardustAnimationAcum = j["stardustAnimationAcum"].get<float>();
+	stardustAnimationFrame = j["stardustAnimationFrame"].get<int>();
+	maxStardustAnimationFrame = j["maxStardustAnimationFrame"].get<int>();
+	stardustAnimationRunning = j["stardustAnimationRunning"].get<bool>();
+	pointsFrameAcum = j["pointsFrameAcum"].get<float>();
+	pointsFrameTime = j["pointsFrameTime"].get<float>();
+	pointsAnimationRunning = j["pointsAnimationRunning"].get<bool>();
 }

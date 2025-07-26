@@ -1,21 +1,19 @@
 #ifndef WORLD_H
 #define WORLD_H
 
-#include "Character/Character.h"
-#include "Character/Mario.h"
-#include "Character/Luigi.h"
 #include "Common/Drawable.h"
 #include "Game/Map.h"
-#include "GameState/GameState.h"
 #include "Game/GameLoop.h"
-#include "Game/GameHud.h"
+#include "GUI/GameHud.h"
 #include <vector>
 #include <string>
+#include "json.hpp"
+#include "Game/ModeWorld.h"
 
-enum ModeWorld {
-    SINGLEPLAYER,
-    MULTIPLAYER,
-};
+using json = nlohmann::json;
+
+class Character;
+class GameState;
 
 class World : public GameLoop {
     private:
@@ -67,16 +65,21 @@ class World : public GameLoop {
         bool isPlayerDownMusicStreamPlaying() const;
         bool isGameOverMusicStreamPlaying() const;
 
-        void pausWorld(bool pausedForTransition, bool pausedUpdateCharacters);
+        void pauseWorld(bool pausedForTransition, bool pausedUpdateCharacters);
         void resumeWorld();
         bool* getPausedForTransition();
         bool* getPausedUpdateCharacters();
 
         void resetMap();
         void resetGame();
+        void newGame();
         void nextMap();
         void resetWhenCharacterDead();
 
+        void setIsClosed(bool isClosed);
+
+        json saveToJson() const;
+        void loadFromJson(const json& j);
 };
 
 #endif

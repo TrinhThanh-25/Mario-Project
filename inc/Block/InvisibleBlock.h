@@ -35,6 +35,9 @@ public:
 	void draw() override;
 
 	void doHit(Character& character, Map* map) override;
+
+    json saveToJson() const override;
+    void loadFromJson(const json& j) override;
 };
 	
 #endif

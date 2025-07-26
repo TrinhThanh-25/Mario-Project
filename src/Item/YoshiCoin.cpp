@@ -9,7 +9,7 @@ Item(position, size, {0, 0}, color, 0.1f, 4, Direction::RIGHT, 0.1f, 4, false), 
 void YoshiCoin::update()
 {
     float timeElapsed = GetFrameTime();
-    if (this->getState() == SpriteState::IDLE)
+    if (this->getState() == SpriteState::IDLE || this->getState() == SpriteState::ACTIVE)
     {
         this->updateWhenActive(timeElapsed);
     }
@@ -65,7 +65,7 @@ void YoshiCoin::draw()
             this->getY() - ResourceManager::getTexture()["Gui400"].height - (50 * pointFrameAccum / pointFrameTime),
             WHITE
         );
-        DrawTexture(ResourceManager::getTexture()["Star" + std::to_string(this->currentBeingHitFrame)], this->getX(), this->getY(), this->getColor());
+        DrawTexture(ResourceManager::getTexture()["Stardust" + std::to_string(this->currentBeingHitFrame)], this->getX(), this->getY(), this->getColor());
     }
 }
 
@@ -89,4 +89,15 @@ void YoshiCoin::updateCharacter(Character *character)
 
 void YoshiCoin::collisionSouth(Character *character)
 {
+}
+void YoshiCoin::loadFromJson(const json &j)
+{
+    Item::loadFromJson(j);
+    points = j.value("points", 0);
+}
+json YoshiCoin::saveToJson() const
+{
+    json j = Item::saveToJson();
+    j["points"] = points;
+    return j;
 }

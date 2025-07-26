@@ -3,11 +3,12 @@
 
 #include "GameState/GameState.h"
 #include "Game/World.h"
-#include "Common/Button.h"
+#include "GUI/Button.h"
 
 class TitleScreenState : public GameState {
     private:
-        Button newGameButton;
+        Button onePlayerGameButton;
+        Button twoPlayersGameButton;
         Button continueButton;
         Button optionsButton;
         Button exitButton;

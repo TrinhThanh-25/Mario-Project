@@ -3,13 +3,20 @@
 
 
 MontyMole::MontyMole(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color){
+    : Enemy(EnemyType::MONTY_MOLE, pos, dim, vel, color){
 
     emergeDelay = 2.0f + (rand() % 1000) / 1000.0f; // Random 2.0 ~ 3.0s
     emergeTimer = 0;
     hasEmerge = false;
     setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;   
+    type = EnemyType::MONTY_MOLE;
+
+    point = 200;
+}
+
+MontyMole::~MontyMole() {
+    // Destructor logic if needed
 }
 
 void MontyMole::draw() {
@@ -81,7 +88,7 @@ void MontyMole::update(const std::vector<Character*>& characterList) {
     }
 
     if (state == SpriteState::ACTIVE && hasEmerge) {
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
@@ -133,7 +140,7 @@ void MontyMole::beingHit(HitType type) {
 
 
 void MontyMole::activeWhenMarioApproach(Character& character) {
-    Enemy::activeWhenMarioApproach(character)
+    Enemy::activeWhenMarioApproach(character);
 }
 
 void MontyMole::collisionSound(){
@@ -146,8 +153,10 @@ void MontyMole::collisionTile(Tile* tile) {
     Enemy::collisionTile(tile);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -200.0f : 200.0f;
+        }
     }
 
     if (col == CollisionType::SOUTH){
@@ -161,11 +170,31 @@ void MontyMole::collisionBlock(Block* block) {
     Enemy::collisionBlock(block);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -200.0f : 200.0f;
+        }
     }
 
     if (col == CollisionType::SOUTH){
         velocity.y = 0;
     }
+}
+
+json MontyMole::saveToJson() const {
+    json j = Enemy::saveToJson();
+
+    j["emergeDelay"] = emergeDelay;
+    j["emergeTimer"] = emergeTimer;
+    j["hasEmerge"] = hasEmerge;
+
+    return j;
+}
+
+void MontyMole::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);
+
+    emergeDelay = j["emergeDelay"].get<float>();
+    emergeTimer = j["emergeTimer"].get<float>();
+    hasEmerge = j["hasEmerge"].get<bool>();
 }

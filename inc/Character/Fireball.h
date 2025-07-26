@@ -2,7 +2,6 @@
 #define FIREBALL_H
 
 #include "Common/Sprite.h"
-#include "Common/Direction.h"
 #include "raylib.h"
 
 class Fireball : virtual public Sprite {
@@ -14,6 +13,9 @@ class Fireball : virtual public Sprite {
         ~Fireball() override;
         void update() override;
         void draw() override;
+        
+        json saveToJson() const override;
+        void loadFromJson(const json& j) override;
     private:
         void updateFrame();
         void updatePosition();

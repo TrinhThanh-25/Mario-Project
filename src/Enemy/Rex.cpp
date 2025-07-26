@@ -6,9 +6,11 @@
 #define ACTIVATION_RANGE 300.0f
 
 Rex::Rex(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color), isShrunken(false), shrinkDuration(0.0f) {
+    : Enemy(EnemyType::REX, pos, dim, vel, color), isShrunken(false), shrinkDuration(0.0f) {
     isFacingLeft = vel.x < 0;   
     setState(SpriteState::INACTIVE);
+    type = EnemyType::REX;
+    point = 200;
 }
 
 void Rex::update(const std::vector<Character*>& characterList) {
@@ -22,9 +24,9 @@ void Rex::update(const std::vector<Character*>& characterList) {
     }
 
     if (state == SpriteState::ACTIVE){
-        velocity.y += 981.0f * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
+        velocity.y += World::gravity * delta;
 
         updateCollisionBoxes();
     }
@@ -100,6 +102,8 @@ void Rex::beingHit(HitType type) {
         if (!isShrunken){
             isShrunken = true;
             velocity.x = 0;
+            setSize({32, 32});
+            updateCollisionBoxes();
         }
         else {
             setState(SpriteState::DYING);
@@ -118,6 +122,10 @@ void Rex::beingHit(HitType type) {
 
 void Rex::activeWhenMarioApproach(Character& character) {
     Enemy::activeWhenMarioApproach(character);
+
+    if (state == SpriteState::ACTIVE && velocity.x == 0) {
+        velocity.x = isFacingLeft ? -100.0f : 100.0f;
+    }
 }
 
 void Rex::collisionTile(Tile* tile) {
@@ -126,11 +134,12 @@ void Rex::collisionTile(Tile* tile) {
     Enemy::collisionTile(tile);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        }
     }
-
-    if (col == CollisionType::SOUTH){
+    if (col == CollisionType::SOUTH) {
         velocity.y = 0;
     }
 }
@@ -141,11 +150,30 @@ void Rex::collisionBlock(Block* block) {
     Enemy::collisionBlock(block);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        }
     }
-
-    if (col == CollisionType::SOUTH){
+    if (col == CollisionType::SOUTH) {
         velocity.y = 0;
     }
+}
+
+// =============================== SAVE GAME =================================
+
+json Rex::saveToJson() const {
+    json j = Enemy::saveToJson();
+
+    j["isShrunken"] = isShrunken;
+    j["shrinkDuration"] = shrinkDuration;
+
+    return j;
+}
+
+void Rex::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);
+
+    isShrunken = j["isShrunken"].get<bool>();
+    shrinkDuration = j["shrinkDuration"].get<float>();
 }

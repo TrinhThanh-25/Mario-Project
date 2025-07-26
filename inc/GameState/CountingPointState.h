@@ -2,7 +2,10 @@
 #define COUNTINGPOINTSTATE_H
 
 #include "GameState/GameState.h"
-#include "Game/World.h"
+
+class GameHud;
+class Map;
+class Camera2D;
 
 class CountingPointState : public GameState {
     private:
@@ -16,6 +19,9 @@ class CountingPointState : public GameState {
         ~CountingPointState() override;
         void update() override;
         void draw() override;
+
+        json saveToJson() const override;
+        void loadFromJson(const json& j) override;
 };
 
 #endif

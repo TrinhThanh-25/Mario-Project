@@ -2,12 +2,8 @@
 #define CHARACTER_H
 
 #include "Character/Fireball.h"
-#include "Common/Sprite.h"
-#include "Common/Direction.h"
-#include "Common/SpriteState.h"
-#include "Common/CollisionType.h"
-#include "Common/CollisionBox.h"
 #include "Character/CharacterType.h"
+#include "Character/CharacterName.h"
 #include "raylib.h"
 #include <vector>
 #include <string>
@@ -30,8 +26,10 @@ class Character : public Sprite {
         World* world;
         Map* map;
         GameHud* gameHud;
-        std::string name;
+        CharacterName characterName;
         ModePlayer modePlayer;
+
+        std::string name;
 
         //physics movement
         float speed;
@@ -82,7 +80,7 @@ class Character : public Sprite {
         float activateWidth;
         SpriteState previousState;
     public:
-        Character(std::string name, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed);
+        Character(CharacterName characterName, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed);
         virtual ~Character() override;
 
         void setWorld(World* world);
@@ -92,6 +90,7 @@ class Character : public Sprite {
         virtual void updateCollisionBoxes() override = 0;
 
         bool transition(float deltaTime);
+        bool isTransitioning() const;
         void movement(float deltaTime);
 
         CollisionType checkCollision(Sprite* sprite) override;
@@ -124,6 +123,9 @@ class Character : public Sprite {
         GameHud* getGameHud() const;
         Map* getMap() const;
         World* getWorld() const;
+
+        json saveToJson() const override;
+        void loadFromJson(const json& j) override;
 };
 
 #endif

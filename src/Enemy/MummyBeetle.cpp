@@ -6,13 +6,15 @@
 #define WAKE_UP_TIME 5.0f // tự bật dậy sau 5s
 
 MummyBeetle::MummyBeetle(Vector2 pos, Vector2 dim, Vector2 vel, Color color) 
-    : Enemy(pos, dim, vel, color) {
+    : Enemy(EnemyType::MUMMY_BEETLE, pos, dim, vel, color) {
     extraWakeUpTime = 2.0f;
     shellSpeed = 150.0f;
     setState(SpriteState::INACTIVE);
     isFacingLeft = vel.x < 0;   
     shellMoving = false;
-    }
+    type = EnemyType::MUMMY_BEETLE;
+    point = 100;
+}
 
 void MummyBeetle::update(const std::vector<Character*>& characterList) {
     float delta = GetFrameTime();
@@ -26,9 +28,9 @@ void MummyBeetle::update(const std::vector<Character*>& characterList) {
     }
 
     if (state == SpriteState::ACTIVE) {
-        velocity.y += 981.0f * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
+         velocity.y += World::gravity * delta;
 
 
         updateCollisionBoxes();
@@ -36,7 +38,7 @@ void MummyBeetle::update(const std::vector<Character*>& characterList) {
 
     else if (state == SpriteState::SHELL) {
         shellTimer += delta;
-        velocity.y += 981.0f * delta;
+        velocity.y += World::gravity * delta;
         position.y += velocity.y * delta;
         if (shellTimer >= WAKE_UP_TIME + extraWakeUpTime) {
             setState(SpriteState::ACTIVE);
@@ -48,11 +50,6 @@ void MummyBeetle::update(const std::vector<Character*>& characterList) {
     else if (state == SpriteState::SHELL_MOVING) {
         float dir = isFacingLeft ? -1.0f : 1.0f;
         position.x += shellSpeed * dir * delta;
-
-        if (checkCollision(collidables) != CollisionType::NONE) {
-            isFacingLeft = !isFacingLeft;
-        }
-
         updateCollisionBoxes();
     }
 
@@ -170,12 +167,15 @@ void MummyBeetle::activeWhenMarioApproach(Character& character){
 
 void MummyBeetle::collisionTile(Tile* tile) {
     CollisionType col = checkCollision(tile);
-
     Enemy::collisionTile(tile);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        }
+        // SHELL_MOVING không cần chỉnh velocity, chỉ cần isFacingLeft
     }
 
     if (col == CollisionType::SOUTH){
@@ -183,17 +183,42 @@ void MummyBeetle::collisionTile(Tile* tile) {
     }
 }
 
+
 void MummyBeetle::collisionBlock(Block* block) {
     CollisionType col = checkCollision(block);
-
     Enemy::collisionBlock(block);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        }
     }
 
     if (col == CollisionType::SOUTH){
         velocity.y = 0;
     }
+}
+
+
+// ============================= SAVE GAME ===============================
+json MummyBeetle::saveToJson() const {
+    json j = Enemy::saveToJson();
+
+    j["shellMoving"] = shellMoving;
+    j["shellTimer"] = shellTimer;
+    j["shellSpeed"] = shellSpeed;
+    j["extraWakeUpTime"] = extraWakeUpTime;
+
+    return j;
+}
+
+void MummyBeetle::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);
+
+    shellMoving = j["shellMoving"].get<bool>();
+    shellTimer = j["shellTimer"].get<float>();
+    shellSpeed = j["shellSpeed"].get<float>();
+    extraWakeUpTime = j["extraWakeUpTime"].get<float>();
 }

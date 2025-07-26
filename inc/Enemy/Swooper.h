@@ -3,6 +3,7 @@
 
 #include "Enemy/Enemy.h"
 #include "Common/HitType.h"
+#include "Game/World.h"
 
 class Swooper : public Enemy {
 public:
@@ -16,6 +17,9 @@ public:
     void collisionBlock(Block* block);
     void collisionTile(Tile* tile);
 
+    json saveToJson() const;
+    void loadFromJson(const json& j);
+
 private:
     Vector2 startPosition;          // Vị trí bắt đầu rơi
     bool isDropping;            // Bắt đầu rơi xuống chưa
@@ -23,7 +27,6 @@ private:
     float dropSpeed;            // Tốc độ rơi
     float flySpeed;             // Tốc độ bay ngang
     float activationRangeY;     // Khoảng cách theo chiều dọc để kích hoạt
-    Vector2 startPosition;
 };
 
 #endif

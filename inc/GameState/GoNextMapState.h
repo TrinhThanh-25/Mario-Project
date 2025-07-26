@@ -19,6 +19,9 @@ class GoNextMapState : public GameState {
         ~GoNextMapState() override;
         void update() override;
         void draw() override;
+
+        json saveToJson() const override;
+        void loadFromJson(const json& j) override;
 };
 
 #endif

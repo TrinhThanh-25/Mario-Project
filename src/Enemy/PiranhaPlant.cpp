@@ -3,7 +3,7 @@
 
 
 PiranhaPlant::PiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color)
+    : Enemy(EnemyType::PIRANHA_PLANT, pos, dim, vel, color)
 {
     // Piranha luôn đứng yên tại chỗ (không cần gravity hay movement)
     setState(SpriteState::INACTIVE);          // ACTIVE để tham gia vòng lặp update
@@ -19,6 +19,8 @@ PiranhaPlant::PiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     position.y = hiddenY;                   // Bắt đầu ở trạng thái ẩn
     velocity = { 0, 0 };                    // Không di chuyển theo X/Y
     isFacingLeft = true;                    // Không quan trọng, vẫn cần nếu dùng chung Enemy
+    type = EnemyType::PIRANHA_PLANT;
+    point = 200;
 }
 
 
@@ -147,4 +149,29 @@ void PiranhaPlant::collisionTile(Tile* tile) {
 
 void PiranhaPlant::collisionBlock(Block* block) {
     Enemy::collisionBlock(block);
+}
+
+// =========================== SAVE GAME ===========================
+json PiranhaPlant::saveToJson() const {
+    json j = Enemy::saveToJson();
+
+    j["piranhaState"] = static_cast<int>(piranhaState);
+    j["stateTimer"] = stateTimer;
+    j["stateDuration"] = stateDuration;
+    j["riseSpeed"] = riseSpeed;
+    j["hiddenY"] = hiddenY;
+    j["shownY"] = shownY;
+
+    return j;
+}
+
+void PiranhaPlant::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);
+
+    piranhaState = static_cast<PiranhaState>(j["piranhaState"].get<int>());
+    stateTimer = j["stateTimer"].get<float>();
+    stateDuration = j["stateDuration"].get<float>();
+    riseSpeed = j["riseSpeed"].get<float>();
+    hiddenY = j["hiddenY"].get<float>();
+    shownY = j["shownY"].get<float>();
 }

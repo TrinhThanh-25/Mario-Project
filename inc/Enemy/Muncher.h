@@ -2,6 +2,7 @@
 #define MUNCHER_H
 
 #include "Enemy/Enemy.h"
+#include "Game/World.h"
 
 class Muncher : public Enemy {
 public:
@@ -11,6 +12,9 @@ public:
     void draw() override;
     void beingHit(HitType type) override; // không làm gì
     void activeWhenMarioApproach(Character& character) override; 
+
+    void collisionTile(Tile* tile) override;
+    void collisionBlock(Block* block) override; // không làm gì
 };
 
 #endif

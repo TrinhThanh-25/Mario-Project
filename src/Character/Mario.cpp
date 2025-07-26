@@ -1,7 +1,8 @@
 #include "Character/Mario.h"
 
 Mario::Mario(ModePlayer mode, Vector2 pos, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed) :
-    Character("Mario",mode , pos, {32, 40}, vel, color, speedX, maxSpeedX, jumpSpeed) {
+    Character(CharacterName::MARIO, mode , pos, {32, 40}, vel, color, speedX, maxSpeedX, jumpSpeed) {
+    name = "Mario";
 }
 
 Mario::~Mario() {
@@ -70,4 +71,13 @@ void Mario::transitionToFlower() {
     type = CharacterType::FLOWER;
     size = {32, 56};
     maxFrame = 3;
+}
+
+json Mario::saveToJson() const {
+    json j = Character::saveToJson();
+    return j;
+}
+
+void Mario::loadFromJson(const json& j) {
+    Character::loadFromJson(j);
 }

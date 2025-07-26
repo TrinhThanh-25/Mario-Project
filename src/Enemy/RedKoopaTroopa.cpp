@@ -2,13 +2,16 @@
 #include "Common/ResourceManager.h"
 
 RedKoopaTroopa::RedKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(pos, dim, vel, color){
+    : Enemy(EnemyType::RED_KOOPA_TROOPA, pos, dim, vel, color){
     setState(SpriteState::INACTIVE); 
-    isFacingLeft = vel.x < 0;   
+    isFacingLeft = vel.x < 0;  
+    type = EnemyType::RED_KOOPA_TROOPA; 
+    point = 100;
 }
     
-RedKoopaTroopa::~RedKoopaTroopa(){}
+RedKoopaTroopa::~RedKoopaTroopa(){
 
+}
     
 void RedKoopaTroopa::draw() {
     std::string textureKey;
@@ -42,6 +45,14 @@ void RedKoopaTroopa::draw() {
             glowColor
         );
     }
+    north.setColor(BLUE);
+    south.setColor(BLUE);
+    west.setColor(BLUE);
+    east.setColor(BLUE);
+    north.draw();
+    west.draw();
+    south.draw();
+    east.draw();
 }
  
     
@@ -119,19 +130,16 @@ void RedKoopaTroopa::update(const std::vector<Character*>& characterList) {
             followTheLeader(leader);
         }
 
-        // Gravity
-        velocity.y += 980.0f * delta;
-
         // Đổi hướng nếu gần mép (đặc trưng Red Koopa)
-        if (isNearEdge()) {
-            velocity.x = -velocity.x;
-            isFacingLeft = !isFacingLeft;
-        }
+        // if (isNearEdge()) {
+        //     velocity.x = -velocity.x;
+        //     isFacingLeft = !isFacingLeft;
+        // }
 
         // Di chuyển
-        velocity.y += 981.0f * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
+        velocity.y += World::gravity * delta;
 
 
         // Cập nhật hướng nhìn
@@ -170,7 +178,7 @@ void RedKoopaTroopa::followTheLeader(Sprite* leader) {
     Vector2 leaderPos = leader->getPosition();
     float delta = GetFrameTime();
 
-    // Nếu leader cách quá xa thì chạy theo
+    // Nếu leader cách quá xa dhì chạy dheo
     if (fabs(position.x - leaderPos.x) > 32.0f) {
         isFacingLeft = leaderPos.x < position.x;
         velocity.x = isFacingLeft ? -40.0f : 40.0f; // tốc độ như trong update()
@@ -182,15 +190,15 @@ void RedKoopaTroopa::followTheLeader(Sprite* leader) {
 
 void RedKoopaTroopa::collisionTile(Tile* tile) {
     CollisionType col = checkCollision(tile);
-
     Enemy::collisionTile(tile);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        }
     }
-
-    if (col == CollisionType::SOUTH){
+    if (col == CollisionType::SOUTH) {
         velocity.y = 0;
     }
 }
@@ -201,23 +209,41 @@ void RedKoopaTroopa::collisionBlock(Block* block) {
     Enemy::collisionBlock(block);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        }
     }
-
-    if (col == CollisionType::SOUTH){
+    if (col == CollisionType::SOUTH) {
         velocity.y = 0;
     }
 }
 
 // bool RedKoopaTroopa::isNearEdge() {
-//     float checkOffsetX = isFacingLeft ? -1.0f : dimension.x + 1.0f;
-//     Vector2 checkPos = {
-//         position.x + checkOffsetX,
-//         position.y + dimension.y + 1.0f
-//     };
+//     return true;
+//     // float checkOffsetX = isFacingLeft ? -1.0f : dimension.x + 1.0f;
+//     // Vector2 checkPos = {
+//     //     position.x + checkOffsetX,
+//     //     position.y + dimension.y + 1.0f
+//     // };
 
-//     return !world->getMap()->isSolidTileAt(checkPos);
+//     // return !world->getMap()->isSolidTileAt(checkPos);
 // }
 
+// =========================== SAVE GAME ====================
+json RedKoopaTroopa::saveToJson() const {
+    json j = Enemy::saveToJson();
+
+    j["shellMoving"] = shellMoving;
+    j["shellSpeed"] = shellSpeed;
+
+    return j;
+}
+
+void RedKoopaTroopa::loadFromJson(const json& j) {
+    Enemy::loadFromJson(j);
+
+    shellMoving = j["shellMoving"].get<bool>();
+    shellSpeed = j["shellSpeed"].get<float>();
+}
 

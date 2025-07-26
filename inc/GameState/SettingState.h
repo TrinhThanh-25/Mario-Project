@@ -3,17 +3,20 @@
 
 #include "GameState/GameState.h"
 #include "Game/World.h"
-#include "Common/Button.h"
+#include "GUI/Button.h"
+#include "GUI/Slider.h" 
 
 class SettingState : public GameState {
     private:
         GameStateType stateBeforeSetting;
 
+        // Slider musicVolumeSlider;
+        // Slider sfxVolumeSlider;
+
         Button resumeButton;
         Button restartButton;
         Button returnButton;
         Button exitButton;
-        // music / sfx
     public:
         SettingState(World* world);
         ~SettingState() override;
@@ -22,6 +25,8 @@ class SettingState : public GameState {
         void draw() override;
 
         void setStateBeforeSetting(GameStateType stateBeforeSetting);
+
+        json saveToJson() const override;
 };
 
 #endif
