@@ -28,10 +28,6 @@ void BulletBill::update(const std::vector<Character*>& characterList){
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
 
-        // if (checkCollision(collidables) != CollisionType::NONE) {
-        //     setState(SpriteState::TO_BE_REMOVED);
-        // }
-
         updateCollisionBoxes();
     }
 

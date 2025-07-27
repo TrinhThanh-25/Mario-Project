@@ -1,7 +1,8 @@
 #include "Item/CourseClearToken.h"
+#include "Game/World.h"
 
 CourseClearToken::CourseClearToken(Vector2 position, Vector2 size, Color color):
-    Item(position, size, {0, 0}, color, 0.0f, 0, Direction::RIGHT, 0.1f, 4, false),
+    Item(position, size, {0, 200}, color, 0.0f, 0, Direction::RIGHT, 0.1f, 4, false),
     minY(position.y),
     maxY(minY + 8 * size.y),
     points(8000)
@@ -71,8 +72,18 @@ void CourseClearToken::playCollisionSound()
 
 void CourseClearToken::updateCharacter(Character *character)
 {
-    character->getGameHud()->addPoints(points);
+    if (character->getState() == SpriteState::VICTORY) return;
+    //character->getGameHud()->addPoints(points);
     character->setState(SpriteState::VICTORY);
+    World* world = character->getWorld();
+    bool finish = true;
+    for (Character* character : world->getCharacters()) {
+        if (character->getState() != SpriteState::VICTORY) finish = false;
+    }
+    if (finish) {
+        this->setState(SpriteState::HIT);
+        character->getGameHud()->addPoints(points);
+    }
 }
 
 void CourseClearToken::collisionSouth(Character *character)
@@ -95,3 +106,4 @@ void CourseClearToken::loadFromJson(const json& j)
     maxY = j.value("maxY", 0);
     points = j.value("points", 0);
 }
+

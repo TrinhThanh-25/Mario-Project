@@ -19,7 +19,7 @@ public:
 
     Sprite* leader = nullptr;
 
-    bool isNearEdge();
+    // bool isNearEdge();
 
     void collisionBlock(Block* block);
     void collisionTile(Tile* tile);

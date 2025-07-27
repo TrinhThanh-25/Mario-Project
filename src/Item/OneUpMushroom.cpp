@@ -2,7 +2,7 @@
 #include "Game/World.h"
 
 OneUpMushroom::OneUpMushroom(Vector2 position, Vector2 size, Color color, int lives):
-Item(position, size, {320, 0}, color, 0, 0, Direction::RIGHT, 0, 0, false), lives(lives)
+Item(position, size, {240, 0}, color, 0, 0, Direction::RIGHT, 0.1f, 4, false), lives(lives)
 {
     pauseGameWhenHit = false;
     type = ItemType::ONE_UP_MUSHROOM;
@@ -58,7 +58,7 @@ void OneUpMushroom::draw()
 {
     if (this->getState() == SpriteState::ACTIVE || this->getState() == SpriteState::IDLE)
     {
-        DrawTexture(ResourceManager::getTexture()["OneUpMushroom"], this->getX(), this->getY(), this->getColor());
+        DrawTexture(ResourceManager::getTexture()["1UpMushroom"], this->getX(), this->getY(), this->getColor());
     }
     else if (this->getState() == SpriteState::HIT)
     {
@@ -68,7 +68,7 @@ void OneUpMushroom::draw()
             this->getY() - ResourceManager::getTexture()["Gui1Up"].height - (50 * pointFrameAccum / pointFrameTime),
             WHITE
         );
-        DrawTexture(ResourceManager::getTexture()["Star" + std::to_string(this->currentBeingHitFrame)], this->getX(), this->getY(), this->getColor());
+        DrawTexture(ResourceManager::getTexture()["Stardust" + std::to_string(this->currentBeingHitFrame)], this->getX(), this->getY(), this->getColor());
     }
 }
 

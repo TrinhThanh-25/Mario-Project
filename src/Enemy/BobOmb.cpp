@@ -56,9 +56,9 @@ void BobOmb::update(const std::vector<Character*>& characterList) {
     if (state == SpriteState::ACTIVE) {
         switch (bobombState) {
             case BobOmbState::IDLE:
-                velocity.y += World::gravity * delta;
                 position.x += velocity.x * delta;
                 position.y += velocity.y * delta;
+                velocity.y += World::gravity * delta;
                 updateCollisionBoxes();
                 break;
 
@@ -158,8 +158,10 @@ void BobOmb::collisionTile(Tile* tile) {
     Enemy::collisionTile(tile);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE){
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        }
     }
 }
 
@@ -170,8 +172,10 @@ void BobOmb::collisionBlock(Block* block) {
     Enemy::collisionBlock(block);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        }
     }
 }
 

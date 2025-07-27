@@ -5,7 +5,7 @@ Item(position, size, {0, 0}, color, 0.1f, 2, Direction::RIGHT, 0, 0, false), poi
 {
     pauseGameWhenHit = true;
     if (isInInventory) {
-        setVelocityY(100);
+        setVelocityY(150);
     }
     type = ItemType::FLOWER;
 }

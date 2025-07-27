@@ -1,7 +1,7 @@
 #include "Item/ThreeUpMoon.h"
 
 ThreeUpMoon::ThreeUpMoon(Vector2 position, Vector2 size, Color color, int lives):
-Item(position, size, {0, 0}, color, 0, 0, Direction::RIGHT, 0, 0, false), lives(lives)
+Item(position, size, {0, 0}, color, 0, 0, Direction::RIGHT, 0.1f, 4, false), lives(lives)
 {
     pauseGameWhenHit = false;
     type = ItemType::THREE_UP_MOON;
@@ -37,7 +37,7 @@ void ThreeUpMoon::updateWhenHit(float timeElapsed)
         beingHitFrameAcum -= beingHitFrameTime;
         currentBeingHitFrame++;
         if (currentBeingHitFrame >= maxBeingHitFrame) {
-            currentBeingHitFrame = 0;
+            this->setState(SpriteState::TO_BE_REMOVED);
         }
     }
     pointFrameAccum += timeElapsed;
@@ -58,7 +58,7 @@ void ThreeUpMoon::draw()
             this->getY() - ResourceManager::getTexture()["Gui3Up"].height - (50 * pointFrameAccum / pointFrameTime),
             WHITE
         );
-        DrawTexture(ResourceManager::getTexture()["Star" + std::to_string(this->currentBeingHitFrame)], this->getX(), this->getY(), this->getColor());
+        DrawTexture(ResourceManager::getTexture()["Stardust" + std::to_string(this->currentBeingHitFrame)], this->getX(), this->getY(), this->getColor());
     }
 }
 

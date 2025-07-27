@@ -20,7 +20,7 @@ void QuestionOneUpMushroomBlock::update() {
 		if (item->getY() < itemMinY) {
 			item->setY(itemMinY);
 			item->setState(SpriteState::ACTIVE);
-			//map->getItems().push_back(item);
+			map->getItem().push_back(item);
 			item = nullptr; // Clear the item pointer after it has been released
 			itemVelocityY = 0.0f;
 		}

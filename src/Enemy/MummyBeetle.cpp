@@ -28,9 +28,9 @@ void MummyBeetle::update(const std::vector<Character*>& characterList) {
     }
 
     if (state == SpriteState::ACTIVE) {
-        velocity.y += World::gravity * delta;
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
+         velocity.y += World::gravity * delta;
 
 
         updateCollisionBoxes();
@@ -167,33 +167,40 @@ void MummyBeetle::activeWhenMarioApproach(Character& character){
 
 void MummyBeetle::collisionTile(Tile* tile) {
     CollisionType col = checkCollision(tile);
-
     Enemy::collisionTile(tile);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        }
+        // SHELL_MOVING không cần chỉnh velocity, chỉ cần isFacingLeft
     }
 
     if (col == CollisionType::SOUTH){
         velocity.y = 0;
     }
 }
+
 
 void MummyBeetle::collisionBlock(Block* block) {
     CollisionType col = checkCollision(block);
-
     Enemy::collisionBlock(block);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        isFacingLeft = !isFacingLeft;
+
+        if (state == SpriteState::ACTIVE) {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        }
     }
 
     if (col == CollisionType::SOUTH){
         velocity.y = 0;
     }
 }
+
 
 // ============================= SAVE GAME ===============================
 json MummyBeetle::saveToJson() const {
