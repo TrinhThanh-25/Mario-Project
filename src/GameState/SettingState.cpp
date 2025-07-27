@@ -10,10 +10,10 @@
 
 SettingState::SettingState(World* world)
     : GameState(world, GameStateType::SETTING),
-    resumeButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 - 50, 300, 50}, "Resume", 36),
-    restartButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 10, 300, 50}, "Restart", 36),
-    returnButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 70, 300, 50}, "Return", 36),
-    exitButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 130, 300, 50}, "Exit", 36),
+    resumeButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 50, 300, 50}, "Resume", 36),
+    restartButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 110, 300, 50}, "Restart", 36),
+    returnButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 170, 300, 50}, "Return", 36),
+    exitButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 230, 300, 50}, "Exit", 36),
     backgroundPositionx(0.0f), speed(40.0f) {
 }
 
@@ -22,9 +22,9 @@ SettingState::~SettingState() {
 }
 
 void SettingState::update() {
-    if(backgroundPositionx >= 400) {
+    if(backgroundPositionx > 400) {
         speed *=(-1.0f);
-    } else if(backgroundPositionx <= 0) {
+    } else if(backgroundPositionx < 0) {
         speed *=(-1.0f);
     }
     float deltaTime = GetFrameTime();
@@ -39,15 +39,12 @@ void SettingState::update() {
         exitButton.update();
     }
     if(resumeButton.isPressed() && stateBeforeSetting != GameStateType::TITLE_SCREEN) {
-        world->setGameState(new PlayingState(world));
+        SaveGame::loadGame(*world);
     }
     else if(restartButton.isPressed() && stateBeforeSetting != GameStateType::TITLE_SCREEN) {
         world->resetMap();
     }
     else if(returnButton.isPressed() || IsKeyPressed(KEY_ESCAPE)) {
-        if(stateBeforeSetting != GameStateType::TITLE_SCREEN) {
-            SaveGame::saveGame(*world);
-        }
         std::vector<Character*>& characters = world->getCharacters();
         for (Character* character : characters) {
             delete character;
@@ -83,14 +80,14 @@ void SettingState::draw() {
 void SettingState::setStateBeforeSetting(GameStateType stateBeforeSetting) {
     this->stateBeforeSetting = stateBeforeSetting;
     if (stateBeforeSetting == GameStateType::TITLE_SCREEN) {
-        returnButton.setPosition({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 - 50});
-        exitButton.setPosition({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 10});
+        returnButton.setPosition({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 50});
+        exitButton.setPosition({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 110});
     }
     else {
-        resumeButton.setPosition({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 - 50});
-        restartButton.setPosition({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 10});
-        returnButton.setPosition({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 70});
-        exitButton.setPosition({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 130});
+        resumeButton.setPosition({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 50});
+        restartButton.setPosition({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 110});
+        returnButton.setPosition({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 170});
+        exitButton.setPosition({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 230});
     }
 }
 

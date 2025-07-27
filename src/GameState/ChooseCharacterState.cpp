@@ -61,6 +61,7 @@ void ChooseCharacterState::update() {
         world->getGameHud()->resetGame();
         world->setModeWorld(modeWorld);
         world->setGameState(new PlayingState(world));
+        return;
     }
     if(modeWorld == ModeWorld::SINGLEPLAYER) {
         if(characterTags[curP1]->getState() != TagState::FIRSTPLAYERSELECTED && characterTags[curP1]->getState() != TagState::FIRSTPLAYERSELECTED_SECONDPLAYERSELECTING && characterTags[curP1]->getState() != TagState::BOTHPLAYERSELECTED) {
