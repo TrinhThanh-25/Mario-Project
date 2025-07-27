@@ -7,6 +7,7 @@ class ExclamationBlock : public Block {
 private:
 	float coinAnimationTime;
     float coinAnimationAcum;
+    float coinFrameAcum;
     int coinAnimationFrame;
     bool coinAnimationRunning;
     float coinY;
