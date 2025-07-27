@@ -10,7 +10,7 @@ TitleScreenState::TitleScreenState(World* world)
     : GameState(world, GameStateType::TITLE_SCREEN),
     continueButton({1600 / 2 - 240, 900 / 2 + 110, 480, 50}, "Continue", 40),
     onePlayerGameButton({1600 / 2 - 240, 900 / 2 + 170, 480, 50}, "1 Player Game", 40),
-    twoPlayersGameButton({1600 / 2 - 240, 900 / 2 + 230, 480, 50}, "2 Players Game", 40),
+    twoPlayersGameButton({1600 / 2 - 240, 900 / 2 + 230, 480, 50}, "2 Player Game", 40),
     optionsButton({1600 / 2 - 240, 900 / 2 + 290, 480, 50}, "Options", 40),
     exitButton({1600 / 2 - 240, 900 / 2 + 350, 480, 50}, "Exit", 40) {
         if(SaveGame::saveGameExists()) {
@@ -32,35 +32,40 @@ TitleScreenState::~TitleScreenState() {
 }
 
 void TitleScreenState::update() {
-    if(continueButton.isHovered() && isSavedGameAvailable ) {
+    continueButton.update();
+    onePlayerGameButton.update();
+    twoPlayersGameButton.update();
+    optionsButton.update();
+    exitButton.update();
+    if(continueButton.isHovered() && isSavedGameAvailable && !continueButton.isSelected()) {
         continueButton.Selected();
         onePlayerGameButton.deSelected();
         twoPlayersGameButton.deSelected();
         optionsButton.deSelected();
         exitButton.deSelected();
     }
-    else if(onePlayerGameButton.isHovered()) {
+    else if(onePlayerGameButton.isHovered() && !onePlayerGameButton.isSelected()) {
         onePlayerGameButton.Selected();
         continueButton.deSelected();
         twoPlayersGameButton.deSelected();
         optionsButton.deSelected();
         exitButton.deSelected();
     }
-    else if(twoPlayersGameButton.isHovered()) {
+    else if(twoPlayersGameButton.isHovered() && !twoPlayersGameButton.isSelected()) {
         twoPlayersGameButton.Selected();
         continueButton.deSelected();
         onePlayerGameButton.deSelected();
         optionsButton.deSelected();
         exitButton.deSelected();
     }
-    else if(optionsButton.isHovered()) {
+    else if(optionsButton.isHovered() && !optionsButton.isSelected()) {
         optionsButton.Selected();
         continueButton.deSelected();
         onePlayerGameButton.deSelected();
         twoPlayersGameButton.deSelected();
         exitButton.deSelected();
     }
-    else if(exitButton.isHovered()) {
+    else if(exitButton.isHovered() && !exitButton.isSelected()) {
         exitButton.Selected();
         continueButton.deSelected();
         onePlayerGameButton.deSelected();
@@ -128,19 +133,16 @@ void TitleScreenState::update() {
         UpdateMusicStream(ResourceManager::getMusic()["Title"]);
     }
     if(onePlayerGameButton.isPressed() || (IsKeyPressed(KEY_ENTER) && onePlayerGameButton.isSelected())) {
-        StopMusicStream(ResourceManager::getMusic()["Title"]);
         ChooseCharacterState* newState = new ChooseCharacterState(world);
         newState->setModeWorld(ModeWorld::SINGLEPLAYER);
         world->setGameState(newState);
     }
     else if(twoPlayersGameButton.isPressed() || (IsKeyPressed(KEY_ENTER) && twoPlayersGameButton.isSelected())) {
-        StopMusicStream(ResourceManager::getMusic()["Title"]);
         ChooseCharacterState* newState = new ChooseCharacterState(world);
         newState->setModeWorld(ModeWorld::MULTIPLAYER);
         world->setGameState(newState);
     }
     else if((continueButton.isPressed() || (IsKeyPressed(KEY_ENTER) && continueButton.isSelected())) && isSavedGameAvailable) {
-        StopMusicStream(ResourceManager::getMusic()["Title"]);
         SaveGame::loadGame(*world);
     }
     else if(exitButton.isPressed() || (IsKeyPressed(KEY_ENTER) && exitButton.isSelected())) {
@@ -164,4 +166,12 @@ void TitleScreenState::draw() {
     }
     optionsButton.draw();
     exitButton.draw();
+}
+
+void TitleScreenState::enter() {
+    PlayMusicStream(ResourceManager::getMusic()["Title"]);
+}
+
+void TitleScreenState::exit() {
+    StopMusicStream(ResourceManager::getMusic()["Title"]);
 }

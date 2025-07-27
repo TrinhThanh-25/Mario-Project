@@ -67,6 +67,7 @@ class Map : virtual public Drawable {
         void first();
   
         void playMusic();
+        void stopMusic();
 
         json saveToJson() const;
         void loadFromJson(const json& j);

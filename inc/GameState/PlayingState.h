@@ -21,6 +21,8 @@ class PlayingState : public GameState {
         bool isOneCharactersDead() const;
         bool isAllCharactersVictory() const;
         bool isOneCharactersTransitioning() const;
+        void enter() override;
+        void exit() override;
 
         json saveToJson() const override;
         void loadFromJson(const json& j) override;
