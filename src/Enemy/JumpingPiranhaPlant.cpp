@@ -11,7 +11,7 @@ JumpingPiranhaPlant::JumpingPiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, 
     waitDuration = 2.0f;                        // Chờ 2s giữa các cú nhảy
     waitTimer = 0.0f;
 
-    jumpSpeed = 200.0f;                         // Tốc độ nhảy lên                    
+    jumpSpeed = 50.0f;                         // Tốc độ nhảy lên                    
 
     velocity = {0, 0};                          // Bắt đầu đứng yên
     isFacingLeft = true;                        // Không quan trọng nhưng giữ cho đồng bộ
@@ -42,7 +42,7 @@ void JumpingPiranhaPlant::update(const std::vector<Character*>& characterList) {
     }
 
     else if (jumpState == JumpingPiranhaState::JUMPING) {
-        velocity.y += gravity * delta;
+        velocity.y += World::gravity * delta;
         position.y += velocity.y * delta;
 
          float jumpPeakY = groundY - maxJumpHeight;
@@ -157,7 +157,6 @@ json JumpingPiranhaPlant::saveToJson() const {
 
     j["jumpState"] = static_cast<int>(jumpState);
     j["jumpSpeed"] = jumpSpeed;
-    j["gravity"] = gravity;
     j["waitDuration"] = waitDuration;
     j["waitTimer"] = waitTimer;
     j["groundY"] = groundY;
@@ -171,7 +170,6 @@ void JumpingPiranhaPlant::loadFromJson(const json& j) {
 
     jumpState = static_cast<JumpingPiranhaState>(j["jumpState"].get<int>());
     jumpSpeed = j["jumpSpeed"].get<float>();
-    gravity = j["gravity"].get<float>();
     waitDuration = j["waitDuration"].get<float>();
     waitTimer = j["waitTimer"].get<float>();
     groundY = j["groundY"].get<float>();

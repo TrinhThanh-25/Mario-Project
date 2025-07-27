@@ -118,6 +118,7 @@ void CharacterTag::draw() {
 }
 
 void CharacterTag::addSelect(TagState state) {
+    PlaySound(ResourceManager::getSound()["HoverButton"]);
     if(this->state == TagState::NOTSELECTED) {
         this->state = state;
     } else if(this->state == TagState::FIRSTPLAYERSELECTING && state == TagState::SECONDPLAYERSELECTING) {
@@ -173,6 +174,7 @@ TagState CharacterTag::getState() const {
 }
 
 void CharacterTag::selected(TagState state) {
+    PlaySound(ResourceManager::getSound()["ClickButton"]);
     if (this->state == TagState::FIRSTPLAYERSELECTING && state == TagState::FIRSTPLAYERSELECTED) {
         this->state = TagState::FIRSTPLAYERSELECTED;
     } else if (this->state == TagState::SECONDPLAYERSELECTING && state == TagState::SECONDPLAYERSELECTED) {

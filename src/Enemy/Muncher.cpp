@@ -34,9 +34,9 @@ void Muncher::activeWhenMarioApproach(Character& character){
 }
 
 void Muncher::collisionTile(Tile* tile) {
-    Enemy::collisionTile(tile);
+    
 }
 
 void Muncher::collisionBlock(Block* block) {
-    Enemy::collisionBlock(block);
+    
 }

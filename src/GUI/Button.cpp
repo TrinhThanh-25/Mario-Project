@@ -23,6 +23,9 @@ void Button::setText(const char* text, int fontSize){
 }
 
 void Button::update(){
+    if(isPressed()) {
+        PlaySound(ResourceManager::getSound()["ClickButton"]);
+    }
     if(!isPlayHoverSound && isHovered()) {
         PlaySound(ResourceManager::getSound()["HoverButton"]);
         isPlayHoverSound = true;

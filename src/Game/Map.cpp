@@ -32,6 +32,7 @@ Map::~Map() {
 }
 
 void Map::loadMap(int mapNumber) {
+    clear();
     background = ResourceManager::getTexture()["Background1"];
     backgroundColor = WHITE;
     backgroundID = mapNumber;
@@ -435,7 +436,7 @@ void Map::loadMap(int mapNumber) {
                 staticItem.push_back(ItemFactory::createItem(ItemType::YOSHI_COIN, Source::BLOCK, {x * tilewidth, y * tilewidth + 5}, Direction::UP));
                 break;
             case 274:
-                backEnemy.push_back(EnemyFactory::createEnemy(EnemyType::JUMPING_PIRANHA_PLANT, {x * tilewidth + 16, y * tilewidth + 34}, Direction::LEFT));
+                backEnemy.push_back(EnemyFactory::createEnemy(EnemyType::JUMPING_PIRANHA_PLANT, {x * tilewidth + 16, y * tilewidth}, Direction::LEFT));
                 break;
             case 275:
                 backEnemy.push_back(EnemyFactory::createEnemy(EnemyType::PIRANHA_PLANT, {x * tilewidth + 16, y * tilewidth + 36}, Direction::LEFT));
@@ -615,6 +616,10 @@ void Map::clear() {
         delete i;
     }
     item.clear();
+    for (auto& sI : staticItem) {
+        delete sI;
+    }
+    staticItem.clear();
 }
 
 void Map::showMessage() {
