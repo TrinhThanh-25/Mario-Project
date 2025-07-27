@@ -11,7 +11,7 @@ InvisibleBlock::InvisibleBlock(Vector2 pos, Vector2 size, Color color) :
 	InvisibleBlock(pos, size, color, 0.1f, 4) {}
 			
 InvisibleBlock::InvisibleBlock(Vector2 pos, Vector2 size, Color color, float frameTime, int maxFrames) :
-	Block(BlockType::INVISIBLEBLOCK, pos, size, color, frameTime, maxFrames, 10),
+	Block(BlockType::INVISIBLEBLOCK, pos, size, color, frameTime, maxFrames, 100),
 	coinAnimationTime(0.6f),
 	coinAnimationAcum(0.0f),
 	coinFrameAcum(0.0f),
@@ -33,47 +33,38 @@ InvisibleBlock::InvisibleBlock(Vector2 pos, Vector2 size, Color color, float fra
 InvisibleBlock::~InvisibleBlock() = default;
 
 void InvisibleBlock::update() {
-	float deltaTime = GetFrameTime();
+const float deltaTime = GetFrameTime();
+	
 	if (hit && coinAnimationRunning) {
 		coinAnimationAcum += deltaTime;
-		frameAcum += deltaTime;
-
 		if (coinAnimationAcum >= coinAnimationTime) {
 			coinAnimationRunning = false;
 			stardustAnimationRunning = true;
 			pointsAnimationRunning = true;
-		}
-
-		if (frameAcum >= frameTime) {
-			frameAcum = 0.0f;
+        }	
+		coinFrameAcum += deltaTime;
+		if (coinFrameAcum >= frameTime) {
+			coinFrameAcum = 0;
 			coinAnimationFrame++;
 			coinAnimationFrame %= maxFrame;
 		}
-
 		coinY += coinVelocityY * deltaTime;
-		coinVelocityY += World::gravity;
-		if (coinY < -100.0f) {
-			coinY = -100.0f;
-			coinVelocityY = 0.0f;
-		}
+		coinVelocityY += 20;
 	}
-
+	
 	if (stardustAnimationRunning) {
 		stardustAnimationAcum += deltaTime;
 		if (stardustAnimationAcum >= stardustAnimationTime) {
-			stardustAnimationAcum = 0.0f;
+			stardustAnimationAcum = 0;
 			stardustAnimationFrame++;
 			if (stardustAnimationFrame >= maxStardustAnimationFrame) {
-				stardustAnimationFrame = 0;
 				stardustAnimationRunning = false;
 			}
 		}
 	}
-
-	if (pointsAnimationRunning) {
+	if( pointsAnimationRunning) {
 		pointsFrameAcum += deltaTime;
 		if (pointsFrameAcum >= pointsFrameTime) {
-			pointsFrameAcum = 0.0f;
 			pointsAnimationRunning = false;
 		}
 	}
@@ -81,17 +72,13 @@ void InvisibleBlock::update() {
 
 void InvisibleBlock::draw() {
 	if (coinAnimationRunning) {
-		std::string coinTexture = "Coin" + std::to_string(coinAnimationFrame);
-		DrawTexture(ResourceManager::getTexture()[coinTexture],
+		DrawTexture(ResourceManager::getTexture()["Coin" + std::to_string(coinAnimationFrame)],
 			position.x + 4, coinY, WHITE);
 	}
-
-	//if (stardustAnimationRunning) {
-	//	std::string stardustTexture = "Stardust" + std::to_string(stardustAnimationFrame);
-	//	DrawTexture(ResourceManager::getTexture()[stardustTexture],
-	//		position.x, position.y - size.y, WHITE);
-	//}
-
+	if (stardustAnimationRunning) {
+		DrawTexture(ResourceManager::getTexture()["Stardust" + std::to_string(stardustAnimationFrame)],
+			position.x, position.y - size.y, WHITE);
+	}	
 	if (pointsAnimationRunning) {
 		std::string pointsTexture = "Gui" + std::to_string(earnedPoints);
 		Texture2D& texture = ResourceManager::getTexture()[pointsTexture];
@@ -101,9 +88,8 @@ void InvisibleBlock::draw() {
 			WHITE);
 	}
 	if (hit) {
-		DrawTexture(ResourceManager::getTexture()["EyesClosed0"],
-			position.x, position.y, WHITE);
-	} 
+		DrawTexture(ResourceManager::getTexture()["EyesClosed0"], position.x, position.y, WHITE);
+	}
 }
 
 void InvisibleBlock::doHit(Character& character, Map *map) {

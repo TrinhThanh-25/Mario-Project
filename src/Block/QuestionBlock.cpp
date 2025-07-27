@@ -5,20 +5,21 @@
 #include "Block/Block.h"
 #include <string>
 #include "Game/World.h"
+#include <iostream>
 #include "raylib.h"
 QuestionBlock::QuestionBlock(Vector2 pos, Vector2 size, Color color)
 	: QuestionBlock(pos, size, color, 0.1, 4) {}
 	
 QuestionBlock::QuestionBlock(Vector2 pos, Vector2 size, Color color, float frameTime, int maxFrames)
-	: Block(BlockType::QUESTIONBLOCK, pos, size, color, frameTime, maxFrames),
-	coinAnimationTime(0.6),
+	: Block(BlockType::QUESTIONBLOCK, pos, size, color, frameTime, maxFrames, 100),
+	coinAnimationTime(0.6f),
 	coinAnimationAcum(0),
 	coinFrameAcum(0),
 	coinAnimationFrame(0),
 	coinAnimationRunning(false),
 	coinY(0),
 	coinVelocityY(-400),
-	stardustAnimationTime(0.2),
+	stardustAnimationTime(0.1),
 	stardustAnimationAcum(0),
 	stardustAnimationFrame(0),
 	maxStardustAnimationFrame(4),
@@ -30,19 +31,7 @@ QuestionBlock::QuestionBlock(Vector2 pos, Vector2 size, Color color, float frame
 QuestionBlock::~QuestionBlock() = default;
 
 void QuestionBlock::update() {
-	
 	const float deltaTime = GetFrameTime();
-	
-	if (!hit) {
-		frameAcum += deltaTime;
-		if (frameAcum >= frameTime) {
-			frameAcum = 0;
-			curFrame++;
-			if (curFrame >= maxFrame) {
-				curFrame = 0;
-			}
-		}
-	}
 	
 	if (hit && coinAnimationRunning) {
 		coinAnimationAcum += deltaTime;
@@ -50,19 +39,16 @@ void QuestionBlock::update() {
 			coinAnimationRunning = false;
 			stardustAnimationRunning = true;
 			pointsAnimationRunning = true;
+        }	
+		coinFrameAcum += deltaTime;
+		if (coinFrameAcum >= frameTime) {
+			coinFrameAcum = 0;
 			coinAnimationFrame++;
 			coinAnimationFrame %= maxFrame;
-        }	
-			coinFrameAcum += deltaTime;
-			if (coinFrameAcum >= frameTime) {
-				coinFrameAcum = 0;
-				coinAnimationFrame++;
-				coinAnimationFrame %= maxFrame;
-			}
-			coinY += coinVelocityY * deltaTime;
-
-			coinVelocityY += World::gravity;
 		}
+		coinY += coinVelocityY * deltaTime;
+		coinVelocityY += 20;
+	}
 	
 	if (stardustAnimationRunning) {
 		stardustAnimationAcum += deltaTime;
@@ -77,7 +63,6 @@ void QuestionBlock::update() {
 	if( pointsAnimationRunning) {
 		pointsFrameAcum += deltaTime;
 		if (pointsFrameAcum >= pointsFrameTime) {
-			pointsFrameAcum = 0;
 			pointsAnimationRunning = false;
 		}
 	}
@@ -86,12 +71,12 @@ void QuestionBlock::update() {
 void QuestionBlock::draw() {
 	if (coinAnimationRunning) {
 		DrawTexture(ResourceManager::getTexture()["Coin" + std::to_string(coinAnimationFrame)],
-			position.x + 4, position.y + coinY, WHITE);
+			position.x + 4, coinY, WHITE);
 	}
-	//if (stardustAnimationRunning) {
-	//	DrawTexture(ResourceManager::getTexture()["Stardust" + std::to_string(stardustAnimationFrame)],
-	//		position.x, position.y - size.y, WHITE);
-	//}	//chua co stardust texture
+	if (stardustAnimationRunning) {
+		DrawTexture(ResourceManager::getTexture()["Stardust" + std::to_string(stardustAnimationFrame)],
+			position.x, position.y - size.y, WHITE);
+	}	
 	if (pointsAnimationRunning) {
 		std::string pointsTexture = "Gui" + std::to_string(earnedPoints);
 		Texture2D& texture = ResourceManager::getTexture()[pointsTexture];
