@@ -2,6 +2,7 @@
 #include "GameState/GoNextMapState.h"
 #include "GameState/SettingState.h"
 #include "Common/ResourceManager.h"
+#include "SaveGame.h"
 
 IrisOutState::IrisOutState(World* world) 
     : GameState(world, GameStateType::IRIS_OUT),
@@ -17,6 +18,7 @@ IrisOutState::~IrisOutState() {
 
 void IrisOutState::update() {
     if(IsKeyPressed(KEY_ESCAPE)) {
+        SaveGame::saveGame(*world);
         SettingState* settingState = new SettingState(world);
         settingState->setStateBeforeSetting(GameStateType::IRIS_OUT);
         world->setGameState(settingState);
@@ -75,6 +77,14 @@ void IrisOutState::draw() {
     
     std::string message2 = "Total Points: " + std::to_string(gameHud->getPoints());
     ResourceManager::drawString( message2, centerX - ResourceManager::getDrawStringWidth( message2 ) / 2, centerY + 40 );
+}
+
+void IrisOutState::enter() {
+    //PlayMusicStream(ResourceManager::getMusic()["CourseClear"]);
+}
+
+void IrisOutState::exit() {
+    //StopMusicStream(ResourceManager::getMusic()["CourseClear"]);
 }
 
 json IrisOutState::saveToJson() const {

@@ -672,6 +672,11 @@ void Map::playMusic() {
     }
 }
 
+void Map::stopMusic() {
+    StopMusicStream(ResourceManager::getMusic()["Invincible"]);
+    StopMusicStream(ResourceManager::getMusic()["Music" + std::to_string(musicID)]);
+}
+
 json Map::saveToJson() const {
     json j;
     j["offset"] = offset;

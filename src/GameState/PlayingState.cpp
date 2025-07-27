@@ -6,6 +6,7 @@
 #include "Enemy/Enemy.h"
 #include "Item/Item.h"
 #include "raylib.h"
+#include "SaveGame.h"
 #include <algorithm>
 
 PlayingState::PlayingState(World* world)
@@ -25,6 +26,7 @@ PlayingState::~PlayingState() {
 
 void PlayingState::update() {
     if(IsKeyPressed(KEY_ESCAPE)) {
+        SaveGame::saveGame(*world);
         SettingState* settingState = new SettingState(world);
         settingState->setStateBeforeSetting(GameStateType::PLAYING);
         world->setGameState(settingState);
@@ -235,7 +237,7 @@ void PlayingState::update() {
         world->resetWhenCharacterDead();
     } 
     else if (isAllCharactersVictory()) {
-        world->setGameState(new CountingPointState(world));
+         world->setGameState(new CountingPointState(world));
     }
 }
 
@@ -275,6 +277,14 @@ bool PlayingState::isOneCharactersTransitioning() const {
         }
     }
     return false;
+}
+
+void PlayingState::enter() {
+    map->playMusic();
+}
+
+void PlayingState::exit() {
+    map->stopMusic();
 }
 
 json PlayingState::saveToJson() const {

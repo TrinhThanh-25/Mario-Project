@@ -10,6 +10,7 @@ class Button{
         bool selected = false;
         const char* text = nullptr;
         int fontSize=0;
+        bool isPlayHoverSound = false;
     public:
         Button();
         Button(Rectangle rectangle, const char* text, int fontSize);

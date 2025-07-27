@@ -17,6 +17,9 @@ class SettingState : public GameState {
         Button restartButton;
         Button returnButton;
         Button exitButton;
+
+        float backgroundPositionx;
+        float speed;
     public:
         SettingState(World* world);
         ~SettingState() override;
