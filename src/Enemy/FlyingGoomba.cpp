@@ -1,3 +1,4 @@
+
 #include "Enemy/FlyingGoomba.h"
 #include "Common/ResourceManager.h"
 
@@ -9,37 +10,45 @@ FlyingGoomba::FlyingGoomba(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     isFacingLeft = vel.x < 0;   
     type = EnemyType::FLYING_GOOMBA;
     point = 200;
+    baseY = pos.y;
 }
 
 FlyingGoomba::~FlyingGoomba() {
     // Destructor logic if needed
 }
 
-void FlyingGoomba::draw(){
+void FlyingGoomba::draw() {
     std::string textureKey;
 
-    if (state == SpriteState::ACTIVE){
-        int frame = (int)(GetTime() * 6) % 2;
-        if (movetype == MoveType::FLYING){
-            if (isFacingLeft){
+    if (state == SpriteState::ACTIVE) {
+        int frame = (int)(flyingCycleTime * 6) % 2; // dùng flyingCycleTime cho đồng bộ vỗ cánh
+
+        if (movetype == MoveType::FLYING) {
+            if (isFacingLeft) {
                 textureKey = (frame == 0) ? "FlyingGoomba0Left" : "FlyingGoomba1Left";
             } else {
                 textureKey = (frame == 0) ? "FlyingGoomba0Right" : "FlyingGoomba1Right";
             }
-        }
-        else if (movetype == MoveType::WALKING){
-            if (isFacingLeft){
-                textureKey = (frame == 0) ? "FlyingGoomba2Left" : "FlyingGoomba3Left";
+        } else if (movetype == MoveType::WALKING) {
+            frame = (int)(GetTime() * 6) % 2; // walking vẫn dùng thời gian thực
+            if (isFacingLeft) {
+                textureKey = (frame == 0) ? "Goomba0Left" : "Goomba1Left";
             } else {
-                textureKey = (frame == 0) ? "FlyingGoomba2Right" : "FlyingGoomba3Right";
+                textureKey = (frame == 0) ? "Goomba0Right" : "Goomba1Right";
             }
         }
 
         DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
     }
 
-    else if (state == SpriteState::DYING){
-        std::string dyingKey = isFacingLeft ? "FlyingGoomba1Left" : "FlyingGoomba1Right"; 
+    else if (state == SpriteState::DYING) {
+        std::string dyingKey;
+        if (movetype == MoveType::WALKING) {
+            dyingKey = isFacingLeft ? "Goomba1Left" : "Goomba1Right";
+        } else {
+            dyingKey = isFacingLeft ? "FlyingGoomba1Left" : "FlyingGoomba1Right";
+        }
+
         DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
 
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
@@ -48,19 +57,18 @@ void FlyingGoomba::draw(){
         Texture2D& guiTex = ResourceManager::getTexture()["Gui100"];
         DrawTexturePro(
             guiTex,
-            Rectangle{ 0, 0, (float)guiTex.width, (float)guiTex.height },
+            Rectangle{0, 0, (float)guiTex.width, (float)guiTex.height},
             Rectangle{
                 diePosition.x,
                 diePosition.y - offsetY,
                 (float)guiTex.width,
-                (float)guiTex.height
-            },
-            Vector2{ guiTex.width / 2.0f, guiTex.height / 2.0f },
+                (float)guiTex.height},
+            Vector2{guiTex.width / 2.0f, guiTex.height / 2.0f},
             angle,
-            WHITE
-        );
+            WHITE);
     }
 }
+
 
 
 void FlyingGoomba::update(const std::vector<Character*>& characterList) {
@@ -79,20 +87,21 @@ void FlyingGoomba::update(const std::vector<Character*>& characterList) {
             isFacingLeft = velocity.x < 0;
         }
 
-        if (movetype == MoveType::FLYING) {
-            jumpTimer += delta;
-            if (jumpTimer >= jumpInterval) {
-                velocity.y = jumpSpeed;  // jumpSpeed thường âm (nhảy lên)
-                jumpTimer = 0.0f;
-            }
-        }
-        velocity.y += World::gravity * delta;
-
-        // Cập nhật vị trí
         position.x += velocity.x * delta;
-        position.y += velocity.y * delta;
 
+        if (movetype == MoveType::FLYING) {
+            // Cập nhật bay hình sin
+            flyingCycleTime += delta;
+            if (flyingCycleTime > flyingCycleDuration)
+                flyingCycleTime -= flyingCycleDuration;
 
+            float phase = (flyingCycleTime / flyingCycleDuration) * 2 * PI;
+            position.y = baseY + sin(phase) * flyingAmplitude;
+        }
+        else if (movetype == MoveType::WALKING) {
+            position.y += velocity.y * delta;
+            velocity.y += World::gravity * delta;
+        }
 
         updateCollisionBoxes();
     }
@@ -115,10 +124,18 @@ void FlyingGoomba::update(const std::vector<Character*>& characterList) {
     }
 }
 
+
 void FlyingGoomba::beingHit(HitType type){
     if (type == HitType::STOMP){
         if (movetype == MoveType::FLYING){
             setMoveType(MoveType::WALKING);
+            velocity.y = 0;
+            baseY = position.y;
+
+            float previousHeight = size.y;
+            setSize({32, 32});
+            position.y += previousHeight - 32.0f;
+            updateCollisionBoxes();
         }
 
         else if (movetype == MoveType::WALKING){
