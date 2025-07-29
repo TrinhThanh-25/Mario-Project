@@ -35,7 +35,6 @@ void BlueKoopaTroopa::update(const std::vector<Character*>& characterList) {
         position.y += velocity.y * delta;
         velocity.y += World::gravity * delta;
 
-
         updateCollisionBoxes();
     }
 
@@ -51,6 +50,8 @@ void BlueKoopaTroopa::update(const std::vector<Character*>& characterList) {
             setState(SpriteState::ACTIVE);
             velocity.x = isFacingLeft ? -40.0f : 40.0f;
             shellTimer = 0.0f;
+            shellMoving = false;
+            setSize({32, 54});
         }
     }
 
@@ -82,24 +83,34 @@ void BlueKoopaTroopa::update(const std::vector<Character*>& characterList) {
 
 void BlueKoopaTroopa::draw() {
     std::string textureKey;
-    int frame = (int)(GetTime() * 6) % 2;
 
     if (state == SpriteState::ACTIVE) {
-        textureKey = isFacingLeft ? (frame == 0 ? "BlueKoopaTroopa0Left" : "BlueKoopaTroopa1Left")
-                                  : (frame == 0 ? "BlueKoopaTroopa0Right" : "BlueKoopaTroopa1Right");
+        int walkFrame = ((int)(GetTime() * 6)) % 2;
+        textureKey = isFacingLeft
+            ? (walkFrame == 0 ? "BlueKoopaTroopa0Left" : "BlueKoopaTroopa1Left")
+            : (walkFrame == 0 ? "BlueKoopaTroopa0Right" : "BlueKoopaTroopa1Right");
     }
 
-    // else if (state == SpriteState::SHELL || state == SpriteState::SHELL_MOVING) {
-    // textureKey = isFacingLeft ? "BlueKoopaShellLeft" : "BlueKoopaShellRight";
-    // }
+    else if (state == SpriteState::SHELL || state == SpriteState::SHELL_MOVING) {
+        if (shellMoving) {
+            // SHELL_MOVING: dùng 8 frame quay
+            int spinFrame = ((int)(GetTime() * 12)) % 8;
+            textureKey = "BlueKoopaShield" + std::to_string(spinFrame);
+        } else {
+            // SHELL: đứng yên
+            textureKey = "BlueKoopaShield0";
+        }
+    }
 
-    // Bạn có thể thêm shell / dying nếu có sprite riêng
-    DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
+    else if (state == SpriteState::DYING) {
+        textureKey = isFacingLeft ? "BlueKoopaTroopa1Left" : "BlueKoopaTroopa1Right";
+    }
+
+    if (!textureKey.empty()) {
+        DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
+    }
 
     if (state == SpriteState::DYING) {
-        std::string dyingKey = isFacingLeft ? "BlueKoopaTroopa1Left" : "BlueKoopaTroopa1Right";
-        DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
-
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
         float angle = sin(GetTime() * 10.0f) * 10.0f;
 
@@ -121,11 +132,13 @@ void BlueKoopaTroopa::draw() {
 }
 
 
+
 void BlueKoopaTroopa::beingHit(HitType type) {
     switch (type) {
         case HitType::STOMP:
             if (state == SpriteState::ACTIVE) {
                 setState(SpriteState::SHELL);
+                setSize({32, 32});
                 velocity.x = 0;
                 shellMoving = false;
                 shellTimer = 0.0f;

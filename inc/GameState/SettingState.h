@@ -10,8 +10,8 @@ class SettingState : public GameState {
     private:
         GameStateType stateBeforeSetting;
 
-        // Slider musicVolumeSlider;
-        // Slider sfxVolumeSlider;
+        Slider musicVolumeSlider;
+        Slider sfxVolumeSlider;
 
         Button resumeButton;
         Button restartButton;

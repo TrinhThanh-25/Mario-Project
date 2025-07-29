@@ -24,6 +24,11 @@ private:
     float jumpTimer = 0.0f;
     float jumpInterval = 1.5f; // mỗi 1.5s nhảy 1 lần
     float jumpSpeed = -150.0f; // tốc độ nhảy lên
+
+    float flyingCycleTime = 0.0f;
+    float flyingCycleDuration = 1.5f; 
+    float flyingAmplitude = 20.0f;    
+    float baseY = 0.0f;               
 };
 
 #endif

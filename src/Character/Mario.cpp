@@ -25,9 +25,9 @@ void Mario::updateCollisionBoxes() {
     south.setWidth(size.x/4);
     south.setX( position.x + size.x / 2 - south.getWidth() / 2 );
     south.setY( position.y + size.y - south.getHeight() );
-    east.setHeight(size.y/1.5f);
+    east.setHeight(size.y/1.7f);
     east.setX( position.x + size.x - east.getWidth() );
-    west.setHeight(size.y/1.5f);
+    west.setHeight(size.y/1.7f);
     west.setX( position.x );
     if(isDucking){
         east.setHeight(size.y/3);

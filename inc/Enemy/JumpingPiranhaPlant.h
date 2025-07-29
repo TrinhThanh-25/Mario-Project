@@ -25,15 +25,18 @@ public:
     void loadFromJson(const json& j);
 
 private:
-    JumpingPiranhaState jumpState;
+// jumping logic
+    float groundY;
+    float minY;
+    float jumpSpeed = 200.0f;
 
-    float jumpSpeed;         // Tốc độ nhảy lên
-    float gravity;           // Gia tốc trọng lực
-    float waitDuration;      // Thời gian chờ giữa các cú nhảy
-    float waitTimer;         // Thời gian đếm để bắt đầu nhảy
+    bool goingUp = true;
+    bool waiting = false;
+    float waitDuration = 2.0f;
+    float waitTimer = 0.0f;
 
-    float groundY;           // Vị trí y ban đầu (mặt ống)
-    float maxJumpHeight;
+
+    
 };
 
 #endif

@@ -181,6 +181,14 @@ void Character::draw() {
     for (auto& fb : fireball) {
         fb.draw();
     }
+    north.setColor(BLUE);
+    south.setColor(BLUE);
+    west.setColor(BLUE);
+    east.setColor(BLUE);
+    north.draw();
+    south.draw();
+    west.draw();
+    east.draw();
 }
 
 bool Character::transition(float deltaTime) {
