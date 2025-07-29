@@ -4,6 +4,7 @@
 #include "GameState/SettingState.h"
 #include "Common/ResourceManager.h"
 #include "Character/Character.h"
+#include "SaveGame.h"
 
 GoNextMapState::GoNextMapState(World* world)
     : GameState(world, GameStateType::GO_NEXT_MAP), 
@@ -22,6 +23,7 @@ GoNextMapState::~GoNextMapState() {
 
 void GoNextMapState::update() {
     if(IsKeyPressed(KEY_ESCAPE)) {
+        SaveGame::saveGame(*world);
         SettingState* settingState = new SettingState(world);
         settingState->setStateBeforeSetting(GameStateType::GO_NEXT_MAP);
         world->setGameState(settingState);

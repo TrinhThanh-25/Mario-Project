@@ -23,7 +23,12 @@ void Button::setText(const char* text, int fontSize){
 }
 
 void Button::update(){
-    //
+    if(!isPlayHoverSound && isHovered()) {
+        PlaySound(ResourceManager::getSound()["HoverButton"]);
+        isPlayHoverSound = true;
+    } else if (!isHovered() && !selected) {
+        isPlayHoverSound = false;
+    }
 }
 
 void Button::draw(){
@@ -62,9 +67,11 @@ bool Button::isSelected(){
 }
 
 void Button::Selected(){
+    PlaySound(ResourceManager::getSound()["HoverButton"]);
     this->selected = true;
 }
 
 void Button::deSelected(){
+    isPlayHoverSound = false;
     this->selected = false;
 }

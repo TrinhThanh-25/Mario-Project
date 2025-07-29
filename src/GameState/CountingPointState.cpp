@@ -2,6 +2,7 @@
 #include "GameState/IrisOutState.h"
 #include "Common/ResourceManager.h"
 #include "GameState/SettingState.h"
+#include "SaveGame.h"
 #include "raylib.h"
 
 CountingPointState::CountingPointState(World* world)
@@ -18,6 +19,7 @@ CountingPointState::~CountingPointState() {
 
 void CountingPointState::update() {
     if(IsKeyPressed(KEY_ESCAPE)) {
+        SaveGame::saveGame(*world);
         SettingState* settingState = new SettingState(world);
         settingState->setStateBeforeSetting(GameStateType::COUNTING_POINT);
         world->setGameState(settingState);
@@ -84,6 +86,14 @@ void CountingPointState::draw() {
     
     std::string message2 = "Total Points: " + std::to_string(gameHud->getPoints());
     ResourceManager::drawString( message2, centerX - ResourceManager::getDrawStringWidth( message2 ) / 2, centerY + 40 );
+}
+
+void CountingPointState::enter() {
+    //PlayMusicStream(ResourceManager::getMusic()["CourseClear"]);
+}
+
+void CountingPointState::exit() {
+    //StopMusicStream(ResourceManager::getMusic()["CourseClear"]);
 }
 
 json CountingPointState::saveToJson() const {

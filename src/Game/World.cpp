@@ -52,12 +52,10 @@ World::~World() {
 
 void World::init() {
     SetConfigFlags(FLAG_MSAA_4X_HINT);
-    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-
+    // SetConfigFlags( FLAG_WINDOW_UNDECORATED );
     // SetConfigFlags(FLAG_WINDOW_HIGHDPI);
-        // SetConfigFlags( FLAG_FULLSCREEN_MODE );
-        // SetConfigFlags( FLAG_WINDOW_UNDECORATED );
-
+    // SetConfigFlags( FLAG_FULLSCREEN_MODE );
+    // SetConfigFlags( FLAG_WINDOW_UNDECORATED );
     SetConfigFlags(FLAG_WINDOW_ALWAYS_RUN);
     InitWindow(width, height, title.c_str());
     SetWindowIcon(LoadImage("../resources/icon.png"));
@@ -212,9 +210,9 @@ void World::resetMap() {
     }
     map.reset();
     gameHud.reset(true);
-    setGameState(new PlayingState(this));
     pausedForTransition = false;
     pausedUpdateCharacters = false;
+    setGameState(new PlayingState(this));
 }
 
 void World::resetGame() {
@@ -225,9 +223,9 @@ void World::resetGame() {
     map.first();
     map.reset();
     gameHud.resetGame();
-    setGameState(new TitleScreenState(this));
     pausedForTransition = false;
     pausedUpdateCharacters = false;
+    setGameState(new TitleScreenState(this));
 }
 
 void World::nextMap() {
@@ -350,37 +348,43 @@ void World::loadFromJson(const json& j) {
             }
         }
     }
-    
+    GameState* gameState = nullptr;
     switch (static_cast<GameStateType>(j["gameState"]["gameStateType"].get<int>())) {
         case GameStateType::TITLE_SCREEN:
-            setGameState(new TitleScreenState(this));
+            gameState = new TitleScreenState(this);
             break;
         case GameStateType::CHOOSE_CHARACTER:
-            setGameState(new ChooseCharacterState(this));
+            gameState = new ChooseCharacterState(this);
             break;
         case GameStateType::PLAYING:
-            setGameState(new PlayingState(this));
+            gameState = new PlayingState(this);
             break;
         case GameStateType::COUNTING_POINT:
-            setGameState(new CountingPointState(this));
+            gameState = new CountingPointState(this);
             break;
         case GameStateType::FINISHED:
-            setGameState(new FinishedState(this));
+            gameState = new FinishedState(this);
             break;
         case GameStateType::GAME_OVER:
-            setGameState(new GameOverState(this));
+            gameState = new GameOverState(this);
             break;
         case GameStateType::GO_NEXT_MAP:
-            setGameState(new GoNextMapState(this));
+            gameState = new GoNextMapState(this);
             break;
         case GameStateType::IRIS_OUT:
-            setGameState(new IrisOutState(this));
+            gameState = new IrisOutState(this);
             break;
         case GameStateType::SETTING:
-            setGameState(new SettingState(this));
+            gameState = new SettingState(this);
             break;
         case GameStateType::TIME_UP:
-            setGameState(new TimeUpState(this));
+            gameState = new TimeUpState(this);
             break;
+    }
+    if (gameState != nullptr) {
+        gameState->loadFromJson(j["gameState"]);
+        setGameState(gameState);
+    } else {
+        throw std::runtime_error("Failed to create game state from JSON");
     }
 }

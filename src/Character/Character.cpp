@@ -483,6 +483,12 @@ void Character::collisionTile(Tile* tile) {
     else if(tile->getType() == SLOPE_DOWN || tile->getType() == SLOPE_UP) {
         //
     }
+    // checkpoint
+    // dây leo
+    // tile chạm vào gây chết
+    // tile có thể leo lên
+    // lò xo nhúng
+    // BLOCK có thể làm bể
 }
 
 void Character::collisionBlock(Block* block) {
@@ -522,12 +528,12 @@ void Character::collisionEnemy(Enemy* enemy) {
         if(invincible == true && collision != CollisionType::NONE){
             enemy->beingHit(HitType::STOMP);
             PlaySound(ResourceManager::getSound()["Stomp"]);
-            // character earn points of enemy
+            gameHud->addPoints(enemy->getPoint());
         }
         else if (collision == CollisionType::FIREBALL) {
             enemy->beingHit(HitType::FIREBALL);
             PlaySound(ResourceManager::getSound()["Stomp"]);
-            // character earn points of enemy 
+            gameHud->addPoints(enemy->getPoint());
         }
         else if( enemy->getAuxiliaryState() != SpriteState::INVULNERABLE && collision == CollisionType::SOUTH ) {
             if( state == SpriteState::FALLING && enemy->getState() != SpriteState::DYING && enemy->getState() != SpriteState::TO_BE_REMOVED) {
@@ -541,7 +547,7 @@ void Character::collisionEnemy(Enemy* enemy) {
                 state = SpriteState::JUMPING;
                 enemy->beingHit(HitType::STOMP);
                 PlaySound(ResourceManager::getSound()["Stomp"]);
-                // character earn points of enemy
+                gameHud->addPoints(enemy->getPoint());
             }
         }
         else if( collision != CollisionType::NONE && invulnerable == false ) {
