@@ -2,7 +2,7 @@
 #define DRAWABLE_H
 
 class Drawable {
-    protected:
+    public:
         virtual ~Drawable() = default;
         virtual void draw() = 0;
 };
