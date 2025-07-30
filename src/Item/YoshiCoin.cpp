@@ -31,6 +31,8 @@ void YoshiCoin::updateWhenActive(float timeElapsed)
         {
             curFrame = 0;
         }
+        // Additional safety check
+        if (curFrame < 0) curFrame = 0;
     }
 }
 
@@ -45,6 +47,7 @@ void YoshiCoin::updateWhenHit(float timeElapsed)
         {
             this->setState(SpriteState::TO_BE_REMOVED);
         }
+        if (currentBeingHitFrame < 0) currentBeingHitFrame = 0;
     }
 
     pointFrameAccum += timeElapsed;
@@ -55,17 +58,23 @@ void YoshiCoin::draw()
 {
     if (this->getState() == SpriteState::ACTIVE || this->getState() == SpriteState::IDLE)
     {
-        DrawTexture(ResourceManager::getTexture()["YoshiCoin" + std::to_string(this->curFrame)], this->getX(), this->getY(), this->getColor());
+        curFrame %=maxFrame;
+        DrawTexture(ResourceManager::getTexture()["YoshiCoin" + std::to_string(curFrame)], this->getX(), this->getY(), this->getColor());
     }
     else if (this->getState() == SpriteState::HIT)
     {
-        DrawTexture(
-            ResourceManager::getTexture()["Gui400"],
-            this->getX() + this->getWidth() / 2 - ResourceManager::getTexture()["Gui400"].width / 2,
-            this->getY() - ResourceManager::getTexture()["Gui400"].height - (50 * pointFrameAccum / pointFrameTime),
-            WHITE
-        );
-        DrawTexture(ResourceManager::getTexture()["Stardust" + std::to_string(this->currentBeingHitFrame)], this->getX(), this->getY(), this->getColor());
+        auto& textureMap = ResourceManager::getTexture();
+        if (textureMap.find("Gui400") != textureMap.end())
+        {
+            DrawTexture(
+                textureMap["Gui400"],
+                this->getX() + this->getWidth() / 2 - textureMap["Gui400"].width / 2,
+                this->getY() - textureMap["Gui400"].height - (50 * pointFrameAccum / pointFrameTime),
+                WHITE
+            );
+        }
+        currentBeingHitFrame %= maxBeingHitFrame;
+        DrawTexture(textureMap["Stardust" + std::to_string(currentBeingHitFrame)], this->getX(), this->getY(), this->getColor());
     }
 }
 

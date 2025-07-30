@@ -51,6 +51,7 @@ void SettingState::update() {
     else if(returnButton.isPressed() || IsKeyPressed(KEY_ESCAPE)) {
         std::vector<Character*>& characters = world->getCharacters();
         for (Character* character : characters) {
+            if(character)
             delete character;
         }
         characters.clear();

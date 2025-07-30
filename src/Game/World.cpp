@@ -41,10 +41,11 @@ World::World(int width, int height, const std::string& title, int FPS)
 
 World::~World() {
     for (Character* character : characters) {
+        if(character)
         delete character;
     }
     characters.clear();
-    if (gameState != nullptr) {
+    if (gameState) {
         gameState->exit();
         delete gameState;
     }
@@ -103,10 +104,10 @@ void World::updateCamera() {
 
 
 void World::setGameState(GameState* newState) {
-    if (gameState != nullptr) {
+    if (gameState) {
         gameState->exit();
+        delete gameState;
     }
-    delete gameState;
     gameState = newState;
     if (gameState != nullptr) {
         gameState->enter();
@@ -217,6 +218,7 @@ void World::resetMap() {
 
 void World::resetGame() {
     for (Character* character : characters) {
+        if(character)
         delete character;
     }
     characters.clear();

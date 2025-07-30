@@ -18,6 +18,7 @@ ChooseCharacterState::ChooseCharacterState(World* world)
 
 ChooseCharacterState::~ChooseCharacterState() {
     for (CharacterTag* tag : characterTags) {
+        if(tag)
         delete tag;
     }
     characterTags.clear();

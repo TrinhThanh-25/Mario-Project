@@ -488,7 +488,8 @@ void Map::loadMap(int mapNumber) {
                 break;
             case 291:
                 for (auto& character : characters) {
-                    character->setPosition({x * tilewidth, y * tilewidth});
+                    if(character)
+                        character->setPosition({x * tilewidth, y * tilewidth});
                 }
             default:
                 std::cerr << "Unknown tile type: " << data[y * width + x] << " at (" << x << ", " << y << ")" << std::endl;
@@ -585,38 +586,47 @@ std::vector<Item*>& Map::getStaticItem() {
 
 void Map::clear() {
     for (auto& t : tile) {
+        if(t)
         delete t;
     }
     tile.clear();
     for (auto& bT : backTile) {
+        if(bT)
         delete bT;
     }
     backTile.clear();
     for (auto& fT : frontTile) {
+        if(fT)
         delete fT;
     }
     frontTile.clear();
     for (auto& b : block) {
+        if(b)
         delete b;
     }
     block.clear();
     for (auto& mB : messBlock) {
+        if(mB)
         delete mB;
     }
     messBlock.clear();
     for (auto& bE : backEnemy) {
+        if(bE)
         delete bE;
     }
     backEnemy.clear();
     for (auto& fE : frontEnemy) {
+        if(fE)
         delete fE;
     }
     frontEnemy.clear();
     for (auto& i : item) {
+        if(i)
         delete i;
     }
     item.clear();
     for (auto& sI : staticItem) {
+        if(sI)
         delete sI;
     }
     staticItem.clear();

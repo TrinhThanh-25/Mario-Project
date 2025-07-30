@@ -118,10 +118,10 @@ void PlayingState::update() {
         if(isOneCharactersTransitioning()) {
             for (auto& character : characters) {
                 if(character->getState() == SpriteState::SMALL_TO_SUPER || 
-                   character->getState() == SpriteState::SMALL_TO_FLOWER || 
-                   character->getState() == SpriteState::SUPER_TO_FLOWER || 
-                   character->getState() == SpriteState::SUPER_TO_SMALL || 
-                   character->getState() == SpriteState::FLOWER_TO_SMALL) {
+                    character->getState() == SpriteState::SMALL_TO_FLOWER || 
+                    character->getState() == SpriteState::SUPER_TO_FLOWER || 
+                    character->getState() == SpriteState::SUPER_TO_SMALL || 
+                    character->getState() == SpriteState::FLOWER_TO_SMALL) {
                     character->update();
                 }
             }
@@ -155,6 +155,7 @@ void PlayingState::update() {
             for (auto& i : staticItem) {
                 i->update();
             }
+            
             for (auto& t : tile) {
                 for (auto& character : characters) {
                     character->collisionTile(t);
@@ -188,23 +189,9 @@ void PlayingState::update() {
                     i->collisionCharacter(character);
                 }
             }
-            for (int i = 0; i < item.size(); ++i) {
-                if (item[i]->getState() == SpriteState::TO_BE_REMOVED) {
-                    delete item[i];
-                    item.erase(item.begin() + i);
-                    --i;
-                }
-            }
             for (auto& i : staticItem) {
                 for (auto& character : characters) {
                     i->collisionCharacter(character);
-                }
-            }
-            for (int i = 0; i < staticItem.size(); ++i) {
-                if (staticItem[i]->getState() == SpriteState::TO_BE_REMOVED) {
-                    delete staticItem[i];
-                    staticItem.erase(staticItem.begin() + i);
-                    --i;
                 }
             }
             for (auto& e : backEnemy) {
@@ -212,23 +199,34 @@ void PlayingState::update() {
                     character->collisionEnemy(e);
                 }
             }
-            for (int i = 0; i < backEnemy.size(); ++i) {
-                if (backEnemy[i]->getState() == SpriteState::TO_BE_REMOVED) {
-                    delete backEnemy[i];
-                    backEnemy.erase(backEnemy.begin() + i);
-                    --i;
-                }
-            }
             for (auto& e : frontEnemy) {
                 for (auto& character : characters) {
                     character->collisionEnemy(e);
                 }
             }
-            for (int i = 0; i < frontEnemy.size(); ++i) {
+            
+            for (int i = item.size() - 1; i >= 0; --i) {
+                if (item[i]->getState() == SpriteState::TO_BE_REMOVED) {
+                    delete item[i];
+                    item.erase(item.begin() + i);
+                }
+            }
+            for (int i = staticItem.size() - 1; i >= 0; --i) {
+                if (staticItem[i]->getState() == SpriteState::TO_BE_REMOVED) {
+                    delete staticItem[i];
+                    staticItem.erase(staticItem.begin() + i);
+                }
+            }
+            for (int i = backEnemy.size() - 1; i >= 0; --i) {
+                if (backEnemy[i]->getState() == SpriteState::TO_BE_REMOVED) {
+                    delete backEnemy[i];
+                    backEnemy.erase(backEnemy.begin() + i);
+                }
+            }
+            for (int i = frontEnemy.size() - 1; i >= 0; --i) {
                 if (frontEnemy[i]->getState() == SpriteState::TO_BE_REMOVED) {
                     delete frontEnemy[i];
                     frontEnemy.erase(frontEnemy.begin() + i);
-                    --i;
                 }
             }
         }
@@ -237,7 +235,7 @@ void PlayingState::update() {
         world->resetWhenCharacterDead();
     } 
     else if (isAllCharactersVictory()) {
-         world->setGameState(new CountingPointState(world));
+        world->setGameState(new CountingPointState(world));
     }
 }
 
