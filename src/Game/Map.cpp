@@ -57,440 +57,455 @@ void Map::loadMap(int mapNumber) {
             switch(data[y * width + x]){
             case 0:
                 continue;
-            case 112:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "1"));
-                break;
-            case 113:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "2"));
-                break;
-            case 114:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "3"));
-                break;
-            case 115:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "4"));
-                break;
-            case 116:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "5"));
-                break;
-            case 117:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "6"));
-                break;
-            case 118:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "7"));
-                break;
-            case 119:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "8"));
-                break;
-            case 120:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "9"));
-                break;
-            case 121:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "10"));
-                break;
-            case 122:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "11"));
-                break;
-            case 123:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "12"));
-                break;
-            case 124:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "13"));
-                break;
-            case 125:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "14"));
-                break;
-            case 126:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "15"));
-                break;
-            case 127:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "16"));
-                break;
-            case 128:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "17"));
-                break;
-            case 129:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "18"));
-                break;
-            case 130:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "19"));
-                break;
-            case 131:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "20"));
-                break;
-            case 132:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "21"));
-                break;
-            case 133:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "22"));
-                break;
-            case 134:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "23"));
-                break;
-            case 135:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "24"));
-                break;
-            case 136:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "25"));
-                break;
-            case 137:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "26"));
-                break;
-            case 138:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "27"));
-                break;
-            case 139:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "28"));
-                break;
-            case 140:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "29"));
-                break;
-            case 141:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "30"));
-                break;
-            case 142:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "31"));
-                break;
-            case 143:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "32"));
-                break;
-            case 144:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "33"));
-                break;
-            case 145:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "34"));
-                break;
-            case 146:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "35"));
-                break;
-            case 147:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "36"));
-                break;
-            case 148:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "37"));
-                break;
-            case 149:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "38"));
-                break;
-            case 150:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "39"));
-                break;
-            case 151:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "40"));
-                break;
-            case 152:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "41"));
-                break;
-            case 153:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "42"));
-                break;
-            case 154:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "43"));
-                break;
-            case 155:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "44"));
-                break;
-            case 156:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "45"));
-                break;
-            case 157:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "46"));
-                break;
-            case 158:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "47"));
-                break;
-            case 159:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "48"));
-                break;
-            case 160:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "49"));
-                break;
-            case 161:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "50"));
-                break;
-            case 162:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "51"));
-                break;
-            case 163:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "52"));
-                break;
-            case 164:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "53"));
-                break;
-            case 165:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "54"));
-                break;
-            case 166:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "55"));
-                break;
-            case 167:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "56"));
-                break;
-            case 168:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "57"));
-                break;
-            case 169:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "58"));
-                break;
-            case 170:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "59"));
-                break;
-            case 171:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "60"));
-                break;
-            case 172:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "61"));
-                break;
-            case 173:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "62"));
-                break;
-            case 174:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "63"));
-                break;
-            case 175:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "64"));
-                break;
-            case 176:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "65"));
-                break;
-            case 177:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "66"));
-                break;
-            case 178:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "67"));
-                break;
-            case 179:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "68"));
-                break;
-            case 180:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "69"));
-                break;
-            case 181:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "70"));
-                break;
-            case 182:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "71"));
-                break;
-            case 183:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "72"));
-                break;
-            case 184:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "73"));
-                break;
-            case 185:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "74"));
-                break;
-            case 186:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "75"));
-                break;
-            case 187:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "76"));
-                break;
-            case 188:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "77"));
-                break;
-            case 189:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "78"));
-                break;
-            case 190:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "79"));
-                break;
-            case 191:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "80"));
-                break;
-            case 192:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "81"));
-                break;
-            case 193:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "82"));
-                break;
-            case 194:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "83"));
-                break;
-            case 195:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "84"));
-                break;
-            case 196:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "85"));
-                break;
-            case 197:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "86"));
-                break;
-            case 198:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "87"));
-                break;
-            case 199:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "88"));
-                break;
-            case 200:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "89"));
-                break;
-            case 201:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "90"));
-                break;
-            case 202:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "91"));
-                break;
-            case 203:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "92"));
-                break;
-            case 204:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "93"));
-                break;
-            case 205:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "94"));
-                break;
-            case 206:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "95"));
-                break;
-            case 207:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "96"));
-                break;
-            case 208:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "97"));
-                break;
-            case 209:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "98"));
-                break;
-            case 210:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "99"));
-                break;
-            case 211:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "100"));
-                break;
-            case 212:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "101"));
-                break;
-            case 213:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "102"));
-                break;
-            case 214:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "103"));
-                break;
-            case 215:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "104"));
-                break;
-            case 252:
-            //
-                break;
-            case 253:
-            //
-                break;
-            case 254:
-            //
-                break;
-            case 255:
-            //
-                break;
-            case 256:
-                block.push_back(BlockFactory::createBlock(BlockType::CLOUDBLOCK, {x * tilewidth, y * tilewidth}));
-                break;
-            case 257:
-                block.push_back(BlockFactory::createBlock(BlockType::EXCLAMATIONBLOCK, {x * tilewidth, y * tilewidth}));
-                break;
-            case 258:
-                block.push_back(BlockFactory::createBlock(BlockType::EYESCLOSED, {x * tilewidth, y * tilewidth}));
-                break;
-            case 259:
-                block.push_back(BlockFactory::createBlock(BlockType::EYESOPENED, {x * tilewidth, y * tilewidth}));
-                break;
-            case 260:
-                block.push_back(BlockFactory::createBlock(BlockType::GLASSBLOCK, {x * tilewidth, y * tilewidth}));
-                break;
-            case 261:
-                block.push_back(BlockFactory::createBlock(BlockType::QUESTIONBLOCK, {x * tilewidth, y * tilewidth}));
-                break;
-            case 262:
-                block.push_back(BlockFactory::createBlock(BlockType::STONEBLOCK, {x * tilewidth, y * tilewidth}));
-                break;
-            case 263:
-                block.push_back(BlockFactory::createBlock(BlockType::WOODBLOCK, {x * tilewidth, y * tilewidth}));
-                break;
-            case 264:
-                block.push_back(BlockFactory::createBlock(BlockType::QUESTIONONEUPMUSHROOMBLOCK, {x * tilewidth, y * tilewidth}));
-                break;
-            case 265:
-                block.push_back(BlockFactory::createBlock(BlockType::QUESTIONTHREEUPMOONBLOCK, {x * tilewidth, y * tilewidth}));
-                break;
-            case 266:
-                block.push_back(BlockFactory::createBlock(BlockType::QUESTIONFIREFLOWERBLOCK, {x * tilewidth, y * tilewidth}));
-                break;
-            case 267:
-                block.push_back(BlockFactory::createBlock(BlockType::QUESTIONMUSHROOMBLOCK, {x * tilewidth, y * tilewidth}));
-                break;
-            case 268:
-                block.push_back(BlockFactory::createBlock(BlockType::QUESTIONSTARBLOCK, {x * tilewidth, y * tilewidth}));
-                break;
-            case 269:
-                block.push_back(BlockFactory::createBlock(BlockType::INVISIBLEBLOCK, {x * tilewidth, y * tilewidth}));
-                break;
-            case 270:
-                block.push_back(BlockFactory::createBlock(BlockType::MESSAGEBLOCK, {x * tilewidth, y * tilewidth}));//
-                break;
-            case 271:
-                staticItem.push_back(ItemFactory::createItem(ItemType::COIN, Source::BLOCK, {x * tilewidth + 4, y * tilewidth}, Direction::UP));
-                break;
-            case 272:
-                staticItem.push_back(ItemFactory::createItem(ItemType::COURSE_CLEAR_TOKEN, Source::BLOCK, {x * tilewidth - tilewidth, y * tilewidth}, Direction::UP));
-                break;
-            case 273:
-                staticItem.push_back(ItemFactory::createItem(ItemType::YOSHI_COIN, Source::BLOCK, {x * tilewidth, y * tilewidth + 5}, Direction::UP));
-                break;
-            case 274:
-                backEnemy.push_back(EnemyFactory::createEnemy(EnemyType::JUMPING_PIRANHA_PLANT, {x * tilewidth + 16, y * tilewidth + 34}, Direction::LEFT));
-                break;
-            case 275:
-                backEnemy.push_back(EnemyFactory::createEnemy(EnemyType::PIRANHA_PLANT, {x * tilewidth + 16, y * tilewidth + 32}, Direction::LEFT));
-                break;
-            case 276:
-                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::BANZAI_BILL, {x * tilewidth, y * tilewidth}, Direction::LEFT));
-                break;
-            case 277:
-                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::BLUE_KOOPA_TROOPA, {x * tilewidth, y * tilewidth}, Direction::LEFT));
-                break;
-            case 278:
-                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::BOB_OMB, {x * tilewidth, y * tilewidth}, Direction::LEFT));
-                break;
-            case 279:
-                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::BULLET_BILL, {x * tilewidth, y * tilewidth + 2}, Direction::LEFT));
-                break;
-            case 280:
-                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::BUZZY_BEETLE, {x * tilewidth, y * tilewidth}, Direction::LEFT));
-                break;
-            case 281:
-                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::FLYING_GOOMBA, {x * tilewidth, y * tilewidth}, Direction::LEFT));
-                break;
-            case 282:
-                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::GOOMBA, {x * tilewidth, y * tilewidth}, Direction::LEFT));
-                break;
-            case 283:
-                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::GREEN_KOOPA_TROOPA, {x * tilewidth, y * tilewidth}, Direction::LEFT));
-                break;
-            case 284:
-                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::MONTY_MOLE, {x * tilewidth, y * tilewidth}, Direction::LEFT));
-                break;
-            case 285:
-                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::MUMMY_BEETLE, {x * tilewidth, y * tilewidth}, Direction::LEFT));
-                break;
-            case 286:
-                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::MUNCHER, {x * tilewidth, y * tilewidth}, Direction::LEFT));
-                break;
-            case 287:
-                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::RED_KOOPA_TROOPA, {x * tilewidth, y * tilewidth}, Direction::LEFT));
-                break;
-            case 288:
-                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::REX, {x * tilewidth, y * tilewidth}, Direction::LEFT));
-                break;
-            case 289:
-                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::SWOOPER, {x * tilewidth, y * tilewidth}, Direction::LEFT));
-                break;
-            case 290:
-                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::YELLOW_KOOPA_TROOPA, {x * tilewidth, y * tilewidth}, Direction::LEFT));
-                break;
-            case 291:
+            case 1:
                 for (auto& character : characters) {
                     if(character)
                         character->setPosition({x * tilewidth, y * tilewidth});
                 }
+                break;
+            case 2:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "1"));
+                break;
+            case 3:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "2"));
+                break;
+            case 4:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "3"));
+                break;
+            case 5:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "4"));
+                break;
+            case 6:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "5"));
+                break;
+            case 7:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "6"));
+                break;
+            case 8:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "7"));
+                break;
+            case 9:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "8"));
+                break;
+            case 10:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "9"));
+                break;
+            case 11:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "10"));
+                break;
+            case 12:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "11"));
+                break;
+            case 13:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "12"));
+                break;
+            case 14:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "13"));
+                break;
+            case 15:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "14"));
+                break;
+            case 16:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "15"));
+                break;
+            case 17:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "16"));
+                break;
+            case 18:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "17"));
+                break;
+            case 19:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "18"));
+                break;
+            case 20:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "19"));
+                break;
+            case 21:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "20"));
+                break;
+            case 22:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "21"));
+                break;
+            case 23:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "22"));
+                break;
+            case 24:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "23"));
+                break;
+            case 25:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "24"));
+                break;
+            case 26:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "25"));
+                break;
+            case 27:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "26"));
+                break;
+            case 28:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "27"));
+                break;
+            case 29:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "28"));
+                break;
+            case 30:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "29"));
+                break;
+            case 31:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "30"));
+                break;
+            case 32:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "31"));
+                break;
+            case 33:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "32"));
+                break;
+            case 34:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "33"));
+                break;
+            case 35:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "34"));
+                break;
+            case 36:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "35"));
+                break;
+            case 37:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "36"));
+                break;
+            case 38:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "37"));
+                break;
+            case 39:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "38"));
+                break;
+            case 40:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "39"));
+                break;
+            case 41:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "40"));
+                break;
+            case 42:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "41"));
+                break;
+            case 43:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "42"));
+                break;
+            case 44:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "43"));
+                break;
+            case 45:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "44"));
+                break;
+            case 46:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "45"));
+                break;
+            case 47:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "46"));
+                break;
+            case 48:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "47"));
+                break;
+            case 49:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "48"));
+                break;
+            case 50:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "49"));
+                break;
+            case 51:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "50"));
+                break;
+            case 52:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "51"));
+                break;
+            case 53:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "52"));
+                break;
+            case 54:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "53"));
+                break;
+            case 55:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "54"));
+                break;
+            case 56:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "55"));
+                break;
+            case 57:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "56"));
+                break;
+            case 58:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "57"));
+                break;
+            case 59:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "58"));
+                break;
+            case 60:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "59"));
+                break;
+            case 61:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "60"));
+                break;
+            case 62:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "61"));
+                break;
+            case 63:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "62"));
+                break;
+            case 64:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "63"));
+                break;
+            case 65:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "64"));
+                break;
+            case 66:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "65"));
+                break;
+            case 67:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "66"));
+                break;
+            case 68:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "67"));
+                break;
+            case 69:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "68"));
+                break;
+            case 70:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "69"));
+                break;
+            case 71:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "70"));
+                break;
+            case 72:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "71"));
+                break;
+            case 73:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "72"));
+                break;
+            case 74:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "73"));
+                break;
+            case 75:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "74"));
+                break;
+            case 76:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "75"));
+                break;
+            case 77:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "76"));
+                break;
+            case 78:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "77"));
+                break;
+            case 79:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "78"));
+                break;
+            case 80:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "79"));
+                break;
+            case 81:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "80"));
+                break;
+            case 82:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "81"));
+                break;
+            case 83:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "82"));
+                break;
+            case 84:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "83"));
+                break;
+            case 85:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "84"));
+                break;
+            case 86:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "85"));
+                break;
+            case 87:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "86"));
+                break;
+            case 88:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "87"));
+                break;
+            case 89:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "88"));
+                break;
+            case 90:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "89"));
+                break;
+            case 91:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "90"));
+                break;
+            case 92:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "91"));
+                break;
+            case 93:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "92"));
+                break;
+            case 94:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "93"));
+                break;
+            case 95:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "94"));
+                break;
+            case 96:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "95"));
+                break;
+            case 97:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "96"));
+                break;
+            case 98:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "97"));
+                break;
+            case 99:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "98"));
+                break;
+            case 100:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "99"));
+                break;
+            case 101:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "100"));
+                break;
+            case 102:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "101"));
+                break;
+            case 103:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "102"));
+                break;
+            case 104:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "103"));
+                break;
+            case 105:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "104"));
+                break;
+            case 106:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, ""));
+                break;
+            case 107:
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, ""));
+                break;
+            case 108:
+                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::BANZAI_BILL, {x * tilewidth, y * tilewidth}, Direction::LEFT));
+                break;
+            case 109:
+                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::BLUE_KOOPA_TROOPA, {x * tilewidth, y * tilewidth}, Direction::LEFT));
+                break;
+            case 110:
+                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::BOB_OMB, {x * tilewidth, y * tilewidth}, Direction::LEFT));
+                break;
+            case 111:
+                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::BULLET_BILL, {x * tilewidth, y * tilewidth + 2}, Direction::LEFT));
+                break;
+            case 112:
+                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::BUZZY_BEETLE, {x * tilewidth, y * tilewidth}, Direction::LEFT));
+                break;
+            case 113:
+                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::FLYING_GOOMBA, {x * tilewidth, y * tilewidth}, Direction::LEFT));
+                break;
+            case 114:
+                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::GOOMBA, {x * tilewidth, y * tilewidth}, Direction::LEFT));
+                break;
+            case 115:
+                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::GREEN_KOOPA_TROOPA, {x * tilewidth, y * tilewidth}, Direction::LEFT));
+                break;
+            case 116:
+                backEnemy.push_back(EnemyFactory::createEnemy(EnemyType::JUMPING_PIRANHA_PLANT, {x * tilewidth + 16, y * tilewidth + 34}, Direction::LEFT));
+                break;
+            case 117:
+                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::MONTY_MOLE, {x * tilewidth, y * tilewidth}, Direction::LEFT));
+                break;
+            case 118:
+                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::MUMMY_BEETLE, {x * tilewidth, y * tilewidth}, Direction::LEFT));
+                break;
+            case 119:
+                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::MUNCHER, {x * tilewidth, y * tilewidth}, Direction::LEFT));
+                break;
+            case 120:
+                backEnemy.push_back(EnemyFactory::createEnemy(EnemyType::PIRANHA_PLANT, {x * tilewidth + 16, y * tilewidth + 32}, Direction::LEFT));
+                break;
+            case 121:
+                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::RED_KOOPA_TROOPA, {x * tilewidth, y * tilewidth}, Direction::LEFT));
+                break;
+            case 122:
+                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::REX, {x * tilewidth, y * tilewidth}, Direction::LEFT));
+                break;
+            case 123:
+                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::SWOOPER, {x * tilewidth, y * tilewidth}, Direction::LEFT));
+                break;
+            case 124:
+                frontEnemy.push_back(EnemyFactory::createEnemy(EnemyType::YELLOW_KOOPA_TROOPA, {x * tilewidth, y * tilewidth}, Direction::LEFT));
+                break;
+            case 125:
+                // cây ăn thịt xanh lá
+                break;
+            case 126:
+                staticItem.push_back(ItemFactory::createItem(ItemType::COIN, Source::BLOCK, {x * tilewidth + 4, y * tilewidth}, Direction::UP));
+                break;
+            case 127:
+                staticItem.push_back(ItemFactory::createItem(ItemType::COURSE_CLEAR_TOKEN, Source::BLOCK, {x * tilewidth - tilewidth, y * tilewidth}, Direction::UP));
+                break;
+            case 128:
+                staticItem.push_back(ItemFactory::createItem(ItemType::YOSHI_COIN, Source::BLOCK, {x * tilewidth, y * tilewidth + 5}, Direction::UP));
+                break;
+            case 129:
+                // dây leo cây ăn thịt xanh lá
+                break;
+            case 130:
+                block.push_back(BlockFactory::createBlock(BlockType::CLOUDBLOCK, {x * tilewidth, y * tilewidth}));
+                break;
+            case 131:
+                block.push_back(BlockFactory::createBlock(BlockType::EXCLAMATIONBLOCK, {x * tilewidth, y * tilewidth}));
+                break;
+            case 132:
+                block.push_back(BlockFactory::createBlock(BlockType::EYESCLOSED, {x * tilewidth, y * tilewidth}));
+                break;
+            case 133:
+                block.push_back(BlockFactory::createBlock(BlockType::EYESOPENED, {x * tilewidth, y * tilewidth}));
+                break;
+            case 134:
+                block.push_back(BlockFactory::createBlock(BlockType::GLASSBLOCK, {x * tilewidth, y * tilewidth}));
+                break;
+            case 135:
+                // mess block
+                break;
+            case 136:
+                block.push_back(BlockFactory::createBlock(BlockType::QUESTIONBLOCK, {x * tilewidth, y * tilewidth}));
+                break;
+            case 137:
+                block.push_back(BlockFactory::createBlock(BlockType::STONEBLOCK, {x * tilewidth, y * tilewidth}));
+                break;
+            case 138:
+                block.push_back(BlockFactory::createBlock(BlockType::WOODBLOCK, {x * tilewidth, y * tilewidth}));
+                break;
+            case 139:
+                // item 1upmushroom
+                break;
+            case 140:
+                // item 3upmoon
+                break;
+            case 141:
+                // item fireflower
+                break;
+            case 142:
+                // item mushroom
+                break;
+            case 143:
+                // item star
+                break;
+            case 144:
+                block.push_back(BlockFactory::createBlock(BlockType::QUESTIONONEUPMUSHROOMBLOCK, {x * tilewidth, y * tilewidth}));
+                break;
+            case 145:
+                block.push_back(BlockFactory::createBlock(BlockType::QUESTIONTHREEUPMOONBLOCK, {x * tilewidth, y * tilewidth}));
+                break;
+            case 146:
+                block.push_back(BlockFactory::createBlock(BlockType::QUESTIONFIREFLOWERBLOCK, {x * tilewidth, y * tilewidth}));
+                break;
+            case 147:
+                block.push_back(BlockFactory::createBlock(BlockType::QUESTIONMUSHROOMBLOCK, {x * tilewidth, y * tilewidth}));
+                break;
+            case 148:
+                block.push_back(BlockFactory::createBlock(BlockType::QUESTIONSTARBLOCK, {x * tilewidth, y * tilewidth}));
+                break;
+            case 149:
+                block.push_back(BlockFactory::createBlock(BlockType::INVISIBLEBLOCK, {x * tilewidth, y * tilewidth}));
                 break;
             default:
                 std::cerr << "Unknown tile type: " << data[y * width + x] << " at (" << x << ", " << y << ")" << std::endl;
@@ -513,20 +528,20 @@ void Map::draw() {
             DrawTexture(background,-background.width + i * background.width + offset * 0.5, height - background.height, WHITE );
         }
     }
-    for (auto& t : tile) {
-        t->draw();
-    }
     for (auto& bT : backTile) {
         bT->draw();
+    }
+    for (auto& bE : backEnemy) {
+        bE->draw();
+    }
+    for (auto& t : tile) {
+        t->draw();
     }
     for (auto& b : block) {
         b->draw();
     }
     for (auto& mB : messBlock) {
         mB->draw();
-    }
-    for (auto& bE : backEnemy) {
-        bE->draw();
     }
     for (auto& i : item) {
         i->draw();

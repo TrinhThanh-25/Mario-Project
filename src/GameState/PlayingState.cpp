@@ -206,30 +206,26 @@ void PlayingState::update() {
             }
             
             for (int i = item.size() - 1; i >= 0; --i) {
-                if (item[i] && item[i]->getState() == SpriteState::TO_BE_REMOVED) {
+                if (item[i]->getState() == SpriteState::TO_BE_REMOVED) {
                     delete item[i];
-                    item[i] = nullptr;
                     item.erase(item.begin() + i);
                 }
             }
             for (int i = staticItem.size() - 1; i >= 0; --i) {
-                if (staticItem[i] && staticItem[i]->getState() == SpriteState::TO_BE_REMOVED) {
+                if (staticItem[i]->getState() == SpriteState::TO_BE_REMOVED) {
                     delete staticItem[i];
-                    staticItem[i] = nullptr;
                     staticItem.erase(staticItem.begin() + i);
                 }
             }
             for (int i = backEnemy.size() - 1; i >= 0; --i) {
-                if (backEnemy[i] && backEnemy[i]->getState() == SpriteState::TO_BE_REMOVED) {
+                if (backEnemy[i]->getState() == SpriteState::TO_BE_REMOVED) {
                     delete backEnemy[i];
-                    backEnemy[i] = nullptr;
                     backEnemy.erase(backEnemy.begin() + i);
                 }
             }
             for (int i = frontEnemy.size() - 1; i >= 0; --i) {
-                if (frontEnemy[i] && frontEnemy[i]->getState() == SpriteState::TO_BE_REMOVED) {
+                if (frontEnemy[i]->getState() == SpriteState::TO_BE_REMOVED) {
                     delete frontEnemy[i];
-                    frontEnemy[i] = nullptr;
                     frontEnemy.erase(frontEnemy.begin() + i);
                 }
             }
