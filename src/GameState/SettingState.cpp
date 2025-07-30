@@ -53,6 +53,7 @@ void SettingState::update() {
         for (Character* character : characters) {
             if(character)
             delete character;
+            character = nullptr;
         }
         characters.clear();
         world->resetGame();
@@ -123,6 +124,7 @@ json SettingState::saveToJson() const {
     if (tempState) {
         j = tempState->saveToJson();
         delete tempState;
+        tempState = nullptr;
     }
     return j;
 }

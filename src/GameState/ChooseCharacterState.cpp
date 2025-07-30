@@ -20,6 +20,7 @@ ChooseCharacterState::~ChooseCharacterState() {
     for (CharacterTag* tag : characterTags) {
         if(tag)
         delete tag;
+        tag = nullptr;
     }
     characterTags.clear();
 }

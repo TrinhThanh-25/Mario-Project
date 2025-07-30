@@ -43,11 +43,13 @@ World::~World() {
     for (Character* character : characters) {
         if(character)
         delete character;
+        character = nullptr;
     }
     characters.clear();
     if (gameState) {
         gameState->exit();
         delete gameState;
+        gameState = nullptr;
     }
 }
 
@@ -107,6 +109,7 @@ void World::setGameState(GameState* newState) {
     if (gameState) {
         gameState->exit();
         delete gameState;
+        gameState = nullptr;
     }
     gameState = newState;
     if (gameState != nullptr) {
@@ -220,6 +223,7 @@ void World::resetGame() {
     for (Character* character : characters) {
         if(character)
         delete character;
+        character = nullptr;
     }
     characters.clear();
     map.first();

@@ -576,11 +576,8 @@ void ResourceManager::loadTexture() {
     texture["YoshiCoin3"] = LoadTexture("../resources/Item/YoshiCoin_3.png");
 
     //Tile
-    for (int i=1;i<=4;i++){
-        for (char j='A'; j<='Z'; j++){
-            std::string key = std::to_string(i) + j;
-            texture[key] = LoadTexture(("../resources/Tile/" + std::to_string(i) + "/tile_" + j + ".png").c_str());
-        }
+    for (int i=1;i<=106;i++){
+        texture[std::to_string(i)] = LoadTexture(("../resources/Tile/" + std::to_string(i) + ".png").c_str());
     }
 
     //Effect
