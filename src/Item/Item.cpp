@@ -14,7 +14,7 @@ Sprite(position,size,vel,color,frameTime,maxFrame,direction), beingHitFrameTime(
 
 Item::~Item()
 {
-    Sprite::~Sprite();
+
 }
 
 void Item::update()
