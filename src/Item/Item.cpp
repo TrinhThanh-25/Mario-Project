@@ -58,30 +58,32 @@ void Item::collisionBlock(Block *block)
 
 void Item::collisionTile(Tile* tile)
 {
-    CollisionType type = checkCollision(tile);
-    switch (type)
-    {
-    case CollisionType::WEST:
-        this->setX(tile->getX() + tile->getWidth());
-        this->setVelocityX(-this->getVelocityX());
-        updateCollisionBoxes();
-        break;
-    case CollisionType::EAST:
-        this->setX(tile->getX() - this->getWidth());
-        this->setVelocityX(-this->getVelocityX());
-        updateCollisionBoxes();
-        break;
-    case CollisionType::NORTH:
-        break;
-    case CollisionType::SOUTH:
-        this->setVelocityY(0);
-        this->setY(tile->getY() - this->getHeight());
-        collisionSouth(nullptr);
-        updateCollisionBoxes();
-        break;
-    default:
-        break;
-    }
+    if (tile->getType() == TileType::SOLID || tile->getType() == TileType::SOLID_ABOVE) {
+        CollisionType type = checkCollision(tile);
+        switch (type)
+        {
+        case CollisionType::WEST:
+            this->setX(tile->getX() + tile->getWidth());
+            this->setVelocityX(-this->getVelocityX());
+            updateCollisionBoxes();
+            break;
+        case CollisionType::EAST:
+            this->setX(tile->getX() - this->getWidth());
+            this->setVelocityX(-this->getVelocityX());
+            updateCollisionBoxes();
+            break;
+        case CollisionType::NORTH:
+            break;
+        case CollisionType::SOUTH:
+            this->setVelocityY(0);
+            this->setY(tile->getY() - this->getHeight());
+            collisionSouth(nullptr);
+            updateCollisionBoxes();
+            break;
+        default:
+            break;
+        }
+    } 
 }
 
 void Item::collisionCharacter(Character *character)

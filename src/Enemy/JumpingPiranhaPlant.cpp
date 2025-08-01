@@ -2,16 +2,19 @@
 #include "Common/ResourceManager.h"
 
 JumpingPiranhaPlant::JumpingPiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(EnemyType::JUMPING_PIRANHA_PLANT, pos, dim, vel, color) 
+    : Enemy(EnemyType::JUMPING_PIRANHA_PLANT, pos, dim, vel, color),
+    minY(pos.y - dim.y*4),
+    maxY(pos.y),
+    velocityUp(-400.0f),
+    velocityDown(80.0f),
+    goingUp(true),
+    waiting(false),
+    waitTime(0.8f),
+    waitAcum(0.0f)
 {
     setState(SpriteState::ACTIVE);             
-
-    groundY = pos.y;                         // Mặt ống – vị trí đứng ban                     
-    minY = groundY - 64;
-    jumpSpeed = 200.0f;                         // Tốc độ nhảy lên                    
-
-    velocity = {0, 0};                          // Bắt đầu đứng yên
-    isFacingLeft = true;                        // Không quan trọng nhưng giữ cho đồng bộ
+    velocity.y = velocityUp;
+    isFacingLeft = true;
     type = EnemyType::JUMPING_PIRANHA_PLANT;
     point = 200;
 }
@@ -27,7 +30,6 @@ void JumpingPiranhaPlant::update(const std::vector<Character*>& characterList) {
         if (state == SpriteState::INACTIVE) return;
     }
 
-    // Handle DYING logic
     if (state == SpriteState::DYING) {
         dyingFrameAcum += delta;
         if (dyingFrameAcum >= dyingFrameTime) {
@@ -44,39 +46,27 @@ void JumpingPiranhaPlant::update(const std::vector<Character*>& characterList) {
         return;
     }
 
-    // === Jumping logic ===
     if (!waiting) {
-        position.y += velocity.y * delta;
-
         if (goingUp) {
-            velocity.y *= 0.96f;
+            position.y += velocityUp * delta;
             if (position.y <= minY) {
                 position.y = minY;
-                velocity.y = 0;
                 goingUp = false;
                 waiting = true;
-                waitTimer = 0;
             }
         } else {
-            velocity.y += World::gravity * delta;
-            if (position.y >= groundY) {
-                position.y = groundY;
-                velocity.y = 0;
+            position.y += velocityDown * delta;
+            if (position.y >= maxY) {
+                position.y = maxY;
                 goingUp = true;
                 waiting = true;
-                waitTimer = 0;
             }
         }
     } else {
-        waitTimer += delta;
-        if (waitTimer >= waitDuration) {
+        waitAcum += delta;
+        if (waitAcum >= waitTime) {
+            waitAcum = 0.0f;
             waiting = false;
-            if (goingUp) {
-                velocity.y = -jumpSpeed;
-            }
-            else {
-                velocity.y = 0;
-            }
         }
     }
     updateCollisionBoxes();
@@ -113,7 +103,7 @@ void JumpingPiranhaPlant::draw() {
     Texture2D& tex = ResourceManager::getTexture()[textureKey];
 
     // Vẽ tại gốc chân (position.y là mặt ống)
-    DrawTexture(tex, static_cast<int>(position.x), static_cast<int>(position.y - tex.height), WHITE);
+    DrawTexture(tex, static_cast<int>(position.x), static_cast<int>(position.y), WHITE);
 
     // Vẽ điểm khi DYING
     if (state == SpriteState::DYING) {
@@ -143,35 +133,36 @@ void JumpingPiranhaPlant::activeWhenMarioApproach(Character& character){
 }
 
 void JumpingPiranhaPlant::collisionTile(Tile* tile) {
-    Enemy::collisionTile(tile);
+    
 }
 
 void JumpingPiranhaPlant::collisionBlock(Block* block) {
-    Enemy::collisionBlock(block);
+    
 }
 
 // ======================= SAVE GAME =========================
 json JumpingPiranhaPlant::saveToJson() const {
     json j = Enemy::saveToJson();
-
-    // j["jumpState"] = static_cast<int>(jumpState);
-    j["jumpSpeed"] = jumpSpeed;
-    j["waitDuration"] = waitDuration;
-    j["waitTimer"] = waitTimer;
-    j["groundY"] = groundY;
-    // j["maxJumpHeight"] = maxJumpHeight;
-
+    j["minY"] = minY;
+    j["maxY"] = maxY;
+    j["velocityUp"] = velocityUp;
+    j["velocityDown"] = velocityDown;
+    j["goingUp"] = goingUp;
+    j["waiting"] = waiting;
+    j["waitTime"] = waitTime;
+    j["waitAcum"] = waitAcum;
     return j;
 }
 
 void JumpingPiranhaPlant::loadFromJson(const json& j) {
     Enemy::loadFromJson(j);
-
-    // jumpState = static_cast<JumpingPiranhaState>(j["jumpState"].get<int>());
-    jumpSpeed = j["jumpSpeed"].get<float>();
-    waitDuration = j["waitDuration"].get<float>();
-    waitTimer = j["waitTimer"].get<float>();
-    groundY = j["groundY"].get<float>();
-    // maxJumpHeight = j["maxJumpHeight"].get<float>();
+    minY = j["minY"].get<float>();
+    maxY = j["maxY"].get<float>();
+    velocityUp = j["velocityUp"].get<float>();
+    velocityDown = j["velocityDown"].get<float>();
+    goingUp = j["goingUp"].get<bool>();
+    waiting = j["waiting"].get<bool>();
+    waitTime = j["waitTime"].get<float>();
+    waitAcum = j["waitAcum"].get<float>();
 }
 

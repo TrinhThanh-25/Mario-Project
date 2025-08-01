@@ -7,6 +7,7 @@
 #include "GUI/GameHud.h"
 #include <vector>
 #include <string>
+#include <memory>
 #include "json.hpp"
 #include "Game/ModeWorld.h"
 
@@ -14,6 +15,8 @@ using json = nlohmann::json;
 
 class Character;
 class GameState;
+class GameMemento;
+class GameCaretaker;
 
 class World : public GameLoop {
     private:

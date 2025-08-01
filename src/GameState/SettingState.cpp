@@ -6,6 +6,7 @@
 #include "GameState/IrisOutState.h"
 #include "GameState/TimeUpState.h"
 #include "Common/ResourceManager.h"
+#include "Common/AudioManager.h"
 #include "SaveGame.h"
 
 SettingState::SettingState(World* world)
@@ -14,8 +15,8 @@ SettingState::SettingState(World* world)
     restartButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 110, 300, 50}, "Restart", 36),
     returnButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 170, 300, 50}, "Return", 36),
     exitButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 230, 300, 50}, "Exit", 36),
-    musicVolumeSlider("MUSIC",{(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 - 50}, 300, 0.0f, 1.0f, 1.0f, 36),
-    sfxVolumeSlider("SFX",{(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 10}, 300, 0.0f, 1.0f, 1.0f, 36),
+    musicVolumeSlider("MUSIC",{(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 - 50}, 300, 0.0f, 1.0f, AudioManager::getMusicVolume(), 36),
+    sfxVolumeSlider("SFX",{(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 10}, 300, 0.0f, 1.0f, AudioManager::getSfxVolume(), 36),
     backgroundPositionx(0.0f), speed(40.0f) {
 }
 
@@ -26,6 +27,8 @@ SettingState::~SettingState() {
 void SettingState::update() {
     musicVolumeSlider.update();
     sfxVolumeSlider.update();
+    AudioManager::setMusicVolume(musicVolumeSlider.getValue());
+    AudioManager::setSfxVolume(sfxVolumeSlider.getValue());
     if(backgroundPositionx > 400) {
         speed *=(-1.0f);
     } else if(backgroundPositionx < 0) {
@@ -49,13 +52,6 @@ void SettingState::update() {
         world->resetMap();
     }
     else if(returnButton.isPressed() || IsKeyPressed(KEY_ESCAPE)) {
-        std::vector<Character*>& characters = world->getCharacters();
-        for (Character* character : characters) {
-            if(character)
-            delete character;
-            character = nullptr;
-        }
-        characters.clear();
         world->resetGame();
     }
     else if(exitButton.isPressed()) {

@@ -40,6 +40,7 @@ void Slider::update() {
             ratio = 1.0f;
         }
         handle.x = track.x + ratio * width - handle.width / 2;
+        dragging = true;
     }
 }
 

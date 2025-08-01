@@ -43,13 +43,11 @@ World::~World() {
     for (Character* character : characters) {
         if(character)
         delete character;
-        character = nullptr;
     }
     characters.clear();
     if (gameState) {
         gameState->exit();
         delete gameState;
-        gameState = nullptr;
     }
 }
 
@@ -59,7 +57,6 @@ void World::init() {
     // SetConfigFlags(FLAG_WINDOW_HIGHDPI);
     // SetConfigFlags( FLAG_FULLSCREEN_MODE );
     // SetConfigFlags( FLAG_WINDOW_UNDECORATED );
-    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     SetConfigFlags(FLAG_WINDOW_ALWAYS_RUN);
     InitWindow(width, height, title.c_str());
     SetWindowIcon(LoadImage("../resources/icon.png"));
@@ -110,7 +107,6 @@ void World::setGameState(GameState* newState) {
     if (gameState) {
         gameState->exit();
         delete gameState;
-        gameState = nullptr;
     }
     gameState = newState;
     if (gameState != nullptr) {
@@ -224,7 +220,6 @@ void World::resetGame() {
     for (Character* character : characters) {
         if(character)
         delete character;
-        character = nullptr;
     }
     characters.clear();
     map.first();
