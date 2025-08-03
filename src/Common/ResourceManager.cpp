@@ -610,6 +610,10 @@ void ResourceManager::loadTexture() {
     texture["GuiPeach"] = LoadTexture("../resources/gui/guiPeach.png");
     texture["GuiMarioStart"] = LoadTexture("../resources/gui/guiMarioStart.png");
     texture["GuiNextItem"] = LoadTexture("../resources/gui/guiNextItem.png");
+    texture["GuiNextItemMario"] = LoadTexture("../resources/gui/guiNextItemMario.png");
+    texture["GuiNextItemLuigi"] = LoadTexture("../resources/gui/guiNextItemLuigi.png");
+    texture["GuiNextItemToad"] = LoadTexture("../resources/gui/guiNextItemToad.png");
+    texture["GuiNextItemPeach"] = LoadTexture("../resources/gui/guiNextItemPeach.png");
     texture["GuiNumbersBig"] = LoadTexture("../resources/gui/guiNumbersBig.png");
     texture["GuiNumbersWhite"] = LoadTexture("../resources/gui/guiNumbersWhite.png");
     texture["GuiNumbersYellow"] = LoadTexture("../resources/gui/guiNumbersYellow.png");
@@ -652,6 +656,9 @@ void ResourceManager::loadTexture() {
     texture["GuiLuigiSecondPlayer"] = LoadTexture("../resources/gui/luigiSecondPlayer.png");
     texture["GuiToadSecondPlayer"] = LoadTexture("../resources/gui/toadSecondPlayer.png");
     texture["GuiPeachSecondPlayer"] = LoadTexture("../resources/gui/peachSecondPlayer.png");
+    texture["GuiSlider"] = LoadTexture("../resources/gui/slider.png");
+    texture["GuiSliderHandle"] = LoadTexture("../resources/gui/sliderHandle.png");
+    texture["GuiSliderHandleSelected"] = LoadTexture("../resources/gui/sliderHandleSelected.png");
 };
 
 void ResourceManager::loadSound() {

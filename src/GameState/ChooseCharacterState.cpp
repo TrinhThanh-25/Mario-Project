@@ -60,7 +60,7 @@ void ChooseCharacterState::update() {
             }
         }
         world->getMap()->loadMap(1);
-        world->getGameHud()->resetGame();
+        world->getGameHud()->reset();
         world->setModeWorld(modeWorld);
         world->setGameState(new PlayingState(world));
         return;

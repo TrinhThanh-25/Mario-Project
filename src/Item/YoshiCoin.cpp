@@ -91,7 +91,7 @@ void YoshiCoin::updateCharacter(Character *character)
     character->getGameHud()->addYoshiCoins(1);
     if (character->getGameHud()->getYoshiCoins() >= 5)
     {
-        character->getGameHud()->addLives(1);
+        character->addLives(1);
         character->getGameHud()->setYoshiCoins(0); // Reset Yoshi coins after gaining a life
     }
 }

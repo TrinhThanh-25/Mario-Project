@@ -77,6 +77,7 @@ class World : public GameLoop {
         void resetGame();
         void newGame();
         void nextMap();
+        int getMinLives();
         void resetWhenCharacterDead();
 
         void setIsClosed(bool isClosed);

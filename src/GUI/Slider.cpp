@@ -9,11 +9,11 @@ Slider::Slider(std::string sliderName, Vector2 position, float width, float minV
     float clampedValue = std::clamp(initialValue, minValue, maxValue);
     ratio = (maxValue != minValue) ? (clampedValue - minValue) / (maxValue - minValue) : 0.0f;
 
-    track = { position.x, position.y, width, 6 };
+    track = { position.x, position.y, width, 10 };
 
     float handleX = position.x + ratio * width - 10;
-    float handleY = position.y - 7;
-    handle = { handleX, handleY, 20, 20 };
+    float handleY = position.y - 1;
+    handle = { handleX, handleY, 12, 12 };
 }
 
 void Slider::update() {
@@ -45,16 +45,20 @@ void Slider::update() {
 }
 
 void Slider::draw() {
+    std::unordered_map<std::string, Texture2D>& textures = ResourceManager::getTexture();
     ResourceManager::drawBigString(sliderName, (int)(track.x - 10 - ResourceManager::getDrawBigStringWidth(sliderName, fontSize)), (int)(track.y) - ResourceManager::getDrawBigStringHeight(fontSize) / 2, fontSize);
     ResourceManager::drawBigNumber((int)(minValue + ratio * (maxValue - minValue) * 100), (int)(track.x + width + 10), (int)(track.y) - ResourceManager::getBigNumberHeight() / 2);
-    DrawRectangleRec(track, DARKGRAY);
-
+    DrawTexture(textures["GuiSlider"], (int)track.x, (int)track.y, WHITE);
     Vector2 mouse = GetMousePosition();
     bool hovered = CheckCollisionPointRec(mouse, handle);
-    Color handleColor = dragging ? ORANGE : (hovered ? LIGHTGRAY : GRAY);
-    DrawRectangleRec(handle, handleColor);
-
-    DrawRectangleLinesEx(handle, 2, BLACK);
+    Texture2D handleTexture = textures["GuiSliderHandle"];
+    if (dragging || hovered) {
+        handleTexture = textures["GuiSliderHandleSelected"];
+    }
+    DrawLineEx({track.x + 4, track.y + 3}, {handle.x + handle.width / 2, track.y + 3}, 2.0f, RED);
+    DrawLineEx({track.x + 2, track.y + 5}, {handle.x + handle.width / 2, track.y + 5}, 2.0f, RED);
+    DrawLineEx({track.x + 4, track.y + 7}, {handle.x + handle.width / 2, track.y + 7}, 2.0f, RED);
+    DrawTexture(handleTexture, (int)handle.x, (int)handle.y, WHITE);
 }
 
 float Slider::getValue() const {

@@ -4,9 +4,11 @@
 #include "Block/Block.h"
 #include "Tile/Tile.h"
 #include "Game/World.h"
+#include "Item/Item.h"
+#include "Item/ItemFactory.h"
 #include <string>
 
-Character::Character(CharacterName characterName, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed) :
+Character::Character(CharacterName characterName, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed, int initialLives) :
     Sprite(pos, dim, vel, color, 0, 2, Direction::RIGHT),
     characterName(characterName),
     modePlayer(mode),
@@ -36,7 +38,10 @@ Character::Character(CharacterName characterName, ModePlayer mode, Vector2 pos, 
     transitionCurrentIndex(0),
     oldPosition(pos),
     type(CharacterType::SMALL),
-    activateWidth(0.0f) {
+    activateWidth(0.0f),
+    powerUpItem(CharacterType::SMALL),
+    initialLives(initialLives),
+    lives(initialLives){
     setState(SpriteState::ON_GROUND);
 }
 
@@ -181,14 +186,6 @@ void Character::draw() {
     for (auto& fb : fireball) {
         fb.draw();
     }
-    north.setColor(BLUE);
-    south.setColor(BLUE);
-    west.setColor(BLUE);
-    east.setColor(BLUE);
-    north.draw();
-    south.draw();
-    west.draw();
-    east.draw();
 }
 
 bool Character::transition(float deltaTime) {
@@ -222,7 +219,7 @@ bool Character::transition(float deltaTime) {
             } else if(state == SpriteState::SUPER_TO_SMALL || state == SpriteState::FLOWER_TO_SMALL) {
                 transitionToSmall();
                 world->resumeWorld();
-                gameHud->releasePowerUpItem();
+                releasePowerUpItem();
             }
             state = previousState;
         }
@@ -243,7 +240,7 @@ bool Character::isTransitioning() const {
 void Character::movement(float deltaTime) {
     if (state != SpriteState::DYING && position.y + size.y >= map->getHeight()) {
             state = SpriteState::DYING;
-            gameHud->removeLives(1);
+            removeLives(1);
             world->playPlayerDownMusic();
             return;
     }
@@ -481,7 +478,7 @@ void Character::collisionTile(Tile* tile) {
         }
     }
     else if(tile->getType() == TileType::SOLID_ABOVE){
-        if(checkCollision(tile) == CollisionType::SOUTH&& state == SpriteState::JUMPING) {
+        if(checkCollision(tile) == CollisionType::SOUTH && velocity.y >= 0) {
             position.y = tile->getY() - size.y;
             velocity.y = 0;
             state = SpriteState::ON_GROUND;
@@ -563,7 +560,7 @@ void Character::collisionEnemy(Enemy* enemy) {
                 case CharacterType::SMALL:
                     state = SpriteState::DYING;
                     world->playPlayerDownMusic();
-                    gameHud->removeLives(1);
+                    removeLives(1);
                     break;
                 case CharacterType::SUPER:
                     PlaySound(ResourceManager::getSound()["Pipe"]);
@@ -625,8 +622,10 @@ SpriteState Character::getPreviousState() const {
 void Character::reset(bool isPowerOff) {
     if(isPowerOff) {
         transitionToSmall();
+        powerUpItem = CharacterType::SMALL;
     }
     velocity = {0, 0};
+    dyingSpeed = -600;
     state = SpriteState::ON_GROUND;
     direction = Direction::RIGHT;
     isDucking = false;
@@ -635,10 +634,6 @@ void Character::reset(bool isPowerOff) {
     invulnerableAcum = 0.0f;
     invulnerableBlink = false;
     fireball.clear();
-}
-
-void Character::resetGame() {
-    reset(true);
 }
 
 GameHud *Character::getGameHud() const
@@ -654,6 +649,106 @@ Map *Character::getMap() const
 World *Character::getWorld() const
 {
     return world;
+}
+
+void Character::drawGameHud() const {
+    std::unordered_map<std::string, Texture2D>& textures = ResourceManager::getTexture();\
+    if(modePlayer == ModePlayer::ONEPLAYER) {
+        DrawTexture( textures["Gui" + name], 34, 32, WHITE );
+        DrawTexture( textures["GuiX"], 54, 49, WHITE );
+        ResourceManager::drawWhiteSmallNumber( lives < 0 ? 0 : lives, 68, 49 );
+
+        if ( powerUpItem == CharacterType::SUPER ) {
+            DrawTexture( textures["Mushroom"], GetScreenWidth() / 2 - textures["Mushroom"].width / 2, 32, WHITE );
+        } else if ( powerUpItem == CharacterType::FLOWER ) {
+            DrawTexture( textures["FireFlower0"], GetScreenWidth() / 2 - textures["FireFlower0"].width / 2, 32, WHITE );
+        }
+        DrawTexture( textures["GuiNextItem" + name], GetScreenWidth() / 2 - textures["GuiNextItem" + name].width / 2, 20, WHITE );
+    }
+    else if (modePlayer == ModePlayer::FIRSTPLAYER) {
+        if ( powerUpItem == CharacterType::SUPER ) {
+            DrawTexture( textures["Mushroom"], GetScreenWidth() / 2 - textures["Mushroom"].width / 2 - 100, 32, WHITE );
+        } else if ( powerUpItem == CharacterType::FLOWER ) {
+            DrawTexture( textures["FireFlower0"], GetScreenWidth() / 2 - textures["FireFlower0"].width / 2 - 100, 32, WHITE );
+        }
+        DrawTexture( textures["GuiNextItem" + name], GetScreenWidth() / 2 - textures["GuiNextItem" + name].width / 2 - 100, 20, WHITE );
+        
+        DrawTexture( textures["Gui" + name], GetScreenWidth() / 2 - textures["Mushroom"].width / 2 - 100 - 80 - 50, 32, WHITE );
+        DrawTexture( textures["GuiX"], GetScreenWidth() / 2 - textures["Mushroom"].width / 2 - 100 - 80 - 50 + 20, 49, WHITE );
+        ResourceManager::drawWhiteSmallNumber( lives < 0 ? 0 : lives, GetScreenWidth() / 2 - textures["Mushroom"].width / 2 - 100 - 80 - 50 + 34, 49 );
+    }
+    else if (modePlayer == ModePlayer::SECONDPLAYER) {
+        if ( powerUpItem == CharacterType::SUPER ) {
+            DrawTexture( textures["Mushroom"], GetScreenWidth() / 2 - textures["Mushroom"].width / 2 + 100, 32, WHITE );
+        } else if ( powerUpItem == CharacterType::FLOWER ) {
+            DrawTexture( textures["FireFlower0"], GetScreenWidth() / 2 - textures["FireFlower0"].width / 2 + 100, 32, WHITE );
+        }
+        DrawTexture( textures["GuiNextItem" + name], GetScreenWidth() / 2 - textures["GuiNextItem" + name].width / 2 + 100, 20, WHITE );
+        
+        DrawTexture( textures["Gui" + name], GetScreenWidth() / 2 - textures["Mushroom"].width / 2 + 100 + 56 + 50, 32, WHITE );
+        DrawTexture( textures["GuiX"], GetScreenWidth() / 2 - textures["Mushroom"].width / 2 + 100 + 56 + 50 + 20, 49, WHITE );
+        ResourceManager::drawWhiteSmallNumber( lives < 0 ? 0 : lives, GetScreenWidth() / 2 - textures["Mushroom"].width / 2 + 100 + 56 + 50 + 34, 49 );
+    }
+}
+
+void Character::setLives(int lives) {
+    if(lives < 0) {
+        this->lives = 0;
+    } else {
+        this->lives = lives;
+    }
+}
+
+int Character::getLives() const {
+    return this->lives;
+}
+
+void Character::addLives(int lives) {
+    this->lives += lives;
+}
+
+void Character::removeLives(int lives) {
+    this->lives -= lives;
+    if(this->lives < 0) {
+        this->lives = 0;
+    }
+}
+
+void Character::setPowerUpItem(CharacterType type) {
+    this->powerUpItem = type;
+}
+
+CharacterType Character::getPowerUpItem() const {
+    return this->powerUpItem;
+}
+
+void Character::releasePowerUpItem() {
+    //
+    Item* item = nullptr;
+
+    if(powerUpItem == CharacterType::SUPER) {
+        Vector2 position = GetScreenToWorld2D({(float) GetScreenWidth() / 2 - ResourceManager::getTexture()["Mushroom"].width / 2, 32}, *world->getCamera());
+        item = ItemFactory::createItem(ItemType::MUSHROOM, Source::INVENTORY, position, Direction::RIGHT);
+    } else if(powerUpItem == CharacterType::FLOWER) {
+        Vector2 position = GetScreenToWorld2D({(float) GetScreenWidth() / 2 - ResourceManager::getTexture()["FireFlower0"].width / 2, 32}, *world->getCamera());
+        item = ItemFactory::createItem(ItemType::FLOWER, Source::INVENTORY, position, Direction::RIGHT);
+    }
+    powerUpItem = CharacterType::SMALL;   
+
+    if(item) {
+        item->setState(SpriteState::ACTIVE);
+        item->setDirection(Direction::RIGHT);
+        map->getItem().push_back(item);
+        PlaySound(ResourceManager::getSound()["ReleasePowerUpItem"]);
+    }
+}
+
+void Character::setInitialLives(int lives) {
+    if(lives < 0) {
+        this->lives = 0;
+    } else {
+        this->lives = lives;
+    }
 }
 
 json Character::saveToJson() const {
@@ -692,6 +787,9 @@ json Character::saveToJson() const {
         j["fireball"].push_back(fb.saveToJson());
     }
     j["previousState"] = static_cast<int>(previousState);
+    j["lives"] = lives;
+    j["powerUpItem"] = static_cast<int>(powerUpItem);
+    j["initialLives"] = initialLives;
     return j;
 }
 
@@ -736,4 +834,7 @@ void Character::loadFromJson(const json& j) {
         fireball.push_back(fireballInstance);
     }
     previousState = static_cast<SpriteState>(j["previousState"].get<int>());
+    lives = j["lives"].get<int>();
+    powerUpItem = static_cast<CharacterType>(j["powerUpItem"].get<int>());
+    initialLives = j["initialLives"].get<int>();
 }
