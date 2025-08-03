@@ -13,6 +13,7 @@ PiranhaPlant::PiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
 {
     // Piranha luôn đứng yên tại chỗ (không cần gravity hay movement)
     setState(SpriteState::INACTIVE);
+    auxiliaryState = SpriteState::INVULNERABLE;
     velocity = { 0, 0 };
     isFacingLeft = true;
     type = EnemyType::PIRANHA_PLANT;

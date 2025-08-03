@@ -135,15 +135,18 @@ void TitleScreenState::update() {
     if(onePlayerGameButton.isPressed() || (IsKeyPressed(KEY_ENTER) && onePlayerGameButton.isSelected())) {
         ChooseCharacterState* newState = new ChooseCharacterState(world);
         newState->setModeWorld(ModeWorld::SINGLEPLAYER);
+        world->setGamePlay(GamePlay::PLAYDEVELOPEDMAP);
         world->setGameState(newState);
     }
     else if(twoPlayersGameButton.isPressed() || (IsKeyPressed(KEY_ENTER) && twoPlayersGameButton.isSelected())) {
         ChooseCharacterState* newState = new ChooseCharacterState(world);
         newState->setModeWorld(ModeWorld::MULTIPLAYER);
+        world->setGamePlay(GamePlay::PLAYDEVELOPEDMAP);
         world->setGameState(newState);
     }
     else if((continueButton.isPressed() || (IsKeyPressed(KEY_ENTER) && continueButton.isSelected())) && isSavedGameAvailable) {
         SaveGame::loadGame(*world);
+        world->setGamePlay(GamePlay::PLAYDEVELOPEDMAP);
     }
     else if(exitButton.isPressed() || (IsKeyPressed(KEY_ENTER) && exitButton.isSelected())) {
         world->setIsClosed(true);

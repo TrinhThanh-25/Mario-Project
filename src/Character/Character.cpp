@@ -41,7 +41,9 @@ Character::Character(CharacterName characterName, ModePlayer mode, Vector2 pos, 
     activateWidth(0.0f),
     powerUpItem(CharacterType::SMALL),
     initialLives(initialLives),
-    lives(initialLives){
+    lives(initialLives),
+    creativeMode(false),
+    invulnerableMode(false) {
     setState(SpriteState::ON_GROUND);
 }
 
@@ -239,10 +241,20 @@ bool Character::isTransitioning() const {
 
 void Character::movement(float deltaTime) {
     if (state != SpriteState::DYING && position.y + size.y >= map->getHeight()) {
+        if(world->getGameMode() == GameMode::TESTER && creativeMode) {
+            position.y = map->getHeight() - size.y;
+            velocity.y = 0;
+        } else {   
             state = SpriteState::DYING;
-            removeLives(1);
-            world->playPlayerDownMusic();
+            if(world->getGameMode() == GameMode::TESTER) {
+                map->reset();
+                reset(true);
+            } else {
+                world->playPlayerDownMusic();
+                removeLives(1);
+            }
             return;
+        }
     }
     KeyboardKey up, down, left, right, control;
     if(modePlayer == ModePlayer::ONEPLAYER) {
@@ -304,8 +316,100 @@ void Character::movement(float deltaTime) {
             frameAcum = 0.0f;
         }
     }
-    if(IsKeyDown(left) || IsKeyDown(right)) {
+    if(world->getGameMode() == GameMode::TESTER && creativeMode) {
+        float creativeSpeed = 260.0f;
+        float creativeFastSpeed = 400.0f;
+        float currentCreativeSpeed = isRunning ? creativeFastSpeed : creativeSpeed;
+        
+        velocity.x = 0;
+        velocity.y = 0;
+        
         if(IsKeyDown(left) && IsKeyDown(right)) {
+            
+        } else if(IsKeyDown(right)) {
+            velocity.x = currentCreativeSpeed;
+            direction = Direction::RIGHT;
+        } else if(IsKeyDown(left)) {
+            velocity.x = -currentCreativeSpeed;
+            direction = Direction::LEFT;
+        }
+        
+        if(IsKeyDown(up) && IsKeyDown(down)) {
+            
+        } else if(IsKeyDown(up)) {
+            velocity.y = -currentCreativeSpeed;
+        } else if(IsKeyDown(down)) {
+            velocity.y = currentCreativeSpeed;
+        }
+        
+        if(velocity.x != 0 || velocity.y != 0) {
+            if (frameAcum >= frameTimeWalking) {
+                curFrame = (curFrame + 1) % maxFrame;
+                frameAcum = 0.0f;
+            }
+        } else {
+            curFrame = 0;
+        }
+        
+        position.x += velocity.x * deltaTime;
+        position.y += velocity.y * deltaTime;
+        
+        if(position.x < 0) position.x = 0;
+        if(position.y < 0) position.y = 0;
+        if(position.x + size.x > map->getWidth()) position.x = map->getWidth() - size.x;
+        if(position.y > map->getHeight() + 200) position.y = map->getHeight() + 200;
+        
+        if(velocity.y < 0) {
+            state = SpriteState::JUMPING;
+        } else if(velocity.y > 0) {
+            state = SpriteState::FALLING;
+        } else {
+            state = SpriteState::ON_GROUND;
+        }
+    }
+    else {
+        if(IsKeyDown(left) || IsKeyDown(right)) {
+            if(IsKeyDown(left) && IsKeyDown(right)) {
+                walkingAcum = 0.0f;
+                if(velocity.x>=-10 && velocity.x<=10) {
+                    velocity.x = 0;
+                }
+                else {  
+                    velocity.x *= 0.9f;
+                }
+            } 
+            else if(IsKeyDown(right)) {
+                walkingAcum += deltaTime;
+                direction = Direction::RIGHT;
+                if(isRunning) {
+                    if(drawRunning) {
+                        velocity.x = maxSpeed * 1.3f * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+                    }
+                    else {
+                        velocity.x = maxSpeed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+                    }
+                }
+                else {
+                    velocity.x = speed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+                }
+            }
+            else if(IsKeyDown(left)) {
+                walkingAcum += deltaTime;
+                direction = Direction::LEFT;
+                if(isRunning) {
+                    if(drawRunning) {
+                        velocity.x = -maxSpeed * 1.3f * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+                    }
+                    else {
+                        velocity.x = -maxSpeed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+                    }
+                }
+                else {
+                    velocity.x = -speed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+                }
+            }
+        } 
+        else {
             walkingAcum = 0.0f;
             if(velocity.x>=-10 && velocity.x<=10) {
                 velocity.x = 0;
@@ -313,61 +417,22 @@ void Character::movement(float deltaTime) {
             else {
                 velocity.x *= 0.9f;
             }
-        } 
-        else if(IsKeyDown(right)) {
-            walkingAcum += deltaTime;
-            direction = Direction::RIGHT;
-            if(isRunning) {
-                if(drawRunning) {
-                    velocity.x = maxSpeed * 1.3f * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
-                }
-                else {
-                    velocity.x = maxSpeed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
-                }
-            }
-            else {
-                velocity.x = speed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
-            }
         }
-        else if(IsKeyDown(left)) {
-            walkingAcum += deltaTime;
-            direction = Direction::LEFT;
-            if(isRunning) {
-                if(drawRunning) {
-                    velocity.x = -maxSpeed * 1.3f * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
-                }
-                else {
-                    velocity.x = -maxSpeed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
-                }
+        if(state==SpriteState::ON_GROUND) {
+            if(IsKeyDown(down)) {
+                isDucking = true;
+                velocity.x = 0;
+            } else {
+                isDucking = false;
             }
-            else {
-                velocity.x = -speed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
-            }
-        }
-    } 
-    else {
-        walkingAcum = 0.0f;
-        if(velocity.x>=-10 && velocity.x<=10) {
-            velocity.x = 0;
-        }
-        else {
-            velocity.x *= 0.9f;
-        }
-    }
-    if(state==SpriteState::ON_GROUND) {
-        if(IsKeyDown(down)) {
-            isDucking = true;
-            velocity.x = 0;
         } else {
             isDucking = false;
         }
-    } else {
-        isDucking = false;
-    }
-    if(IsKeyPressed(up) && state == SpriteState::ON_GROUND) {
-        velocity.y = jumpSpeed;
-        state = SpriteState::JUMPING;
-        PlaySound(ResourceManager::getSound()["Jump"]);
+        if(IsKeyPressed(up) && state == SpriteState::ON_GROUND) {
+            velocity.y = jumpSpeed;
+            state = SpriteState::JUMPING;
+            PlaySound(ResourceManager::getSound()["Jump"]);
+        }
     }
     if(IsKeyPressed(control) && type==CharacterType::FLOWER) {
         if(direction == Direction::RIGHT) {
@@ -377,11 +442,14 @@ void Character::movement(float deltaTime) {
         }
         PlaySound(ResourceManager::getSound()["Fireball"]);
     }
-    position.x += velocity.x * deltaTime;
-    position.y += velocity.y * deltaTime;
-    velocity.y += World::gravity * deltaTime; 
-    if(oldPosition.y < position.y) {
-        state = SpriteState::FALLING;
+    
+    if(!(world->getGameMode() == GameMode::TESTER && creativeMode)) {
+        position.x += velocity.x * deltaTime;
+        position.y += velocity.y * deltaTime;
+        velocity.y += World::gravity * deltaTime; 
+        if(oldPosition.y < position.y) {
+            state = SpriteState::FALLING;
+        }
     }
     oldPosition = position;
 }
@@ -431,19 +499,17 @@ CollisionType Character::checkCollisionEnemy(Sprite* sprite) {
             return CollisionType::FIREBALL;
         }
     }
-    if(state == SpriteState::JUMPING || velocity.y > 0) {
-        if(north.checkCollision(rect)) {
-            return CollisionType::NORTH;
-        }
-        else if(south.checkCollision(rect)) {
-            return CollisionType::SOUTH;
-        }
-        else if(west.checkCollision(rect)) {
-            return CollisionType::WEST;
-        }
-        else if(east.checkCollision(rect)) {
-            return CollisionType::EAST;
-        }
+    if(north.checkCollision(rect)) {
+        return CollisionType::NORTH;
+    }
+    else if(south.checkCollision(rect)) {
+        return CollisionType::SOUTH;
+    }
+    else if(west.checkCollision(rect)) {
+        return CollisionType::WEST;
+    }
+    else if(east.checkCollision(rect)) {
+        return CollisionType::EAST;
     }
     return CollisionType::NONE;
 }
@@ -540,7 +606,7 @@ void Character::collisionEnemy(Enemy* enemy) {
             PlaySound(ResourceManager::getSound()["Stomp"]);
             gameHud->addPoints(enemy->getPoint());
         }
-        else if( enemy->getAuxiliaryState() != SpriteState::INVULNERABLE && collision == CollisionType::SOUTH ) {
+        else if(collision == CollisionType::SOUTH && enemy->getAuxiliaryState() != SpriteState::INVULNERABLE) {
             if( state == SpriteState::FALLING && enemy->getState() != SpriteState::DYING && enemy->getState() != SpriteState::TO_BE_REMOVED) {
                 position.y = enemy->getY() - size.y;
                 if(((modePlayer == ModePlayer::FIRSTPLAYER || modePlayer == ModePlayer::ONEPLAYER) && IsKeyDown(KEY_LEFT_CONTROL)) || (modePlayer == ModePlayer::SECONDPLAYER && IsKeyDown(KEY_RIGHT_CONTROL))) {
@@ -558,17 +624,31 @@ void Character::collisionEnemy(Enemy* enemy) {
         else if( collision != CollisionType::NONE && invulnerable == false ) {
             switch(type) {
                 case CharacterType::SMALL:
+                    if(world->getGameMode() == GameMode::TESTER && invulnerableMode) {
+                        break;
+                    }
                     state = SpriteState::DYING;
-                    world->playPlayerDownMusic();
-                    removeLives(1);
+                    if(world->getGameMode() == GameMode::TESTER) {
+                        map->reset();
+                        reset(true);
+                    } else {
+                        world->playPlayerDownMusic();
+                        removeLives(1);
+                    }
                     break;
                 case CharacterType::SUPER:
+                    if(world->getGameMode() == GameMode::TESTER && invulnerableMode) {
+                        break;
+                    }
                     PlaySound(ResourceManager::getSound()["Pipe"]);
                     previousState = state;
                     state = SpriteState::SUPER_TO_SMALL;
                     invulnerable = true;
                     break;
                 case CharacterType::FLOWER:
+                    if(world->getGameMode() == GameMode::TESTER && invulnerableMode) {
+                        break;
+                    }
                     PlaySound(ResourceManager::getSound()["Pipe"]);
                     previousState = state;
                     state = SpriteState::FLOWER_TO_SMALL;
@@ -837,4 +917,84 @@ void Character::loadFromJson(const json& j) {
     lives = j["lives"].get<int>();
     powerUpItem = static_cast<CharacterType>(j["powerUpItem"].get<int>());
     initialLives = j["initialLives"].get<int>();
+}
+
+void Character::setCreativeMode(bool creative) {
+    this->creativeMode = creative;
+}
+
+bool Character::isCreativeMode() const {
+    return this->creativeMode;
+}
+
+void Character::setInvulnerableMode(bool invulnerable) {
+    this->invulnerableMode = invulnerable;
+}
+
+bool Character::isInvulnerableMode() const {
+    return this->invulnerableMode;
+}
+
+void Character::setCharacterName(CharacterName name) {
+    this->characterName = name;
+}
+
+CharacterName Character::getCharacterName() const {
+    return this->characterName;
+}
+
+GameMode Character::getGameMode() const {
+    return world->getGameMode();
+}
+
+void Character::copyState(const Character& other) {
+    position = other.position;
+    velocity = other.velocity;
+    state = other.state;
+    auxiliaryState = other.auxiliaryState;
+    direction = other.direction;
+    frameAcum = other.frameAcum;
+    curFrame = other.curFrame;
+    world = other.world;
+    map = other.map;
+    gameHud = other.gameHud;
+    modePlayer = other.modePlayer;
+    speed = other.speed;
+    maxSpeed = other.maxSpeed;
+    jumpSpeed = other.jumpSpeed;
+    dyingSpeed = other.dyingSpeed;
+    isRunning = other.isRunning;
+    isDucking = other.isDucking;
+    frameTimeWalking = other.frameTimeWalking;
+    walkingAcum = other.walkingAcum;
+    frameTimeRunning = other.frameTimeRunning;
+    walkingBeforeRunningTime = other.walkingBeforeRunningTime;
+    walkingBeforeRunningAcum = other.walkingBeforeRunningAcum;
+    drawRunning = other.drawRunning;
+    invulnerable = other.invulnerable;
+    invulnerableTime = other.invulnerableTime;
+    invulnerableAcum = other.invulnerableAcum;
+    invulnerableBlink = other.invulnerableBlink;
+    invincible = other.invincible;
+    invincibleTime = other.invincibleTime;
+    invincibleAcum = other.invincibleAcum;
+    transitionTime = other.transitionTime;
+    transitionAcum = other.transitionAcum;
+    normalTransitionSteps = other.normalTransitionSteps;
+    superToFlowerTransitionSteps = other.superToFlowerTransitionSteps;
+    transitionCurrentFrame = other.transitionCurrentFrame;
+    transitionCurrentIndex = other.transitionCurrentIndex;
+    oldPosition.x = other.oldPosition.x;
+    oldPosition.y = other.oldPosition.y;
+    type = other.type;
+    if(type == CharacterType::FLOWER) {
+        transitionToFlower();
+    } else if(type == CharacterType::SUPER) {
+        transitionToSuper();
+    }
+    previousState = other.previousState;
+    lives = other.lives;
+    powerUpItem = other.powerUpItem;
+    creativeMode = other.creativeMode;
+    invulnerableMode = other.invulnerableMode;
 }

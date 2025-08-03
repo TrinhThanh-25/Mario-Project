@@ -23,6 +23,7 @@ class Map : virtual public Drawable {
         World* world;
 
         int mapNumber;
+        std::string mapFileName;
         int maxMapNumber;
         int width;
         int height;
@@ -40,10 +41,12 @@ class Map : virtual public Drawable {
         std::vector<Enemy*> frontEnemy;
         std::vector<Item*> item;
         std::vector<Item*> staticItem;
+        bool netMode = false;
     public:
         Map(std::vector<Character*>& characters, World* world, int mapNumber);
         ~Map() override;
         void loadMap(int mapnumber);
+        void loadMap(const std::string& mapFileName);
         void setCharacters(std::vector<Character*>& characters);
         void draw() override;
         void setOffset(float offset);
@@ -71,6 +74,8 @@ class Map : virtual public Drawable {
 
         json saveToJson() const;
         void loadFromJson(const json& j);
+
+        void setNetMode(bool net);
 };
 
 #endif

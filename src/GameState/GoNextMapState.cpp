@@ -35,6 +35,10 @@ void GoNextMapState::update() {
         isIrisOutFinished = true;
     } 
     if(isIrisOutFinished) {
+        if(world->getGamePlay() == GamePlay::PLAYCUSTOMMAP) {
+            world->setGameState(new FinishedState(world));
+            return;
+        }
         world->nextMap();
     }
 }

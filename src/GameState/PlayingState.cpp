@@ -18,6 +18,7 @@ PlayingState::PlayingState(World* world)
     gameHud(world->getGameHud()),
     pausedForTransition(world->getPausedForTransition()),
     pausedUpdateCharacters(world->getPausedUpdateCharacters()) {
+        world->setGameMode(GameMode::PLAYER);
 }
 
 PlayingState::~PlayingState() {
@@ -130,7 +131,6 @@ void PlayingState::update() {
             for (auto& character : characters) {
                 if((!isOneCharactersDead() || (isOneCharactersDead() && character->getState() == SpriteState::DYING)) && character->getState() != SpriteState::VICTORY) {
                     character->update();
-                    character->setActivateWidth(GetScreenWidth() * 2.0f);
                 }
             }
         }

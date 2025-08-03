@@ -32,16 +32,21 @@ Map::~Map() {
 }
 
 void Map::loadMap(int mapNumber) {
-    clear();
-    background = ResourceManager::getTexture()["Background1"];
+    background = ResourceManager::getTexture()["Background" + std::to_string(mapNumber)];
     backgroundColor = WHITE;
     backgroundID = mapNumber;
     musicID = mapNumber;
-    char* map = nullptr;
-    std::string mapFileName = "../resources/Map/map" +std::to_string(mapNumber) + ".json";
-    std::ifstream file(mapFileName);
+    loadMap("Map" + std::to_string(mapNumber));
+    this->mapNumber = mapNumber;
+}
+
+void Map::loadMap(const std::string& mapFileName) {
+    clear();
+    this->mapFileName = mapFileName;
+    std::string fileName = "../resources/Map/" + mapFileName + ".json";
+    std::ifstream file(fileName);
 	if (!file) {
-		std::cerr << "Could not open json file " << mapFileName << std::endl;
+		std::cerr << "Could not open json file " << fileName << std::endl;
 		return;
 	}
 	nlohmann::json mapJson;
@@ -520,13 +525,15 @@ void Map::setCharacters(std::vector<Character*>& characters) {
 }
 
 void Map::draw() {
-    background = ResourceManager::getTexture()["Background" + std::to_string(backgroundID)];
-    DrawRectangle(0, 0, width, height, backgroundColor);
-    int repeat = width / background.width + 2;
-    if ( backgroundID > 0 ) {
+    if(world->getGamePlay() == GamePlay::PLAYDEVELOPEDMAP) {
+        background = ResourceManager::getTexture()["Background" + std::to_string(backgroundID)];
+        DrawRectangle(0, 0, width, height, backgroundColor);
+        int repeat = width / background.width + 2;
+        if ( backgroundID > 0 ) {
         for ( int i = 0; i <= repeat; i++ ) {
             DrawTexture(background,-background.width + i * background.width + offset * 0.5, height - background.height, WHITE );
         }
+    }
     }
     for (auto& bT : backTile) {
         bT->draw();
@@ -557,6 +564,16 @@ void Map::draw() {
     }
     for (auto& fT : frontTile) {
         fT->draw();
+    }
+    if (netMode) {
+        int columns = width / 32;
+        int lines = height / 32;
+        for ( int i = 0; i < lines; i++ ) {
+            DrawLine( 0, i * 32, width, i * 32, BLACK );
+        }
+        for ( int i = 0; i < columns; i++ ) {
+            DrawLine( i * 32, 0, i * 32, height, BLACK );
+        }
     }
 }
 
@@ -662,10 +679,9 @@ void Map::showMessage() {
 }
 
 void Map::reset() {
-    clear();
     StopMusicStream(ResourceManager::getMusic()["Invincible"]);
     StopMusicStream(ResourceManager::getMusic()["Music" + std::to_string(musicID)]);
-    loadMap(mapNumber);
+    loadMap(mapFileName);
 }
 
 bool Map::next() {
@@ -719,6 +735,7 @@ void Map::stopMusic() {
 
 json Map::saveToJson() const {
     json j;
+    j["mapFileName"] = mapFileName;
     j["offset"] = offset;
     j["mapNumber"] = mapNumber;
     j["maxMapNumber"] = maxMapNumber;
@@ -772,6 +789,7 @@ json Map::saveToJson() const {
 }
 
 void Map::loadFromJson(const json& j) {
+    mapFileName = j.at("mapFileName").get<std::string>();
     offset = j.at("offset").get<float>();
     mapNumber = j.at("mapNumber").get<int>();
     maxMapNumber = j.at("maxMapNumber").get<int>();
@@ -854,4 +872,8 @@ void Map::loadFromJson(const json& j) {
         sI->loadFromJson(sIJson);
         staticItem.push_back(sI);
     }
+}
+
+void Map::setNetMode(bool netMode) {
+    this->netMode = netMode;
 }

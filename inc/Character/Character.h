@@ -4,6 +4,7 @@
 #include "Character/Fireball.h"
 #include "Character/CharacterType.h"
 #include "Character/CharacterName.h"
+#include "Game/GameMode.h"
 #include "raylib.h"
 #include <vector>
 #include <string>
@@ -84,6 +85,9 @@ class Character : public Sprite {
         int lives;
         CharacterType powerUpItem;
         int initialLives = 5;
+
+        bool creativeMode;
+        bool invulnerableMode;
     public:
         Character(CharacterName characterName, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed, int initialLives);
         virtual ~Character() override;
@@ -141,6 +145,16 @@ class Character : public Sprite {
 
         json saveToJson() const override;
         void loadFromJson(const json& j) override;
+
+        void setCreativeMode(bool creative);
+        bool isCreativeMode() const;
+        void setInvulnerableMode(bool invulnerable);
+        bool isInvulnerableMode() const;
+        void setCharacterName(CharacterName name);
+        CharacterName getCharacterName() const;
+        GameMode getGameMode() const;
+
+        void copyState(const Character& other);
 };
 
 #endif
