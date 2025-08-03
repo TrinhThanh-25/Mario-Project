@@ -61,7 +61,8 @@ void Enemy::collisionBlock(Block* block){
 }
 
 void Enemy::collisionTile(Tile* tile) {
-    switch (checkCollision(tile)) {
+    if(state != SpriteState::DYING && state != SpriteState::TO_BE_REMOVED && (tile->getType() == TileType::SOLID || tile->getType() == TileType::SOLID_ABOVE || tile->getType() == TileType::SOLID_ONLY_ENEMY)) {
+        switch (checkCollision(tile)) {
         case CollisionType::SOUTH:
             position.y = tile->getY() - size.y;
             velocity.y = 0;
@@ -88,6 +89,7 @@ void Enemy::collisionTile(Tile* tile) {
 
         default:
             break;
+        }
     }
 }
 

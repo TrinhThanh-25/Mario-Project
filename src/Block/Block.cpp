@@ -29,6 +29,7 @@ void Block::resetHit() {
 BlockType Block::getBlockType() {
     return blockType;
 }
+
 json Block::saveToJson() const {
 	json j = Sprite::saveToJson();
 	j["blockType"] = static_cast<int>(blockType);

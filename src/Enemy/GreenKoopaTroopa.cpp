@@ -53,6 +53,8 @@ void GreenKoopaTroopa::update(const std::vector<Character*>& characterList) {
             setState(SpriteState::ACTIVE);
             velocity.x = isFacingLeft ? -50.0f : 50.0f;
             shellTimer = 0.0f;
+            shellMoving = false;
+            setSize({32, 54});
         }
     }
 
@@ -85,20 +87,34 @@ void GreenKoopaTroopa::update(const std::vector<Character*>& characterList) {
 
 void GreenKoopaTroopa::draw() {
     std::string textureKey;
-    int frame = (int)(GetTime() * 6) % 2;
 
     if (state == SpriteState::ACTIVE) {
-        textureKey = isFacingLeft ? (frame == 0 ? "GreenKoopaTroopa0Left" : "GreenKoopaTroopa1Left")
-                                  : (frame == 0 ? "GreenKoopaTroopa0Right" : "GreenKoopaTroopa1Right");
+        int walkFrame = ((int)(GetTime() * 6)) % 2;
+        textureKey = isFacingLeft
+            ? (walkFrame == 0 ? "GreenKoopaTroopa0Left" : "GreenKoopaTroopa1Left")
+            : (walkFrame == 0 ? "GreenKoopaTroopa0Right" : "GreenKoopaTroopa1Right");
     }
 
-    // Bạn có thể thêm shell / dying nếu có sprite riêng
-    DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
+    else if (state == SpriteState::SHELL || state == SpriteState::SHELL_MOVING) {
+        if (shellMoving) {
+            // SHELL_MOVING: quay liên tục với 8 frame
+            int spinFrame = ((int)(GetTime() * 12)) % 8;
+            textureKey = "GreenKoopaShield" + std::to_string(spinFrame);
+        } else {
+            // SHELL: đứng yên
+            textureKey = "GreenKoopaShield0";
+        }
+    }
+
+    else if (state == SpriteState::DYING) {
+        textureKey = isFacingLeft ? "GreenKoopaTroopa1Left" : "GreenKoopaTroopa1Right";
+    }
+
+    if (!textureKey.empty()) {
+        DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
+    }
 
     if (state == SpriteState::DYING) {
-        std::string dyingKey = isFacingLeft ? "GreenKoopaTroopa1Left" : "GreenKoopaTroopa1Right";
-        DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
-
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
         float angle = sin(GetTime() * 10.0f) * 10.0f;
 
@@ -120,11 +136,13 @@ void GreenKoopaTroopa::draw() {
 }
 
 
+
 void GreenKoopaTroopa::beingHit(HitType type) {
     switch (type) {
         case HitType::STOMP:
             if (state == SpriteState::ACTIVE) {
                 setState(SpriteState::SHELL);
+                setSize({32, 32});
                 velocity.x = 0;
                 shellMoving = false;
                 shellTimer = 0.0f;

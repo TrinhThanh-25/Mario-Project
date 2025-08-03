@@ -2,11 +2,11 @@
 #include "Game/World.h"
 
 CourseClearToken::CourseClearToken(Vector2 position, Vector2 size, Color color):
-    Item(position, size, {0, 200}, color, 0.0f, 0, Direction::RIGHT, 0.1f, 4, false),
-    minY(position.y),
-    maxY(minY + 8 * size.y),
+    Item(position, size, {0, -200}, color, 0.0f, 0, Direction::RIGHT, 0.1f, 4, false),
     points(8000)
 {
+    maxY = position.y;
+    minY = maxY - 8 * size.y;
     type = ItemType::COURSE_CLEAR_TOKEN;
 }
 

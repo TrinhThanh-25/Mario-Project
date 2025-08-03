@@ -18,7 +18,9 @@ ChooseCharacterState::ChooseCharacterState(World* world)
 
 ChooseCharacterState::~ChooseCharacterState() {
     for (CharacterTag* tag : characterTags) {
+        if(tag)
         delete tag;
+        tag = nullptr;
     }
     characterTags.clear();
 }
@@ -58,7 +60,7 @@ void ChooseCharacterState::update() {
             }
         }
         world->getMap()->loadMap(1);
-        world->getGameHud()->resetGame();
+        world->getGameHud()->reset();
         world->setModeWorld(modeWorld);
         world->setGameState(new PlayingState(world));
         return;

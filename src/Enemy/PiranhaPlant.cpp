@@ -3,22 +3,18 @@
 
 
 PiranhaPlant::PiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
-    : Enemy(EnemyType::PIRANHA_PLANT, pos, dim, vel, color)
+    : Enemy(EnemyType::PIRANHA_PLANT, pos, dim, vel, color),
+    minY(pos.y - dim.y),
+    maxY(pos.y),
+    velocityUp(80.0f),
+    waitTime(2.0f), 
+    waitAcum(0.0f),
+    waiting(false)
 {
     // Piranha luôn đứng yên tại chỗ (không cần gravity hay movement)
-    setState(SpriteState::INACTIVE);          // ACTIVE để tham gia vòng lặp update
-    piranhaState = PiranhaState::HIDING;
-
-    hiddenY = pos.y;                        // Vị trí y khi ẩn hoàn toàn
-    shownY = pos.y - dim.y;                 // Vị trí y khi trồi lên (tùy dim của bạn)
-
-    riseSpeed = 30.0f;                      // Tốc độ trồi lên/hạ xuống (có thể chỉnh)
-    stateDuration = 1.5f;                   // Thời gian delay giữa các pha (có thể chỉnh)
-    stateTimer = 0.0f;
-
-    position.y = hiddenY;                   // Bắt đầu ở trạng thái ẩn
-    velocity = { 0, 0 };                    // Không di chuyển theo X/Y
-    isFacingLeft = true;                    // Không quan trọng, vẫn cần nếu dùng chung Enemy
+    setState(SpriteState::INACTIVE);
+    velocity = { 0, 0 };
+    isFacingLeft = true;
     type = EnemyType::PIRANHA_PLANT;
     point = 200;
 }
@@ -26,8 +22,8 @@ PiranhaPlant::PiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
 
 void PiranhaPlant::draw() {
     std::string textureKey;
-
-    if (piranhaState == PiranhaState::HIDING || piranhaState == PiranhaState::LOWERING) {
+    int frame = static_cast<int>(GetTime() * 6) % 2;
+    if (frame == 0) {
         textureKey = "PiranhaPlant1";
     } else {
         textureKey = "PiranhaPlant0";
@@ -69,7 +65,6 @@ void PiranhaPlant::update(const std::vector<Character*>& characterList){
     }
     
     float delta = GetFrameTime();
-    stateTimer += delta;
 
     if (state == SpriteState::DYING) {
         dyingFrameAcum += delta;
@@ -84,39 +79,32 @@ void PiranhaPlant::update(const std::vector<Character*>& characterList){
         if (pointFrameAcum >= pointFrameTime) {
             pointFrameAcum = pointFrameTime;
         }
-        return; // Bỏ qua update logic khác nếu đang dying
+        return;
     }
 
-
-    if (piranhaState == PiranhaState::HIDING){
-        if (stateTimer >= stateDuration){
-            piranhaState = PiranhaState::RISING;
-            stateTimer = 0.0f;
+    frameAcum += delta;
+    if (frameAcum >= frameTime) {
+        frameAcum = 0.0f;
+        curFrame++;
+        curFrame %= maxFrame;
+    }
+    if(!waiting) {
+        position.y += velocityUp * delta;
+        if (position.y <= minY) {
+            position.y = minY;
+            waiting = true;
+            velocityUp *= -1;
+        } else if (position.y >= maxY) {
+            position.y = maxY;
+            waiting = true;
+            velocityUp *= -1;
         }
     }
-
-    else if (piranhaState == PiranhaState::RISING){
-        position.y -= riseSpeed * delta;
-        if (position.y <= shownY){
-            position.y = shownY;
-            piranhaState = PiranhaState::SHOWN;
-            stateTimer = 0.0f;
-        }
-    }
-
-    else if (piranhaState == PiranhaState::SHOWN){
-        if (stateTimer >= stateDuration){
-            piranhaState = PiranhaState::LOWERING;
-            stateTimer = 0.0f;
-        }
-    }
-
-    else if (piranhaState == PiranhaState::LOWERING){
-        position.y += riseSpeed * delta;
-        if (position.y >= hiddenY){
-            position.y = hiddenY;
-            piranhaState = PiranhaState::HIDING;
-            stateTimer = 0.0f;
+    else {
+        waitAcum += delta;
+        if (waitAcum >= waitTime) {
+            waitAcum = 0.0f;
+            waiting = false;
         }
     }
     updateCollisionBoxes();
@@ -144,34 +132,31 @@ void PiranhaPlant::activeWhenMarioApproach(Character& character){
 }
 
 void PiranhaPlant::collisionTile(Tile* tile) {
-    Enemy::collisionTile(tile);
+    
 }
 
 void PiranhaPlant::collisionBlock(Block* block) {
-    Enemy::collisionBlock(block);
+    
 }
 
 // =========================== SAVE GAME ===========================
 json PiranhaPlant::saveToJson() const {
     json j = Enemy::saveToJson();
-
-    j["piranhaState"] = static_cast<int>(piranhaState);
-    j["stateTimer"] = stateTimer;
-    j["stateDuration"] = stateDuration;
-    j["riseSpeed"] = riseSpeed;
-    j["hiddenY"] = hiddenY;
-    j["shownY"] = shownY;
-
+    j["minY"] = minY;
+    j["maxY"] = maxY;
+    j["velocityUp"] = velocityUp;
+    j["waitTime"] = waitTime;
+    j["waitAcum"] = waitAcum;
+    j["waiting"] = waiting;
     return j;
 }
 
 void PiranhaPlant::loadFromJson(const json& j) {
     Enemy::loadFromJson(j);
-
-    piranhaState = static_cast<PiranhaState>(j["piranhaState"].get<int>());
-    stateTimer = j["stateTimer"].get<float>();
-    stateDuration = j["stateDuration"].get<float>();
-    riseSpeed = j["riseSpeed"].get<float>();
-    hiddenY = j["hiddenY"].get<float>();
-    shownY = j["shownY"].get<float>();
+    minY = j["minY"].get<float>();
+    maxY = j["maxY"].get<float>();
+    velocityUp = j["velocityUp"].get<float>();
+    waitTime = j["waitTime"].get<float>();
+    waitAcum = j["waitAcum"].get<float>();
+    waiting = j["waiting"].get<bool>();
 }

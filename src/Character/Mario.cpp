@@ -1,7 +1,7 @@
 #include "Character/Mario.h"
 
-Mario::Mario(ModePlayer mode, Vector2 pos, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed) :
-    Character(CharacterName::MARIO, mode , pos, {32, 40}, vel, color, speedX, maxSpeedX, jumpSpeed) {
+Mario::Mario(ModePlayer mode, Vector2 pos, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed, int initialLives) :
+    Character(CharacterName::MARIO, mode , pos, {32, 40}, vel, color, speedX, maxSpeedX, jumpSpeed, initialLives) {
     name = "Mario";
 }
 
@@ -25,9 +25,9 @@ void Mario::updateCollisionBoxes() {
     south.setWidth(size.x/4);
     south.setX( position.x + size.x / 2 - south.getWidth() / 2 );
     south.setY( position.y + size.y - south.getHeight() );
-    east.setHeight(size.y/1.5f);
+    east.setHeight(size.y/1.7f);
     east.setX( position.x + size.x - east.getWidth() );
-    west.setHeight(size.y/1.5f);
+    west.setHeight(size.y/1.7f);
     west.setX( position.x );
     if(isDucking){
         east.setHeight(size.y/3);

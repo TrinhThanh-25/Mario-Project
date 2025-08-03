@@ -7,6 +7,7 @@
 #include "GUI/GameHud.h"
 #include <vector>
 #include <string>
+#include <memory>
 #include "json.hpp"
 #include "Game/ModeWorld.h"
 
@@ -14,6 +15,8 @@ using json = nlohmann::json;
 
 class Character;
 class GameState;
+class GameMemento;
+class GameCaretaker;
 
 class World : public GameLoop {
     private:
@@ -74,6 +77,7 @@ class World : public GameLoop {
         void resetGame();
         void newGame();
         void nextMap();
+        int getMinLives();
         void resetWhenCharacterDead();
 
         void setIsClosed(bool isClosed);

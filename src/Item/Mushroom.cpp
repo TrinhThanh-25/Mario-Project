@@ -103,10 +103,10 @@ void Mushroom::updateCharacter(Character *character)
         character->setPreviousState(character->getState());
         character->setState(SpriteState::SMALL_TO_SUPER);
     } else if (type == CharacterType::SUPER || type == CharacterType::FLOWER) {
-        CharacterType previousType = character->getGameHud()->getPowerUpItem();
+        CharacterType previousType = character->getPowerUpItem();
         if (previousType == CharacterType::SMALL) {
             PlaySound(ResourceManager::getSound()["StorePowerUpItem"]);
-            character->getGameHud()->setPowerUpItem(CharacterType::SUPER);
+            character->setPowerUpItem(CharacterType::SUPER);
         }
     }
 }

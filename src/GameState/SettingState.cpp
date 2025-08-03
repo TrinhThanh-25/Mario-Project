@@ -6,6 +6,7 @@
 #include "GameState/IrisOutState.h"
 #include "GameState/TimeUpState.h"
 #include "Common/ResourceManager.h"
+#include "Common/AudioManager.h"
 #include "SaveGame.h"
 
 SettingState::SettingState(World* world)
@@ -14,6 +15,8 @@ SettingState::SettingState(World* world)
     restartButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 110, 300, 50}, "Restart", 36),
     returnButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 170, 300, 50}, "Return", 36),
     exitButton({(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 230, 300, 50}, "Exit", 36),
+    musicVolumeSlider("MUSIC",{(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 - 50}, 300, 0.0f, 1.0f, AudioManager::getMusicVolume(), 36),
+    sfxVolumeSlider("SFX",{(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 10}, 300, 0.0f, 1.0f, AudioManager::getSfxVolume(), 36),
     backgroundPositionx(0.0f), speed(40.0f) {
 }
 
@@ -22,6 +25,10 @@ SettingState::~SettingState() {
 }
 
 void SettingState::update() {
+    musicVolumeSlider.update();
+    sfxVolumeSlider.update();
+    AudioManager::setMusicVolume(musicVolumeSlider.getValue());
+    AudioManager::setSfxVolume(sfxVolumeSlider.getValue());
     if(backgroundPositionx > 400) {
         speed *=(-1.0f);
     } else if(backgroundPositionx < 0) {
@@ -45,11 +52,6 @@ void SettingState::update() {
         world->resetMap();
     }
     else if(returnButton.isPressed() || IsKeyPressed(KEY_ESCAPE)) {
-        std::vector<Character*>& characters = world->getCharacters();
-        for (Character* character : characters) {
-            delete character;
-        }
-        characters.clear();
         world->resetGame();
     }
     else if(exitButton.isPressed()) {
@@ -58,7 +60,6 @@ void SettingState::update() {
         }
         world->setIsClosed(true);
     }
-    // music / sfx
 }
 
 void SettingState::draw() {
@@ -75,6 +76,8 @@ void SettingState::draw() {
         returnButton.draw();
         exitButton.draw();
     }
+    musicVolumeSlider.draw();
+    sfxVolumeSlider.draw();
 }
 
 void SettingState::setStateBeforeSetting(GameStateType stateBeforeSetting) {
@@ -117,6 +120,7 @@ json SettingState::saveToJson() const {
     if (tempState) {
         j = tempState->saveToJson();
         delete tempState;
+        tempState = nullptr;
     }
     return j;
 }

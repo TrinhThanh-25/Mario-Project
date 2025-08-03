@@ -1,7 +1,7 @@
 #include "Character/Toad.h"
 
-Toad::Toad(ModePlayer mode, Vector2 pos, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed) :
-    Character(CharacterName::TOAD, mode, pos, {32, 40}, vel, color, speedX, maxSpeedX, jumpSpeed) {
+Toad::Toad(ModePlayer mode, Vector2 pos, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed, int initialLives) :
+    Character(CharacterName::TOAD, mode, pos, {32, 40}, vel, color, speedX, maxSpeedX, jumpSpeed, initialLives) {
     name = "Toad";
 }
 

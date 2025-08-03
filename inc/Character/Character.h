@@ -79,8 +79,13 @@ class Character : public Sprite {
 
         float activateWidth;
         SpriteState previousState;
+
+        // gamehud
+        int lives;
+        CharacterType powerUpItem;
+        int initialLives = 5;
     public:
-        Character(CharacterName characterName, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed);
+        Character(CharacterName characterName, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed, int initialLives);
         virtual ~Character() override;
 
         void setWorld(World* world);
@@ -118,11 +123,21 @@ class Character : public Sprite {
         SpriteState getPreviousState() const;
 
         void reset(bool isPowerOff);
-        void resetGame();
 
         GameHud* getGameHud() const;
         Map* getMap() const;
         World* getWorld() const;
+
+        void drawGameHud() const;
+        void setLives(int lives);
+        int getLives() const;
+        void addLives(int lives);
+        void removeLives(int lives);
+
+        void setPowerUpItem(CharacterType type);
+        CharacterType getPowerUpItem() const;
+        void releasePowerUpItem();
+        void setInitialLives(int initialLives);
 
         json saveToJson() const override;
         void loadFromJson(const json& j) override;

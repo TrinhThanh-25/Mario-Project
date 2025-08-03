@@ -576,11 +576,8 @@ void ResourceManager::loadTexture() {
     texture["YoshiCoin3"] = LoadTexture("../resources/Item/YoshiCoin_3.png");
 
     //Tile
-    for (int i=1;i<=4;i++){
-        for (char j='A'; j<='Z'; j++){
-            std::string key = std::to_string(i) + j;
-            texture[key] = LoadTexture(("../resources/Tile/" + std::to_string(i) + "/tile_" + j + ".png").c_str());
-        }
+    for (int i=1;i<=106;i++){
+        texture[std::to_string(i)] = LoadTexture(("../resources/Tile/" + std::to_string(i) + ".png").c_str());
     }
 
     //Effect
@@ -613,6 +610,10 @@ void ResourceManager::loadTexture() {
     texture["GuiPeach"] = LoadTexture("../resources/gui/guiPeach.png");
     texture["GuiMarioStart"] = LoadTexture("../resources/gui/guiMarioStart.png");
     texture["GuiNextItem"] = LoadTexture("../resources/gui/guiNextItem.png");
+    texture["GuiNextItemMario"] = LoadTexture("../resources/gui/guiNextItemMario.png");
+    texture["GuiNextItemLuigi"] = LoadTexture("../resources/gui/guiNextItemLuigi.png");
+    texture["GuiNextItemToad"] = LoadTexture("../resources/gui/guiNextItemToad.png");
+    texture["GuiNextItemPeach"] = LoadTexture("../resources/gui/guiNextItemPeach.png");
     texture["GuiNumbersBig"] = LoadTexture("../resources/gui/guiNumbersBig.png");
     texture["GuiNumbersWhite"] = LoadTexture("../resources/gui/guiNumbersWhite.png");
     texture["GuiNumbersYellow"] = LoadTexture("../resources/gui/guiNumbersYellow.png");
@@ -655,6 +656,9 @@ void ResourceManager::loadTexture() {
     texture["GuiLuigiSecondPlayer"] = LoadTexture("../resources/gui/luigiSecondPlayer.png");
     texture["GuiToadSecondPlayer"] = LoadTexture("../resources/gui/toadSecondPlayer.png");
     texture["GuiPeachSecondPlayer"] = LoadTexture("../resources/gui/peachSecondPlayer.png");
+    texture["GuiSlider"] = LoadTexture("../resources/gui/slider.png");
+    texture["GuiSliderHandle"] = LoadTexture("../resources/gui/sliderHandle.png");
+    texture["GuiSliderHandleSelected"] = LoadTexture("../resources/gui/sliderHandleSelected.png");
     texture["ChooseMapButton0"] = LoadTexture("../resources/gui/ChooseMapButton0.png");
     texture["ChooseMapButton1"] = LoadTexture("../resources/gui/ChooseMapButton1.png");
     texture["ESCMenuPad"] = LoadTexture("../resources/gui/ESCMenuPad.png");
