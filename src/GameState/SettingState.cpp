@@ -46,7 +46,12 @@ void SettingState::update() {
         exitButton.update();
     }
     if(resumeButton.isPressed() && stateBeforeSetting != GameStateType::TITLE_SCREEN) {
-        SaveGame::loadGame(*world);
+        if(world->getGamePlay() == GamePlay::PLAYDEVELOPEDMAP) {
+            SaveGame::loadGame(*world);
+        }
+        else {
+            SaveGame::loadGame(*world, "../resources/SaveGame/" + world->getMap()->getMapFileName() + ".json");
+        }
     }
     else if(restartButton.isPressed() && stateBeforeSetting != GameStateType::TITLE_SCREEN) {
         world->resetMap();
@@ -55,9 +60,6 @@ void SettingState::update() {
         world->resetGame();
     }
     else if(exitButton.isPressed()) {
-        if(stateBeforeSetting != GameStateType::TITLE_SCREEN) {
-            SaveGame::saveGame(*world);
-        }
         world->setIsClosed(true);
     }
 }

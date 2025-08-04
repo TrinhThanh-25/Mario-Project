@@ -76,6 +76,7 @@ class Map : virtual public Drawable {
         void loadFromJson(const json& j);
 
         void setNetMode(bool net);
+        std::string getMapFileName() const;
 };
 
 #endif

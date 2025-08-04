@@ -55,7 +55,7 @@ void Map::loadMap(const std::string& mapFileName) {
 	int height = mapJson["height"];
 	this->width = (float) width * 32.0f;
     this->height = (float) height * 32.0f;
-	float tilewidth = mapJson["tilewidth"];
+	float tilewidth = 32.0f;
 	std::vector<int> data = mapJson["layers"][0]["data"];
 	for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
@@ -876,4 +876,8 @@ void Map::loadFromJson(const json& j) {
 
 void Map::setNetMode(bool netMode) {
     this->netMode = netMode;
+}
+
+std::string Map::getMapFileName() const {
+    return mapFileName;
 }

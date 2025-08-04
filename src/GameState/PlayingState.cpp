@@ -27,7 +27,12 @@ PlayingState::~PlayingState() {
 
 void PlayingState::update() {
     if(IsKeyPressed(KEY_ESCAPE)) {
-        SaveGame::saveGame(*world);
+        if(world->getGamePlay() == GamePlay::PLAYDEVELOPEDMAP) {
+            SaveGame::saveGame(*world);
+        }
+        else {
+            SaveGame::saveGame(*world, "../resources/SaveGame/" + map->getMapFileName() + ".json");
+        }
         SettingState* settingState = new SettingState(world);
         settingState->setStateBeforeSetting(GameStateType::PLAYING);
         world->setGameState(settingState);
