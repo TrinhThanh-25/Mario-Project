@@ -652,6 +652,13 @@ void ResourceManager::loadTexture() {
     texture["GuiLuigiSecondPlayer"] = LoadTexture("../resources/gui/luigiSecondPlayer.png");
     texture["GuiToadSecondPlayer"] = LoadTexture("../resources/gui/toadSecondPlayer.png");
     texture["GuiPeachSecondPlayer"] = LoadTexture("../resources/gui/peachSecondPlayer.png");
+
+    // Tileset
+    for (int i = 0; i < 149; ++i) {
+        std::string id = "Tileset" + std::to_string(i + 1); // ID từ 1 đến 149
+        std::string path = "../resources/Tileset/" + std::to_string(i) + ".png"; // file từ 0.png đến 148.png
+        texture[id] = LoadTexture(path.c_str());
+    }
 };
 
 void ResourceManager::loadSound() {

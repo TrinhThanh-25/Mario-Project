@@ -12,6 +12,7 @@ enum class GameStateType {
     SETTING,
     TIME_UP,
     TITLE_SCREEN,
+    CUSTOM_MAP,
 };
 
 #endif
