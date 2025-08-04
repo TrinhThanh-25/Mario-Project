@@ -11,6 +11,7 @@
 #include "GameState/IrisOutState.h"
 #include "GameState/SettingState.h"
 #include "GameState/TimeUpState.h"
+#include "GameState/CustomMapState.h"
 #include "Common/ResourceManager.h"
 #include "Character/CharacterFactory.h"
 #include "GameState/TestMapState.h"
@@ -41,7 +42,7 @@ World::World(int width, int height, const std::string& title, int FPS)
     gamePlay(GamePlay::PLAYDEVELOPEDMAP) {
         map.setCharacters(characters);
         modeWorld = ModeWorld::MULTIPLAYER;
-        gameState = new TitleScreenState(this);
+        gameState = new CustomMapState(this);
 }
 
 World::~World() {
@@ -62,6 +63,7 @@ void World::init() {
     // SetConfigFlags(FLAG_WINDOW_HIGHDPI);
     // SetConfigFlags( FLAG_FULLSCREEN_MODE );
     // SetConfigFlags( FLAG_WINDOW_UNDECORATED );
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     SetConfigFlags(FLAG_WINDOW_ALWAYS_RUN);
     InitWindow(width, height, title.c_str());
     SetWindowIcon(LoadImage("../resources/icon.png"));
