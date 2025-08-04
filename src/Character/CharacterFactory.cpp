@@ -25,3 +25,4 @@ Character* CharacterFactory::createCharacter(CharacterName characterName, ModePl
             return nullptr; 
     }
 }
+

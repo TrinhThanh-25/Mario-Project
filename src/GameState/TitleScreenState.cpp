@@ -8,11 +8,12 @@
 
 TitleScreenState::TitleScreenState(World* world)
     : GameState(world, GameStateType::TITLE_SCREEN),
-    continueButton({1600 / 2 - 240, 900 / 2 + 110, 480, 50}, "Continue", 40),
-    onePlayerGameButton({1600 / 2 - 240, 900 / 2 + 170, 480, 50}, "1 Player Game", 40),
-    twoPlayersGameButton({1600 / 2 - 240, 900 / 2 + 230, 480, 50}, "2 Player Game", 40),
-    optionsButton({1600 / 2 - 240, 900 / 2 + 290, 480, 50}, "Options", 40),
-    exitButton({1600 / 2 - 240, 900 / 2 + 350, 480, 50}, "Exit", 40) {
+    continueButton({1600 / 2 - 260, 900 / 2 + 100, 520, 50}, "Continue", 40),
+    onePlayerGameButton({1600 / 2 - 260, 900 / 2 + 160, 520, 50}, "1 Player Game", 40),
+    twoPlayersGameButton({1600 / 2 - 260, 900 / 2 + 220, 520, 50}, "2 Player Game", 40),
+    listMapButton({1600 / 2 - 260, 900 / 2 + 280, 520, 50}, "List Custom Maps", 40),
+    optionsButton({1600 / 2 - 260, 900 / 2 + 340, 520, 50}, "Options", 40),
+    exitButton({1600 / 2 - 260, 900 / 2 + 400, 520, 50}, "Exit", 40) {
         if(SaveGame::saveGameExists()) {
             isSavedGameAvailable = true;
             continueButton.Selected();
@@ -20,10 +21,11 @@ TitleScreenState::TitleScreenState(World* world)
         else {
             isSavedGameAvailable = false;
             onePlayerGameButton.Selected();
-            onePlayerGameButton.setPosition({1600 / 2 - 220, 900 / 2 + 110});
-            twoPlayersGameButton.setPosition({1600 / 2 - 220, 900 / 2 + 170});
-            optionsButton.setPosition({1600 / 2 - 220, 900 / 2 + 230});
-            exitButton.setPosition({1600 / 2 - 220, 900 / 2 + 290});
+            onePlayerGameButton.setPosition({1600 / 2 - 220, 900 / 2 + 100});
+            twoPlayersGameButton.setPosition({1600 / 2 - 220, 900 / 2 + 160});
+            listMapButton.setPosition({1600 / 2 - 220, 900 / 2 + 220});
+            optionsButton.setPosition({1600 / 2 - 220, 900 / 2 + 280});
+            exitButton.setPosition({1600 / 2 - 220, 900 / 2 + 340});
         }
 }
 
@@ -43,6 +45,7 @@ void TitleScreenState::update() {
         twoPlayersGameButton.deSelected();
         optionsButton.deSelected();
         exitButton.deSelected();
+        listMapButton.deSelected();
     }
     else if(onePlayerGameButton.isHovered() && !onePlayerGameButton.isSelected()) {
         onePlayerGameButton.Selected();
@@ -50,11 +53,21 @@ void TitleScreenState::update() {
         twoPlayersGameButton.deSelected();
         optionsButton.deSelected();
         exitButton.deSelected();
+        listMapButton.deSelected();
     }
     else if(twoPlayersGameButton.isHovered() && !twoPlayersGameButton.isSelected()) {
         twoPlayersGameButton.Selected();
         continueButton.deSelected();
         onePlayerGameButton.deSelected();
+        optionsButton.deSelected();
+        exitButton.deSelected();
+        listMapButton.deSelected();
+    }
+    else if(listMapButton.isHovered() && !listMapButton.isSelected()) {
+        listMapButton.Selected();
+        continueButton.deSelected();
+        onePlayerGameButton.deSelected();
+        twoPlayersGameButton.deSelected();
         optionsButton.deSelected();
         exitButton.deSelected();
     }
@@ -64,6 +77,7 @@ void TitleScreenState::update() {
         onePlayerGameButton.deSelected();
         twoPlayersGameButton.deSelected();
         exitButton.deSelected();
+        listMapButton.deSelected();
     }
     else if(exitButton.isHovered() && !exitButton.isSelected()) {
         exitButton.Selected();
@@ -71,6 +85,7 @@ void TitleScreenState::update() {
         onePlayerGameButton.deSelected();
         twoPlayersGameButton.deSelected();
         optionsButton.deSelected();
+        listMapButton.deSelected();
     }
     if(IsKeyPressed(KEY_DOWN)){
         if(continueButton.isSelected()) {
@@ -83,6 +98,10 @@ void TitleScreenState::update() {
         }
         else if(twoPlayersGameButton.isSelected()) {
             twoPlayersGameButton.deSelected();
+            listMapButton.Selected();
+        }
+        else if(listMapButton.isSelected()) {
+            listMapButton.deSelected();
             optionsButton.Selected();
         }
         else if(optionsButton.isSelected()) {
@@ -117,9 +136,13 @@ void TitleScreenState::update() {
             twoPlayersGameButton.deSelected();
             onePlayerGameButton.Selected();
         }
+        else if(listMapButton.isSelected()) {
+            listMapButton.deSelected();
+            twoPlayersGameButton.Selected();
+        }
         else if(optionsButton.isSelected()) {
             optionsButton.deSelected();
-            twoPlayersGameButton.Selected();
+            listMapButton.Selected();
         }
         else if(exitButton.isSelected()) {
             exitButton.deSelected();
@@ -135,14 +158,17 @@ void TitleScreenState::update() {
     if(onePlayerGameButton.isPressed() || (IsKeyPressed(KEY_ENTER) && onePlayerGameButton.isSelected())) {
         ChooseCharacterState* newState = new ChooseCharacterState(world);
         newState->setModeWorld(ModeWorld::SINGLEPLAYER);
+        world->setGamePlay(GamePlay::PLAYDEVELOPEDMAP);
         world->setGameState(newState);
     }
     else if(twoPlayersGameButton.isPressed() || (IsKeyPressed(KEY_ENTER) && twoPlayersGameButton.isSelected())) {
         ChooseCharacterState* newState = new ChooseCharacterState(world);
         newState->setModeWorld(ModeWorld::MULTIPLAYER);
+        world->setGamePlay(GamePlay::PLAYDEVELOPEDMAP);
         world->setGameState(newState);
     }
     else if((continueButton.isPressed() || (IsKeyPressed(KEY_ENTER) && continueButton.isSelected())) && isSavedGameAvailable) {
+        world->setGamePlay(GamePlay::PLAYDEVELOPEDMAP);
         SaveGame::loadGame(*world);
     }
     else if(exitButton.isPressed() || (IsKeyPressed(KEY_ENTER) && exitButton.isSelected())) {
@@ -152,6 +178,9 @@ void TitleScreenState::update() {
         SettingState* newState = new SettingState(world);
         newState->setStateBeforeSetting(GameStateType::TITLE_SCREEN);
         world->setGameState(newState);
+    }
+    else if(listMapButton.isPressed() || (IsKeyPressed(KEY_ENTER) && listMapButton.isSelected())) {
+        // go to list map state
     }
 }
 
@@ -164,6 +193,7 @@ void TitleScreenState::draw() {
     if(isSavedGameAvailable) {
         continueButton.draw();
     }
+    listMapButton.draw();
     optionsButton.draw();
     exitButton.draw();
 }

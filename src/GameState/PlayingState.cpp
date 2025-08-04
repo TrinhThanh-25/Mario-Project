@@ -18,6 +18,7 @@ PlayingState::PlayingState(World* world)
     gameHud(world->getGameHud()),
     pausedForTransition(world->getPausedForTransition()),
     pausedUpdateCharacters(world->getPausedUpdateCharacters()) {
+        world->setGameMode(GameMode::PLAYER);
 }
 
 PlayingState::~PlayingState() {
@@ -26,7 +27,12 @@ PlayingState::~PlayingState() {
 
 void PlayingState::update() {
     if(IsKeyPressed(KEY_ESCAPE)) {
-        SaveGame::saveGame(*world);
+        if(world->getGamePlay() == GamePlay::PLAYDEVELOPEDMAP) {
+            SaveGame::saveGame(*world);
+        }
+        else {
+            SaveGame::saveGame(*world, "../resources/SaveGame/" + map->getMapFileName() + ".json");
+        }
         SettingState* settingState = new SettingState(world);
         settingState->setStateBeforeSetting(GameStateType::PLAYING);
         world->setGameState(settingState);
@@ -130,7 +136,6 @@ void PlayingState::update() {
             for (auto& character : characters) {
                 if((!isOneCharactersDead() || (isOneCharactersDead() && character->getState() == SpriteState::DYING)) && character->getState() != SpriteState::VICTORY) {
                     character->update();
-                    character->setActivateWidth(GetScreenWidth() * 2.0f);
                 }
             }
         }

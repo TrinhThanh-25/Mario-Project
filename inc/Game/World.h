@@ -10,13 +10,13 @@
 #include <memory>
 #include "json.hpp"
 #include "Game/ModeWorld.h"
+#include "Game/GameMode.h"
+#include "Game/GamePlay.h"
 
 using json = nlohmann::json;
 
 class Character;
 class GameState;
-class GameMemento;
-class GameCaretaker;
 
 class World : public GameLoop {
     private:
@@ -39,6 +39,9 @@ class World : public GameLoop {
         bool gameOverMusicStreamPlaying;
         bool pausedForTransition;
         bool pausedUpdateCharacters;
+
+        GameMode gameMode;
+        GamePlay gamePlay;
     public:
         static float gravity;
     public:
@@ -84,6 +87,11 @@ class World : public GameLoop {
 
         json saveToJson() const;
         void loadFromJson(const json& j);
+
+        void setGameMode(GameMode mode);
+        GameMode getGameMode() const;
+        void setGamePlay(GamePlay gamePlay);
+        GamePlay getGamePlay() const;
 };
 
 #endif

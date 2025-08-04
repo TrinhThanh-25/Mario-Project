@@ -14,6 +14,9 @@
 #include "GameState/CustomMapState.h"
 #include "Common/ResourceManager.h"
 #include "Character/CharacterFactory.h"
+#include "GameState/TestMapState.h"
+#include "Game/GameMode.h"
+#include "Game/GamePlay.h"
 #include <unordered_map>
 
 
@@ -34,7 +37,9 @@ World::World(int width, int height, const std::string& title, int FPS)
     gameOverMusicStreamPlaying(false),
     pausedForTransition(false),
     pausedUpdateCharacters(false),
-    GameLoop() {
+    GameLoop(),
+    gameMode(GameMode::PLAYER),
+    gamePlay(GamePlay::PLAYDEVELOPEDMAP) {
         map.setCharacters(characters);
         modeWorld = ModeWorld::MULTIPLAYER;
         gameState = new CustomMapState(this);
@@ -403,4 +408,20 @@ void World::loadFromJson(const json& j) {
     } else {
         throw std::runtime_error("Failed to create game state from JSON");
     }
+}
+
+void World::setGameMode(GameMode mode) {
+    gameMode = mode;
+}
+
+GameMode World::getGameMode() const {
+    return gameMode;
+}
+
+void World::setGamePlay(GamePlay gamePlay) {
+    this->gamePlay = gamePlay;
+}
+
+GamePlay World::getGamePlay() const {
+    return gamePlay;
 }
