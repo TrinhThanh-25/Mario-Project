@@ -610,6 +610,10 @@ void ResourceManager::loadTexture() {
     texture["GuiPeach"] = LoadTexture("../resources/gui/guiPeach.png");
     texture["GuiMarioStart"] = LoadTexture("../resources/gui/guiMarioStart.png");
     texture["GuiNextItem"] = LoadTexture("../resources/gui/guiNextItem.png");
+    texture["GuiNextItemMario"] = LoadTexture("../resources/gui/guiNextItemMario.png");
+    texture["GuiNextItemLuigi"] = LoadTexture("../resources/gui/guiNextItemLuigi.png");
+    texture["GuiNextItemToad"] = LoadTexture("../resources/gui/guiNextItemToad.png");
+    texture["GuiNextItemPeach"] = LoadTexture("../resources/gui/guiNextItemPeach.png");
     texture["GuiNumbersBig"] = LoadTexture("../resources/gui/guiNumbersBig.png");
     texture["GuiNumbersWhite"] = LoadTexture("../resources/gui/guiNumbersWhite.png");
     texture["GuiNumbersYellow"] = LoadTexture("../resources/gui/guiNumbersYellow.png");
@@ -659,6 +663,9 @@ void ResourceManager::loadTexture() {
         std::string path = "../resources/Tileset/" + std::to_string(i) + ".png"; // file từ 0.png đến 148.png
         texture[id] = LoadTexture(path.c_str());
     }
+    texture["GuiSlider"] = LoadTexture("../resources/gui/slider.png");
+    texture["GuiSliderHandle"] = LoadTexture("../resources/gui/sliderHandle.png");
+    texture["GuiSliderHandleSelected"] = LoadTexture("../resources/gui/sliderHandleSelected.png");
 };
 
 void ResourceManager::loadSound() {

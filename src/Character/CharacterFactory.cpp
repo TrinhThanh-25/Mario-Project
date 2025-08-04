@@ -10,15 +10,16 @@ Character* CharacterFactory::createCharacter(CharacterName characterName, ModePl
     float defaultJumpSpeed = -600.0f;
     Vector2 defaultPosition = {64, 0};
     Vector2 defaultVelocity = {0, 0};
+    int initialLives = 5;
     switch (characterName) {
         case CharacterName::MARIO:
-            return new Mario(mode, defaultPosition, defaultVelocity, RED, defaultSpeedX, defaultMaxSpeedX, defaultJumpSpeed);
+            return new Mario(mode, defaultPosition, defaultVelocity, RED, defaultSpeedX, defaultMaxSpeedX, defaultJumpSpeed, initialLives);
         case CharacterName::LUIGI:
-            return new Luigi(mode, defaultPosition, defaultVelocity, GREEN, defaultSpeedX, defaultMaxSpeedX, defaultJumpSpeed);
+            return new Luigi(mode, defaultPosition, defaultVelocity, GREEN, defaultSpeedX, defaultMaxSpeedX, defaultJumpSpeed, initialLives);
         case CharacterName::TOAD:
-            return new Toad(mode, defaultPosition, defaultVelocity, BLUE, defaultSpeedX, defaultMaxSpeedX, defaultJumpSpeed);
+            return new Toad(mode, defaultPosition, defaultVelocity, BLUE, defaultSpeedX, defaultMaxSpeedX, defaultJumpSpeed, initialLives);
         case CharacterName::PEACH:
-            return new Peach(mode, defaultPosition, defaultVelocity, PINK, defaultSpeedX, defaultMaxSpeedX, defaultJumpSpeed);
+            return new Peach(mode, defaultPosition, defaultVelocity, PINK, defaultSpeedX, defaultMaxSpeedX, defaultJumpSpeed, initialLives);
         // Add cases for other characters as needed
         default:
             return nullptr; 

@@ -96,16 +96,16 @@ void FireFlower::updateCharacter(Character *character)
         character->setPreviousState(character->getState());
         character->setState(SpriteState::SUPER_TO_FLOWER);
         // ??? if inventory is empty, put mushroom into the inventory ???
-        CharacterType previousType = character->getGameHud()->getPowerUpItem();
+        CharacterType previousType = character->getPowerUpItem();
         if (previousType == CharacterType::SMALL) {
             PlaySound(ResourceManager::getSound()["StorePowerUpItem"]);
-            character->getGameHud()->setPowerUpItem(CharacterType::SUPER);
+            character->setPowerUpItem(CharacterType::SUPER);
         }
     } else if (type == CharacterType::FLOWER) {
-        CharacterType previousType = character->getGameHud()->getPowerUpItem();
+        CharacterType previousType = character->getPowerUpItem();
         if (previousType == CharacterType::SMALL || previousType == CharacterType::SUPER) {
             PlaySound(ResourceManager::getSound()["StorePowerUpItem"]);
-            character->getGameHud()->setPowerUpItem(CharacterType::FLOWER);
+            character->setPowerUpItem(CharacterType::FLOWER);
         }
     }
 }

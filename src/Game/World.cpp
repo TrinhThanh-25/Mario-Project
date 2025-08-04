@@ -22,7 +22,7 @@ float World::gravity = 1200.0f;
 World::World(int width, int height, const std::string& title, int FPS)
     : map(characters, this, 1), 
     camera(), 
-    gameHud(this, 0, 0, 5, 0, 200.0f),
+    gameHud(this, 0, 0, 0, 200.0f),
     width(width), 
     height(height), 
     title(title), 
@@ -212,7 +212,7 @@ void World::resetMap() {
         character->reset(true);
     }
     map.reset();
-    gameHud.reset(true);
+    gameHud.reset();
     pausedForTransition = false;
     pausedUpdateCharacters = false;
     setGameState(new PlayingState(this));
@@ -226,7 +226,7 @@ void World::resetGame() {
     characters.clear();
     map.first();
     map.reset();
-    gameHud.resetGame();
+    gameHud.reset();
     pausedForTransition = false;
     pausedUpdateCharacters = false;
     setGameState(new TitleScreenState(this));
@@ -243,15 +243,27 @@ void World::nextMap() {
     }
 }
 
+int World::getMinLives() {
+    int minLives = characters[0]->getLives();
+    for (Character* character : characters) {
+        if (character->getLives() < minLives) {
+            minLives = character->getLives();
+        }
+    }
+    return minLives;
+}
+
 void World::resetWhenCharacterDead() {
     if(!isPlayerDownMusicStreamPlaying() && !isGameOverMusicStreamPlaying()) {
-        if(gameHud.getLives() > 0) {
+        if(getMinLives() > 0) {
             resetMap();
         }
-        else if (gameHud.getLives() == 0) {
+        else if (getMinLives() == 0) {
             playGameOverMusic();
             setGameState(new GameOverState(this));
-            gameHud.setLives(-1);
+            for (Character* character : characters) {
+                character->setLives(-1);
+            }
         }
         else {
             resetGame();

@@ -88,7 +88,7 @@ void Item::collisionTile(Tile* tile)
 
 void Item::collisionCharacter(Character *character)
 {
-    if (this->getState() != SpriteState::TO_BE_REMOVED && this->getState() != SpriteState::HIT) {
+    if (this->getState() != SpriteState::TO_BE_REMOVED && this->getState() != SpriteState::HIT && character->getState() != SpriteState::DYING && character->getState() != SpriteState::VICTORY) {
         if (checkCollision(character) != CollisionType::NONE) {
             if (this->getType() != ItemType::COURSE_CLEAR_TOKEN) {
                 this->setState(SpriteState::HIT);

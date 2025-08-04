@@ -64,10 +64,10 @@ void Map::loadMap(int mapNumber) {
                 }
                 break;
             case 2:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "1"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "1", TileType::NOT_SOLID));
                 break;
             case 3:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "2"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "2", TileType::SOLID_ABOVE));
                 break;
             case 4:
                 tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "3"));
@@ -88,16 +88,16 @@ void Map::loadMap(int mapNumber) {
                 tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "8"));
                 break;
             case 10:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "9"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "9", TileType::SOLID_ABOVE));
                 break;
             case 11:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "10"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "10", TileType::SOLID_ABOVE));
                 break;
             case 12:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "11"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "11", TileType::NOT_SOLID));
                 break;
             case 13:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "12"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "12", TileType::NOT_SOLID));
                 break;
             case 14:
                 tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "13"));
@@ -142,10 +142,10 @@ void Map::loadMap(int mapNumber) {
                 tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "26"));
                 break;
             case 28:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "27"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "27", TileType::NOT_SOLID));
                 break;
             case 29:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "28"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "28", TileType::SOLID_ABOVE));
                 break;
             case 30:
                 tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "29"));
@@ -166,16 +166,16 @@ void Map::loadMap(int mapNumber) {
                 tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "34"));
                 break;
             case 36:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "35"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "35", TileType::SOLID_ABOVE));
                 break;
             case 37:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "36"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "36", TileType::SOLID_ABOVE));
                 break;
             case 38:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "37"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "37", TileType::NOT_SOLID));
                 break;
             case 39:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "38"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "38", TileType::NOT_SOLID));
                 break;
             case 40:
                 tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "39"));
@@ -220,10 +220,10 @@ void Map::loadMap(int mapNumber) {
                 tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "52"));
                 break;
             case 54:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "53"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "53", TileType::NOT_SOLID));
                 break;
             case 55:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "54"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "54", TileType::SOLID_ABOVE));
                 break;
             case 56:
                 tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "55"));
@@ -244,16 +244,16 @@ void Map::loadMap(int mapNumber) {
                 tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "60"));
                 break;
             case 62:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "61"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "61", TileType::SOLID_ABOVE));
                 break;
             case 63:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "62"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "62", TileType::SOLID_ABOVE));
                 break;
             case 64:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "63"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "63", TileType::NOT_SOLID));
                 break;
             case 65:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "64"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "64", TileType::NOT_SOLID));
                 break;
             case 66:
                 tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "65"));
@@ -298,10 +298,10 @@ void Map::loadMap(int mapNumber) {
                 tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "78"));
                 break;
             case 80:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "79"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "79", TileType::NOT_SOLID));
                 break;
             case 81:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "80"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "80", TileType::SOLID_ABOVE));
                 break;
             case 82:
                 tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "81"));
@@ -322,16 +322,16 @@ void Map::loadMap(int mapNumber) {
                 tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "86"));
                 break;
             case 88:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "87"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "87", TileType::SOLID_ABOVE));
                 break;
             case 89:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "88"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "88", TileType::SOLID_ABOVE));
                 break;
             case 90:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "89"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "89", TileType::NOT_SOLID));
                 break;
             case 91:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "90"));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "90", TileType::NOT_SOLID));
                 break;
             case 92:
                 tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "91"));
@@ -376,7 +376,7 @@ void Map::loadMap(int mapNumber) {
                 tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "104"));
                 break;
             case 106:
-                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, ""));
+                tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "", TileType::SOLID_ONLY_ENEMY));
                 break;
             case 107:
                 tile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, ""));
