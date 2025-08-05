@@ -1,4 +1,5 @@
 #include "GameState/ChooseMap.h"
+#include "GameState/TitleScreenState.h"
 
 void MyButton::draw()
 {
@@ -9,9 +10,7 @@ void MyButton::draw()
         DrawTexture(ResourceManager::getTexture()[textureName+"1"], rectangle.x, rectangle.y, color);
     }
     // Draw the button text
-    DrawTextEx(GetFontDefault(), text.c_str(),
-               {rectangle.x + rectangle.width / 2 - MeasureText(text.c_str(), fontSize) / 2, rectangle.y + rectangle.height / 2 - fontSize / 2},
-               fontSize, 1.0f, WHITE);
+    ResourceManager::drawBigString(this->text, this->rectangle.x + (this->rectangle.width - ResourceManager::getDrawBigStringWidth(this->text, fontSize)) / 2, this->rectangle.y + (this->rectangle.height - ResourceManager::getDrawBigStringHeight(fontSize)) / 2, fontSize);
 }
 
 void MyButton::update()
@@ -89,11 +88,11 @@ void ChooseMapState::update()
             }
             else if (mapButtons[5].isHover())
             {
-                // Return to main menu
+                world->setGameState(new TitleScreenState(world));
             }
             else if (mapButtons[6].isHover())
             {
-                // Return to desktop
+                world->setIsClosed(true);
             }
         }
     }

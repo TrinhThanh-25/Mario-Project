@@ -15,7 +15,7 @@ ChooseCustomizedMapState::ChooseCustomizedMapState(World *world, GameStateType t
 
     // ESC menu buttons initialization
     ESCMenuButtons.emplace_back(Rectangle{577, 288, 442, 94}, "Resume", 20, WHITE, true, true);
-    ESCMenuButtons.emplace_back(Rectangle{577, 432, 442, 94}, "Exit to Main Menu", 20, WHITE, true, true);
+    ESCMenuButtons.emplace_back(Rectangle{577, 432, 442, 94}, "Exit to Map choosing", 20, WHITE, true, true);
     ESCMenuButtons.emplace_back(Rectangle{577, 576, 442, 94}, "Exit to Desktop", 20, WHITE, true, true);
 
     for (int i = 0; i < ESCMenuButtons.size(); i++)
@@ -62,11 +62,11 @@ void ChooseCustomizedMapState::update()
             }
             else if (ESCMenuButtons[1].isHover())
             {
-                // Exit to map choosing state
+                world->setGameState(new ChooseMapState(world,GameStateType::CHOOSE_MAP));
             }
             else if (ESCMenuButtons[2].isHover())
             {
-                // Exit to desktop
+                world->setIsClosed(true);
             }
         }
     }
