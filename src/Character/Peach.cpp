@@ -58,6 +58,7 @@ void Peach::transitionToSmall() {
     maxFrame = 3;
     invulnerable = true;
     invulnerableAcum = 0.0f;
+    releasePowerUpItem();
 }
 
 void Peach::transitionToSuper() {

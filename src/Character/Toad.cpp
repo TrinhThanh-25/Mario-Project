@@ -57,6 +57,7 @@ void Toad::transitionToSmall() {
     maxFrame = 2;
     invulnerable = true;
     invulnerableAcum = 0.0f;
+    releasePowerUpItem();
 }
 
 void Toad::transitionToSuper() {

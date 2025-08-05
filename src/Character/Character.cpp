@@ -221,7 +221,6 @@ bool Character::transition(float deltaTime) {
             } else if(state == SpriteState::SUPER_TO_SMALL || state == SpriteState::FLOWER_TO_SMALL) {
                 transitionToSmall();
                 world->resumeWorld();
-                releasePowerUpItem();
             }
             state = previousState;
         }
@@ -247,7 +246,7 @@ void Character::movement(float deltaTime) {
         } else {   
             state = SpriteState::DYING;
             if(world->getGameMode() == GameMode::TESTER) {
-                map->reset();
+                map->reset(true);
                 reset(true);
             } else {
                 world->playPlayerDownMusic();
@@ -606,7 +605,10 @@ void Character::collisionEnemy(Enemy* enemy) {
             PlaySound(ResourceManager::getSound()["Stomp"]);
             gameHud->addPoints(enemy->getPoint());
         }
-        else if(collision == CollisionType::SOUTH && enemy->getAuxiliaryState() != SpriteState::INVULNERABLE) {
+        else if(enemy->getState() == SpriteState::SHELL) {
+            
+        }
+        else if(collision == CollisionType::SOUTH && enemy->getAuxiliaryState() != SpriteState::INVULNERABLE && enemy->getState() != SpriteState::SHELL_MOVING) {
             if( state == SpriteState::FALLING && enemy->getState() != SpriteState::DYING && enemy->getState() != SpriteState::TO_BE_REMOVED) {
                 position.y = enemy->getY() - size.y;
                 if(((modePlayer == ModePlayer::FIRSTPLAYER || modePlayer == ModePlayer::ONEPLAYER) && IsKeyDown(KEY_LEFT_CONTROL)) || (modePlayer == ModePlayer::SECONDPLAYER && IsKeyDown(KEY_RIGHT_CONTROL))) {
@@ -629,7 +631,7 @@ void Character::collisionEnemy(Enemy* enemy) {
                     }
                     state = SpriteState::DYING;
                     if(world->getGameMode() == GameMode::TESTER) {
-                        map->reset();
+                        map->reset(true);
                         reset(true);
                     } else {
                         world->playPlayerDownMusic();
@@ -685,6 +687,13 @@ float Character::getActivateWidth() const {
 
 void Character::setType(CharacterType type) {
     this->type = type;
+    if(type == CharacterType::SMALL) {
+        transitionToSmall();
+    } else if(type == CharacterType::SUPER) {
+        transitionToSuper();
+    } else if(type == CharacterType::FLOWER) {
+        transitionToFlower();
+    }
 }
 
 CharacterType Character::getType() const {
@@ -805,12 +814,34 @@ CharacterType Character::getPowerUpItem() const {
 void Character::releasePowerUpItem() {
     //
     Item* item = nullptr;
+    Vector2 position;
+    switch (modePlayer) {
+        case ModePlayer::ONEPLAYER:
+            if(powerUpItem == CharacterType::SUPER) {
+                position = GetScreenToWorld2D({(float) GetScreenWidth() / 2 - ResourceManager::getTexture()["Mushroom"].width / 2, 32}, *world->getCamera());
+            } else if(powerUpItem == CharacterType::FLOWER) {
+                position = GetScreenToWorld2D({(float) GetScreenWidth() / 2 - ResourceManager::getTexture()["FireFlower0"].width / 2, 32}, *world->getCamera());
+            }
+            break;
+        case ModePlayer::FIRSTPLAYER:
+            if(powerUpItem == CharacterType::SUPER) {
+                position = GetScreenToWorld2D({(float) GetScreenWidth() / 2 - ResourceManager::getTexture()["Mushroom"].width / 2 - 100, 32}, *world->getCamera());
+            } else if(powerUpItem == CharacterType::FLOWER) {
+                position = GetScreenToWorld2D({(float) GetScreenWidth() / 2 - ResourceManager::getTexture()["FireFlower0"].width / 2 - 100, 32}, *world->getCamera());
+            }
+            break;
+        case ModePlayer::SECONDPLAYER:
+            if(powerUpItem == CharacterType::SUPER) {
+                position = GetScreenToWorld2D({(float) GetScreenWidth() / 2 - ResourceManager::getTexture()["Mushroom"].width / 2 + 100, 32}, *world->getCamera());
+            } else if(powerUpItem == CharacterType::FLOWER) {
+                position = GetScreenToWorld2D({(float) GetScreenWidth() / 2 - ResourceManager::getTexture()["FireFlower0"].width / 2 + 100, 32}, *world->getCamera());
+            }
+            break;
+    }
 
     if(powerUpItem == CharacterType::SUPER) {
-        Vector2 position = GetScreenToWorld2D({(float) GetScreenWidth() / 2 - ResourceManager::getTexture()["Mushroom"].width / 2, 32}, *world->getCamera());
         item = ItemFactory::createItem(ItemType::MUSHROOM, Source::INVENTORY, position, Direction::RIGHT);
     } else if(powerUpItem == CharacterType::FLOWER) {
-        Vector2 position = GetScreenToWorld2D({(float) GetScreenWidth() / 2 - ResourceManager::getTexture()["FireFlower0"].width / 2, 32}, *world->getCamera());
         item = ItemFactory::createItem(ItemType::FLOWER, Source::INVENTORY, position, Direction::RIGHT);
     }
     powerUpItem = CharacterType::SMALL;   

@@ -42,7 +42,7 @@ World::World(int width, int height, const std::string& title, int FPS)
     gamePlay(GamePlay::PLAYDEVELOPEDMAP) {
         map.setCharacters(characters);
         modeWorld = ModeWorld::MULTIPLAYER;
-        gameState = new CustomMapState(this);
+        gameState = new TitleScreenState(this);
 }
 
 World::~World() {

@@ -15,6 +15,8 @@ class TestMapState : public GameState {
         bool creative = false;
         bool immortal = false;
         bool net = false;
+        float offsetX = 0.0f;
+        float offsetY = 0.0f;
         
         int currentCharacterIndex = 0;
         std::vector<CharacterName> availableCharacters = {
@@ -29,13 +31,26 @@ class TestMapState : public GameState {
             "Toad",
             "Peach"
         };
+        int currentTypeIndex = 0;
+        std::vector<CharacterType> availableTypes = {
+            CharacterType::SMALL,
+            CharacterType::SUPER,
+            CharacterType::FLOWER
+        };
+        std::vector<std::string> typeNames = {
+            "Small",
+            "Super",
+            "Flower"
+        };
         
         void changeCharacter(CharacterName newCharacter);
     public:
         TestMapState(World* world, std::string mapFileName);
+        TestMapState(World* world, std::string mapFileName, int width, int height, const std::vector<int>& mapGrid);
         ~TestMapState() override;
         void update() override;
         void draw() override;
+        void setMap(int width, int height, const std::vector<int>& mapGrid);
 };
 
 #endif

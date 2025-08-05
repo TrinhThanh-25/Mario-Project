@@ -32,6 +32,7 @@ class Map : virtual public Drawable {
         int backgroundID;
         int musicID;
         
+        std::vector<int> mapGrid; 
         std::vector<Tile*> tile;
         std::vector<Tile*> backTile;
         std::vector<Tile*> frontTile;
@@ -65,7 +66,7 @@ class Map : virtual public Drawable {
 
         void clear();
 
-        void reset();
+        void reset(bool isTestMap = false);
         bool next();
         void first();
   
@@ -77,6 +78,9 @@ class Map : virtual public Drawable {
 
         void setNetMode(bool net);
         std::string getMapFileName() const;
+        void setMap(int width, int height, const std::vector<int>& mapGrid);
+        void loadObjectsToMap(const std::vector<int>& mapGrid);
+        std::vector<int> getMapGrid() const;
 };
 
 #endif
