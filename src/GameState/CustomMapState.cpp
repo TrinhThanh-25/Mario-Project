@@ -1,6 +1,7 @@
 #include "GameState/CustomMapState.h"
 #include "GameState/TestMapState.h"
 #include "Common/ResourceManager.h"
+#include "GameState/ChooseCustomizedMap.h"
 #include <fstream>
 #include <iostream>
 #include <algorithm>
@@ -102,13 +103,17 @@ void CustomMapState::handleUnsavedWarning() {
     if (GuiButton(saveBtn, "SAVE & EXIT")) {
         saveMap();
         showUnsavedWarning = false;
-        // set ListMapState and return
+        ChooseCustomizedMapState* chooseMapState = new ChooseCustomizedMapState(world);
+        world->setGameState(chooseMapState);
+        return;
     }
-    if (GuiButton(discardBtn, "DISCARD")) {
+    else if (GuiButton(discardBtn, "DISCARD")) {
         showUnsavedWarning = false;
-        // set ListMapState and return
+        ChooseCustomizedMapState* chooseMapState = new ChooseCustomizedMapState(world);
+        world->setGameState(chooseMapState);
+        return;
     }
-    if (GuiButton(cancelBtn, "CANCEL")) {
+    else if (GuiButton(cancelBtn, "CANCEL")) {
         showUnsavedWarning = false;
     }
 }
@@ -429,7 +434,8 @@ void CustomMapState::drawToolbar() {
         if (!isSaved) {
             showUnsavedWarning = true;
         } else {
-            // set ListMapState
+            ChooseCustomizedMapState* chooseMapState = new ChooseCustomizedMapState(world);
+            world->setGameState(chooseMapState);
             isClosed = true;
         }
         return;
@@ -519,12 +525,21 @@ void CustomMapState::saveMap() {
         std::cerr << "Cannot save map with empty filename" << std::endl;
         return;
     }
-    if (mapFileName != cleanName) {
+    
+    bool nameChanged = (mapFileName != cleanName);
+    if (nameChanged && isMapNameExists(cleanName)) {
+        cleanName = generateUniqueMapName(cleanName);
+        mapNameBuffer = cleanName;
+    }
+    
+    if (nameChanged) {
         std::string oldFileName = "../resources/Map/" + mapFileName + ".json";
         if (std::filesystem::exists(oldFileName)) {
             std::filesystem::remove(oldFileName);
         }
+        updateListMapFile(mapFileName, cleanName);
     }
+    
     std::ofstream file("../resources/Map/" + cleanName + ".json");
     if (!file.is_open()) {
         std::cerr << "Failed to open map file for saving: " << cleanName << std::endl;
@@ -625,4 +640,48 @@ void CustomMapState::setMap(int width, int height, const std::vector<int>& mapGr
 
 void CustomMapState::setIsSaved(bool saved) {
     isSaved = saved;
+}
+
+bool CustomMapState::isMapNameExists(const std::string& name) const {
+    std::string mapPath = "../resources/Map/" + name + ".json";
+    return std::filesystem::exists(mapPath);
+}
+
+std::string CustomMapState::generateUniqueMapName(const std::string& baseName) const {
+    std::string uniqueName = baseName;
+    int counter = 1;
+    while (isMapNameExists(uniqueName)) {
+        uniqueName = baseName + " (" + std::to_string(counter) + ")";
+        counter++;
+    }
+    return uniqueName;
+}
+
+void CustomMapState::updateListMapFile(const std::string& oldName, const std::string& newName, const std::string& fileName) {
+    std::ifstream file(fileName);
+    json j;
+    
+    if (file.is_open()) {
+        file >> j;
+        file.close();
+    }
+    
+    if (j.contains("listMapName") && j["listMapName"].is_array()) {
+        auto& mapList = j["listMapName"];
+        for (auto& mapName : mapList) {
+            if (mapName.is_string() && mapName.get<std::string>() == oldName) {
+                mapName = newName;
+                break;
+            }
+        }
+    }
+    
+    std::ofstream outFile(fileName);
+    if (outFile.is_open()) {
+        outFile << j.dump(4);
+        outFile.close();
+        std::cout << "Updated map name in ListMap.json: " << oldName << " -> " << newName << std::endl;
+    } else {
+        std::cerr << "Failed to update ListMap.json" << std::endl;
+    }
 }

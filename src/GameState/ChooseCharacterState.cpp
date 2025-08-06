@@ -3,6 +3,7 @@
 #include "GameState/TitleScreenState.h"
 #include "Character/CharacterFactory.h"
 #include "Common/ResourceManager.h"
+#include "GameState/ChooseCustomizedMap.h"
 #include "raylib.h"
 
 ChooseCharacterState::ChooseCharacterState(World* world)
@@ -41,7 +42,11 @@ void ChooseCharacterState::update() {
     }
     std::vector<Character*>& characters = world->getCharacters();
     if(IsKeyPressed(KEY_ESCAPE)) {
-        world->setGameState(new TitleScreenState(world));
+        if(world->getGamePlay() == GamePlay::PLAYDEVELOPEDMAP) {
+            world->setGameState(new TitleScreenState(world));
+        } else if(world->getGamePlay() == GamePlay::PLAYCUSTOMMAP) {
+            world->setGameState(new ChooseCustomizedMapState(world));
+        }
         return;
     }
     for (CharacterTag* tag : characterTags) {

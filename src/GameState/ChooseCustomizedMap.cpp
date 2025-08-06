@@ -3,7 +3,15 @@
 #include "Common/ResourceManager.h"
 #include "GameState/PlayingState.h"
 #include "GameState/CustomMapState.h"
+#include "GameState/ChooseCharacterState.h"
+#include "SaveGame.h"
+#include "json.hpp"
 #include <filesystem>
+#include <iostream>
+#include <fstream>
+#include <unordered_set>
+
+using json = nlohmann::json;
 
 void MyButton::draw()
 {
@@ -32,10 +40,11 @@ void MyButton::setPos(Vector2 newPos) {
 
 ChooseCustomizedMapState::ChooseCustomizedMapState(World *world) : GameState(world, GameStateType::CHOOSE_CUSTOMIZED_MAP)
 {
-    mapButtons.emplace_back(Rectangle{219, 64, 1160, 173}, "Map 1", 30, WHITE, true, true);
-    mapButtons.emplace_back(Rectangle{222, 264, 1160, 173}, "Map 2", 30, WHITE, true, true);
-    mapButtons.emplace_back(Rectangle{222, 464, 1160, 173}, "Map 3", 30, WHITE, true, true);
-    mapButtons.emplace_back(Rectangle{222, 664, 1160, 173}, "Map 4", 30, WHITE, true, true);
+    load();
+    mapButtons.emplace_back(Rectangle{219, 64, 1160, 173}, "EMPTY SLOT", 30, WHITE, true, true);
+    mapButtons.emplace_back(Rectangle{222, 264, 1160, 173}, "EMPTY SLOT", 30, WHITE, true, true);
+    mapButtons.emplace_back(Rectangle{222, 464, 1160, 173}, "EMPTY SLOT", 30, WHITE, true, true);
+    mapButtons.emplace_back(Rectangle{222, 664, 1160, 173}, "EMPTY SLOT", 30, WHITE, true, true);
     for (int i = 0; i < mapButtons.size(); i++)
     {
         mapButtons[i].setTextureName("CMButton");
@@ -48,9 +57,10 @@ ChooseCustomizedMapState::ChooseCustomizedMapState(World *world) : GameState(wor
         ESCMenuButtons[i].setTextureName("ESCMenuButton");
     }
 
-    OptionButtons.emplace_back(Rectangle{577, 288, 442, 94}, "Play", 20, WHITE, true, true);
-    OptionButtons.emplace_back(Rectangle{577, 432, 442, 94}, "Edit", 20, WHITE, true, true);
-    OptionButtons.emplace_back(Rectangle{577, 576, 442, 94}, "Delete", 20, WHITE, true, true);
+    OptionButtons.emplace_back(Rectangle{577, 250, 442, 94}, "1 Player Game", 20, WHITE, true, true);
+    OptionButtons.emplace_back(Rectangle{577, 360, 442, 94}, "2 Player Game", 20, WHITE, true, true);
+    OptionButtons.emplace_back(Rectangle{577, 470, 442, 94}, "Edit", 20, WHITE, true, true);
+    OptionButtons.emplace_back(Rectangle{577, 580, 442, 94}, "Delete", 20, WHITE, true, true);
     for (int i = 0; i < OptionButtons.size(); i++)
     {
         OptionButtons[i].setTextureName("ESCMenuButton");
@@ -58,16 +68,6 @@ ChooseCustomizedMapState::ChooseCustomizedMapState(World *world) : GameState(wor
     ESCMenuActive = false;
     OptionActive = false;
     currentIndex = 0;
-
-    // Test
-    numberOfFile = 4;
-    fileName.resize(numberOfFile);
-    for (int i=0;i<fileName.size();i++) {
-        fileName[i] = std::to_string(i);
-    }
-
-    // loadFromJson(fileName)
-
     currentIndex = -1;
     setMap(true);
 }
@@ -77,8 +77,9 @@ ChooseCustomizedMapState::~ChooseCustomizedMapState()
     mapButtons.clear();
     ESCMenuButtons.clear();
     OptionButtons.clear();
-    // save(fileName)
+    save();
 }
+
 void ChooseCustomizedMapState::update()
 {
     if (ESCMenuActive)
@@ -122,14 +123,25 @@ void ChooseCustomizedMapState::update()
         }
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             if (OptionButtons[0].isHover()) {
-                // Play mapButtons[MapChosen].getText()
-                // world->setGamePlay(GamePlay::PLAYCUSTOMMAP);
+                ChooseCharacterState* newState = new ChooseCharacterState(world, mapButtons[MapChosen].getText());
+                newState->setModeWorld(ModeWorld::SINGLEPLAYER);
+                world->setGameState(newState);
+                return;
             } else if (OptionButtons[1].isHover()) {   
-                // world->setGameState(new CustomMapState(world,mapButtons[MapChosen].getText()));
+                ChooseCharacterState* newState = new ChooseCharacterState(world, mapButtons[MapChosen].getText());
+                newState->setModeWorld(ModeWorld::MULTIPLAYER);
+                world->setGameState(newState);
+                return;
             } else if (OptionButtons[2].isHover()) {
-                // std::filesystem::remove(mapButtons[MapChosen].getText());
+                CustomMapState* newState = new CustomMapState(world, mapButtons[MapChosen].getText());
+                world->setGameState(newState);
+                return;
+            } else if (OptionButtons[3].isHover()) {
+                std::string mapToDelete = mapButtons[MapChosen].getText();
+                std::filesystem::remove("../resources/Map/" + mapToDelete + ".json");
                 numberOfFile--;
-                fileName.erase(fileName.begin()+currentIndex+MapChosen);
+                listFileName.erase(listFileName.begin()+currentIndex+MapChosen);
+                mapNameSet.erase(mapToDelete);
                 if (currentIndex + 4 > numberOfFile) {
                     currentIndex = numberOfFile - 4;
                 } else currentIndex--;
@@ -154,17 +166,24 @@ void ChooseCustomizedMapState::update()
                 if (mapButtons[i].isHover()) {
                     MapChosen = i;
                     if (mapButtons[MapChosen].getText() == "EMPTY SLOT") {
+                        int newMapIndex = 1;
+                        std::string newMapName;
+                        do {
+                            newMapName = "New Map " + std::to_string(newMapIndex);
+                            newMapIndex++;
+                        } while (mapNameSet.find(newMapName) != mapNameSet.end());
+                        
                         numberOfFile++;
-                        fileName.push_back("New Map " + std::to_string(fileName.size()));
-                        // New file with "New Map" name
-                        // world->setGameState(new CustomMapState(world,fileName[fileName.size()-1]));
+                        listFileName.push_back(newMapName);
+                        mapNameSet.insert(newMapName);
+                        saveToJson();
+                        world->setGameState(new CustomMapState(world, newMapName));
                         return;
                     }
                     OptionActive = true;
                 }
             }
         }
-        // Mouse Whell handling
         float mouse = GetMouseWheelMove();
         MouseWhellAcum += mouse;
         if (MouseWhellAcum >= MouseWhellTime) {
@@ -207,15 +226,46 @@ void ChooseCustomizedMapState::draw()
     }
 }
 
-void ChooseCustomizedMapState::loadFromJson(std::string fileName)
+void ChooseCustomizedMapState::load(std::string fileName)
 {
-    //
+    std::ifstream file(fileName);
+    if (!file) {
+        std::cerr << "Could not open json file " << fileName << std::endl;
+        return;
+    }
+    json j;
+    file >> j;
+
+    if (j.contains("listMapName")) {
+        this->listFileName = j["listMapName"].get<std::vector<std::string>>();
+        numberOfFile = this->listFileName.size();
+        mapNameSet.clear();
+        for (const auto& name : listFileName) {
+            mapNameSet.insert(name);
+        }
+    } else {
+        std::cerr << "Invalid JSON format in " << fileName << std::endl;
+    }
 }
 
 void ChooseCustomizedMapState::save(std::string fileName)
 {
-    //
+    json j;
+    j["listMapName"] = this->listFileName;
+    std::ofstream outFile(fileName);
+    if (!outFile) {
+        std::cerr << "Could not open file " << fileName << " for saving." << std::endl;
+        return;
+    }
+    outFile << j.dump(4);
+    if (!outFile) {
+        std::cerr << "Error writing to file " << fileName << std::endl;
+    } else {
+        std::cout << "Map list saved successfully to " << fileName << std::endl;
+    }
+    outFile.close();
 }
+
 void ChooseCustomizedMapState::setMap(bool Up)
 {
     if (Up) {
@@ -223,7 +273,7 @@ void ChooseCustomizedMapState::setMap(bool Up)
             currentIndex = 0;
             int i = 0;
             for (i;i<numberOfFile;i++) {
-                mapButtons[i].setText(fileName[i]);
+                mapButtons[i].setText(listFileName[i]);
             }
             for (i;i<4;i++) {
                 mapButtons[i].setText("EMPTY SLOT");
@@ -231,23 +281,23 @@ void ChooseCustomizedMapState::setMap(bool Up)
         }
         if (currentIndex + 4 == numberOfFile) {
             currentIndex++;
-            mapButtons[0].setText(fileName[numberOfFile-3]);
-            mapButtons[1].setText(fileName[numberOfFile-2]);
-            mapButtons[2].setText(fileName[numberOfFile-1]);
+            mapButtons[0].setText(listFileName[numberOfFile-3]);
+            mapButtons[1].setText(listFileName[numberOfFile-2]);
+            mapButtons[2].setText(listFileName[numberOfFile-1]);
             mapButtons[3].setText("EMPTY SLOT");
         } else if (currentIndex + 4 < numberOfFile) {
             currentIndex++;
-            mapButtons[0].setText(fileName[currentIndex]);
-            mapButtons[1].setText(fileName[currentIndex+1]);
-            mapButtons[2].setText(fileName[currentIndex+2]);
-            mapButtons[3].setText(fileName[currentIndex+3]);
+            mapButtons[0].setText(listFileName[currentIndex]);
+            mapButtons[1].setText(listFileName[currentIndex+1]);
+            mapButtons[2].setText(listFileName[currentIndex+2]);
+            mapButtons[3].setText(listFileName[currentIndex+3]);
         }
     } else {
         if (currentIndex == 0) return;
         currentIndex--;
-        mapButtons[0].setText(fileName[currentIndex]);
-        mapButtons[1].setText(fileName[currentIndex+1]);
-        mapButtons[2].setText(fileName[currentIndex+2]);
-        mapButtons[3].setText(fileName[currentIndex+3]);
+        mapButtons[0].setText(listFileName[currentIndex]);
+        mapButtons[1].setText(listFileName[currentIndex+1]);
+        mapButtons[2].setText(listFileName[currentIndex+2]);
+        mapButtons[3].setText(listFileName[currentIndex+3]);
     }
 }

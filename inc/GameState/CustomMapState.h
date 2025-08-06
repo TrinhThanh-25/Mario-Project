@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <unordered_set>
 #include "raygui.h"
 
 class CustomMapState : public GameState {
@@ -48,6 +49,9 @@ private:
 
     void loadTileTextures();
     void drawMap();
+    bool isMapNameExists(const std::string& name) const;
+    std::string generateUniqueMapName(const std::string& baseName) const;
+    void updateListMapFile(const std::string& oldName, const std::string& newName, const std::string& fileName = "../resources/Map/ListMap.json");
     void drawTilePalette();
     void drawToolbar();
     void updateTilePallete();
