@@ -71,7 +71,10 @@ void CourseClearToken::playCollisionSound()
 }
 
 void CourseClearToken::updateCharacter(Character *character)
-{
+{   
+    if(character->getGameMode() == GameMode::TESTER) {
+        return;
+    }
     if (character->getState() == SpriteState::VICTORY) return;
     //character->getGameHud()->addPoints(points);
     character->setState(SpriteState::VICTORY);
