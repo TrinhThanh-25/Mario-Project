@@ -3,6 +3,7 @@
 #include "Common/ResourceManager.h"
 #include "GameState/PlayingState.h"
 #include "GameState/CustomMapState.h"
+#include <filesystem>
 
 void MyButton::draw()
 {
@@ -31,32 +32,52 @@ void MyButton::setPos(Vector2 newPos) {
 
 ChooseCustomizedMapState::ChooseCustomizedMapState(World *world) : GameState(world, GameStateType::CHOOSE_CUSTOMIZED_MAP)
 {
-    mapButtons.emplace_back(Rectangle{219, 64, 1160, 173}, "Map 1", 20, WHITE, true, true);
-    mapButtons.emplace_back(Rectangle{222, 264, 1160, 173}, "Map 2", 20, WHITE, true, true);
-    mapButtons.emplace_back(Rectangle{222, 464, 1160, 173}, "Map 3", 20, WHITE, true, true);
-    mapButtons.emplace_back(Rectangle{222, 664, 1160, 173}, "Map 4", 20, WHITE, true, true);
-
+    mapButtons.emplace_back(Rectangle{219, 64, 1160, 173}, "Map 1", 30, WHITE, true, true);
+    mapButtons.emplace_back(Rectangle{222, 264, 1160, 173}, "Map 2", 30, WHITE, true, true);
+    mapButtons.emplace_back(Rectangle{222, 464, 1160, 173}, "Map 3", 30, WHITE, true, true);
+    mapButtons.emplace_back(Rectangle{222, 664, 1160, 173}, "Map 4", 30, WHITE, true, true);
     for (int i = 0; i < mapButtons.size(); i++)
     {
         mapButtons[i].setTextureName("CMButton");
     }
 
-    ESCMenuButtons.emplace_back(Rectangle{577, 288, 442, 94}, "Resume", 20, WHITE, true, true);
-    ESCMenuButtons.emplace_back(Rectangle{577, 432, 442, 94}, "Return", 20, WHITE, true, true);
-
+    ESCMenuButtons.emplace_back(Rectangle{577, 355, 442, 94}, "Resume", 20, WHITE, true, true);
+    ESCMenuButtons.emplace_back(Rectangle{577, 504, 442, 94}, "Return", 20, WHITE, true, true);
     for (int i = 0; i < ESCMenuButtons.size(); i++)
     {
         ESCMenuButtons[i].setTextureName("ESCMenuButton");
     }
 
+    OptionButtons.emplace_back(Rectangle{577, 288, 442, 94}, "Play", 20, WHITE, true, true);
+    OptionButtons.emplace_back(Rectangle{577, 432, 442, 94}, "Edit", 20, WHITE, true, true);
+    OptionButtons.emplace_back(Rectangle{577, 576, 442, 94}, "Delete", 20, WHITE, true, true);
+    for (int i = 0; i < OptionButtons.size(); i++)
+    {
+        OptionButtons[i].setTextureName("ESCMenuButton");
+    }
     ESCMenuActive = false;
-    PopUpActive = false;
+    OptionActive = false;
+    currentIndex = 0;
+
+    // Test
+    numberOfFile = 4;
+    fileName.resize(numberOfFile);
+    for (int i=0;i<fileName.size();i++) {
+        fileName[i] = std::to_string(i);
+    }
+
+    // loadFromJson(fileName)
+
+    currentIndex = -1;
+    setMap(true);
 }
 
 ChooseCustomizedMapState::~ChooseCustomizedMapState()
 {
     mapButtons.clear();
     ESCMenuButtons.clear();
+    OptionButtons.clear();
+    // save(fileName)
 }
 void ChooseCustomizedMapState::update()
 {
@@ -65,10 +86,6 @@ void ChooseCustomizedMapState::update()
         if (IsKeyPressed(KEY_ESCAPE))
         {
             ESCMenuActive = false;
-            for (int i = 0; i < mapButtons.size(); i++)
-            {
-                mapButtons[i].toggleHandle();
-            }
             return;
         }
         for (auto &button : ESCMenuButtons)
@@ -80,10 +97,6 @@ void ChooseCustomizedMapState::update()
             if (ESCMenuButtons[0].isHover())
             {
                 ESCMenuActive = false;
-                for (int i = 0; i < mapButtons.size(); i++)
-                {
-                    mapButtons[i].toggleHandle();
-                }
                 return;
             }
             else if (ESCMenuButtons[1].isHover())
@@ -92,41 +105,74 @@ void ChooseCustomizedMapState::update()
             }
         }
     }
-    else
+    else if (OptionActive)
     {
         if (IsKeyPressed(KEY_ESCAPE))
         {
-            ESCMenuActive = !ESCMenuActive;
-            for (int i = 0; i < mapButtons.size(); i++)
-            {
-                mapButtons[i].toggleHandle();
-            }
+            OptionActive = false;
             return;
         }
-        if (PopUpActive)
-        {
-            popUp.update();
-            if (!popUp.isHover())
-            {
-                PopUpActive = false;
-            }
-            return;
-        }
-        else
-        {
-            for (auto &button : mapButtons)
+        if (mapButtons[MapChosen].getText() == "EMPTY SLOT") {
+            OptionButtons[1].update();
+        } else {
+            for (auto &button : OptionButtons)
             {
                 button.update();
             }
-            for (int i = 0; i < mapButtons.size(); i++)
-            {
-                if (mapButtons[i].isHover())
-                {
-                    PopUpActive = true;
-                    popUp.setMapChosen(i + 1);
-                    popUp.setPos(GetMousePosition());
+        }
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            if (OptionButtons[0].isHover()) {
+                // Play mapButtons[MapChosen].getText()
+                // world->setGamePlay(GamePlay::PLAYCUSTOMMAP);
+            } else if (OptionButtons[1].isHover()) {
+                if (mapButtons[MapChosen].getText() == "EMPTY SLOT") {
+                    numberOfFile++;
+                    fileName.push_back("New Map " + std::to_string(fileName.size()));
+                    // New file with "New Map" name
+                    // world->setGameState(new CustomMapState(world,fileName[fileName.size()-1]));
+                } else {
+                    // world->setGameState(new CustomMapState(world,mapButtons[MapChosen].getText()));
+                }
+            } else if (OptionButtons[2].isHover()) {
+                // std::filesystem::remove(mapButtons[MapChosen].getText());
+                numberOfFile--;
+                fileName.erase(fileName.begin()+currentIndex+MapChosen);
+                if (currentIndex + 4 > numberOfFile) {
+                    currentIndex = numberOfFile - 4;
+                } else currentIndex--;
+                setMap(true);
+                OptionActive = false;
+            } else {
+                OptionActive = false;
+                return;
+            }
+        }
+    } else {
+        if (IsKeyPressed(KEY_ESCAPE))
+        {
+            ESCMenuActive = true;
+            return;
+        }
+        for (auto& button:mapButtons) {
+            button.update();
+        }
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            for (int i=0;i<mapButtons.size();i++) {
+                if (mapButtons[i].isHover()) {
+                    MapChosen = i;
+                    OptionActive = true;
                 }
             }
+        }
+        // Mouse Whell handling
+        float mouse = GetMouseWheelMove();
+        MouseWhellAcum += mouse;
+        if (MouseWhellAcum >= MouseWhellTime) {
+            MouseWhellAcum = 0;
+            setMap(false);
+        } else if (MouseWhellAcum <= -MouseWhellTime) {
+            MouseWhellAcum = 0;
+            setMap(true);
         }
     }
 }
@@ -147,78 +193,61 @@ void ChooseCustomizedMapState::draw()
         {
             button.draw();
         }
-    }
-    else if (PopUpActive)
+    } else if (OptionActive)
     {
-        popUp.draw();
-    }
-}
-
-void ChooseCustomizedMapState::loadFromJson(const json &j)
-{
-}
-popUpMenu::popUpMenu(): rectangle({0,0,682,380})
-{
-    popupMenuButtons.emplace_back(Rectangle{0, 0, 495, 156}, "Play", 20, WHITE, true, true);
-    popupMenuButtons.emplace_back(Rectangle{0, 0, 495, 156}, "Edit", 20, WHITE, true, true);
-    for (int i=0;i<popupMenuButtons.size();i++) {
-        popupMenuButtons[i].setTextureName("PUButton");
-    }
-}
-
-popUpMenu::~popUpMenu()
-{
-    popupMenuButtons.clear();
-}
-void popUpMenu::draw()
-{
-    if (Upper) {
-        DrawTexture(ResourceManager::getTexture()["PUPad"],rectangle.x,rectangle.y,WHITE);
-    } else {
-        DrawTexture(ResourceManager::getTexture()["PUPad1"],rectangle.x,rectangle.y,WHITE);
-    }
-    popupMenuButtons[0].draw();
-    popupMenuButtons[1].draw();
-}
-
-void popUpMenu::setPos(Vector2 newPos)
-{
-    if (newPos.y < 450) {
-        rectangle.x = newPos.x;
-        rectangle.y = newPos.y;
-        popupMenuButtons[0].setPos({rectangle.x+122,rectangle.y+26});
-        popupMenuButtons[1].setPos({rectangle.x+122,rectangle.y+202});
-        Upper = true;
-    } else {
-        rectangle.x = newPos.x;
-        rectangle.y = newPos.y-rectangle.height;
-        popupMenuButtons[0].setPos({rectangle.x+122,rectangle.y+26});
-        popupMenuButtons[1].setPos({rectangle.x+122,rectangle.y+202});
-        Upper = false;
-    }
-}
-
-void popUpMenu::update()
-{
-    Vector2 mousePos = GetMousePosition();
-    if (mousePos.y < 450) {
-        isHovered = CheckCollisionPointRec(mousePos, Rectangle{rectangle.x-50,rectangle.y-50,rectangle.width+100,rectangle.height+100});
-    } else {
-        isHovered = CheckCollisionPointRec(mousePos, Rectangle{rectangle.x-50,rectangle.y+50,rectangle.width+100,rectangle.height+50});
-    }
-    for (int i = 0; i < popupMenuButtons.size(); i++)
-    {
-        popupMenuButtons[i].update();
-    }
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-    {
-        if (popupMenuButtons[0].isHover())
-        {
-            // Play map chosen
+        DrawRectangle(0, 0, 1600, 900, Fade({159, 139, 121, 255}, 0.5f));
+        DrawTexture(ResourceManager::getTexture()["ESCMenuPad"],444,170,WHITE);
+        if (mapButtons[MapChosen].getText() == "EMPTY SLOT") {
+            OptionButtons[1].draw();
+        } else {
+            for (auto& button:OptionButtons) {
+                button.draw();
+            }
         }
-        else if (popupMenuButtons[1].isHover())
-        {
-            // Edit map chosen
+    }
+}
+
+void ChooseCustomizedMapState::loadFromJson(std::string fileName)
+{
+    //
+}
+
+void ChooseCustomizedMapState::save(std::string fileName)
+{
+    //
+}
+void ChooseCustomizedMapState::setMap(bool Up)
+{
+    if (Up) {
+        if (numberOfFile < 4) {
+            currentIndex = 0;
+            int i = 0;
+            for (i;i<numberOfFile;i++) {
+                mapButtons[i].setText(fileName[i]);
+            }
+            for (i;i<4;i++) {
+                mapButtons[i].setText("EMPTY SLOT");
+            }
         }
+        if (currentIndex + 4 == numberOfFile) {
+            currentIndex++;
+            mapButtons[0].setText(fileName[numberOfFile-3]);
+            mapButtons[1].setText(fileName[numberOfFile-2]);
+            mapButtons[2].setText(fileName[numberOfFile-1]);
+            mapButtons[3].setText("EMPTY SLOT");
+        } else if (currentIndex + 4 < numberOfFile) {
+            currentIndex++;
+            mapButtons[0].setText(fileName[currentIndex]);
+            mapButtons[1].setText(fileName[currentIndex+1]);
+            mapButtons[2].setText(fileName[currentIndex+2]);
+            mapButtons[3].setText(fileName[currentIndex+3]);
+        }
+    } else {
+        if (currentIndex == 0) return;
+        currentIndex--;
+        mapButtons[0].setText(fileName[currentIndex]);
+        mapButtons[1].setText(fileName[currentIndex+1]);
+        mapButtons[2].setText(fileName[currentIndex+2]);
+        mapButtons[3].setText(fileName[currentIndex+3]);
     }
 }
