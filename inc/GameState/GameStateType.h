@@ -12,6 +12,8 @@ enum class GameStateType {
     SETTING,
     TIME_UP,
     TITLE_SCREEN,
+    CHOOSE_MAP,
+    CHOOSE_CUSTOMIZED_MAP
     TEST_MAP,
     CUSTOM_MAP,
 };

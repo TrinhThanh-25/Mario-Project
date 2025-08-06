@@ -666,6 +666,18 @@ void ResourceManager::loadTexture() {
     texture["GuiSlider"] = LoadTexture("../resources/gui/slider.png");
     texture["GuiSliderHandle"] = LoadTexture("../resources/gui/sliderHandle.png");
     texture["GuiSliderHandleSelected"] = LoadTexture("../resources/gui/sliderHandleSelected.png");
+    texture["ChooseMapButton0"] = LoadTexture("../resources/gui/ChooseMapButton0.png");
+    texture["ChooseMapButton1"] = LoadTexture("../resources/gui/ChooseMapButton1.png");
+    texture["ESCMenuPad"] = LoadTexture("../resources/gui/ESCMenuPad.png");
+    texture["ESCMenuButton0"] = LoadTexture("../resources/gui/ESCMenuButton0.png");
+    texture["ESCMenuButton1"] = LoadTexture("../resources/gui/ESCMenuButton1.png");
+    texture["CMPad"] = LoadTexture("../resources/gui/CMPad.png");
+    texture["CMButton0"] = LoadTexture("../resources/gui/CMButton0.png");
+    texture["CMButton1"] = LoadTexture("../resources/gui/CMButton1.png");
+    texture["PUPad"] = LoadTexture("../resources/gui/PUPad.png");
+    texture["PUPad1"] = LoadTexture("../resources/gui/PUPad1.png");
+    texture["PUButton0"] = LoadTexture("../resources/gui/PUButton0.png");
+    texture["PUButton1"] = LoadTexture("../resources/gui/PUButton1.png");
 };
 
 void ResourceManager::loadSound() {
