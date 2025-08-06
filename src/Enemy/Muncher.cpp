@@ -5,6 +5,7 @@ Muncher::Muncher(Vector2 pos, Vector2 dim, Color color)
     : Enemy(EnemyType::MUNCHER, pos, dim, {0.0}, color){
     setState(SpriteState::INACTIVE); 
     type = EnemyType::MUNCHER;
+    setAuxiliaryState(SpriteState::INVULNERABLE);
 }
 
     

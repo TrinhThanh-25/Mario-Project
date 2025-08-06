@@ -99,8 +99,9 @@ void CustomMapState::updateTilePallete() {
 
     std::vector<std::string> categories = getCategories();
     int paletteX = GetScreenWidth() - PALETTE_WIDTH;
-    int categoryY = 70;
-    int tileAreaY = categoryY + BUTTON_HEIGHT + 25;
+    int paletteY = 40;
+    int categoryY = paletteY + 10;
+    int tileAreaY = categoryY + BUTTON_HEIGHT + 15;
     int tilesPerRow = (PALETTE_WIDTH - 20) / (TILE_DISPLAY_SIZE + TILE_SPACING);
     
     std::vector<int> drawList;
@@ -117,7 +118,7 @@ void CustomMapState::updateTilePallete() {
         int row = i / tilesPerRow;
         
         int tileX = paletteX + 10 + col * (TILE_DISPLAY_SIZE + TILE_SPACING);
-        int tileY = tileAreaY - 10 + row * (TILE_DISPLAY_SIZE + TILE_SPACING);
+        int tileY = tileAreaY + row * (TILE_DISPLAY_SIZE + TILE_SPACING);
         
         Rectangle tileDest = {(float)tileX, (float)tileY, (float)TILE_DISPLAY_SIZE, (float)TILE_DISPLAY_SIZE};
         

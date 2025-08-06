@@ -16,7 +16,7 @@ Map::Map(std::vector<Character*>& characters, World* world, int mapNumber)
     : characters(characters), 
     world(world), 
     mapNumber(mapNumber),
-    // maxMapNumber(3),
+    maxMapNumber(4),
     offset(0.0f), 
     camera(nullptr), 
     width(0), 
@@ -231,6 +231,7 @@ void Map::reset(bool isTestMap) {
 bool Map::next() {
     if (mapNumber < maxMapNumber) {
         mapNumber++;
+        mapFileName = "Map" + std::to_string(mapNumber);
         reset();
         return true;
     }

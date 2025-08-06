@@ -3,6 +3,7 @@
 #include "GameState/ChooseCharacterState.h"
 #include "GameState/SettingState.h"
 #include "Common/ResourceManager.h"
+#include "GameState/ChooseCustomizedMap.h"
 #include "SaveGame.h"
 #include "raylib.h"
 
@@ -37,6 +38,7 @@ void TitleScreenState::update() {
     continueButton.update();
     onePlayerGameButton.update();
     twoPlayersGameButton.update();
+    listMapButton.update();
     optionsButton.update();
     exitButton.update();
     if(continueButton.isHovered() && isSavedGameAvailable && !continueButton.isSelected()) {
@@ -180,7 +182,8 @@ void TitleScreenState::update() {
         world->setGameState(newState);
     }
     else if(listMapButton.isPressed() || (IsKeyPressed(KEY_ENTER) && listMapButton.isSelected())) {
-        // go to list map state
+        ChooseCustomizedMapState* newState = new ChooseCustomizedMapState(world);
+        world->setGameState(newState);
     }
 }
 

@@ -1,8 +1,36 @@
 #include "GameState/ChooseCustomizedMap.h"
+#include "GameState/TitleScreenState.h"
+#include "Common/ResourceManager.h"
+#include "GameState/PlayingState.h"
+#include "GameState/CustomMapState.h"
 
-ChooseCustomizedMapState::ChooseCustomizedMapState(World *world, GameStateType type) : GameState(world, type)
+void MyButton::draw()
 {
-    // Map buttons initialization
+    if (!isDrawn) return;
+        DrawTexture(ResourceManager::getTexture()[textureName+"0"], rectangle.x, rectangle.y, color);
+    if (isHovered && isHandled)
+    {
+        DrawTexture(ResourceManager::getTexture()[textureName+"1"], rectangle.x, rectangle.y, color);
+    }
+    ResourceManager::drawBigString(this->text, this->rectangle.x + (this->rectangle.width - ResourceManager::getDrawBigStringWidth(this->text, fontSize)) / 2, this->rectangle.y + (this->rectangle.height - ResourceManager::getDrawBigStringHeight(fontSize)) / 2, fontSize);
+}
+
+void MyButton::update()
+{
+    if (isHandled)
+    {
+        Vector2 mousePos = GetMousePosition();
+        isHovered = CheckCollisionPointRec(mousePos, rectangle);
+    }
+}
+
+void MyButton::setPos(Vector2 newPos) {
+    rectangle.x = newPos.x;
+    rectangle.y = newPos.y;
+}
+
+ChooseCustomizedMapState::ChooseCustomizedMapState(World *world) : GameState(world, GameStateType::CHOOSE_CUSTOMIZED_MAP)
+{
     mapButtons.emplace_back(Rectangle{219, 64, 1160, 173}, "Map 1", 20, WHITE, true, true);
     mapButtons.emplace_back(Rectangle{222, 264, 1160, 173}, "Map 2", 20, WHITE, true, true);
     mapButtons.emplace_back(Rectangle{222, 464, 1160, 173}, "Map 3", 20, WHITE, true, true);
@@ -13,10 +41,8 @@ ChooseCustomizedMapState::ChooseCustomizedMapState(World *world, GameStateType t
         mapButtons[i].setTextureName("CMButton");
     }
 
-    // ESC menu buttons initialization
     ESCMenuButtons.emplace_back(Rectangle{577, 288, 442, 94}, "Resume", 20, WHITE, true, true);
-    ESCMenuButtons.emplace_back(Rectangle{577, 432, 442, 94}, "Exit to Map choosing", 20, WHITE, true, true);
-    ESCMenuButtons.emplace_back(Rectangle{577, 576, 442, 94}, "Exit to Desktop", 20, WHITE, true, true);
+    ESCMenuButtons.emplace_back(Rectangle{577, 432, 442, 94}, "Return", 20, WHITE, true, true);
 
     for (int i = 0; i < ESCMenuButtons.size(); i++)
     {
@@ -62,11 +88,7 @@ void ChooseCustomizedMapState::update()
             }
             else if (ESCMenuButtons[1].isHover())
             {
-                world->setGameState(new ChooseMapState(world,GameStateType::CHOOSE_MAP));
-            }
-            else if (ESCMenuButtons[2].isHover())
-            {
-                world->setIsClosed(true);
+                world->setGameState(new TitleScreenState(world));
             }
         }
     }
@@ -113,7 +135,6 @@ void ChooseCustomizedMapState::draw()
 {
     ClearBackground(WHITE);
     DrawTexture(ResourceManager::getTexture()["CMPad"], 124, 9, WHITE);
-    // Draw buttons for each map
     for (auto &button : mapButtons)
     {
         button.draw();
