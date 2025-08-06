@@ -78,6 +78,7 @@ class Map : virtual public Drawable {
 
         void setNetMode(bool net);
         std::string getMapFileName() const;
+        void setMapFileName(const std::string& mapFileName);
         void setMap(int width, int height, const std::vector<int>& mapGrid);
         void loadObjectsToMap(const std::vector<int>& mapGrid);
         std::vector<int> getMapGrid() const;

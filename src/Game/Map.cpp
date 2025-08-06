@@ -427,6 +427,10 @@ std::string Map::getMapFileName() const {
     return mapFileName;
 }
 
+void Map::setMapFileName(const std::string& mapFileName) {
+    this->mapFileName = mapFileName;
+}
+
 void Map::setMap(int width, int height, const std::vector<int>& mapGrid) {
     this->width = width * 32;
     this->height = height * 32;

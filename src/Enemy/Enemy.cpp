@@ -177,3 +177,7 @@ void Enemy::loadFromJson(const json& j){
     isFacingLeft = j["isFacingLeft"].get<bool>();
     type = static_cast<EnemyType>(j["type"].get<int>());
 }
+
+void Enemy::setIsFacingLeft(bool isFacingLeft) {
+    this->isFacingLeft = isFacingLeft;
+}

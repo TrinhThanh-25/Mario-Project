@@ -8,7 +8,7 @@ YellowKoopaTroopa::YellowKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Colo
     : Enemy(EnemyType::YELLOW_KOOPA_TROOPA, pos, dim, vel, color) {
     
     extraWakeUpTime = 2.0f;
-    shellSpeed = 150.0f;
+    shellSpeed = 400.0f;
     shellTimer = 0.0f;
     shellMoving = false;
 

@@ -617,11 +617,7 @@ void Character::collisionEnemy(Enemy* enemy) {
             PlaySound(ResourceManager::getSound()["Stomp"]);
             gameHud->addPoints(enemy->getPoint());
         }
-        else if(enemy->getState() == SpriteState::SHELL) {
-            enemy->beingHit(HitType::STOMP);
-            //sound miss/error
-        }
-        else if(collision == CollisionType::SOUTH && enemy->getAuxiliaryState() != SpriteState::INVULNERABLE && enemy->getState() != SpriteState::SHELL_MOVING) {
+        else if(collision == CollisionType::SOUTH && enemy->getAuxiliaryState() != SpriteState::INVULNERABLE) {
             if( state == SpriteState::FALLING && enemy->getState() != SpriteState::DYING && enemy->getState() != SpriteState::TO_BE_REMOVED) {
                 position.y = enemy->getY() - size.y;
                 if(((modePlayer == ModePlayer::FIRSTPLAYER || modePlayer == ModePlayer::ONEPLAYER) && IsKeyDown(KEY_LEFT_CONTROL)) || (modePlayer == ModePlayer::SECONDPLAYER && IsKeyDown(KEY_RIGHT_CONTROL))) {
@@ -632,8 +628,28 @@ void Character::collisionEnemy(Enemy* enemy) {
                 }
                 state = SpriteState::JUMPING;
                 enemy->beingHit(HitType::STOMP);
+                enemy->setIsFacingLeft(direction == Direction::LEFT);
                 PlaySound(ResourceManager::getSound()["Stomp"]);
                 gameHud->addPoints(enemy->getPoint());
+            }
+        }
+        else if(( collision == CollisionType::EAST || collision == CollisionType::WEST) && enemy->getState() == SpriteState::SHELL) {
+            switch (collision) {
+                case CollisionType::EAST:
+                    position.x = enemy->getX() - size.x;
+                    enemy->beingHit(HitType::STOMP);
+                    enemy->setIsFacingLeft(false);
+                    velocity.x = 0;
+                    break;
+                case CollisionType::WEST:
+                    position.x = enemy->getX() + enemy->getSize().x;
+                    enemy->beingHit(HitType::STOMP);
+                    enemy->setDirection(direction);
+                    enemy->setIsFacingLeft(true);
+                    velocity.x = 0;
+                    break;
+                default:
+                    break;
             }
         }
         else if( collision != CollisionType::NONE && invulnerable == false ) {
