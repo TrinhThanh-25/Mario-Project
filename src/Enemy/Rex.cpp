@@ -129,6 +129,7 @@ void Rex::activeWhenMarioApproach(Character& character) {
 }
 
 void Rex::collisionTile(Tile* tile) {
+    if (!isAlive() || !isSolidTile(tile)) return;
     CollisionType col = checkCollision(tile);
 
     Enemy::collisionTile(tile);

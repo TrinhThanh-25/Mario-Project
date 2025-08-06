@@ -166,6 +166,7 @@ void MummyBeetle::activeWhenMarioApproach(Character& character){
 }
 
 void MummyBeetle::collisionTile(Tile* tile) {
+    if (!isAlive() || !isSolidTile(tile)) return;
     CollisionType col = checkCollision(tile);
     Enemy::collisionTile(tile);
 
@@ -201,6 +202,13 @@ void MummyBeetle::collisionBlock(Block* block) {
     }
 }
 
+void MummyBeetle::collisionEnemy(Enemy* other){
+    if (state == SpriteState::SHELL_MOVING && isAlive() && other->isAlive() && other != this){
+        if (checkCollision(other) != CollisionType::NONE){
+            other->beingHit(HitType::SHELL_KICK);
+        }
+    }
+}
 
 // ============================= SAVE GAME ===============================
 json MummyBeetle::saveToJson() const {

@@ -152,6 +152,7 @@ void BobOmb::activeWhenMarioApproach(Character& character){
 
 
 void BobOmb::collisionTile(Tile* tile) {
+    if (!isAlive() || !isSolidTile(tile)) return;
     CollisionType col = checkCollision(tile);
 
     // Gọi xử lý gốc để vẫn giữ va chạm đất/trần

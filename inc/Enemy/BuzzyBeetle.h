@@ -27,6 +27,7 @@ public:
 
     void collisionBlock(Block* block);
     void collisionTile(Tile* tile);
+    void collisionEnemy(Enemy* other) override;
 
     json saveToJson() const;
     void loadFromJson(const json& j);

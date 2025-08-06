@@ -194,6 +194,7 @@ void BuzzyBeetle::followTheLeader(Sprite* leader) {
 }
 
 void BuzzyBeetle::collisionTile(Tile* tile) {
+    if (!isAlive() || !isSolidTile(tile)) return;
     CollisionType col = checkCollision(tile);
     Enemy::collisionTile(tile);
 
@@ -230,6 +231,13 @@ void BuzzyBeetle::collisionBlock(Block* block) {
     }
 }
 
+void BuzzyBeetle::collisionEnemy(Enemy* other){
+    if (state == SpriteState::SHELL_MOVING && isAlive() && other->isAlive() && other != this){
+        if (checkCollision(other) != CollisionType::NONE){
+            other->beingHit(HitType::SHELL_KICK);
+        }
+    }
+}
 
 // ========================= SAVE GAME ============================
 json BuzzyBeetle::saveToJson() const {

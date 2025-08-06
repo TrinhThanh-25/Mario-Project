@@ -37,7 +37,7 @@ void GreenKoopaTroopa::update(const std::vector<Character*>& characterList) {
         
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
-        velocity.y = World::gravity * delta;
+        velocity.y += World::gravity * delta;
 
         updateCollisionBoxes();
     }
@@ -205,6 +205,7 @@ void GreenKoopaTroopa::followTheLeader(Sprite* leader) {
 }
 
 void GreenKoopaTroopa::collisionTile(Tile* tile) {
+    if (!isAlive() || !isSolidTile(tile)) return;
     CollisionType col = checkCollision(tile);
     Enemy::collisionTile(tile);
 
@@ -238,6 +239,14 @@ void GreenKoopaTroopa::collisionBlock(Block* block) {
 
     if (col == CollisionType::SOUTH) {
         velocity.y = 0;
+    }
+}
+
+void GreenKoopaTroopa::collisionEnemy(Enemy* other){
+    if (state == SpriteState::SHELL_MOVING && isAlive() && other->isAlive() && other != this){
+        if (checkCollision(other) != CollisionType::NONE){
+            other->beingHit(HitType::SHELL_KICK);
+        }
     }
 }
 

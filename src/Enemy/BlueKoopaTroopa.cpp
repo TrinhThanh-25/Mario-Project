@@ -186,6 +186,7 @@ void BlueKoopaTroopa::activeWhenMarioApproach(Character& character){
 }
 
 void BlueKoopaTroopa::collisionTile(Tile* tile) {
+    if (!isAlive() || !isSolidTile(tile)) return;
     CollisionType col = checkCollision(tile);
 
     // Gọi xử lý gốc để giữ va chạm trần và đất
@@ -228,6 +229,13 @@ void BlueKoopaTroopa::collisionBlock(Block* block) {
     }
 }
 
+void BlueKoopaTroopa::collisionEnemy(Enemy* other){
+    if (state == SpriteState::SHELL_MOVING && isAlive() && other->isAlive() && other != this){
+        if (checkCollision(other) != CollisionType::NONE){
+            other->beingHit(HitType::SHELL_KICK);
+        }
+    }
+}
 
 // ============================ SAVE GAME =========================
 json BlueKoopaTroopa::saveToJson() const {

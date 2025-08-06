@@ -49,6 +49,7 @@ public:
     // CollisionType checkCollision(Block* block);
     virtual void collisionBlock(Block* block);
     virtual void collisionTile(Tile* tile);
+    virtual void collisionEnemy(Enemy* other);
 
     MoveType movetype;
     void setMoveType(MoveType type) { movetype = type; }
@@ -59,6 +60,10 @@ public:
     virtual void loadFromJson(const json& j);
 
     virtual int getPoint() const;
+
+    bool isAlive() const;
+    bool isSolidTile(Tile* tile) const ;
+
 
     // CollisionType checkCollision(const std::vector<Sprite*>& collidables);
 
