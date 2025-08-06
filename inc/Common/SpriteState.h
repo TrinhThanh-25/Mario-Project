@@ -29,6 +29,7 @@ enum class SpriteState {
     // Auxiliary State
     INVULNERABLE,
     INVISIBLE,
+    SOLID_ABOVE,
 
     //
     NO_COLLIDABLE,

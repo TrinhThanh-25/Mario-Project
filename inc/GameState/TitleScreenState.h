@@ -10,6 +10,7 @@ class TitleScreenState : public GameState {
         Button onePlayerGameButton;
         Button twoPlayersGameButton;
         Button continueButton;
+        Button listMapButton;
         Button optionsButton;
         Button exitButton;
         bool isSavedGameAvailable;

@@ -20,8 +20,8 @@ Character* CharacterFactory::createCharacter(CharacterName characterName, ModePl
             return new Toad(mode, defaultPosition, defaultVelocity, BLUE, defaultSpeedX, defaultMaxSpeedX, defaultJumpSpeed, initialLives);
         case CharacterName::PEACH:
             return new Peach(mode, defaultPosition, defaultVelocity, PINK, defaultSpeedX, defaultMaxSpeedX, defaultJumpSpeed, initialLives);
-        // Add cases for other characters as needed
         default:
             return nullptr; 
     }
 }
+

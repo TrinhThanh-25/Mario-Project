@@ -12,7 +12,8 @@ JumpingPiranhaPlant::JumpingPiranhaPlant(Vector2 pos, Vector2 dim, Vector2 vel, 
     waitTime(0.8f),
     waitAcum(0.0f)
 {
-    setState(SpriteState::ACTIVE);             
+    setState(SpriteState::ACTIVE);
+    auxiliaryState = SpriteState::INVULNERABLE;
     velocity.y = velocityUp;
     isFacingLeft = true;
     type = EnemyType::JUMPING_PIRANHA_PLANT;

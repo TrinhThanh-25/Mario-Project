@@ -14,6 +14,8 @@ enum class GameStateType {
     TITLE_SCREEN,
     CHOOSE_MAP,
     CHOOSE_CUSTOMIZED_MAP
+    TEST_MAP,
+    CUSTOM_MAP,
 };
 
 #endif
