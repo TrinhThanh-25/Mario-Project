@@ -124,15 +124,8 @@ void ChooseCustomizedMapState::update()
             if (OptionButtons[0].isHover()) {
                 // Play mapButtons[MapChosen].getText()
                 // world->setGamePlay(GamePlay::PLAYCUSTOMMAP);
-            } else if (OptionButtons[1].isHover()) {
-                if (mapButtons[MapChosen].getText() == "EMPTY SLOT") {
-                    numberOfFile++;
-                    fileName.push_back("New Map " + std::to_string(fileName.size()));
-                    // New file with "New Map" name
-                    // world->setGameState(new CustomMapState(world,fileName[fileName.size()-1]));
-                } else {
-                    // world->setGameState(new CustomMapState(world,mapButtons[MapChosen].getText()));
-                }
+            } else if (OptionButtons[1].isHover()) {   
+                // world->setGameState(new CustomMapState(world,mapButtons[MapChosen].getText()));
             } else if (OptionButtons[2].isHover()) {
                 // std::filesystem::remove(mapButtons[MapChosen].getText());
                 numberOfFile--;
@@ -160,6 +153,13 @@ void ChooseCustomizedMapState::update()
             for (int i=0;i<mapButtons.size();i++) {
                 if (mapButtons[i].isHover()) {
                     MapChosen = i;
+                    if (mapButtons[MapChosen].getText() == "EMPTY SLOT") {
+                        numberOfFile++;
+                        fileName.push_back("New Map " + std::to_string(fileName.size()));
+                        // New file with "New Map" name
+                        // world->setGameState(new CustomMapState(world,fileName[fileName.size()-1]));
+                        return;
+                    }
                     OptionActive = true;
                 }
             }
