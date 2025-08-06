@@ -10,7 +10,8 @@
 #include "json.hpp"
 
 using json = nlohmann::json;
-const int PALETTE_WIDTH = 280;
+
+const int PALETTE_WIDTH = 290;
 const int BUTTON_HEIGHT = 30;
 const int CATEGORY_BUTTON_WIDTH = 50;
 const int TOGGLE_BUTTON_WIDTH = 30;
@@ -56,6 +57,41 @@ void CustomMapState::enter() {}
 
 void CustomMapState::exit() {}
 
+void CustomMapState::handleUnsavedWarning() {
+    if (!showUnsavedWarning) return;
+    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Color{0, 0, 0, 128});
+    int dialogWidth = 400;
+    int dialogHeight = 200;
+    int dialogX = (GetScreenWidth() - dialogWidth) / 2;
+    int dialogY = (GetScreenHeight() - dialogHeight) / 2;
+    Rectangle dialogRect = {(float)dialogX, (float)dialogY, (float)dialogWidth, (float)dialogHeight};
+    DrawRectangleRec(dialogRect, WHITE);
+    DrawRectangleLinesEx(dialogRect, 2, BLACK);
+ 
+    std::string warningText = "Unsaved Changes!";
+    std::string messageText = "You have unsaved changes.\nDo you want to save before exiting?";
+    
+    DrawText(warningText.c_str(), dialogX + 20, dialogY + 20, 20, RED);
+    DrawText(messageText.c_str(), dialogX + 20, dialogY + 60, 16, BLACK);
+
+    Rectangle saveBtn = {(float)(dialogX + 20), (float)(dialogY + 140), 100, 30};
+    Rectangle discardBtn = {(float)(dialogX + 140), (float)(dialogY + 140), 100, 30};
+    Rectangle cancelBtn = {(float)(dialogX + 260), (float)(dialogY + 140), 100, 30};
+    
+    if (GuiButton(saveBtn, "SAVE & EXIT")) {
+        saveMap();
+        showUnsavedWarning = false;
+        // set ListMapState and return
+    }
+    if (GuiButton(discardBtn, "DISCARD")) {
+        showUnsavedWarning = false;
+        // set ListMapState and return
+    }
+    if (GuiButton(cancelBtn, "CANCEL")) {
+        showUnsavedWarning = false;
+    }
+}
+
 void CustomMapState::updateTilePallete() {
     Vector2 mouse = GetMousePosition();
     
@@ -93,6 +129,7 @@ void CustomMapState::updateTilePallete() {
 }
 
 void CustomMapState::update() {
+    if (showUnsavedWarning) return;
     updateTilePallete();
     updateMapView();
 }
@@ -114,7 +151,6 @@ void CustomMapState::updateMapView() {
             camera.target.x += mouseWorldPos.x - mouseWorldPosAfter.x;
             camera.target.y += mouseWorldPos.y - mouseWorldPosAfter.y;
         }
-
         float wheelMove = GetMouseWheelMove();
         if (wheelMove != 0.0f && !IsKeyDown(KEY_LEFT_CONTROL)) {
             if (IsKeyDown(KEY_LEFT_SHIFT)) {
@@ -123,8 +159,6 @@ void CustomMapState::updateMapView() {
                 camera.target.y -= wheelMove * 50.0f / camera.zoom;
             }
         }
-        
-        // Handle panning with middle mouse or space + left mouse
         if ((IsKeyDown(KEY_SPACE) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) && !isDragging) {
             isDragging = true;
             lastMousePos = mouse;
@@ -183,8 +217,6 @@ void CustomMapState::updateMapView() {
     }
 }
 
-
-
 void CustomMapState::draw() {
     ClearBackground({230, 230, 230, 255});
     drawMap();
@@ -193,6 +225,7 @@ void CustomMapState::draw() {
         return;
     }
     drawTilePalette();
+    handleUnsavedWarning();
 }
 
 void CustomMapState::drawMap() {
@@ -271,14 +304,14 @@ void CustomMapState::drawTilePalette() {
     int screenWidth = GetScreenWidth();
     int screenHeight = GetScreenHeight();
     
-    Rectangle toggleButton = {(float)getToggleX(isPaletteVisible), 20, (float)TOGGLE_BUTTON_WIDTH, (float)BUTTON_HEIGHT};
+    Rectangle toggleButton = {(float)getToggleX(isPaletteVisible), 5, (float)TOGGLE_BUTTON_WIDTH, (float)BUTTON_HEIGHT};
     if (GuiButton(toggleButton, isPaletteVisible ? "<<" : ">>")) {
         isPaletteVisible = !isPaletteVisible;
     }
     
     if (!isPaletteVisible) return;
     int paletteX = GetScreenWidth() - PALETTE_WIDTH;
-    int paletteY = 60;
+    int paletteY = 40;
     int paletteHeight = screenHeight - paletteY - 20;
     Rectangle palettePanel = {(float)paletteX, (float)paletteY, (float)PALETTE_WIDTH, (float)paletteHeight};
     DrawRectangleRec(palettePanel, {250, 250, 250, 255});
@@ -290,8 +323,15 @@ void CustomMapState::drawTilePalette() {
         int categoryX = paletteX + 10 + i * (CATEGORY_BUTTON_WIDTH + 5);
         Rectangle categoryButton = {(float)categoryX, (float)categoryY, (float)CATEGORY_BUTTON_WIDTH, (float)BUTTON_HEIGHT};
         std::string buttonText = categories[i];
-        if (GuiButton(categoryButton, buttonText.c_str())) {
-            selectedCategory = categories[i];
+        bool isSelected = (selectedCategory == categories[i]);
+        if (isSelected) {
+            GuiSetState(STATE_PRESSED);
+            GuiButton(categoryButton, buttonText.c_str());
+            GuiSetState(STATE_NORMAL);
+        } else {
+            if (GuiButton(categoryButton, buttonText.c_str())) {
+                selectedCategory = categories[i];
+            }
         }
     }
     
@@ -360,6 +400,19 @@ void CustomMapState::drawToolbar() {
     DrawRectangleRec(toolbarArea, {50, 50, 50, 255});
     
     float currentX = TOOLBAR_SPACING;
+
+    // Return button
+    Rectangle returnBtn = {currentX, 5, TOOLBAR_BUTTON_WIDTH, TOOLBAR_HEIGHT - 10};
+    if ((GuiButton(returnBtn, "RETURN") || IsKeyPressed(KEY_ESCAPE)) && !showUnsavedWarning) {
+        if (!isSaved) {
+            showUnsavedWarning = true;
+        } else {
+            // set ListMapState
+            isClosed = true;
+        }
+        return;
+    }
+    currentX += TOOLBAR_BUTTON_WIDTH + TOOLBAR_SPACING;
     
     // Save button
     Rectangle saveBtn = {currentX, 5, TOOLBAR_BUTTON_WIDTH, TOOLBAR_HEIGHT - 10};
@@ -371,7 +424,6 @@ void CustomMapState::drawToolbar() {
     // Test button
     Rectangle testBtn = {currentX, 5, TOOLBAR_BUTTON_WIDTH, TOOLBAR_HEIGHT - 10};
     if (GuiButton(testBtn, "TEST")) {
-        // mapGrid is already flat, so just pass it directly
         isClosed = true;
         TestMapState* testState = new TestMapState(world, mapFileName, MAP_WIDTH, MAP_HEIGHT, mapGrid);
         world->setGameState(testState);
@@ -450,10 +502,7 @@ void CustomMapState::saveMap() {
         std::cerr << "Failed to open map file for saving: " << mapNameBuffer << std::endl;
         return;
     }
-    
-    // Convert mapGrid to flat array for JSON (already flat, so just copy)
     std::vector<int> flatData = mapGrid;
-    
     json j;
     j["width"] = MAP_WIDTH;
     j["height"] = MAP_HEIGHT;
@@ -461,7 +510,6 @@ void CustomMapState::saveMap() {
     j["layers"].push_back({
         {"data", flatData}
     });
-    
     file << j.dump(4);
     file.close();
     isSaved = true;
@@ -489,7 +537,6 @@ void CustomMapState::loadMap() {
     mapGrid.clear();
     mapGrid.resize(MAP_HEIGHT * MAP_WIDTH, 0);
     
-    // Load flat data array (already matches our 1D structure)
     std::vector<int> data = j["layers"][0]["data"].get<std::vector<int>>();
     for (int i = 0; i < data.size() && i < MAP_HEIGHT * MAP_WIDTH; ++i) {
         mapGrid[i] = data[i];
@@ -511,12 +558,10 @@ void CustomMapState::applyMapSize() {
     int newHeight = std::stoi(heightBuffer);
         
     if (newWidth <= 0 || newHeight <= 0) return;
-    
+
     MAP_WIDTH = newWidth;
     MAP_HEIGHT = newHeight;
-        
     mapGrid.assign(MAP_HEIGHT * MAP_WIDTH, 0);
-        
     camera.target = {MAP_WIDTH * TILE_SIZE * 0.5f, MAP_HEIGHT * TILE_SIZE * 0.5f};
         
     int paletteWidth = isPaletteVisible ? PALETTE_WIDTH : 0;
@@ -526,24 +571,18 @@ void CustomMapState::applyMapSize() {
     float zoomX = (availableWidth * 0.8f) / (MAP_WIDTH * TILE_SIZE);
     float zoomY = (availableHeight * 0.8f) / (MAP_HEIGHT * TILE_SIZE);
     camera.zoom = std::clamp(std::min(zoomX, zoomY), 0.1f, 5.0f);
-        
-    camera.offset = {availableWidth * 0.5f, (availableHeight + TOOLBAR_HEIGHT) * 0.5f};
-        
+    camera.offset = {availableWidth * 0.5f, (availableHeight + TOOLBAR_HEIGHT) * 0.5f};  
     isSaved = false;
 }
 
 void CustomMapState::setMap(int width, int height, const std::vector<int>& mapGrid) {
     MAP_WIDTH = width;
     MAP_HEIGHT = height;
-    
     widthBuffer = std::to_string(MAP_WIDTH);
     heightBuffer = std::to_string(MAP_HEIGHT);
-    
-    // Direct assignment since both are 1D vectors
     this->mapGrid = mapGrid;
-    
     camera.target = {MAP_WIDTH * TILE_SIZE * 0.5f, MAP_HEIGHT * TILE_SIZE * 0.5f};
-    
+
     int paletteWidth = isPaletteVisible ? PALETTE_WIDTH : 0;
     float availableWidth = GetScreenWidth() - paletteWidth;
     float availableHeight = GetScreenHeight() - TOOLBAR_HEIGHT;

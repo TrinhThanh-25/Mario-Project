@@ -4,9 +4,14 @@
 #include "Common/ResourceManager.h"
 
 CloudBlock::CloudBlock(Vector2 pos, Vector2 size, Color color)
-    : CloudBlock(pos, size, color, 0, 1) {}
+    : CloudBlock(pos, size, color, 0, 1) {
+    setState(SpriteState::SOLID_ABOVE);
+}
+
 CloudBlock::CloudBlock(Vector2 pos, Vector2 size, Color color, float frameTime, int maxFrames)
-    : Block(BlockType::CLOUDBLOCK, pos, size, color, frameTime, maxFrames) {}
+    : Block(BlockType::CLOUDBLOCK, pos, size, color, frameTime, maxFrames) {
+    setState(SpriteState::SOLID_ABOVE);
+}
 
 CloudBlock::~CloudBlock() = default;
 

@@ -46,6 +46,7 @@ private:
     bool editingHeight = false;
     bool isClosed = false;
     bool isSaved = true;
+    bool showUnsavedWarning = false;
 
     void loadTileTextures(); // Đổ tileIds từ Tileset1 đến Tileset149
     void drawMap();
@@ -57,6 +58,7 @@ private:
     void loadMap();
     void clearMap();
     void applyMapSize();
+    void handleUnsavedWarning();
 
     std::map<std::string, std::vector<int>> tileCategories;
     std::string selectedCategory = "ALL";

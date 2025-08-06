@@ -565,23 +565,35 @@ void Character::collisionBlock(Block* block) {
     if(state == SpriteState::DYING || state == SpriteState::VICTORY) return;
     switch(checkCollision(block)) {
         case CollisionType::NORTH:
+            if(block->getState() == SpriteState::SOLID_ABOVE || (block->getState() == SpriteState::INVISIBLE && velocity.y >= 0)) {
+                break;
+            }
             position.y = block->getY() + block->getHeight();
             velocity.y = 0;
             updateCollisionBoxes();
             block->doHit(*this, map);
             break;
         case CollisionType::SOUTH:
+            if(block->getState() == SpriteState::INVISIBLE || (block->getState() == SpriteState::SOLID_ABOVE && velocity.y <= 0)) {
+                return;
+            }
             position.y = block->getY() - size.y;
             velocity.y = 0;
             state = SpriteState::ON_GROUND;
             updateCollisionBoxes();
             break;
         case CollisionType::WEST:
+            if(block->getState() == SpriteState::INVISIBLE || block->getState() == SpriteState::SOLID_ABOVE) {
+                return;
+            }
             position.x = block->getX() + block->getWidth();
             velocity.x = 0;
             updateCollisionBoxes();
             break;
         case CollisionType::EAST:
+            if(block->getState() == SpriteState::INVISIBLE || block->getState() == SpriteState::SOLID_ABOVE) {
+                return;
+            }
             position.x = block->getX() - size.x;
             velocity.x = 0;
             updateCollisionBoxes();
@@ -606,7 +618,8 @@ void Character::collisionEnemy(Enemy* enemy) {
             gameHud->addPoints(enemy->getPoint());
         }
         else if(enemy->getState() == SpriteState::SHELL) {
-            
+            enemy->beingHit(HitType::STOMP);
+            //sound miss/error
         }
         else if(collision == CollisionType::SOUTH && enemy->getAuxiliaryState() != SpriteState::INVULNERABLE && enemy->getState() != SpriteState::SHELL_MOVING) {
             if( state == SpriteState::FALLING && enemy->getState() != SpriteState::DYING && enemy->getState() != SpriteState::TO_BE_REMOVED) {

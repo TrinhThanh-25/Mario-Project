@@ -57,12 +57,6 @@ TestMapState::~TestMapState() {
 }
 
 void TestMapState::update() {
-    if(IsKeyPressed(KEY_ESCAPE)) {
-        CustomMapState* customMapState = new CustomMapState(world, map->getMapFileName());
-        customMapState->setMap(map->getWidth() / 32, map->getHeight() / 32, map->getMapGrid());
-        world->setGameState(customMapState);
-        return;
-    }
     std::vector<Tile*>& tile = map->getTile();
     std::vector<Block*>& block = map->getBlock();
     std::vector<Enemy*>& backEnemy = map->getBackEnemy();
@@ -205,7 +199,7 @@ void TestMapState::draw() {
     GuiSetStyle(DEFAULT, TEXT_SIZE, 18);
     
     int compMargin = 20;
-    Rectangle guiPanelRect = { (float)GetScreenWidth() - 250, (float)GetScreenHeight() - 370, 230, 350 };
+    Rectangle guiPanelRect = { (float)GetScreenWidth() - 250, (float)GetScreenHeight() - 420, 230, 400 };
     GuiPanel( guiPanelRect, "Controls" );
     
     std::string characterButtonText = "Character: " + characterNames[currentCharacterIndex];
@@ -237,6 +231,13 @@ void TestMapState::draw() {
     
     if (GuiButton({ guiPanelRect.x + compMargin, guiPanelRect.y + 290, 190, 35 }, "Reset Map")) {
         map->reset(true);
+    }
+
+    if(GuiButton({ guiPanelRect.x + compMargin, guiPanelRect.y + 340, 190, 35 }, "Return") || IsKeyPressed(KEY_ESCAPE)) {
+        CustomMapState* customMapState = new CustomMapState(world, map->getMapFileName());
+        customMapState->setMap(map->getWidth() / 32, map->getHeight() / 32, map->getMapGrid());
+        world->setGameState(customMapState);
+        return;
     }
     
     GuiSetStyle(DEFAULT, TEXT_SIZE, originalTextSize);
