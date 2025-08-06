@@ -14,6 +14,7 @@ BanzaiBill::BanzaiBill(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     lifeTimer = 0.0f;
     
     point = 500;
+    auxiliaryState = SpriteState::NO_COLLIDABLE;
 }
 
 void BanzaiBill::update(const std::vector<Character*>& characterList) {
@@ -113,27 +114,10 @@ void BanzaiBill::activeWhenMarioApproach(Character& character){
 
 void BanzaiBill::collisionTile(Tile* tile) {
 
-    if(state != SpriteState::DYING && state != SpriteState::TO_BE_REMOVED && 
-    (tile->getType() == TileType::SOLID || tile->getType() == TileType::SOLID_ABOVE || tile->getType() == TileType::SOLID_ONLY_ENEMY)) {
-        CollisionType col = checkCollision(tile);
-        Enemy::collisionTile(tile);
-        if (col == CollisionType::WEST || col == CollisionType::EAST) {
-            velocity.x = -velocity.x;
-            isFacingLeft = velocity.x < 0;
-        }
-    }
-    
 }
 
 void BanzaiBill::collisionBlock(Block* block) {
-    CollisionType col = checkCollision(block);
 
-    // Gọi xử lý gốc để vẫn giữ va chạm đất/trần
-    Enemy::collisionBlock(block);
-
-    if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = isFacingLeft ? 200.0f : 200.0f;
-    }
 }
 
 // =========================== SAVE GAME ==========================

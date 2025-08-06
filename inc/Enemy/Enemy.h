@@ -63,11 +63,7 @@ public:
 
     bool isAlive() const;
     bool isSolidTile(Tile* tile) const ;
-
-
-    // CollisionType checkCollision(const std::vector<Sprite*>& collidables);
-
-
+    void setIsFacingLeft(bool isFacingLeft);
 protected:
     float dyingFrameAcum;
     float dyingFrameTime = 0.2f;

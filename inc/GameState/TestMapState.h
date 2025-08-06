@@ -42,6 +42,9 @@ class TestMapState : public GameState {
             "Super",
             "Flower"
         };
+
+        std::string mapFileName;
+        bool isSaved = false;
         
         void changeCharacter(CharacterName newCharacter);
     public:
@@ -51,6 +54,7 @@ class TestMapState : public GameState {
         void update() override;
         void draw() override;
         void setMap(int width, int height, const std::vector<int>& mapGrid);
+        void setIsSaved(bool saved);
 };
 
 #endif

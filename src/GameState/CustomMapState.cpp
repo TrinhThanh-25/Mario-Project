@@ -32,7 +32,14 @@ int getToggleX(bool isPaletteVisible) {
 
 CustomMapState::CustomMapState(World* world, const std::string& mapFileName)
     : GameState(world, GameStateType::CUSTOM_MAP),
-      mapFileName(mapFileName) {
+      mapFileName(mapFileName),
+      MAP_WIDTH(35), MAP_HEIGHT(20),
+      isEraseMode(false), isPaletteVisible(true),
+      selectedTileId(0),
+      isDragging(false), isDrawing(false),
+      lastMousePos({0, 0}), lastDrawnTile({-1, -1}),
+      editingMapName(false), editingWidth(false), editingHeight(false),
+        isClosed(false), isSaved(true), showUnsavedWarning(false) {
     mapGrid = std::vector<int>(MAP_HEIGHT * MAP_WIDTH, 0);
     loadTileTextures();
     loadMap();
@@ -40,20 +47,34 @@ CustomMapState::CustomMapState(World* world, const std::string& mapFileName)
     camera.target = {(float)(MAP_WIDTH * TILE_SIZE) / 2.0f, (float)(MAP_HEIGHT * TILE_SIZE) / 2.0f};
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
+    mapNameBuffer = mapFileName;
+    widthBuffer = std::to_string(MAP_WIDTH);
+    heightBuffer = std::to_string(MAP_HEIGHT);
 }
 
 CustomMapState::CustomMapState(World* world, const std::string& mapFileName, int width, int height, const std::vector<int>& mapGrid)
     : GameState(world, GameStateType::CUSTOM_MAP),
-      mapFileName(mapFileName), MAP_WIDTH(width), MAP_HEIGHT(height) {
+      mapFileName(mapFileName), MAP_WIDTH(width), MAP_HEIGHT(height),
+      isEraseMode(false), isPaletteVisible(true),
+      selectedTileId(0),
+      isDragging(false), isDrawing(false),
+      lastMousePos({0, 0}), lastDrawnTile({-1, -1}),
+      editingMapName(false), editingWidth(false), editingHeight(false),
+        isClosed(false), isSaved(true), showUnsavedWarning(false) {
     loadTileTextures();
     this->mapGrid = mapGrid;
     camera.offset = {(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f};
     camera.target = {(float)(MAP_WIDTH * TILE_SIZE) / 2.0f, (float)(MAP_HEIGHT * TILE_SIZE) / 2.0f};
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
+    mapNameBuffer = mapFileName;
+    widthBuffer = std::to_string(MAP_WIDTH);
+    heightBuffer = std::to_string(MAP_HEIGHT);
 }
 
-void CustomMapState::enter() {}
+void CustomMapState::enter() {
+    GuiSetStyle(DEFAULT, TEXT_SIZE, 10);
+}
 
 void CustomMapState::exit() {}
 
@@ -427,6 +448,7 @@ void CustomMapState::drawToolbar() {
     if (GuiButton(testBtn, "TEST")) {
         isClosed = true;
         TestMapState* testState = new TestMapState(world, mapFileName, MAP_WIDTH, MAP_HEIGHT, mapGrid);
+        testState->setIsSaved(isSaved);
         world->setGameState(testState);
         return;
     }
@@ -492,15 +514,20 @@ void CustomMapState::drawToolbar() {
 }
 
 void CustomMapState::saveMap() {
-    if (mapFileName != mapNameBuffer) {
+    std::string cleanName = mapNameBuffer.c_str();
+    if (cleanName.empty()) {
+        std::cerr << "Cannot save map with empty filename" << std::endl;
+        return;
+    }
+    if (mapFileName != cleanName) {
         std::string oldFileName = "../resources/Map/" + mapFileName + ".json";
         if (std::filesystem::exists(oldFileName)) {
             std::filesystem::remove(oldFileName);
         }
     }
-    std::ofstream file("../resources/Map/" + std::string(mapNameBuffer) + ".json");
+    std::ofstream file("../resources/Map/" + cleanName + ".json");
     if (!file.is_open()) {
-        std::cerr << "Failed to open map file for saving: " << mapNameBuffer << std::endl;
+        std::cerr << "Failed to open map file for saving: " << cleanName << std::endl;
         return;
     }
     std::vector<int> flatData = mapGrid;
@@ -514,7 +541,7 @@ void CustomMapState::saveMap() {
     file << j.dump(4);
     file.close();
     isSaved = true;
-    mapFileName = std::string(mapNameBuffer);
+    mapFileName = cleanName;
 }
 
 void CustomMapState::loadMap() {
@@ -554,7 +581,7 @@ void CustomMapState::clearMap() {
 
 void CustomMapState::applyMapSize() {
     if( widthBuffer.empty() || heightBuffer.empty()) return;
-    if(widthBuffer == std::to_string(MAP_WIDTH) && heightBuffer == std::to_string(MAP_HEIGHT)) return;
+    if( stoi(widthBuffer) == MAP_WIDTH && stoi(heightBuffer) == MAP_HEIGHT) return;
     int newWidth = std::stoi(widthBuffer);
     int newHeight = std::stoi(heightBuffer);
         
@@ -594,4 +621,8 @@ void CustomMapState::setMap(int width, int height, const std::vector<int>& mapGr
     
     camera.offset = {availableWidth * 0.5f, (availableHeight + TOOLBAR_HEIGHT) * 0.5f};
     isSaved = false;
+}
+
+void CustomMapState::setIsSaved(bool saved) {
+    isSaved = saved;
 }

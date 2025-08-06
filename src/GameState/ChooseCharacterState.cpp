@@ -16,6 +16,13 @@ ChooseCharacterState::ChooseCharacterState(World* world)
       }) {
 }
 
+ChooseCharacterState::ChooseCharacterState(World* world, std::string mapFileName)
+    : ChooseCharacterState(world) {
+    world->getMap()->loadMap(mapFileName);
+}
+
+
+
 ChooseCharacterState::~ChooseCharacterState() {
     for (CharacterTag* tag : characterTags) {
         if(tag)
@@ -59,7 +66,12 @@ void ChooseCharacterState::update() {
                 character->setWorld(world);
             }
         }
-        world->getMap()->loadMap(1);
+        if(world->getGamePlay() == GamePlay::PLAYDEVELOPEDMAP) {
+            world->getMap()->loadMap(1);
+        }
+        else if(world->getGamePlay() == GamePlay::PLAYCUSTOMMAP) {
+            world->getMap()->loadMap(world->getMap()->getMapFileName());
+        }
         world->getGameHud()->reset();
         world->setModeWorld(modeWorld);
         world->setGameState(new PlayingState(world));

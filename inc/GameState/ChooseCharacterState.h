@@ -13,6 +13,7 @@ class ChooseCharacterState : public GameState {
         int curP2 = 1;
     public:
         ChooseCharacterState(World* world);
+        ChooseCharacterState(World* world, std::string mapFileName);
         ~ChooseCharacterState() override;
         void update() override;
         void draw() override;

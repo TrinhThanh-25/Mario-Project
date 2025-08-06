@@ -9,7 +9,7 @@ Enemy* EnemyFactory::createEnemy(EnemyType type, Vector2 position, Direction dir
     switch (type) {
         case EnemyType::BANZAI_BILL:
             size = {128, 128};
-            velocity = {direction == Direction::LEFT ? -200.0f : 200.0f, 0};
+            velocity = {direction == Direction::LEFT ? -400.0f : 400.0f, 0};
             enemy = new BanzaiBill(position, size, velocity, color);
             break;
 
