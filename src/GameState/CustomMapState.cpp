@@ -1,272 +1,377 @@
 #include "GameState/CustomMapState.h"
+#include "GameState/TestMapState.h"
 #include "Common/ResourceManager.h"
 #include <fstream>
 #include <iostream>
+#include <algorithm>
+#include <cstring>
+#include <cstdlib>
+#include <filesystem>
+#include "json.hpp"
 
-CustomMapState::CustomMapState(World* world)
-    : GameState(world, GameStateType::CUSTOM_MAP) {
-    mapGrid = std::vector<std::vector<int>>(MAP_HEIGHT, std::vector<int>(MAP_WIDTH, 0));
+using json = nlohmann::json;
+
+const int PALETTE_WIDTH = 290;
+const int BUTTON_HEIGHT = 30;
+const int CATEGORY_BUTTON_WIDTH = 50;
+const int TOGGLE_BUTTON_WIDTH = 30;
+const int TILE_DISPLAY_SIZE = 24;
+const int TILE_SPACING = 2;
+const int TOOLBAR_HEIGHT = 40;
+const int TOOLBAR_BUTTON_WIDTH = 80;
+const int TOOLBAR_TEXTBOX_WIDTH = 100;
+const int TOOLBAR_SPACING = 10;
+
+std::vector<std::string> getCategories() {
+    return {"ALL", "TILE", "ITEM", "BLOCK", "ENEMY"};
+}
+
+int getToggleX(bool isPaletteVisible) {
+    return isPaletteVisible ? GetScreenWidth() - PALETTE_WIDTH - 5 : GetScreenWidth() - TOGGLE_BUTTON_WIDTH - 5;
+}
+
+CustomMapState::CustomMapState(World* world, const std::string& mapFileName)
+    : GameState(world, GameStateType::CUSTOM_MAP),
+      mapFileName(mapFileName) {
+    mapGrid = std::vector<int>(MAP_HEIGHT * MAP_WIDTH, 0);
     loadTileTextures();
+    loadMap();
+    camera.offset = {(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f};
+    camera.target = {(float)(MAP_WIDTH * TILE_SIZE) / 2.0f, (float)(MAP_HEIGHT * TILE_SIZE) / 2.0f};
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
+}
+
+CustomMapState::CustomMapState(World* world, const std::string& mapFileName, int width, int height, const std::vector<int>& mapGrid)
+    : GameState(world, GameStateType::CUSTOM_MAP),
+      mapFileName(mapFileName), MAP_WIDTH(width), MAP_HEIGHT(height) {
+    loadTileTextures();
+    this->mapGrid = mapGrid;
+    camera.offset = {(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f};
+    camera.target = {(float)(MAP_WIDTH * TILE_SIZE) / 2.0f, (float)(MAP_HEIGHT * TILE_SIZE) / 2.0f};
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
 }
 
 void CustomMapState::enter() {}
 
 void CustomMapState::exit() {}
 
-void CustomMapState::update() {
+void CustomMapState::handleUnsavedWarning() {
+    if (!showUnsavedWarning) return;
+    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Color{0, 0, 0, 128});
+    int dialogWidth = 400;
+    int dialogHeight = 200;
+    int dialogX = (GetScreenWidth() - dialogWidth) / 2;
+    int dialogY = (GetScreenHeight() - dialogHeight) / 2;
+    Rectangle dialogRect = {(float)dialogX, (float)dialogY, (float)dialogWidth, (float)dialogHeight};
+    DrawRectangleRec(dialogRect, WHITE);
+    DrawRectangleLinesEx(dialogRect, 2, BLACK);
+ 
+    std::string warningText = "Unsaved Changes!";
+    std::string messageText = "You have unsaved changes.\nDo you want to save before exiting?";
+    
+    DrawText(warningText.c_str(), dialogX + 20, dialogY + 20, 20, RED);
+    DrawText(messageText.c_str(), dialogX + 20, dialogY + 60, 16, BLACK);
+
+    Rectangle saveBtn = {(float)(dialogX + 20), (float)(dialogY + 140), 100, 30};
+    Rectangle discardBtn = {(float)(dialogX + 140), (float)(dialogY + 140), 100, 30};
+    Rectangle cancelBtn = {(float)(dialogX + 260), (float)(dialogY + 140), 100, 30};
+    
+    if (GuiButton(saveBtn, "SAVE & EXIT")) {
+        saveMap();
+        showUnsavedWarning = false;
+        // set ListMapState and return
+    }
+    if (GuiButton(discardBtn, "DISCARD")) {
+        showUnsavedWarning = false;
+        // set ListMapState and return
+    }
+    if (GuiButton(cancelBtn, "CANCEL")) {
+        showUnsavedWarning = false;
+    }
+}
+
+void CustomMapState::updateTilePallete() {
     Vector2 mouse = GetMousePosition();
+    
+    if (!isPaletteVisible) return;
 
-    // ----- Drag map khi không chọn tile -----
-    if (selectedTileId == 0 && IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
-        if (!isPanning) {
-            isPanning = true;
-            lastMouse = mouse;
-        } else {
-            panOffset.x += mouse.x - lastMouse.x;
-            panOffset.y += mouse.y - lastMouse.y;
-            lastMouse = mouse;
-        }
-    } else {
-        isPanning = false;
-    }
-
-    // ----- Cập nhật kích thước hiển thị -----
-    int paletteWidth = isPaletteVisible ? (paletteCols * (TILE_SIZE + MARGIN) + 20) : 0;
-    viewCols = (GetScreenWidth() - paletteWidth - 80) / TILE_SIZE;
-    viewRows = (GetScreenHeight() - 100) / TILE_SIZE;
-
-    // Resize map nếu cần
-    if ((int)mapGrid[0].size() != MAP_WIDTH) {
-        for (auto& row : mapGrid) {
-            row.resize(MAP_WIDTH, 0);
-        }
-    }
-
-    // ----- Rê chuột trái để vẽ tile nếu đang chọn -----
-    if (selectedTileId > 0 && IsMouseButtonDown(MOUSE_LEFT_BUTTON) && !isPanning) {
-        int x = (mouse.x - mapOffset.x - panOffset.x) / TILE_SIZE;
-        int y = (mouse.y - mapOffset.y - panOffset.y) / TILE_SIZE;
-
-        if (x >= 0 && x < MAP_WIDTH && y >= 0 && y < MAP_HEIGHT) {
-            mapGrid[y][x] = isEraseMode ? 0 : selectedTileId;
-        }
-    }
-
-    // ----- Palette offset -----
-    int paletteOffsetX = GetScreenWidth() - (paletteCols * (TILE_SIZE + MARGIN)) - 10;
-    int paletteY = 80;
-    int paletteRows = (GetScreenHeight() - paletteY - 40) / (TILE_SIZE + MARGIN);
-
-    // ----- Chuẩn bị danh sách tile -----
+    std::vector<std::string> categories = getCategories();
+    int paletteX = GetScreenWidth() - PALETTE_WIDTH;
+    int categoryY = 70;
+    int tileAreaY = categoryY + BUTTON_HEIGHT + 25;
+    int tilesPerRow = (PALETTE_WIDTH - 20) / (TILE_DISPLAY_SIZE + TILE_SPACING);
+    
     std::vector<int> drawList;
     if (selectedCategory == "ALL") {
-        for (int i = 1; i <= (int)tileIds.size(); ++i) {
+        for (int i = 1; i < (int)tileIds.size(); i++) {
             drawList.push_back(i);
         }
-    } else {
-        drawList = tileCategories[selectedCategory];
+    } else if (tileCategories.find(selectedCategory) != tileCategories.end()) {
+        drawList = tileCategories.at(selectedCategory);
     }
-
-    // ----- Scroll tile palette -----
-    if (GetMouseWheelMove() < 0 || IsKeyPressed(KEY_DOWN)) {
-        if ((paletteScrollOffset + paletteRows) * paletteCols < (int)drawList.size()) {
-            paletteScrollOffset++;
+    
+    for (int i = 0; i < drawList.size(); i++) {
+        int col = i % tilesPerRow;
+        int row = i / tilesPerRow;
+        
+        int tileX = paletteX + 10 + col * (TILE_DISPLAY_SIZE + TILE_SPACING);
+        int tileY = tileAreaY - 10 + row * (TILE_DISPLAY_SIZE + TILE_SPACING);
+        
+        Rectangle tileDest = {(float)tileX, (float)tileY, (float)TILE_DISPLAY_SIZE, (float)TILE_DISPLAY_SIZE};
+        
+        if (CheckCollisionPointRec(mouse, tileDest) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            selectedTileId = drawList[i];
+            isEraseMode = false;
         }
-    }
-    if (GetMouseWheelMove() > 0 || IsKeyPressed(KEY_UP)) {
-        if (paletteScrollOffset > 0) {
-            paletteScrollOffset--;
-        }
-    }
-
-    // ----- Chọn tile từ tile palette -----
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        bool clickedOnTile = false;
-
-        for (int i = 0; i < drawList.size(); ++i) {
-            int col = i % paletteCols;
-            int row = i / paletteCols;
-
-            if (row < paletteScrollOffset || row >= paletteScrollOffset + paletteRows) continue;
-
-            int x = paletteOffsetX + col * (TILE_SIZE + MARGIN);
-            int y = paletteY + (row - paletteScrollOffset) * (TILE_SIZE + MARGIN);
-
-            Rectangle rect = { (float)x, (float)y, (float)TILE_SIZE, (float)TILE_SIZE };
-            if (CheckCollisionPointRec(mouse, rect)) {
-                int clickedId = drawList[i];
-                if (selectedTileId == clickedId) {
-                    selectedTileId = 0; // Bỏ chọn nếu click lại
-                } else {
-                    selectedTileId = clickedId;
-                    isEraseMode = false;
-                }
-                clickedOnTile = true;
-                break;
-            }
-        }
-
-        // Nếu không click vào tile nào → kiểm tra map
-        if (!clickedOnTile) {
-            int x = (mouse.x - mapOffset.x - panOffset.x) / TILE_SIZE;
-            int y = (mouse.y - mapOffset.y - panOffset.y) / TILE_SIZE;
-
-            if (x < 0 || x >= MAP_WIDTH || y < 0 || y >= MAP_HEIGHT) {
-                selectedTileId = 0; // Click vùng trống → bỏ chọn
-            }
-        }
-    }
-
-    // ----- Các nút chức năng -----
-    int buttonY = GetScreenHeight() - 50;
-    int buttonX = 60;
-
-    if (drawButton(buttonX, buttonY, 100, 35, "SAVE", 18, (Color){200, 255, 200, 255})) {
-        //saveMapToJson("custom_map.json");
-    }
-    if (drawButton(buttonX + 110, buttonY, 100, 35, "CLEAR", 18, (Color){255, 200, 200, 255})) {
-        for (auto& row : mapGrid) std::fill(row.begin(), row.end(), 0);
-    }
-    if (drawButton(buttonX + 220, buttonY, 100, 35, "LOAD", 18, (Color){200, 200, 255, 255})) {
-        // TODO: implement load
-    }
-    if (drawButton(buttonX + 330, buttonY, 100, 35, isEraseMode ? "PAINT" : "ERASE", 18, (Color){255, 255, 200, 255})) {
-        isEraseMode = !isEraseMode;
-    }
-
-    // ----- Tabs tile category -----
-    int tabX = GetScreenWidth() - (paletteCols * (TILE_SIZE + MARGIN)) - 80;
-    int tabY = 50;
-    int buttonWidth = 65;
-    int buttonSpacing = 10;
-
-    if (drawButton(tabX + 0, tabY, buttonWidth, 30, "ALL", 16, (Color){220, 220, 220, 255})) selectedCategory = "ALL";
-    if (drawButton(tabX + buttonWidth + buttonSpacing, tabY, buttonWidth, 30, "ENEMY", 16, (Color){220, 220, 220, 255})) selectedCategory = "ENEMY";
-    if (drawButton(tabX + 2 * (buttonWidth + buttonSpacing), tabY, buttonWidth, 30, "TILE", 16, (Color){220, 220, 220, 255})) selectedCategory = "TILE";
-    if (drawButton(tabX + 3 * (buttonWidth + buttonSpacing), tabY, buttonWidth, 30, "BLOCK", 16, (Color){220, 220, 220, 255})) selectedCategory = "BLOCK";
-    if (drawButton(tabX + 4 * (buttonWidth + buttonSpacing), tabY, buttonWidth, 30, "ITEM", 16, (Color){220, 220, 220, 255})) selectedCategory = "ITEM";
-
-    // ----- Toggle palette -----
-    int toggleBtnX = GetScreenWidth() - 50;
-    int toggleBtnY = 50;
-
-    if (drawButton(toggleBtnX, toggleBtnY, 40, 40, isPaletteVisible ? "<<" : ">>", 20, (Color){200, 200, 255, 255})) {
-        isPaletteVisible = !isPaletteVisible;
     }
 }
 
+void CustomMapState::update() {
+    if (showUnsavedWarning) return;
+    updateTilePallete();
+    updateMapView();
+}
 
+void CustomMapState::updateMapView() {
+    Vector2 mouse = GetMousePosition();
+    
+    int paletteWidth = isPaletteVisible ? PALETTE_WIDTH : 0;
+    Rectangle mapViewArea = {0, (float)TOOLBAR_HEIGHT, (float)(GetScreenWidth() - paletteWidth), (float)(GetScreenHeight() - TOOLBAR_HEIGHT)};
+    
+    camera.offset = {mapViewArea.width / 2.0f, mapViewArea.height / 2.0f + TOOLBAR_HEIGHT};
+    
+    if (CheckCollisionPointRec(mouse, mapViewArea)) {
+        if (IsKeyDown(KEY_LEFT_CONTROL) && GetMouseWheelMove() != 0) {
+            float wheelMove = GetMouseWheelMove();
+            Vector2 mouseWorldPos = GetScreenToWorld2D(mouse, camera);
+            camera.zoom = std::clamp(camera.zoom + wheelMove * 0.1f, 0.1f, 5.0f);
+            Vector2 mouseWorldPosAfter = GetScreenToWorld2D(mouse, camera);
+            camera.target.x += mouseWorldPos.x - mouseWorldPosAfter.x;
+            camera.target.y += mouseWorldPos.y - mouseWorldPosAfter.y;
+        }
+        float wheelMove = GetMouseWheelMove();
+        if (wheelMove != 0.0f && !IsKeyDown(KEY_LEFT_CONTROL)) {
+            if (IsKeyDown(KEY_LEFT_SHIFT)) {
+                camera.target.x += wheelMove * 50.0f / camera.zoom;
+            } else {
+                camera.target.y -= wheelMove * 50.0f / camera.zoom;
+            }
+        }
+        if ((IsKeyDown(KEY_SPACE) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) && !isDragging) {
+            isDragging = true;
+            lastMousePos = mouse;
+        }
+        
+        if (isDragging) {
+            if ((IsKeyDown(KEY_SPACE) && IsMouseButtonDown(MOUSE_BUTTON_LEFT))) {
+                Vector2 delta = {mouse.x - lastMousePos.x, mouse.y - lastMousePos.y};
+                camera.target.x -= delta.x / camera.zoom;
+                camera.target.y -= delta.y / camera.zoom;
+                lastMousePos = mouse;
+            } else {
+                isDragging = false;
+            }
+        }
+        
+        // Handle tile placement and continuous drawing
+        if (!IsKeyDown(KEY_SPACE) && (selectedTileId > 0 || isEraseMode)) {
+            // Start drawing on left mouse press
+            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && !isDragging) {
+                isDrawing = true;
+                
+                // Place first tile
+                Vector2 worldPos = GetScreenToWorld2D(mouse, camera);
+                int tileX = (int)(worldPos.x / TILE_SIZE);
+                int tileY = (int)(worldPos.y / TILE_SIZE);
+                
+                if (tileX >= 0 && tileX < MAP_WIDTH && tileY >= 0 && tileY < MAP_HEIGHT) {
+                    mapGrid[tileY * MAP_WIDTH + tileX] = isEraseMode ? 0 : selectedTileId;
+                    lastDrawnTile = {(float)tileX, (float)tileY};
+                    isSaved = false;
+                }
+            }
+            
+            // Continue drawing while mouse is held down
+            if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && isDrawing && !isDragging) {
+                Vector2 worldPos = GetScreenToWorld2D(mouse, camera);
+                int tileX = (int)(worldPos.x / TILE_SIZE);
+                int tileY = (int)(worldPos.y / TILE_SIZE);
+                
+                // Only draw if we're on a different tile than last time
+                if (tileX >= 0 && tileX < MAP_WIDTH && tileY >= 0 && tileY < MAP_HEIGHT && 
+                    (tileX != (int)lastDrawnTile.x || tileY != (int)lastDrawnTile.y)) {
+                    mapGrid[tileY * MAP_WIDTH + tileX] = isEraseMode ? 0 : selectedTileId;
+                    lastDrawnTile = {(float)tileX, (float)tileY};
+                    isSaved = false;
+                }
+            }
+            
+            // Stop drawing when mouse is released
+            if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
+                isDrawing = false;
+                lastDrawnTile = {-1, -1};
+            }
+        }
+    }
+}
 
 void CustomMapState::draw() {
-    ClearBackground((Color){230, 230, 230, 255});
-    drawMapWithOffset();
+    ClearBackground({230, 230, 230, 255});
+    drawMap();
+    drawToolbar();
+    if(isClosed) {
+        return;
+    }
     drawTilePalette();
+    handleUnsavedWarning();
 }
 
-void CustomMapState::drawMapWithOffset() const {
-    int offsetX = (int)mapOffset.x;
-    int offsetY = (int)mapOffset.y;
-
-    // Vẽ nền vùng bản đồ
-    DrawRectangle(offsetX - 2, offsetY - 2, viewCols * TILE_SIZE + 4, viewRows * TILE_SIZE + 4, (Color){245, 245, 245, 255});
-    DrawRectangleLines(offsetX - 2, offsetY - 2, viewCols * TILE_SIZE + 4, viewRows * TILE_SIZE + 4, DARKGRAY);
-
-    int tileOffsetX = (int)(panOffset.x) % TILE_SIZE;
-    int tileOffsetY = (int)(panOffset.y) % TILE_SIZE;
-
-    int startX = (int)(-panOffset.x) / TILE_SIZE;
-    int startY = (int)(-panOffset.y) / TILE_SIZE;
-
-    for (int y = 0; y < viewRows; ++y) {
-        int mapY = y + startY;
-        if (mapY < 0 || mapY >= MAP_HEIGHT) continue;
-
-        for (int x = 0; x < viewCols; ++x) {
-            int mapX = x + startX;
-            if (mapX < 0 || mapX >= MAP_WIDTH) continue;
-
-            int tileId = mapGrid[mapY][mapX];
+void CustomMapState::drawMap() {
+    int paletteWidth = isPaletteVisible ? PALETTE_WIDTH : 0;
+    Rectangle mapViewArea = {0, (float)TOOLBAR_HEIGHT, (float)(GetScreenWidth() - paletteWidth), (float)(GetScreenHeight() - TOOLBAR_HEIGHT)};
+    DrawRectangleRec(mapViewArea, {200, 200, 200, 255});
+    BeginMode2D(camera);
+    float mapWorldWidth = MAP_WIDTH * TILE_SIZE;
+    float mapWorldHeight = MAP_HEIGHT * TILE_SIZE;
+    Rectangle mapRect = {0, 0, mapWorldWidth, mapWorldHeight};
+    DrawRectangleRec(mapRect, {245, 245, 245, 255});
+    DrawRectangleLinesEx(mapRect, 2, DARKBLUE);
+    for (int y = 0; y < MAP_HEIGHT; ++y) {
+        for (int x = 0; x < MAP_WIDTH; ++x) {
+            int tileId = mapGrid[y * MAP_WIDTH + x];
             if (tileId > 0 && tileId <= (int)tileIds.size()) {
                 const std::string& key = tileIds[tileId - 1];
                 Texture2D tex = ResourceManager::getTexture()[key];
-
-                int drawX = offsetX + x * TILE_SIZE + tileOffsetX;
-                int drawY = offsetY + y * TILE_SIZE + tileOffsetY + TILE_SIZE - tex.height;
-
-                DrawTexture(tex, drawX, drawY, WHITE);
+                
+                float tileX = x * TILE_SIZE;
+                float tileY = y * TILE_SIZE + TILE_SIZE - tex.height;
+                
+                DrawTexture(tex, tileX, tileY, WHITE);
             }
         }
     }
-
-    // Vẽ lưới
-    for (int x = 0; x <= viewCols; ++x) {
-        int xPos = offsetX + x * TILE_SIZE + tileOffsetX;
-        DrawLine(xPos, offsetY, xPos, offsetY + viewRows * TILE_SIZE, LIGHTGRAY);
+    for (int x = 0; x <= MAP_WIDTH; ++x) {
+        float lineX = x * TILE_SIZE;
+        DrawLine(lineX, 0, lineX, mapWorldHeight, BLACK);
     }
-
-    for (int y = 0; y <= viewRows; ++y) {
-        int yPos = offsetY + y * TILE_SIZE + tileOffsetY;
-        DrawLine(offsetX, yPos, offsetX + viewCols * TILE_SIZE, yPos, LIGHTGRAY);
+    for (int y = 0; y <= MAP_HEIGHT; ++y) {
+        float lineY = y * TILE_SIZE;
+        DrawLine(0, lineY, mapWorldWidth, lineY, BLACK);
     }
+    
+    Vector2 mouse = GetMousePosition();
+    if (CheckCollisionPointRec(mouse, mapViewArea) && (selectedTileId > 0 || isEraseMode) && 
+        !IsKeyDown(KEY_SPACE) && !isDragging) {
+        Vector2 worldPos = GetScreenToWorld2D(mouse, camera);
+        int tileX = (int)(worldPos.x / TILE_SIZE);
+        int tileY = (int)(worldPos.y / TILE_SIZE);
+        
+        if (tileX >= 0 && tileX < MAP_WIDTH && tileY >= 0 && tileY < MAP_HEIGHT) {
+            if (!isEraseMode && selectedTileId > 0 && selectedTileId <= (int)tileIds.size()) {
+                const std::string& key = tileIds[selectedTileId - 1];
+                Texture2D tex = ResourceManager::getTexture()[key];
+                
+                float previewX = tileX * TILE_SIZE;
+                float previewY = tileY * TILE_SIZE + TILE_SIZE - tex.height;
+                
+                DrawTexture(tex, previewX, previewY, Color{255, 255, 255, 150});
+            }
+            Rectangle tileRect = {(float)(tileX * TILE_SIZE), (float)(tileY * TILE_SIZE), TILE_SIZE, TILE_SIZE};
+            Color borderColor = isEraseMode ? RED : GREEN;
+            DrawRectangleLinesEx(tileRect, 2, borderColor);
+        }
+    }
+    EndMode2D();
+    
+    std::string zoomText = "Zoom: " + std::to_string(static_cast<int>(camera.zoom * 100)) + "%";
+    DrawText(zoomText.c_str(), 10, TOOLBAR_HEIGHT + 10, 16, BLACK);
+    DrawText("Ctrl+Wheel: Zoom", 10, TOOLBAR_HEIGHT + 30, 12, DARKGRAY);
+    DrawText("Space+Drag: Pan", 10, TOOLBAR_HEIGHT + 50, 12, DARKGRAY);
+    DrawText("Left Click+Drag: Draw", 10, TOOLBAR_HEIGHT + 70, 12, DARKGRAY);
+    
+    std::string modeText = isEraseMode ? "Erase Mode" : "Draw Mode";
+    Color modeColor = isEraseMode ? RED : GREEN;
+    DrawText(modeText.c_str(), 10, TOOLBAR_HEIGHT + 90, 14, modeColor);
+
+    std::string saveText = isSaved ? "Map Saved" : "Map Not Saved";
+    Color saveColor = isSaved ? GREEN : RED;
+    DrawText(saveText.c_str(), 10, TOOLBAR_HEIGHT + 110, 14, saveColor);
 }
 
-void CustomMapState::drawTilePalette() const {
-    if (!isPaletteVisible) return;
-
+void CustomMapState::drawTilePalette() {
     int screenWidth = GetScreenWidth();
-    int paletteOffsetX = screenWidth - (paletteCols * (TILE_SIZE + MARGIN)) - 10;
-    int paletteY = 80;
     int screenHeight = GetScreenHeight();
-    int paletteRows = (screenHeight - paletteY - 40) / (TILE_SIZE + MARGIN);
-
-    DrawText("TILE PALETTE", paletteOffsetX, 20, 20, DARKGRAY);
+    
+    Rectangle toggleButton = {(float)getToggleX(isPaletteVisible), 5, (float)TOGGLE_BUTTON_WIDTH, (float)BUTTON_HEIGHT};
+    if (GuiButton(toggleButton, isPaletteVisible ? "<<" : ">>")) {
+        isPaletteVisible = !isPaletteVisible;
+    }
+    
+    if (!isPaletteVisible) return;
+    int paletteX = GetScreenWidth() - PALETTE_WIDTH;
+    int paletteY = 40;
+    int paletteHeight = screenHeight - paletteY - 20;
+    Rectangle palettePanel = {(float)paletteX, (float)paletteY, (float)PALETTE_WIDTH, (float)paletteHeight};
+    DrawRectangleRec(palettePanel, {250, 250, 250, 255});
+    DrawRectangleLinesEx(palettePanel, 2, DARKGRAY);
+    std::vector<std::string> categories = getCategories();
+    int categoryY = paletteY + 10;
+    
+    for (int i = 0; i < categories.size(); i++) {
+        int categoryX = paletteX + 10 + i * (CATEGORY_BUTTON_WIDTH + 5);
+        Rectangle categoryButton = {(float)categoryX, (float)categoryY, (float)CATEGORY_BUTTON_WIDTH, (float)BUTTON_HEIGHT};
+        std::string buttonText = categories[i];
+        bool isSelected = (selectedCategory == categories[i]);
+        if (isSelected) {
+            GuiSetState(STATE_PRESSED);
+            GuiButton(categoryButton, buttonText.c_str());
+            GuiSetState(STATE_NORMAL);
+        } else {
+            if (GuiButton(categoryButton, buttonText.c_str())) {
+                selectedCategory = categories[i];
+            }
+        }
+    }
+    
+    int tileAreaY = categoryY + BUTTON_HEIGHT + 15;
+    int tileAreaHeight = paletteHeight - (tileAreaY - paletteY) - 10;
+    int tilesPerRow = (PALETTE_WIDTH - 20) / (TILE_DISPLAY_SIZE + TILE_SPACING);
+    int maxVisibleRows = tileAreaHeight / (TILE_DISPLAY_SIZE + TILE_SPACING);
 
     std::vector<int> drawList;
     if (selectedCategory == "ALL") {
         for (int i = 1; i < (int)tileIds.size(); i++) {
             drawList.push_back(i);
         }
-    } else {
+    } else if (tileCategories.find(selectedCategory) != tileCategories.end()) {
         drawList = tileCategories.at(selectedCategory);
     }
 
     for (int i = 0; i < drawList.size(); i++) {
-        int col = i % paletteCols;
-        int row = i / paletteCols;
-
-        Rectangle dest = {
-            (float)(paletteOffsetX + col * (TILE_SIZE + MARGIN)),
-            (float)(paletteY + row * (TILE_SIZE + MARGIN)),
-            (float)TILE_SIZE,
-            (float)TILE_SIZE
-        };
-
+        int col = i % tilesPerRow;
+        int row = i / tilesPerRow;
+        
+        if (row >= maxVisibleRows) break;
+        
+        int tileX = paletteX + 10 + col * (TILE_DISPLAY_SIZE + TILE_SPACING);
+        int tileY = tileAreaY + row * (TILE_DISPLAY_SIZE + TILE_SPACING);
+        
+        Rectangle tileDest = {(float)tileX, (float)tileY, (float)TILE_DISPLAY_SIZE, (float)TILE_DISPLAY_SIZE};
+        
         int tileId = drawList[i];
-        const std::string& key = tileIds[tileId - 1];
-        Texture2D tex = ResourceManager::getTexture()[key];
-
-        Color tint = (selectedTileId == tileId) ? RED : WHITE;
-
-        DrawTexturePro(tex, {0, 0, (float)tex.width, (float)tex.height}, dest, {0, 0}, 0.0f, tint);
-        DrawRectangleLines(dest.x, dest.y, TILE_SIZE, TILE_SIZE, GRAY);
+        if (tileId > 0 && tileId <= (int)tileIds.size()) {
+            const std::string& key = tileIds[tileId - 1];
+            Texture2D tex = ResourceManager::getTexture()[key];
+            
+            Color tint = (selectedTileId == tileId) ? YELLOW : WHITE;
+            Color borderColor = (selectedTileId == tileId) ? RED : GRAY;
+            
+            DrawTexturePro(tex, {0, 0, (float)tex.width, (float)tex.height}, tileDest, {0, 0}, 0.0f, tint);
+            DrawRectangleLinesEx(tileDest, (selectedTileId == tileId) ? 2 : 1, borderColor);
+        }
     }
-
-    DrawText("Use ↑/↓ or mouse wheel to scroll", paletteOffsetX, paletteY + paletteRows * (TILE_SIZE + MARGIN) + 5, 16, DARKGRAY);
-}
-
-bool CustomMapState::drawButton(int x, int y, int w, int h, const char* label, int fontSize, Color hoverColor) const {
-    Rectangle rect = { (float)x, (float)y, (float)w, (float)h };
-    Vector2 mouse = GetMousePosition();
-    bool isHovered = CheckCollisionPointRec(mouse, rect);
-
-    Color backgroundColor = isHovered ? hoverColor : LIGHTGRAY;
-    Color borderColor = isHovered ? DARKGRAY : GRAY;
-
-    DrawRectangleRec(rect, backgroundColor);
-    DrawRectangleLinesEx(rect, 2, borderColor);
-    DrawText(label, x + 10, y + (h - fontSize) / 2, fontSize, BLACK);
-
-    return (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && isHovered);
 }
 
 void CustomMapState::loadTileTextures() {
@@ -288,4 +393,204 @@ void CustomMapState::loadTileTextures() {
             tileCategories["BLOCK"].push_back(i);
         }
     }
+}
+
+void CustomMapState::drawToolbar() {
+    Rectangle toolbarArea = {0, 0, (float)GetScreenWidth(), (float)TOOLBAR_HEIGHT};
+    DrawRectangleRec(toolbarArea, {50, 50, 50, 255});
+    
+    float currentX = TOOLBAR_SPACING;
+
+    // Return button
+    Rectangle returnBtn = {currentX, 5, TOOLBAR_BUTTON_WIDTH, TOOLBAR_HEIGHT - 10};
+    if ((GuiButton(returnBtn, "RETURN") || IsKeyPressed(KEY_ESCAPE)) && !showUnsavedWarning) {
+        if (!isSaved) {
+            showUnsavedWarning = true;
+        } else {
+            // set ListMapState
+            isClosed = true;
+        }
+        return;
+    }
+    currentX += TOOLBAR_BUTTON_WIDTH + TOOLBAR_SPACING;
+    
+    // Save button
+    Rectangle saveBtn = {currentX, 5, TOOLBAR_BUTTON_WIDTH, TOOLBAR_HEIGHT - 10};
+    if (GuiButton(saveBtn, "SAVE")) {
+        saveMap();
+    }
+    currentX += TOOLBAR_BUTTON_WIDTH + TOOLBAR_SPACING;
+    
+    // Test button
+    Rectangle testBtn = {currentX, 5, TOOLBAR_BUTTON_WIDTH, TOOLBAR_HEIGHT - 10};
+    if (GuiButton(testBtn, "TEST")) {
+        isClosed = true;
+        TestMapState* testState = new TestMapState(world, mapFileName, MAP_WIDTH, MAP_HEIGHT, mapGrid);
+        world->setGameState(testState);
+        return;
+    }
+    currentX += TOOLBAR_BUTTON_WIDTH + TOOLBAR_SPACING;
+    
+    // Clear button
+    Rectangle clearBtn = {currentX, 5, TOOLBAR_BUTTON_WIDTH, TOOLBAR_HEIGHT - 10};
+    if (GuiButton(clearBtn, "CLEAR")) {
+        clearMap();
+    }
+    currentX += TOOLBAR_BUTTON_WIDTH + TOOLBAR_SPACING;
+    
+    // Erase toggle button
+    Rectangle eraseBtn = {currentX, 5, TOOLBAR_BUTTON_WIDTH, TOOLBAR_HEIGHT - 10};
+    if (GuiButton(eraseBtn, isEraseMode ? "#131#ERASE" : "ERASE")) {
+        isEraseMode = !isEraseMode;
+    }
+    currentX += TOOLBAR_BUTTON_WIDTH + TOOLBAR_SPACING * 2;
+    
+    DrawText("Name:", currentX, 12, 14, WHITE);
+    currentX += 45;
+    
+    // Resize string buffers to accommodate GuiTextBox requirements
+    mapNameBuffer.resize(65, '\0');
+    widthBuffer.resize(17, '\0');
+    heightBuffer.resize(17, '\0');
+    
+    Rectangle nameBox = {currentX, 8, TOOLBAR_TEXTBOX_WIDTH, TOOLBAR_HEIGHT - 16};
+    if (GuiTextBox(nameBox, const_cast<char*>(mapNameBuffer.data()), 64, editingMapName)) {
+        editingMapName = !editingMapName;
+        int len = strlen(mapNameBuffer.data());
+        mapNameBuffer.resize(len);
+        isSaved = false;
+    }
+    currentX += TOOLBAR_TEXTBOX_WIDTH + TOOLBAR_SPACING;
+    
+    // Width label and textbox
+    DrawText("W:", currentX, 12, 14, WHITE);
+    currentX += 20;
+    Rectangle widthBox = {currentX, 8, 60, TOOLBAR_HEIGHT - 16};
+    if (GuiTextBox(widthBox, const_cast<char*>(widthBuffer.data()), 16, editingWidth)) {
+        editingWidth = !editingWidth;
+        int len = strlen(widthBuffer.data());
+        widthBuffer.resize(len);
+    }
+    currentX += 60 + TOOLBAR_SPACING;
+    
+    // Height label and textbox
+    DrawText("H:", currentX, 12, 14, WHITE);
+    currentX += 20;
+    Rectangle heightBox = {currentX, 8, 60, TOOLBAR_HEIGHT - 16};
+    if (GuiTextBox(heightBox, const_cast<char*>(heightBuffer.data()), 16, editingHeight)) {
+        editingHeight = !editingHeight;
+        int len = strlen(heightBuffer.data());
+        heightBuffer.resize(len);
+    }
+    currentX += 60 + TOOLBAR_SPACING;
+    
+    Rectangle applyBtn = {currentX, 5, TOOLBAR_BUTTON_WIDTH, TOOLBAR_HEIGHT - 10};
+    if (GuiButton(applyBtn, "APPLY")) {
+        applyMapSize();
+    }
+}
+
+void CustomMapState::saveMap() {
+    if (mapFileName != mapNameBuffer) {
+        std::string oldFileName = "../resources/Map/" + mapFileName + ".json";
+        if (std::filesystem::exists(oldFileName)) {
+            std::filesystem::remove(oldFileName);
+        }
+    }
+    std::ofstream file("../resources/Map/" + std::string(mapNameBuffer) + ".json");
+    if (!file.is_open()) {
+        std::cerr << "Failed to open map file for saving: " << mapNameBuffer << std::endl;
+        return;
+    }
+    std::vector<int> flatData = mapGrid;
+    json j;
+    j["width"] = MAP_WIDTH;
+    j["height"] = MAP_HEIGHT;
+    j["layers"] = json::array();
+    j["layers"].push_back({
+        {"data", flatData}
+    });
+    file << j.dump(4);
+    file.close();
+    isSaved = true;
+    mapFileName = std::string(mapNameBuffer);
+}
+
+void CustomMapState::loadMap() {
+    std::ifstream file("../resources/Map/" + std::string(mapFileName) + ".json");
+    if (!file.is_open()) {
+        std::cerr << "Failed to open map file for loading: " << mapFileName << std::endl;
+        return;
+    }
+    
+    json j;
+    file >> j;
+    file.close();
+    
+    MAP_WIDTH = j["width"].get<int>();
+    MAP_HEIGHT = j["height"].get<int>();
+    
+    widthBuffer = std::to_string(MAP_WIDTH);
+    heightBuffer = std::to_string(MAP_HEIGHT);
+    mapNameBuffer = mapFileName;
+    
+    mapGrid.clear();
+    mapGrid.resize(MAP_HEIGHT * MAP_WIDTH, 0);
+    
+    std::vector<int> data = j["layers"][0]["data"].get<std::vector<int>>();
+    for (int i = 0; i < data.size() && i < MAP_HEIGHT * MAP_WIDTH; ++i) {
+        mapGrid[i] = data[i];
+    }
+    
+    camera.target = {(MAP_WIDTH * TILE_SIZE) / 2.0f, (MAP_HEIGHT * TILE_SIZE) / 2.0f};
+    isSaved = true;
+}
+
+void CustomMapState::clearMap() {
+    std::fill(mapGrid.begin(), mapGrid.end(), 0);
+    isSaved = false;
+}
+
+void CustomMapState::applyMapSize() {
+    if( widthBuffer.empty() || heightBuffer.empty()) return;
+    if(widthBuffer == std::to_string(MAP_WIDTH) && heightBuffer == std::to_string(MAP_HEIGHT)) return;
+    int newWidth = std::stoi(widthBuffer);
+    int newHeight = std::stoi(heightBuffer);
+        
+    if (newWidth <= 0 || newHeight <= 0) return;
+
+    MAP_WIDTH = newWidth;
+    MAP_HEIGHT = newHeight;
+    mapGrid.assign(MAP_HEIGHT * MAP_WIDTH, 0);
+    camera.target = {MAP_WIDTH * TILE_SIZE * 0.5f, MAP_HEIGHT * TILE_SIZE * 0.5f};
+        
+    int paletteWidth = isPaletteVisible ? PALETTE_WIDTH : 0;
+    float availableWidth = GetScreenWidth() - paletteWidth;
+    float availableHeight = GetScreenHeight() - TOOLBAR_HEIGHT;
+        
+    float zoomX = (availableWidth * 0.8f) / (MAP_WIDTH * TILE_SIZE);
+    float zoomY = (availableHeight * 0.8f) / (MAP_HEIGHT * TILE_SIZE);
+    camera.zoom = std::clamp(std::min(zoomX, zoomY), 0.1f, 5.0f);
+    camera.offset = {availableWidth * 0.5f, (availableHeight + TOOLBAR_HEIGHT) * 0.5f};  
+    isSaved = false;
+}
+
+void CustomMapState::setMap(int width, int height, const std::vector<int>& mapGrid) {
+    MAP_WIDTH = width;
+    MAP_HEIGHT = height;
+    widthBuffer = std::to_string(MAP_WIDTH);
+    heightBuffer = std::to_string(MAP_HEIGHT);
+    this->mapGrid = mapGrid;
+    camera.target = {MAP_WIDTH * TILE_SIZE * 0.5f, MAP_HEIGHT * TILE_SIZE * 0.5f};
+
+    int paletteWidth = isPaletteVisible ? PALETTE_WIDTH : 0;
+    float availableWidth = GetScreenWidth() - paletteWidth;
+    float availableHeight = GetScreenHeight() - TOOLBAR_HEIGHT;
+    
+    float zoomX = (availableWidth * 0.8f) / (MAP_WIDTH * TILE_SIZE);
+    float zoomY = (availableHeight * 0.8f) / (MAP_HEIGHT * TILE_SIZE);
+    camera.zoom = std::clamp(std::min(zoomX, zoomY), 0.1f, 5.0f);
+    
+    camera.offset = {availableWidth * 0.5f, (availableHeight + TOOLBAR_HEIGHT) * 0.5f};
+    isSaved = false;
 }

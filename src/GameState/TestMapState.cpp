@@ -1,4 +1,5 @@
 #include "GameState/TestMapState.h"
+#include "GameState/CustomMapState.h"
 #include "Game/World.h"
 #include "Character/Mario.h"
 #include "Character/Character.h"
@@ -23,6 +24,27 @@ TestMapState::TestMapState(World* world, std::string mapFileName)
     world->setGamePlay(GamePlay::PLAYCUSTOMMAP);
     characters.push_back(character);
     map->loadMap(mapFileName);
+    camera->target.x = characters[0]->getX() + characters[0]->getWidth() / 2.0f;
+    camera->target.y = characters[0]->getY() + characters[0]->getHeight() / 2.0f;
+}
+
+TestMapState::TestMapState(World* world, std::string mapFileName, int width, int height, const std::vector<int>& mapGrid)
+    : GameState(world, GameStateType::TEST_MAP), 
+      map(world->getMap()), 
+      camera(world->getCamera()), 
+      characters(world->getCharacters()),
+      pausedForTransition(world->getPausedForTransition()),
+      pausedUpdateCharacters(world->getPausedUpdateCharacters()) {
+    characters.clear();
+    Character* character = CharacterFactory::createCharacter(CharacterName::MARIO, ModePlayer::FIRSTPLAYER);
+    character->setWorld(world);
+    world->setGameMode(GameMode::TESTER);
+    world->setGamePlay(GamePlay::PLAYCUSTOMMAP);
+    characters.push_back(character);
+    map->setMap(width, height, mapGrid);
+    map->getMapFileName() = mapFileName;
+    camera->target.x = characters[0]->getX() + characters[0]->getWidth() / 2.0f;
+    camera->target.y = characters[0]->getY() + characters[0]->getHeight() / 2.0f;
 }
 
 TestMapState::~TestMapState() {
@@ -35,10 +57,6 @@ TestMapState::~TestMapState() {
 }
 
 void TestMapState::update() {
-    if(IsKeyPressed(KEY_ESCAPE)) {
-        // trở về edit map này
-        return;
-    }
     std::vector<Tile*>& tile = map->getTile();
     std::vector<Block*>& block = map->getBlock();
     std::vector<Enemy*>& backEnemy = map->getBackEnemy();
@@ -48,6 +66,12 @@ void TestMapState::update() {
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
         camera->target.x -= GetMouseDelta().x / camera->zoom;
         camera->target.y -= GetMouseDelta().y / camera->zoom;
+        offsetX = camera->target.x - characters[0]->getX() - characters[0]->getWidth() / 2.0f;
+        offsetY = camera->target.y - characters[0]->getY() - characters[0]->getHeight() / 2.0f;
+    }
+    else {
+        camera->target.x = characters[0]->getX() + characters[0]->getWidth() / 2.0f + offsetX;
+        camera->target.y = characters[0]->getY() + characters[0]->getHeight() / 2.0f + offsetY;
     }
     float wheel = GetMouseWheelMove();
     if (wheel != 0.0f) {
@@ -152,7 +176,7 @@ void TestMapState::update() {
         }
     }
     else {
-        map->reset();
+        map->reset(true);
         characters[0]->reset(true);
     }
 }
@@ -175,7 +199,7 @@ void TestMapState::draw() {
     GuiSetStyle(DEFAULT, TEXT_SIZE, 18);
     
     int compMargin = 20;
-    Rectangle guiPanelRect = { (float)GetScreenWidth() - 250, (float)GetScreenHeight() - 270, 230, 250 };
+    Rectangle guiPanelRect = { (float)GetScreenWidth() - 250, (float)GetScreenHeight() - 420, 230, 400 };
     GuiPanel( guiPanelRect, "Controls" );
     
     std::string characterButtonText = "Character: " + characterNames[currentCharacterIndex];
@@ -184,9 +208,37 @@ void TestMapState::draw() {
         changeCharacter(availableCharacters[currentCharacterIndex]);
     }
     
-    GuiCheckBox( { guiPanelRect.x + compMargin, guiPanelRect.y + 90, 30, 30 }, "creative", &creative );
-    GuiCheckBox( { guiPanelRect.x + compMargin, guiPanelRect.y + 140, 30, 30 }, "immortal", &immortal );
-    GuiCheckBox( { guiPanelRect.x + compMargin, guiPanelRect.y + 190, 30, 30 }, "net", &net );
+    switch (characters[0]->getType()) {
+        case CharacterType::SMALL:
+            currentTypeIndex = 0;
+            break;
+        case CharacterType::SUPER:
+            currentTypeIndex = 1;
+            break;
+        case CharacterType::FLOWER:
+            currentTypeIndex = 2;
+            break;
+    }
+    std::string typeButtonText = "Type: " + typeNames[currentTypeIndex];
+    if (GuiButton({ guiPanelRect.x + compMargin, guiPanelRect.y + 90, 190, 35 }, typeButtonText.c_str())) {
+        currentTypeIndex = (currentTypeIndex + 1) % availableTypes.size();
+        characters[0]->setType(availableTypes[currentTypeIndex]);
+    }
+    
+    GuiCheckBox( { guiPanelRect.x + compMargin, guiPanelRect.y + 140, 30, 30 }, "creative", &creative );
+    GuiCheckBox( { guiPanelRect.x + compMargin, guiPanelRect.y + 190, 30, 30 }, "immortal", &immortal );
+    GuiCheckBox( { guiPanelRect.x + compMargin, guiPanelRect.y + 240, 30, 30 }, "net", &net );
+    
+    if (GuiButton({ guiPanelRect.x + compMargin, guiPanelRect.y + 290, 190, 35 }, "Reset Map")) {
+        map->reset(true);
+    }
+
+    if(GuiButton({ guiPanelRect.x + compMargin, guiPanelRect.y + 340, 190, 35 }, "Return") || IsKeyPressed(KEY_ESCAPE)) {
+        CustomMapState* customMapState = new CustomMapState(world, map->getMapFileName());
+        customMapState->setMap(map->getWidth() / 32, map->getHeight() / 32, map->getMapGrid());
+        world->setGameState(customMapState);
+        return;
+    }
     
     GuiSetStyle(DEFAULT, TEXT_SIZE, originalTextSize);
     
