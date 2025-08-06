@@ -39,42 +39,27 @@ public:
         text = new_text;
     }
     void setPos(Vector2 newPos);
-};
-class popUpMenu {
-private:
-    std::vector<MyButton> popupMenuButtons;
-    Rectangle rectangle;
-    bool isHandled = false;
-    bool isHovered = false;
-    bool Upper = false;
-    int mapChosen = 0;
-public:
-    popUpMenu();
-    ~popUpMenu();
-
-    void update();
-    void draw();
-
-    void setPos(Vector2 newPos);
-    bool isHandle() const {
-        return isHandled;
-    }
-    bool isHover() const {
-        return isHovered;
-    }
-    void setMapChosen(int i) {
-        mapChosen = i;
+    std::string getText() {
+        return text;
     }
 };
 
 class ChooseCustomizedMapState : public GameState
 {
 private:
-    popUpMenu popUp;
+    int numberOfFile;
+    std::vector<std::string> fileName;
     std::vector<MyButton> mapButtons;
     std::vector<MyButton> ESCMenuButtons;
+    std::vector<MyButton> OptionButtons;
     bool ESCMenuActive = false;
-    bool PopUpActive = false;
+    bool OptionActive = false;
+    int MapChosen = 0;
+
+    // Mouse Whell handling
+    float MouseWhellAcum = 0;
+    float MouseWhellTime = 1.0f;
+    int currentIndex;
 public:
     ChooseCustomizedMapState(World *world);
     ~ChooseCustomizedMapState() override;
@@ -82,7 +67,9 @@ public:
     void update() override;
     void draw() override;
 
-    void loadFromJson(const json& j) override; // Placeholder for loading state from JSON
+    void setMap(bool Up);
+    void loadFromJson(std::string fileName); // Placeholder for loading state from JSON
+    void save(std::string fileName);
 };
 
 
