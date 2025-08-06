@@ -93,6 +93,7 @@ void Enemy::collisionTile(Tile* tile) {
     }
 }
 
+void Enemy::collisionEnemy(Enemy* other){}
 
 // ======================== MAIN METHOD ==========================
 
@@ -120,17 +121,6 @@ void Enemy::followTheLeader(Sprite* leader){
 
 }
 
-// CollisionType Enemy::checkCollision(const std::vector<Sprite*>& collidables) {
-//     for (Sprite* sprite : collidables) {
-//         if (sprite == nullptr) continue;
-//         CollisionType result = this->checkCollision(sprite);
-//         if (result != CollisionType::NONE) {
-//             return result;
-//         }
-//     }
-//     return CollisionType::NONE;
-// }
-
 void Enemy::collisionSound(){
 
 }
@@ -141,6 +131,18 @@ EnemyType Enemy::getEnemyType(){
 
 int Enemy::getPoint() const {
     return point;
+}
+
+// ======================== HELPER FUNCTION ==========================
+bool Enemy::isAlive() const {
+    return state != SpriteState::TO_BE_REMOVED && state != SpriteState::DYING;
+}
+
+bool Enemy::isSolidTile(Tile* tile) const {
+    TileType type = tile->getType();
+    return type == TileType::SOLID ||
+           type == TileType::SOLID_ABOVE ||
+           type == TileType::SOLID_ONLY_ENEMY;
 }
 
 // ======================== SAVE GAME ==========================

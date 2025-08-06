@@ -113,15 +113,17 @@ void BanzaiBill::activeWhenMarioApproach(Character& character){
 }
 
 void BanzaiBill::collisionTile(Tile* tile) {
-    CollisionType col = checkCollision(tile);
 
-    // Gọi xử lý gốc để vẫn giữ va chạm đất/trần
-    Enemy::collisionTile(tile);
-
-    if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+    if(state != SpriteState::DYING && state != SpriteState::TO_BE_REMOVED && 
+    (tile->getType() == TileType::SOLID || tile->getType() == TileType::SOLID_ABOVE || tile->getType() == TileType::SOLID_ONLY_ENEMY)) {
+        CollisionType col = checkCollision(tile);
+        Enemy::collisionTile(tile);
+        if (col == CollisionType::WEST || col == CollisionType::EAST) {
+            velocity.x = -velocity.x;
+            isFacingLeft = velocity.x < 0;
+        }
     }
+    
 }
 
 void BanzaiBill::collisionBlock(Block* block) {
@@ -131,8 +133,7 @@ void BanzaiBill::collisionBlock(Block* block) {
     Enemy::collisionBlock(block);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
-        velocity.x = -velocity.x;
-        isFacingLeft = velocity.x < 0;
+        velocity.x = isFacingLeft ? 200.0f : 200.0f;
     }
 }
 

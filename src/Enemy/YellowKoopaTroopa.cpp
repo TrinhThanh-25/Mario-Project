@@ -188,6 +188,7 @@ void YellowKoopaTroopa::activeWhenMarioApproach(Character& character) {
 }
 
 void YellowKoopaTroopa::collisionTile(Tile* tile) {
+    if (!isAlive() || !isSolidTile(tile)) return;
     CollisionType col = checkCollision(tile);
 
     Enemy::collisionTile(tile);
@@ -219,15 +220,13 @@ void YellowKoopaTroopa::collisionBlock(Block* block) {
     }
 }
 
-// void YellowKoopaTroopa::collisionEnemy(Enemy* other) {
-//     if (this == other) return;
-//     if (state != SpriteState::SHELL_MOVING) return;
-
-//     if (checkCollision(other) != CollisionType::NONE) {
-//         other->beingHit(HitType::SHELL_KICK);
-//     }
-// }
-
+void YellowKoopaTroopa::collisionEnemy(Enemy* other){
+    if (state == SpriteState::SHELL_MOVING && isAlive() && other->isAlive() && other != this){
+        if (checkCollision(other) != CollisionType::NONE){
+            other->beingHit(HitType::SHELL_KICK);
+        }
+    }
+}
 
 // ============================= SAVE GAME ==================================
 json YellowKoopaTroopa::saveToJson() const {
