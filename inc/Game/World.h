@@ -68,6 +68,8 @@ class World : public GameLoop {
 
         void playPlayerDownMusic();
         void playGameOverMusic();
+        void stopPlayerDownMusic();
+        void stopGameOverMusic();
         bool isPlayerDownMusicStreamPlaying() const;
         bool isGameOverMusicStreamPlaying() const;
 

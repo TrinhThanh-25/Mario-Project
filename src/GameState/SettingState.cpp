@@ -8,6 +8,7 @@
 #include "Common/ResourceManager.h"
 #include "Common/AudioManager.h"
 #include "SaveGame.h"
+#include "GameState/GameStateFactory.h"
 
 SettingState::SettingState(World* world)
     : GameState(world, GameStateType::SETTING),
@@ -98,27 +99,7 @@ void SettingState::setStateBeforeSetting(GameStateType stateBeforeSetting) {
 
 json SettingState::saveToJson() const {
     json j;
-    GameState* tempState = nullptr;
-    switch (stateBeforeSetting) {
-        case GameStateType::COUNTING_POINT:
-            tempState = new CountingPointState(world);
-            break;
-        case GameStateType::GO_NEXT_MAP:
-            tempState = new GoNextMapState(world);
-            break;
-        case GameStateType::IRIS_OUT:
-            tempState = new IrisOutState(world);
-            break;
-        case GameStateType::TIME_UP:
-            tempState = new TimeUpState(world);
-            break;
-        case GameStateType::PLAYING:
-            tempState = new PlayingState(world);
-            break;
-        default:
-            tempState = nullptr;
-            break;
-    }
+    GameState* tempState = GameStateFactory::createGameState(world, stateBeforeSetting);
     if (tempState) {
         j = tempState->saveToJson();
         delete tempState;

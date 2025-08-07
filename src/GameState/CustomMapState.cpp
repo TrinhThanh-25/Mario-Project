@@ -2,6 +2,7 @@
 #include "GameState/TestMapState.h"
 #include "Common/ResourceManager.h"
 #include "GameState/ChooseCustomizedMap.h"
+#include "GameState/GameStateFactory.h"
 #include <fstream>
 #include <iostream>
 #include <algorithm>
@@ -23,6 +24,49 @@ const int TOOLBAR_BUTTON_WIDTH = 80;
 const int TOOLBAR_TEXTBOX_WIDTH = 100;
 const int TOOLBAR_SPACING = 10;
 
+CustomMapHistory::CustomMapHistory()
+    : currentIndex(-1) {}
+
+void CustomMapHistory::addMemento(const CustomMapMemento& memento) {
+    if (currentIndex < (history.size()) - 1) {
+        history.erase(history.begin() + currentIndex + 1, history.end());
+    }
+    history.push_back(memento);
+    currentIndex++;
+};
+
+CustomMapMemento CustomMapHistory::getMemento() const {
+    if (currentIndex >= 0 && currentIndex < history.size()) {
+        return history[currentIndex];
+    }
+    throw std::out_of_range("No memento available at current index.");
+}
+
+void CustomMapHistory::undo() {
+    if (canUndo()) {
+        currentIndex--;
+    }
+}
+
+void CustomMapHistory::redo() {
+    if (canRedo()) {
+        currentIndex++;
+    }
+}
+
+bool CustomMapHistory::canUndo() const {
+    return currentIndex > 0;
+}
+
+bool CustomMapHistory::canRedo() const {
+    return currentIndex < (history.size()) - 1;
+}
+
+void CustomMapHistory::clear() {
+    history.clear();
+    currentIndex = -1;
+}
+
 std::vector<std::string> getCategories() {
     return {"ALL", "TILE", "ITEM", "BLOCK", "ENEMY"};
 }
@@ -31,26 +75,33 @@ int getToggleX(bool isPaletteVisible) {
     return isPaletteVisible ? GetScreenWidth() - PALETTE_WIDTH - 5 : GetScreenWidth() - TOGGLE_BUTTON_WIDTH - 5;
 }
 
-CustomMapState::CustomMapState(World* world, const std::string& mapFileName)
+CustomMapState::CustomMapState(World* world)
     : GameState(world, GameStateType::CUSTOM_MAP),
-      mapFileName(mapFileName),
       MAP_WIDTH(35), MAP_HEIGHT(20),
       isEraseMode(false), isPaletteVisible(true),
       selectedTileId(0),
       isDragging(false), isDrawing(false),
       lastMousePos({0, 0}), lastDrawnTile({-1, -1}),
       editingMapName(false), editingWidth(false), editingHeight(false),
-        isClosed(false), isSaved(true), showUnsavedWarning(false) {
-    mapGrid = std::vector<int>(MAP_HEIGHT * MAP_WIDTH, 0);
+      isClosed(false), isSaved(true), showUnsavedWarning(false) {
     loadTileTextures();
-    loadMap();
     camera.offset = {(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f};
     camera.target = {(float)(MAP_WIDTH * TILE_SIZE) / 2.0f, (float)(MAP_HEIGHT * TILE_SIZE) / 2.0f};
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
-    mapNameBuffer = mapFileName;
     widthBuffer = std::to_string(MAP_WIDTH);
     heightBuffer = std::to_string(MAP_HEIGHT);
+}
+
+CustomMapState::CustomMapState(World* world, const std::string& mapFileName)
+    : CustomMapState(world) {
+    setMapFileName(mapFileName);
+}
+
+void CustomMapState::setMapFileName(const std::string& mapFileName) {
+    this->mapFileName = mapFileName;
+    loadMap();
+    mapNameBuffer = mapFileName;
 }
 
 CustomMapState::CustomMapState(World* world, const std::string& mapFileName, int width, int height, const std::vector<int>& mapGrid)
@@ -103,14 +154,12 @@ void CustomMapState::handleUnsavedWarning() {
     if (GuiButton(saveBtn, "SAVE & EXIT")) {
         saveMap();
         showUnsavedWarning = false;
-        ChooseCustomizedMapState* chooseMapState = new ChooseCustomizedMapState(world);
-        world->setGameState(chooseMapState);
+        world->setGameState(GameStateFactory::createGameState(world, GameStateType::CHOOSE_CUSTOMIZED_MAP));
         return;
     }
     else if (GuiButton(discardBtn, "DISCARD")) {
         showUnsavedWarning = false;
-        ChooseCustomizedMapState* chooseMapState = new ChooseCustomizedMapState(world);
-        world->setGameState(chooseMapState);
+        world->setGameState(GameStateFactory::createGameState(world, GameStateType::CHOOSE_CUSTOMIZED_MAP));
         return;
     }
     else if (GuiButton(cancelBtn, "CANCEL")) {
@@ -157,6 +206,11 @@ void CustomMapState::updateTilePallete() {
 
 void CustomMapState::update() {
     if (showUnsavedWarning) return;
+    if ((IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) && IsKeyPressed(KEY_Z)) {
+        undo();
+    } else if ((IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) && IsKeyPressed(KEY_Y)) {
+        redo();
+    }
     updateTilePallete();
     updateMapView();
 }
@@ -170,7 +224,7 @@ void CustomMapState::updateMapView() {
     camera.offset = {mapViewArea.width / 2.0f, mapViewArea.height / 2.0f + TOOLBAR_HEIGHT};
     
     if (CheckCollisionPointRec(mouse, mapViewArea)) {
-        if (IsKeyDown(KEY_LEFT_CONTROL) && GetMouseWheelMove() != 0) {
+        if ((IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) && GetMouseWheelMove() != 0) {
             float wheelMove = GetMouseWheelMove();
             Vector2 mouseWorldPos = GetScreenToWorld2D(mouse, camera);
             camera.zoom = std::clamp(camera.zoom + wheelMove * 0.1f, 0.1f, 5.0f);
@@ -179,8 +233,8 @@ void CustomMapState::updateMapView() {
             camera.target.y += mouseWorldPos.y - mouseWorldPosAfter.y;
         }
         float wheelMove = GetMouseWheelMove();
-        if (wheelMove != 0.0f && !IsKeyDown(KEY_LEFT_CONTROL)) {
-            if (IsKeyDown(KEY_LEFT_SHIFT)) {
+        if (wheelMove != 0.0f && !IsKeyDown(KEY_LEFT_CONTROL) && !IsKeyDown(KEY_RIGHT_CONTROL)) {
+            if (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)) {
                 camera.target.x += wheelMove * 50.0f / camera.zoom;
             } else {
                 camera.target.y -= wheelMove * 50.0f / camera.zoom;
@@ -237,6 +291,9 @@ void CustomMapState::updateMapView() {
             
             // Stop drawing when mouse is released
             if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
+                if (isDrawing) {
+                    saveHistory();
+                }
                 isDrawing = false;
                 lastDrawnTile = {-1, -1};
             }
@@ -434,8 +491,7 @@ void CustomMapState::drawToolbar() {
         if (!isSaved) {
             showUnsavedWarning = true;
         } else {
-            ChooseCustomizedMapState* chooseMapState = new ChooseCustomizedMapState(world);
-            world->setGameState(chooseMapState);
+            world->setGameState(GameStateFactory::createGameState(world, GameStateType::CHOOSE_CUSTOMIZED_MAP));
             isClosed = true;
         }
         return;
@@ -453,7 +509,9 @@ void CustomMapState::drawToolbar() {
     Rectangle testBtn = {currentX, 5, TOOLBAR_BUTTON_WIDTH, TOOLBAR_HEIGHT - 10};
     if (GuiButton(testBtn, "TEST")) {
         isClosed = true;
-        TestMapState* testState = new TestMapState(world, mapFileName, MAP_WIDTH, MAP_HEIGHT, mapGrid);
+        GameState* testState = GameStateFactory::createGameState(world, GameStateType::TEST_MAP);
+        testState->setMapFileName(mapFileName);
+        testState->setMap(MAP_WIDTH, MAP_HEIGHT, mapGrid);
         testState->setIsSaved(isSaved);
         world->setGameState(testState);
         return;
@@ -545,15 +603,49 @@ void CustomMapState::saveMap() {
         std::cerr << "Failed to open map file for saving: " << cleanName << std::endl;
         return;
     }
-    std::vector<int> flatData = mapGrid;
+    
+    // Convert 1D array to 2D array for better readability
+    json data2D = json::array();
+    for (int y = 0; y < MAP_HEIGHT; ++y) {
+        json row = json::array();
+        for (int x = 0; x < MAP_WIDTH; ++x) {
+            row.push_back(mapGrid[y * MAP_WIDTH + x]);
+        }
+        data2D.push_back(row);
+    }
+    
     json j;
     j["width"] = MAP_WIDTH;
     j["height"] = MAP_HEIGHT;
     j["layers"] = json::array();
     j["layers"].push_back({
-        {"data", flatData}
+        {"data", data2D}
     });
-    file << j.dump(4);
+    
+    // Custom formatting to ensure each row is on a new line
+    file << "{\n";
+    file << "    \"width\": " << MAP_WIDTH << ",\n";
+    file << "    \"height\": " << MAP_HEIGHT << ",\n";
+    file << "    \"layers\": [\n";
+    file << "        {\n";
+    file << "            \"data\": [\n";
+    
+    for (int y = 0; y < MAP_HEIGHT; ++y) {
+        file << "                [";
+        for (int x = 0; x < MAP_WIDTH; ++x) {
+            file << mapGrid[y * MAP_WIDTH + x];
+            if (x < MAP_WIDTH - 1) file << ", ";
+        }
+        file << "]";
+        if (y < MAP_HEIGHT - 1) file << ",";
+        file << "\n";
+    }
+    
+    file << "            ]\n";
+    file << "        }\n";
+    file << "    ]\n";
+    file << "}";
+    
     file.close();
     isSaved = true;
     mapFileName = cleanName;
@@ -577,13 +669,7 @@ void CustomMapState::loadMap() {
     heightBuffer = std::to_string(MAP_HEIGHT);
     mapNameBuffer = mapFileName;
     
-    mapGrid.clear();
-    mapGrid.resize(MAP_HEIGHT * MAP_WIDTH, 0);
-    
-    std::vector<int> data = j["layers"][0]["data"].get<std::vector<int>>();
-    for (int i = 0; i < data.size() && i < MAP_HEIGHT * MAP_WIDTH; ++i) {
-        mapGrid[i] = data[i];
-    }
+    mapGrid = j["layers"][0]["data"].get<std::vector<int>>();
     
     camera.target = {(MAP_WIDTH * TILE_SIZE) / 2.0f, (MAP_HEIGHT * TILE_SIZE) / 2.0f};
     isSaved = true;
@@ -625,17 +711,8 @@ void CustomMapState::setMap(int width, int height, const std::vector<int>& mapGr
     heightBuffer = std::to_string(MAP_HEIGHT);
     this->mapGrid = mapGrid;
     camera.target = {MAP_WIDTH * TILE_SIZE * 0.5f, MAP_HEIGHT * TILE_SIZE * 0.5f};
-
-    int paletteWidth = isPaletteVisible ? PALETTE_WIDTH : 0;
-    float availableWidth = GetScreenWidth() - paletteWidth;
-    float availableHeight = GetScreenHeight() - TOOLBAR_HEIGHT;
-    
-    float zoomX = (availableWidth * 0.8f) / (MAP_WIDTH * TILE_SIZE);
-    float zoomY = (availableHeight * 0.8f) / (MAP_HEIGHT * TILE_SIZE);
-    camera.zoom = std::clamp(std::min(zoomX, zoomY), 0.1f, 5.0f);
-    
-    camera.offset = {availableWidth * 0.5f, (availableHeight + TOOLBAR_HEIGHT) * 0.5f};
-    isSaved = false;
+    camera.offset = {(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f};
+    camera.zoom = 1.0f;
 }
 
 void CustomMapState::setIsSaved(bool saved) {
@@ -683,5 +760,32 @@ void CustomMapState::updateListMapFile(const std::string& oldName, const std::st
         std::cout << "Updated map name in ListMap.json: " << oldName << " -> " << newName << std::endl;
     } else {
         std::cerr << "Failed to update ListMap.json" << std::endl;
+    }
+}
+
+void CustomMapState::saveHistory() {
+    CustomMapMemento memento(mapFileName, MAP_WIDTH, MAP_HEIGHT, mapGrid);
+    history.addMemento(memento);
+}
+
+void CustomMapState::undo() {
+    if (history.canUndo()) {
+        Camera2D newCamera = camera;
+        history.undo();
+        CustomMapMemento memento = history.getMemento();
+        setMapFileName(memento.getMapFileName());
+        setMap(memento.getWidth(), memento.getHeight(), memento.getMapGrid());
+        camera = newCamera;
+    }
+}
+
+void CustomMapState::redo() {
+    if (history.canRedo()) {
+        Camera2D newCamera = camera;
+        history.redo();
+        CustomMapMemento memento = history.getMemento();
+        setMapFileName(memento.getMapFileName());
+        setMap(memento.getWidth(), memento.getHeight(), memento.getMapGrid());
+        camera = newCamera;
     }
 }

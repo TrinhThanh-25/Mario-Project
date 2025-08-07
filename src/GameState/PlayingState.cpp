@@ -1,6 +1,8 @@
 #include "GameState/PlayingState.h"
 #include "GameState/CountingPointState.h"
 #include "GameState/SettingState.h"
+#include "GameState/GoNextMapState.h"
+#include "GameState/GameStateFactory.h"
 #include "Block/Block.h"
 #include "Tile/Tile.h"
 #include "Enemy/Enemy.h"
@@ -17,8 +19,14 @@ PlayingState::PlayingState(World* world)
     modeWorld(world->getModeWorld()), 
     gameHud(world->getGameHud()),
     pausedForTransition(world->getPausedForTransition()),
-    pausedUpdateCharacters(world->getPausedUpdateCharacters()) {
+    pausedUpdateCharacters(world->getPausedUpdateCharacters()),
+    skipFirstFrame(true) { // Bỏ qua frame đầu tiên
         world->setGameMode(GameMode::PLAYER);
+        
+        // Reset raylib internal timer để tránh physics explosion
+        // Gọi GetTime() để lấy thời gian hiện tại và "sync" lại timer
+        static double lastTime = 0.0;
+        lastTime = GetTime();
 }
 
 PlayingState::~PlayingState() {
@@ -26,6 +34,13 @@ PlayingState::~PlayingState() {
 }
 
 void PlayingState::update() {
+    // Bỏ qua frame đầu tiên để tránh physics explosion do GetFrameTime() lớn
+    if (skipFirstFrame) {
+        GetFrameTime(); // Reset raylib timer
+        skipFirstFrame = false;
+        return;
+    }
+    
     if(IsKeyPressed(KEY_ESCAPE)) {
         if(world->getGamePlay() == GamePlay::PLAYDEVELOPEDMAP) {
             SaveGame::saveGame(*world);
@@ -33,7 +48,9 @@ void PlayingState::update() {
         else {
             SaveGame::saveGame(*world, "../resources/SaveGame/" + map->getMapFileName() + ".json");
         }
-        SettingState* settingState = new SettingState(world);
+        world->stopPlayerDownMusic();
+        world->stopGameOverMusic();
+        GameState* settingState = GameStateFactory::createGameState(world, GameStateType::SETTING);
         settingState->setStateBeforeSetting(GameStateType::PLAYING);
         world->setGameState(settingState);
         return;
@@ -142,8 +159,9 @@ void PlayingState::update() {
     }
 
     if(!isOneCharactersDead() && !isAllCharactersVictory()) {
-        gameHud->update();
-        map->playMusic();
+        if(world->getGamePlay() == GamePlay::PLAYDEVELOPEDMAP) {
+            map->playMusic();
+        }
         if (!*pausedForTransition) {
             for (auto& b : block) {
                 b->update();
@@ -247,12 +265,13 @@ void PlayingState::update() {
                 }
             }
         }
+        gameHud->update();
     }
     else if (isOneCharactersDead()) {
         world->resetWhenCharacterDead();
     } 
     else if (isAllCharactersVictory()) {
-        world->setGameState(new CountingPointState(world));
+        world->setGameState(GameStateFactory::createGameState(world, GameStateType::COUNTING_POINT));
     }
 }
 
@@ -295,7 +314,12 @@ bool PlayingState::isOneCharactersTransitioning() const {
 }
 
 void PlayingState::enter() {
-    map->playMusic();
+    // Reset flag để bỏ qua frame đầu tiên khi resume
+    skipFirstFrame = true;
+    
+    if(world->getGamePlay() == GamePlay::PLAYDEVELOPEDMAP) {
+        map->playMusic();
+    }
 }
 
 void PlayingState::exit() {

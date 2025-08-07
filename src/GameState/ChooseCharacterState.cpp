@@ -4,6 +4,7 @@
 #include "Character/CharacterFactory.h"
 #include "Common/ResourceManager.h"
 #include "GameState/ChooseCustomizedMap.h"
+#include "GameState/GameStateFactory.h"
 #include "raylib.h"
 
 ChooseCharacterState::ChooseCharacterState(World* world)
@@ -19,6 +20,10 @@ ChooseCharacterState::ChooseCharacterState(World* world)
 
 ChooseCharacterState::ChooseCharacterState(World* world, std::string mapFileName)
     : ChooseCharacterState(world) {
+    setMapFileName(mapFileName);
+}
+
+void ChooseCharacterState::setMapFileName(const std::string& mapFileName) {
     world->getMap()->loadMap(mapFileName);
 }
 
@@ -43,9 +48,9 @@ void ChooseCharacterState::update() {
     std::vector<Character*>& characters = world->getCharacters();
     if(IsKeyPressed(KEY_ESCAPE)) {
         if(world->getGamePlay() == GamePlay::PLAYDEVELOPEDMAP) {
-            world->setGameState(new TitleScreenState(world));
+            world->setGameState(GameStateFactory::createGameState(world, GameStateType::TITLE_SCREEN));
         } else if(world->getGamePlay() == GamePlay::PLAYCUSTOMMAP) {
-            world->setGameState(new ChooseCustomizedMapState(world));
+            world->setGameState(GameStateFactory::createGameState(world, GameStateType::CHOOSE_CUSTOMIZED_MAP));
         }
         return;
     }
@@ -79,7 +84,7 @@ void ChooseCharacterState::update() {
         }
         world->getGameHud()->reset();
         world->setModeWorld(modeWorld);
-        world->setGameState(new PlayingState(world));
+        world->setGameState(GameStateFactory::createGameState(world, GameStateType::PLAYING));
         return;
     }
     if(modeWorld == ModeWorld::SINGLEPLAYER) {

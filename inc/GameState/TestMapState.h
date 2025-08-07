@@ -48,9 +48,12 @@ class TestMapState : public GameState {
         
         void changeCharacter(CharacterName newCharacter);
     public:
+        TestMapState(World* world);
         TestMapState(World* world, std::string mapFileName);
         TestMapState(World* world, std::string mapFileName, int width, int height, const std::vector<int>& mapGrid);
         ~TestMapState() override;
+        
+        void setMapFileName(const std::string& mapFileName);
         void update() override;
         void draw() override;
         void setMap(int width, int height, const std::vector<int>& mapGrid);

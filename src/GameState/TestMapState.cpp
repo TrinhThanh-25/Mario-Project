@@ -1,5 +1,6 @@
 #include "GameState/TestMapState.h"
 #include "GameState/CustomMapState.h"
+#include "GameState/GameStateFactory.h"
 #include "Game/World.h"
 #include "Character/Mario.h"
 #include "Character/Character.h"
@@ -10,7 +11,7 @@
 #include "Item/Item.h"
 #include "raygui.h"
 
-TestMapState::TestMapState(World* world, std::string mapFileName)
+TestMapState::TestMapState(World* world)
     : GameState(world, GameStateType::TEST_MAP),
       map(world->getMap()), 
       camera(world->getCamera()), 
@@ -23,24 +24,22 @@ TestMapState::TestMapState(World* world, std::string mapFileName)
     world->setGameMode(GameMode::TESTER);
     world->setGamePlay(GamePlay::PLAYCUSTOMMAP);
     characters.push_back(character);
+}
+
+TestMapState::TestMapState(World* world, std::string mapFileName)
+    : TestMapState(world) {
+    setMapFileName(mapFileName);
+}
+
+void TestMapState::setMapFileName(const std::string& mapFileName) {
+    this->mapFileName = mapFileName;
     map->loadMap(mapFileName);
     camera->target.x = characters[0]->getX() + characters[0]->getWidth() / 2.0f;
     camera->target.y = characters[0]->getY() + characters[0]->getHeight() / 2.0f;
 }
 
 TestMapState::TestMapState(World* world, std::string mapFileName, int width, int height, const std::vector<int>& mapGrid)
-    : GameState(world, GameStateType::TEST_MAP), 
-      map(world->getMap()), 
-      camera(world->getCamera()), 
-      characters(world->getCharacters()),
-      pausedForTransition(world->getPausedForTransition()),
-      pausedUpdateCharacters(world->getPausedUpdateCharacters()) {
-    characters.clear();
-    Character* character = CharacterFactory::createCharacter(CharacterName::MARIO, ModePlayer::FIRSTPLAYER);
-    character->setWorld(world);
-    world->setGameMode(GameMode::TESTER);
-    world->setGamePlay(GamePlay::PLAYCUSTOMMAP);
-    characters.push_back(character);
+    : TestMapState(world) {
     map->setMap(width, height, mapGrid);
     map->setMapFileName(mapFileName);
     camera->target.x = characters[0]->getX() + characters[0]->getWidth() / 2.0f;
@@ -246,7 +245,9 @@ void TestMapState::draw() {
     }
 
     if(GuiButton({ guiPanelRect.x + compMargin, guiPanelRect.y + 340, 190, 35 }, "Return") || IsKeyPressed(KEY_ESCAPE)) {
-        CustomMapState* customMapState = new CustomMapState(world, map->getMapFileName(), map->getWidth() / 32, map->getHeight() / 32, map->getMapGrid());
+        GameState* customMapState = GameStateFactory::createGameState(world, GameStateType::CUSTOM_MAP);
+        customMapState->setMapFileName(map->getMapFileName());
+        customMapState->setMap(map->getWidth() / 32, map->getHeight() / 32, map->getMapGrid());
         customMapState->setIsSaved(isSaved);
         world->setGameState(customMapState);
         return;
@@ -262,4 +263,10 @@ void TestMapState::draw() {
 
 void TestMapState::setIsSaved(bool saved) {
     isSaved = saved;
+}
+
+void TestMapState::setMap(int width, int height, const std::vector<int>& mapGrid) {
+    map->setMap(width, height, mapGrid);
+    camera->target.x = characters[0]->getX() + characters[0]->getWidth() / 2.0f;
+    camera->target.y = characters[0]->getY() + characters[0]->getHeight() / 2.0f;
 }

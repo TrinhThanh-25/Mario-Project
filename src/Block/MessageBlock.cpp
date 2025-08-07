@@ -37,7 +37,7 @@ void MessageBlock::doHit(Character& character, Map* map) {
 		hit = true;
 		hasMoved = true;
 		PlaySound(ResourceManager::getSound()["MessageBlock"]);
-		map->showMessage();
+		//map->showMessage();
 	}
 }
 json MessageBlock::saveToJson() const {

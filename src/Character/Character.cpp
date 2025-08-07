@@ -7,9 +7,14 @@
 #include "Item/Item.h"
 #include "Item/ItemFactory.h"
 #include <string>
+#include <algorithm>
 
-Character::Character(CharacterName characterName, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed, int initialLives) :
+Character::Character(CharacterName characterName, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float acceleration, float friction, float floatTime, float jumpSpeed, int initialLives) :
     Sprite(pos, dim, vel, color, 0, 2, Direction::RIGHT),
+    acceleration(acceleration),
+    friction(friction),
+    floatTime(floatTime),
+    floatTimeAcum(0.0f),
     characterName(characterName),
     modePlayer(mode),
     speed(speedX), 
@@ -255,29 +260,32 @@ void Character::movement(float deltaTime) {
             return;
         }
     }
-    KeyboardKey up, down, left, right, control;
+    KeyboardKey up, down, left, right, control, shift;
     if(modePlayer == ModePlayer::ONEPLAYER) {
         up = KEY_SPACE;
         down = KEY_DOWN;
         left = KEY_LEFT;
         right = KEY_RIGHT;
         control = KEY_LEFT_CONTROL;
+        shift = KEY_LEFT_SHIFT;
     } else if(modePlayer == ModePlayer::FIRSTPLAYER) {
         up = KEY_W;
         down = KEY_S;
         left = KEY_A;
         right = KEY_D;
         control = KEY_LEFT_CONTROL;
+        shift = KEY_LEFT_SHIFT;
     } else if(modePlayer == ModePlayer::SECONDPLAYER) {
         up = KEY_UP;
         down = KEY_DOWN;
         left = KEY_LEFT;
         right = KEY_RIGHT;
         control = KEY_RIGHT_CONTROL;
+        shift = KEY_RIGHT_SHIFT;
     }
     float currentSpeedX = isRunning ? ( drawRunning ? maxSpeed * 1.3f : maxSpeed ) : speed;
     float frameTimeAct = isRunning ? frameTimeRunning : frameTimeWalking;
-    if(IsKeyDown(control)&&velocity.x!=0) {
+    if(IsKeyDown(shift)&&velocity.x!=0) {
         isRunning = true;;
     }
     else {
@@ -369,52 +377,38 @@ void Character::movement(float deltaTime) {
     else {
         if(IsKeyDown(left) || IsKeyDown(right)) {
             if(IsKeyDown(left) && IsKeyDown(right)) {
-                walkingAcum = 0.0f;
-                if(velocity.x>=-10 && velocity.x<=10) {
-                    velocity.x = 0;
-                }
-                else {  
-                    velocity.x *= 0.9f;
+                if(velocity.x > 0) {
+                    velocity.x = std::max(0.0f, velocity.x - friction * deltaTime);
+                } else if(velocity.x < 0) {
+                    velocity.x = std::min(0.0f, velocity.x + friction * deltaTime);
                 }
             } 
             else if(IsKeyDown(right)) {
-                walkingAcum += deltaTime;
                 direction = Direction::RIGHT;
-                if(isRunning) {
-                    if(drawRunning) {
-                        velocity.x = maxSpeed * 1.3f * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
-                    }
-                    else {
-                        velocity.x = maxSpeed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
-                    }
-                }
-                else {
-                    velocity.x = speed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+                float targetSpeed = isRunning ? (drawRunning ? maxSpeed * 1.3f : maxSpeed) : speed;
+                
+                if(velocity.x < targetSpeed) {
+                    velocity.x = std::min(targetSpeed, velocity.x + acceleration * deltaTime);
                 }
             }
             else if(IsKeyDown(left)) {
-                walkingAcum += deltaTime;
                 direction = Direction::LEFT;
-                if(isRunning) {
-                    if(drawRunning) {
-                        velocity.x = -maxSpeed * 1.3f * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
-                    }
-                    else {
-                        velocity.x = -maxSpeed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
-                    }
-                }
-                else {
-                    velocity.x = -speed * (walkingAcum*2<1.0f ? walkingAcum*2 : 1.0f);
+                float targetSpeed = isRunning ? (drawRunning ? -maxSpeed * 1.3f : -maxSpeed) : -speed;
+                
+                if(velocity.x > targetSpeed) {
+                    velocity.x = std::max(targetSpeed, velocity.x - acceleration * deltaTime);
                 }
             }
         } 
         else {
-            walkingAcum = 0.0f;
-            if(velocity.x>=-10 && velocity.x<=10) {
+            if(std::abs(velocity.x) <= 10.0f) {
                 velocity.x = 0;
-            }
-            else {
-                velocity.x *= 0.9f;
+            } else {
+                if(velocity.x > 0) {
+                    velocity.x = std::max(0.0f, velocity.x - friction * deltaTime);
+                } else {
+                    velocity.x = std::min(0.0f, velocity.x + friction * deltaTime);
+                }
             }
         }
         if(state==SpriteState::ON_GROUND) {
@@ -430,7 +424,20 @@ void Character::movement(float deltaTime) {
         if(IsKeyPressed(up) && state == SpriteState::ON_GROUND) {
             velocity.y = jumpSpeed;
             state = SpriteState::JUMPING;
+            floatTimeAcum = 0.0f;
             PlaySound(ResourceManager::getSound()["Jump"]);
+        }
+        if(state == SpriteState::JUMPING) {
+            bool isNearPeak = (velocity.y > -50.0f && velocity.y <= 0.0f);
+            if(isNearPeak && floatTimeAcum < floatTime && IsKeyDown(up)) {
+                velocity.y += World::gravity * deltaTime * 0.1f;
+                floatTimeAcum += deltaTime;
+            } else {
+                velocity.y += World::gravity * deltaTime;
+                if(!isNearPeak) {
+                    floatTimeAcum = 0.0f;
+                }
+            }
         }
     }
     if(IsKeyPressed(control) && type==CharacterType::FLOWER) {
@@ -445,7 +452,11 @@ void Character::movement(float deltaTime) {
     if(!(world->getGameMode() == GameMode::TESTER && creativeMode)) {
         position.x += velocity.x * deltaTime;
         position.y += velocity.y * deltaTime;
-        velocity.y += World::gravity * deltaTime; 
+        
+        if(state != SpriteState::JUMPING) {
+            velocity.y += World::gravity * deltaTime; 
+        }
+        
         if(oldPosition.y < position.y) {
             state = SpriteState::FALLING;
         }
@@ -751,6 +762,7 @@ void Character::reset(bool isPowerOff) {
     invulnerable = false;
     invulnerableAcum = 0.0f;
     invulnerableBlink = false;
+    floatTimeAcum = 0.0f;
     fireball.clear();
 }
 
@@ -841,7 +853,6 @@ CharacterType Character::getPowerUpItem() const {
 }
 
 void Character::releasePowerUpItem() {
-    //
     Item* item = nullptr;
     Vector2 position;
     switch (modePlayer) {
@@ -930,6 +941,10 @@ json Character::saveToJson() const {
     j["lives"] = lives;
     j["powerUpItem"] = static_cast<int>(powerUpItem);
     j["initialLives"] = initialLives;
+    j["acceleration"] = acceleration;
+    j["friction"] = friction;
+    j["floatTime"] = floatTime;
+    j["floatTimeAcum"] = floatTimeAcum;
     return j;
 }
 
@@ -977,6 +992,10 @@ void Character::loadFromJson(const json& j) {
     lives = j["lives"].get<int>();
     powerUpItem = static_cast<CharacterType>(j["powerUpItem"].get<int>());
     initialLives = j["initialLives"].get<int>();
+    acceleration = j["acceleration"].get<float>();
+    friction = j["friction"].get<float>();
+    floatTime = j["floatTime"].get<float>();
+    floatTimeAcum = j["floatTimeAcum"].get<float>();
 }
 
 void Character::setCreativeMode(bool creative) {
@@ -1019,9 +1038,6 @@ void Character::copyState(const Character& other) {
     map = other.map;
     gameHud = other.gameHud;
     modePlayer = other.modePlayer;
-    speed = other.speed;
-    maxSpeed = other.maxSpeed;
-    jumpSpeed = other.jumpSpeed;
     dyingSpeed = other.dyingSpeed;
     isRunning = other.isRunning;
     isDucking = other.isDucking;

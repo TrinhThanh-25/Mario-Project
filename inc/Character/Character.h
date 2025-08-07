@@ -40,6 +40,11 @@ class Character : public Sprite {
         bool isRunning;
         bool isDucking;
 
+        float acceleration;
+        float friction;
+        float floatTime;
+        float floatTimeAcum;
+
         //walking
         float frameTimeWalking;
         float walkingAcum;
@@ -89,7 +94,7 @@ class Character : public Sprite {
         bool creativeMode;
         bool invulnerableMode;
     public:
-        Character(CharacterName characterName, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed, int initialLives);
+        Character(CharacterName characterName, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float acceleration, float friction, float floatTime, float jumpSpeed, int initialLives);
         virtual ~Character() override;
 
         void setWorld(World* world);

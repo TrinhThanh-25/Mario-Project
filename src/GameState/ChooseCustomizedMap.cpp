@@ -4,6 +4,7 @@
 #include "GameState/PlayingState.h"
 #include "GameState/CustomMapState.h"
 #include "GameState/ChooseCharacterState.h"
+#include "GameState/GameStateFactory.h"
 #include "SaveGame.h"
 #include "json.hpp"
 #include <filesystem>
@@ -102,7 +103,7 @@ void ChooseCustomizedMapState::update()
             }
             else if (ESCMenuButtons[1].isHover())
             {
-                world->setGameState(new TitleScreenState(world));
+                world->setGameState(GameStateFactory::createGameState(world, GameStateType::TITLE_SCREEN));
             }
         }
     }
@@ -123,17 +124,21 @@ void ChooseCustomizedMapState::update()
         }
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             if (OptionButtons[0].isHover()) {
-                ChooseCharacterState* newState = new ChooseCharacterState(world, mapButtons[MapChosen].getText());
+                GameState* newState = GameStateFactory::createGameState(world, GameStateType::CHOOSE_CHARACTER);
+                newState->setMapFileName(mapButtons[MapChosen].getText());
                 newState->setModeWorld(ModeWorld::SINGLEPLAYER);
                 world->setGameState(newState);
                 return;
             } else if (OptionButtons[1].isHover()) {   
-                ChooseCharacterState* newState = new ChooseCharacterState(world, mapButtons[MapChosen].getText());
+                GameState* newState = GameStateFactory::createGameState(world, GameStateType::CHOOSE_CHARACTER);
+                newState->setMapFileName(mapButtons[MapChosen].getText());
                 newState->setModeWorld(ModeWorld::MULTIPLAYER);
                 world->setGameState(newState);
                 return;
             } else if (OptionButtons[2].isHover()) {
-                CustomMapState* newState = new CustomMapState(world, mapButtons[MapChosen].getText());
+                GameState* newState = GameStateFactory::createGameState(world, GameStateType::CUSTOM_MAP);
+                newState->setMapFileName(mapButtons[MapChosen].getText());
+                newState->saveHistory();
                 world->setGameState(newState);
                 return;
             } else if (OptionButtons[3].isHover()) {
@@ -177,7 +182,11 @@ void ChooseCustomizedMapState::update()
                         listFileName.push_back(newMapName);
                         mapNameSet.insert(newMapName);
                         saveToJson();
-                        world->setGameState(new CustomMapState(world, newMapName));
+                        createDefaultMapFile(newMapName);
+                        GameState* newState = GameStateFactory::createGameState(world, GameStateType::CUSTOM_MAP);
+                        newState->setMapFileName(newMapName);
+                        newState->saveHistory();
+                        world->setGameState(newState);
                         return;
                     }
                     OptionActive = true;
@@ -300,4 +309,38 @@ void ChooseCustomizedMapState::setMap(bool Up)
         mapButtons[2].setText(listFileName[currentIndex+2]);
         mapButtons[3].setText(listFileName[currentIndex+3]);
     }
+}
+
+void ChooseCustomizedMapState::createDefaultMapFile(const std::string& mapName) {
+    std::ofstream newMapFile("../resources/Map/" + mapName + ".json");
+    if (!newMapFile) {
+        std::cerr << "Failed to create new map file: " << mapName << std::endl;
+        return;
+    }
+    
+    // Write default empty map with proper format
+    newMapFile << "{\n";
+    newMapFile << "    \"width\": 35,\n";
+    newMapFile << "    \"height\": 20,\n";
+    newMapFile << "    \"layers\": [\n";
+    newMapFile << "        {\n";
+    newMapFile << "            \"data\": [\n";
+    
+    // Create 20 rows of 35 zeros each
+    for (int y = 0; y < 20; ++y) {
+        newMapFile << "                [";
+        for (int x = 0; x < 35; ++x) {
+            newMapFile << "0";
+            if (x < 34) newMapFile << ", ";
+        }
+        newMapFile << "]";
+        if (y < 19) newMapFile << ",";
+        newMapFile << "\n";
+    }
+    
+    newMapFile << "            ]\n";
+    newMapFile << "        }\n";
+    newMapFile << "    ]\n";
+    newMapFile << "}";
+    newMapFile.close();
 }

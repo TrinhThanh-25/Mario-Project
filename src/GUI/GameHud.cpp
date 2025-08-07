@@ -3,6 +3,7 @@
 #include "Game/World.h"
 #include "Common/ResourceManager.h"
 #include "GameState/TimeUpState.h"
+#include "GameState/GameStateFactory.h"
 #include "Item/ItemFactory.h"
 
 GameHud::GameHud(World* world, int yoshiCoins, int coins, int points, float maxTime)
@@ -29,7 +30,7 @@ void GameHud::update() {
             characters[i]->transitionToSmall();
             characters[i]->setLives(characters[i]->getLives() - 1);
         }
-        world->setGameState(new TimeUpState(world));
+        world->setGameState(GameStateFactory::createGameState(world, GameStateType::TIME_UP));
     }
 }
 

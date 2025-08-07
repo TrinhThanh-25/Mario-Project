@@ -5,7 +5,7 @@
 
 class Peach : public Character {
     public:
-        Peach(ModePlayer mode, Vector2 pos, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed, int initialLives);
+        Peach(ModePlayer mode, Vector2 pos, Vector2 vel, Color color, float speedX, float maxSpeedX, float acceleration, float friction, float floatTime, float jumpSpeed, int initialLives);
         ~Peach();
 
         void updateCollisionBoxes() override;

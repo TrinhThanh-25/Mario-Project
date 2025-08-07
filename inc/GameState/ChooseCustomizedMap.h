@@ -72,6 +72,7 @@ public:
     void setMap(bool Up);
     void load(std::string fileName = "../resources/Map/ListMap.json");
     void save(std::string fileName = "../resources/Map/ListMap.json");
+    void createDefaultMapFile(const std::string& mapName);
 };
 
 
