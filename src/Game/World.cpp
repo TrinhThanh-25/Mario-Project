@@ -42,6 +42,7 @@ World::World(int width, int height, const std::string& title, int FPS)
     GameLoop(),
     gameMode(GameMode::PLAYER),
     gamePlay(GamePlay::PLAYDEVELOPEDMAP) {
+        keyManager.initializeKeys();
         map.setCharacters(characters);
         modeWorld = ModeWorld::MULTIPLAYER;
         gamePlay = GamePlay::PLAYCUSTOMMAP;
@@ -54,6 +55,7 @@ World::~World() {
         delete character;
     }
     characters.clear();
+    
     if (gameState) {
         gameState->exit();
         delete gameState;
@@ -154,6 +156,10 @@ int* World::getRemainTimePoint() {
 
 GameHud* World::getGameHud() {
     return &gameHud;
+}
+
+KeyManager* World::getKeyManager() {
+    return &keyManager;
 }
 
 void World::playPlayerDownMusic() {
@@ -344,6 +350,7 @@ void World::loadFromJson(const json& j) {
         Character* character = CharacterFactory::createCharacter( static_cast<CharacterName>(characterJson["characterName"].get<int>()), static_cast<ModePlayer>(characterJson["modePlayer"].get<int>()) );
         character->loadFromJson(characterJson);
         character->setWorld(this);
+        keyManager.setKeyManagerForCharacter(character, static_cast<ModePlayer>(characterJson["modePlayer"].get<int>()));
         characters.push_back(character);
     }
     map.loadFromJson(j["map"]);

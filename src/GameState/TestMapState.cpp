@@ -21,6 +21,7 @@ TestMapState::TestMapState(World* world)
     characters.clear();
     Character* character = CharacterFactory::createCharacter(CharacterName::MARIO, ModePlayer::FIRSTPLAYER);
     character->setWorld(world);
+    world->getKeyManager()->setKeyManagerForCharacter(character, ModePlayer::FIRSTPLAYER);
     world->setGameMode(GameMode::TESTER);
     world->setGamePlay(GamePlay::PLAYCUSTOMMAP);
     characters.push_back(character);
@@ -195,6 +196,7 @@ void TestMapState::update() {
 void TestMapState::changeCharacter(CharacterName newCharacter) {
     Character* character = CharacterFactory::createCharacter(newCharacter, ModePlayer::FIRSTPLAYER);
     character->setWorld(world);
+    world->getKeyManager()->setKeyManagerForCharacter(character, ModePlayer::FIRSTPLAYER);
     character->copyState(*characters[0]);
     
     delete characters[0];

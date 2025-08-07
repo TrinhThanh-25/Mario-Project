@@ -48,7 +48,11 @@ Character::Character(CharacterName characterName, ModePlayer mode, Vector2 pos, 
     initialLives(initialLives),
     lives(initialLives),
     creativeMode(false),
-    invulnerableMode(false) {
+    invulnerableMode(false),
+    isThrowingFireball(false),
+    throwingFireballTime(0.15f),
+    throwingFireballAcum(0.0f),
+    keyManager(nullptr){
     setState(SpriteState::ON_GROUND);
 }
 
@@ -148,20 +152,15 @@ void Character::draw() {
                 if(isDucking) {
                     DrawTexture(texture[characterType + "Ducking0" + direct], position.x, position.y, curColor);
                 }
+                else if((direction == Direction::LEFT && velocity.x > 0) || (direction == Direction::RIGHT && velocity.x < 0)) {
+                    DrawTexture(texture[characterType + "TurningAround0" + direct], position.x, position.y, curColor);
+                }
                 else if(drawRunning) {
                     DrawTexture(texture[characterType + "Running" + std::to_string(curFrame) + direct], position.x, position.y, curColor);
                 }
-                else{
-                    if((modePlayer == ModePlayer::FIRSTPLAYER|| *(world->getModeWorld()) == ModeWorld::SINGLEPLAYER) && type==CharacterType::FLOWER){
-                        if(IsKeyPressed(KEY_LEFT_CONTROL)) {
-                            DrawTexture(texture[characterType +"ThrowingFireball0" + direct], position.x, position.y, curColor);
-                        }
-                        else{
-                            DrawTexture(texture[characterType + std::to_string(curFrame) + direct], position.x, position.y, curColor);
-                        }
-                    }
-                    else if(modePlayer== ModePlayer::SECONDPLAYER && type==CharacterType::FLOWER){
-                        if(IsKeyPressed(KEY_RIGHT_CONTROL)) {
+                else {
+                    if(type==CharacterType::FLOWER){
+                        if(isThrowingFireball) {
                             DrawTexture(texture[characterType +"ThrowingFireball0" + direct], position.x, position.y, curColor);
                         }
                         else{
@@ -260,32 +259,11 @@ void Character::movement(float deltaTime) {
             return;
         }
     }
-    KeyboardKey up, down, left, right, control, shift;
-    if(modePlayer == ModePlayer::ONEPLAYER) {
-        up = KEY_SPACE;
-        down = KEY_DOWN;
-        left = KEY_LEFT;
-        right = KEY_RIGHT;
-        control = KEY_LEFT_CONTROL;
-        shift = KEY_LEFT_SHIFT;
-    } else if(modePlayer == ModePlayer::FIRSTPLAYER) {
-        up = KEY_W;
-        down = KEY_S;
-        left = KEY_A;
-        right = KEY_D;
-        control = KEY_LEFT_CONTROL;
-        shift = KEY_LEFT_SHIFT;
-    } else if(modePlayer == ModePlayer::SECONDPLAYER) {
-        up = KEY_UP;
-        down = KEY_DOWN;
-        left = KEY_LEFT;
-        right = KEY_RIGHT;
-        control = KEY_RIGHT_CONTROL;
-        shift = KEY_RIGHT_SHIFT;
-    }
+    
     float currentSpeedX = isRunning ? ( drawRunning ? maxSpeed * 1.3f : maxSpeed ) : speed;
     float frameTimeAct = isRunning ? frameTimeRunning : frameTimeWalking;
-    if(IsKeyDown(shift)&&velocity.x!=0) {
+    
+    if(IsKeyDown(getKeys()["SHIFT"])&&velocity.x!=0) {
         isRunning = true;;
     }
     else {
@@ -331,21 +309,21 @@ void Character::movement(float deltaTime) {
         velocity.x = 0;
         velocity.y = 0;
         
-        if(IsKeyDown(left) && IsKeyDown(right)) {
+        if(IsKeyDown(getKeys()["LEFT"]) && IsKeyDown(getKeys()["RIGHT"])) {
             
-        } else if(IsKeyDown(right)) {
+        } else if(IsKeyDown(getKeys()["RIGHT"])) {
             velocity.x = currentCreativeSpeed;
             direction = Direction::RIGHT;
-        } else if(IsKeyDown(left)) {
+        } else if(IsKeyDown(getKeys()["LEFT"])) {
             velocity.x = -currentCreativeSpeed;
             direction = Direction::LEFT;
         }
         
-        if(IsKeyDown(up) && IsKeyDown(down)) {
+        if(IsKeyDown(getKeys()["UP"]) && IsKeyDown(getKeys()["DOWN"])) {
             
-        } else if(IsKeyDown(up)) {
+        } else if(IsKeyDown(getKeys()["UP"])) {
             velocity.y = -currentCreativeSpeed;
-        } else if(IsKeyDown(down)) {
+        } else if(IsKeyDown(getKeys()["DOWN"])) {
             velocity.y = currentCreativeSpeed;
         }
         
@@ -375,15 +353,15 @@ void Character::movement(float deltaTime) {
         }
     }
     else {
-        if(IsKeyDown(left) || IsKeyDown(right)) {
-            if(IsKeyDown(left) && IsKeyDown(right)) {
+        if(IsKeyDown(getKeys()["LEFT"]) || IsKeyDown(getKeys()["RIGHT"])) {
+            if(IsKeyDown(getKeys()["LEFT"]) && IsKeyDown(getKeys()["RIGHT"])) {
                 if(velocity.x > 0) {
                     velocity.x = std::max(0.0f, velocity.x - friction * deltaTime);
                 } else if(velocity.x < 0) {
                     velocity.x = std::min(0.0f, velocity.x + friction * deltaTime);
                 }
             } 
-            else if(IsKeyDown(right)) {
+            else if(IsKeyDown(getKeys()["RIGHT"])) {
                 direction = Direction::RIGHT;
                 float targetSpeed = isRunning ? (drawRunning ? maxSpeed * 1.3f : maxSpeed) : speed;
                 
@@ -391,7 +369,7 @@ void Character::movement(float deltaTime) {
                     velocity.x = std::min(targetSpeed, velocity.x + acceleration * deltaTime);
                 }
             }
-            else if(IsKeyDown(left)) {
+            else if(IsKeyDown(getKeys()["LEFT"])) {
                 direction = Direction::LEFT;
                 float targetSpeed = isRunning ? (drawRunning ? -maxSpeed * 1.3f : -maxSpeed) : -speed;
                 
@@ -412,7 +390,7 @@ void Character::movement(float deltaTime) {
             }
         }
         if(state==SpriteState::ON_GROUND) {
-            if(IsKeyDown(down)) {
+            if(IsKeyDown(getKeys()["DOWN"])) {
                 isDucking = true;
                 velocity.x = 0;
             } else {
@@ -421,7 +399,7 @@ void Character::movement(float deltaTime) {
         } else {
             isDucking = false;
         }
-        if(IsKeyPressed(up) && state == SpriteState::ON_GROUND) {
+        if(IsKeyPressed(getKeys()["UP"]) && state == SpriteState::ON_GROUND) {
             velocity.y = jumpSpeed;
             state = SpriteState::JUMPING;
             floatTimeAcum = 0.0f;
@@ -429,7 +407,7 @@ void Character::movement(float deltaTime) {
         }
         if(state == SpriteState::JUMPING) {
             bool isNearPeak = (velocity.y > -50.0f && velocity.y <= 0.0f);
-            if(isNearPeak && floatTimeAcum < floatTime && IsKeyDown(up)) {
+            if(isNearPeak && floatTimeAcum < floatTime && IsKeyDown(getKeys()["UP"])) {
                 velocity.y += World::gravity * deltaTime * 0.1f;
                 floatTimeAcum += deltaTime;
             } else {
@@ -440,7 +418,7 @@ void Character::movement(float deltaTime) {
             }
         }
     }
-    if(IsKeyPressed(control) && type==CharacterType::FLOWER) {
+    if(IsKeyPressed(getKeys()["CONTROL"]) && type==CharacterType::FLOWER) {
         if(direction == Direction::RIGHT) {
             fireball.push_back(Fireball({position.x + size.x - 4, position.y+size.y - 34}, Direction::RIGHT, 2.0f));
         } else {
@@ -631,7 +609,7 @@ void Character::collisionEnemy(Enemy* enemy) {
         else if(collision == CollisionType::SOUTH && enemy->getAuxiliaryState() != SpriteState::INVULNERABLE) {
             if( state == SpriteState::FALLING && enemy->getState() != SpriteState::DYING && enemy->getState() != SpriteState::TO_BE_REMOVED) {
                 position.y = enemy->getY() - size.y;
-                if(((modePlayer == ModePlayer::FIRSTPLAYER || modePlayer == ModePlayer::ONEPLAYER) && IsKeyDown(KEY_LEFT_CONTROL)) || (modePlayer == ModePlayer::SECONDPLAYER && IsKeyDown(KEY_RIGHT_CONTROL))) {
+                if(IsKeyDown(getKeys()["CONTROL"])) {
                     velocity.y = -400.0f;
                 }
                 else {
@@ -763,6 +741,8 @@ void Character::reset(bool isPowerOff) {
     invulnerableAcum = 0.0f;
     invulnerableBlink = false;
     floatTimeAcum = 0.0f;
+    isThrowingFireball = false;
+    throwingFireballAcum = 0.0f;
     fireball.clear();
 }
 
@@ -945,6 +925,9 @@ json Character::saveToJson() const {
     j["friction"] = friction;
     j["floatTime"] = floatTime;
     j["floatTimeAcum"] = floatTimeAcum;
+    j["isThrowingFireball"] = isThrowingFireball;
+    j["throwingFireballTime"] = throwingFireballTime;
+    j["throwingFireballAcum"] = throwingFireballAcum;
     return j;
 }
 
@@ -996,6 +979,9 @@ void Character::loadFromJson(const json& j) {
     friction = j["friction"].get<float>();
     floatTime = j["floatTime"].get<float>();
     floatTimeAcum = j["floatTimeAcum"].get<float>();
+    isThrowingFireball = j["isThrowingFireball"].get<bool>();
+    throwingFireballTime = j["throwingFireballTime"].get<float>();
+    throwingFireballAcum = j["throwingFireballAcum"].get<float>();
 }
 
 void Character::setCreativeMode(bool creative) {
@@ -1024,6 +1010,10 @@ CharacterName Character::getCharacterName() const {
 
 GameMode Character::getGameMode() const {
     return world->getGameMode();
+}
+
+ModePlayer Character::getModePlayer() const {
+    return modePlayer;
 }
 
 void Character::copyState(const Character& other) {
@@ -1073,4 +1063,144 @@ void Character::copyState(const Character& other) {
     powerUpItem = other.powerUpItem;
     creativeMode = other.creativeMode;
     invulnerableMode = other.invulnerableMode;
+    isThrowingFireball = other.isThrowingFireball;
+    throwingFireballTime = other.throwingFireballTime;
+    throwingFireballAcum = other.throwingFireballAcum;
+}
+
+void Character::jump(float deltaTime) {
+    if(world->getGameMode() == GameMode::TESTER && creativeMode) {
+        float creativeSpeed = 260.0f;
+        float creativeFastSpeed = 400.0f;
+        float currentCreativeSpeed = isRunning ? creativeFastSpeed : creativeSpeed;
+        velocity.y = -currentCreativeSpeed;
+        state = SpriteState::JUMPING;
+    } else {
+        if (state == SpriteState::ON_GROUND) {
+            velocity.y = jumpSpeed;
+            state = SpriteState::JUMPING;
+            floatTimeAcum = 0.0f;
+            PlaySound(ResourceManager::getSound()["Jump"]);
+        }
+    }
+}
+
+void Character::duck(float deltaTime) {
+    if(world->getGameMode() == GameMode::TESTER && creativeMode) {
+        float creativeSpeed = 260.0f;
+        float creativeFastSpeed = 400.0f;
+        float currentCreativeSpeed = isRunning ? creativeFastSpeed : creativeSpeed;
+        velocity.y = currentCreativeSpeed;
+        state = SpriteState::FALLING;
+    } else {
+        if (state == SpriteState::ON_GROUND) {
+            isDucking = true;
+            velocity.x = 0;
+        }
+    }
+}
+
+void Character::moveLeft(float deltaTime) {
+    if(world->getGameMode() == GameMode::TESTER && creativeMode) {
+        float creativeSpeed = 260.0f;
+        velocity.x = -creativeSpeed;
+        direction = Direction::LEFT;
+        isRunning = false;
+    } else {
+        direction = Direction::LEFT;
+        isRunning = false;
+        float targetSpeed = -speed;
+        
+        if (velocity.x > targetSpeed) {
+            velocity.x = std::max(targetSpeed, velocity.x - acceleration * deltaTime);
+        }
+    }
+}
+
+void Character::moveRight(float deltaTime) {
+    if(world->getGameMode() == GameMode::TESTER && creativeMode) {
+        float creativeSpeed = 260.0f;
+        velocity.x = creativeSpeed;
+        direction = Direction::RIGHT;
+        isRunning = false;
+    } else {
+        direction = Direction::RIGHT;
+        isRunning = false;
+        float targetSpeed = speed;
+        
+        if (velocity.x < targetSpeed) {
+            velocity.x = std::min(targetSpeed, velocity.x + acceleration * deltaTime);
+        }
+    }
+}
+
+void Character::runFastLeft(float deltaTime) {
+    if(world->getGameMode() == GameMode::TESTER && creativeMode) {
+        float creativeFastSpeed = 400.0f;
+        velocity.x = -creativeFastSpeed;
+        direction = Direction::LEFT;
+        isRunning = true;
+    } else {
+        direction = Direction::LEFT;
+        isRunning = true;
+        float targetSpeed = drawRunning ? -maxSpeed * 1.3f : -maxSpeed;
+        
+        if (velocity.x > targetSpeed) {
+            velocity.x = std::max(targetSpeed, velocity.x - acceleration * deltaTime);
+        }
+    }
+}
+
+void Character::runFastRight(float deltaTime) {
+    if(world->getGameMode() == GameMode::TESTER && creativeMode) {
+        float creativeFastSpeed = 400.0f;
+        velocity.x = creativeFastSpeed;
+        direction = Direction::RIGHT;
+        isRunning = true;
+    } else {
+        direction = Direction::RIGHT;
+        isRunning = true;
+        float targetSpeed = drawRunning ? maxSpeed * 1.3f : maxSpeed;
+        
+        if (velocity.x < targetSpeed) {
+            velocity.x = std::min(targetSpeed, velocity.x + acceleration * deltaTime);
+        }
+    }
+}
+
+void Character::throwFireball(float deltaTime) {
+    if (type == CharacterType::FLOWER) {
+        isThrowingFireball = true;
+        throwingFireballAcum = 0.0f;
+        
+        if (direction == Direction::RIGHT) {
+            fireball.push_back(Fireball({position.x + size.x - 4, position.y + size.y - 34}, Direction::RIGHT, 2.0f));
+        } else {
+            fireball.push_back(Fireball({position.x - 16 + 4, position.y + size.y - 34}, Direction::LEFT, 2.0f));
+        }
+        PlaySound(ResourceManager::getSound()["Fireball"]);
+    }
+}
+
+void Character::setModePlayer(ModePlayer mode) {
+    this->modePlayer = mode;
+}
+
+void Character::setKeyManager(KeyManager* keyManager) {
+    this->keyManager = keyManager;
+}
+
+std::unordered_map<std::string, int>& Character::getKeys() {
+    if (keyManager) {
+        return keyManager->getKeys(modePlayer);
+    }
+    static std::unordered_map<std::string, int> defaultKeys = {
+        {"UP", KEY_SPACE},
+        {"DOWN", KEY_DOWN},
+        {"LEFT", KEY_LEFT},
+        {"RIGHT", KEY_RIGHT},
+        {"CONTROL", KEY_LEFT_CONTROL},
+        {"SHIFT", KEY_LEFT_SHIFT}
+    };
+    return defaultKeys;
 }

@@ -61,16 +61,21 @@ void ChooseCharacterState::update() {
         for (CharacterTag* tag : characterTags) {
             if (modeWorld == ModeWorld::SINGLEPLAYER && (tag->getState() == TagState::FIRSTPLAYERSELECTING || tag->getState() == TagState::FIRSTPLAYERSELECTED)) {
                 characters.push_back(CharacterFactory::createCharacter(tag->getName(), ModePlayer::ONEPLAYER));
+                world->getKeyManager()->setKeyManagerForCharacter(characters.back(), ModePlayer::ONEPLAYER);
             } 
             else if (modeWorld == ModeWorld::MULTIPLAYER && (tag->getState() == TagState::FIRSTPLAYERSELECTING || tag->getState() == TagState::FIRSTPLAYERSELECTED)) {
                 characters.push_back(CharacterFactory::createCharacter(tag->getName(), ModePlayer::FIRSTPLAYER));
+                world->getKeyManager()->setKeyManagerForCharacter(characters.back(), ModePlayer::FIRSTPLAYER);
             } 
             else if (modeWorld == ModeWorld::MULTIPLAYER && (tag->getState() == TagState::SECONDPLAYERSELECTING || tag->getState() == TagState::SECONDPLAYERSELECTED)) {
                 characters.push_back(CharacterFactory::createCharacter(tag->getName(), ModePlayer::SECONDPLAYER));
+                world->getKeyManager()->setKeyManagerForCharacter(characters.back(), ModePlayer::SECONDPLAYER);
             }
             else if(modeWorld == ModeWorld::MULTIPLAYER && (tag->getState() == TagState::BOTHPLAYERSELECTING || tag->getState() == TagState::BOTHPLAYERSELECTED || tag->getState() == TagState::FIRSTPLAYERSELECTED_SECONDPLAYERSELECTING || tag->getState() == TagState::SECONDPLAYERSECLECTED_FIRSTPLAYERSELECTING)) {
                 characters.push_back(CharacterFactory::createCharacter(tag->getName(), ModePlayer::FIRSTPLAYER));
+                world->getKeyManager()->setKeyManagerForCharacter(characters.back(), ModePlayer::FIRSTPLAYER);
                 characters.push_back(CharacterFactory::createCharacter(tag->getName(), ModePlayer::SECONDPLAYER));
+                world->getKeyManager()->setKeyManagerForCharacter(characters.back(), ModePlayer::SECONDPLAYER);
             }
             for (Character* character : characters) {
                 character->setWorld(world);

@@ -12,11 +12,13 @@
 #include "Game/ModeWorld.h"
 #include "Game/GameMode.h"
 #include "Game/GamePlay.h"
+#include "Common/KeyManager.h"
 
 using json = nlohmann::json;
 
 class Character;
 class GameState;
+enum class ModePlayer;
 
 class World : public GameLoop {
     private:
@@ -24,6 +26,7 @@ class World : public GameLoop {
         Map map;
         Camera2D camera;
         GameHud gameHud;
+        KeyManager keyManager;
         
         int width;
         int height;
@@ -65,6 +68,7 @@ class World : public GameLoop {
         Map* getMap();
         int* getRemainTimePoint();
         GameHud* getGameHud();
+        KeyManager* getKeyManager();
 
         void playPlayerDownMusic();
         void playGameOverMusic();
