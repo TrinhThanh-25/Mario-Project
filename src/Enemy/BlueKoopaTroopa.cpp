@@ -8,7 +8,7 @@ BlueKoopaTroopa::BlueKoopaTroopa(Vector2 pos, Vector2 dim, Vector2 vel, Color co
     : Enemy(EnemyType::BLUE_KOOPA_TROOPA, pos, dim, vel, color) {
     
     extraWakeUpTime = 2.0f;
-    shellSpeed = 150.0f;
+    shellSpeed = 400.0f;
     shellTimer = 0.0f;
     shellMoving = false;
 
@@ -165,15 +165,6 @@ void BlueKoopaTroopa::beingHit(HitType type) {
 
         default:
             break;
-    }
-}
-
-void BlueKoopaTroopa::kickShell(bool faceLeft) {
-    if (state == SpriteState::SHELL) {
-        setState(SpriteState::SHELL_MOVING);
-        shellMoving = true;
-        isFacingLeft = faceLeft;
-        shellTimer = 0.0f;
     }
 }
 

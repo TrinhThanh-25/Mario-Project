@@ -3,6 +3,7 @@
 #include "GameState/TitleScreenState.h"
 #include "Character/CharacterFactory.h"
 #include "Common/ResourceManager.h"
+#include "GameState/ChooseCustomizedMap.h"
 #include "raylib.h"
 
 ChooseCharacterState::ChooseCharacterState(World* world)
@@ -15,6 +16,13 @@ ChooseCharacterState::ChooseCharacterState(World* world)
             new CharacterTag(CharacterName::PEACH, {800 + 50 + 150 + 100, 500, 150, 200})
       }) {
 }
+
+ChooseCharacterState::ChooseCharacterState(World* world, std::string mapFileName)
+    : ChooseCharacterState(world) {
+    world->getMap()->loadMap(mapFileName);
+}
+
+
 
 ChooseCharacterState::~ChooseCharacterState() {
     for (CharacterTag* tag : characterTags) {
@@ -34,7 +42,11 @@ void ChooseCharacterState::update() {
     }
     std::vector<Character*>& characters = world->getCharacters();
     if(IsKeyPressed(KEY_ESCAPE)) {
-        world->setGameState(new TitleScreenState(world));
+        if(world->getGamePlay() == GamePlay::PLAYDEVELOPEDMAP) {
+            world->setGameState(new TitleScreenState(world));
+        } else if(world->getGamePlay() == GamePlay::PLAYCUSTOMMAP) {
+            world->setGameState(new ChooseCustomizedMapState(world));
+        }
         return;
     }
     for (CharacterTag* tag : characterTags) {
@@ -59,7 +71,12 @@ void ChooseCharacterState::update() {
                 character->setWorld(world);
             }
         }
-        world->getMap()->loadMap(1);
+        if(world->getGamePlay() == GamePlay::PLAYDEVELOPEDMAP) {
+            world->getMap()->loadMap(1);
+        }
+        else if(world->getGamePlay() == GamePlay::PLAYCUSTOMMAP) {
+            world->getMap()->loadMap(world->getMap()->getMapFileName());
+        }
         world->getGameHud()->reset();
         world->setModeWorld(modeWorld);
         world->setGameState(new PlayingState(world));

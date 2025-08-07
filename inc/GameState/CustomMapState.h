@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <unordered_set>
 #include "raygui.h"
 
 class CustomMapState : public GameState {
@@ -18,38 +19,39 @@ public:
     void enter() override;
     void exit() override;
     void setMap(int width, int height, const std::vector<int>& mapGrid);
+    void setIsSaved(bool saved);
 private:  
     std::string mapFileName;
     static const int TILE_SIZE = 32;
-    int MAP_WIDTH = 35;
-    int MAP_HEIGHT = 20;
-    bool isEraseMode = false;
-    bool isPaletteVisible = true;
+    int MAP_WIDTH;
+    int MAP_HEIGHT;
+    bool isEraseMode;
+    bool isPaletteVisible;
 
-    int selectedTileId = 0; // tile ID from 1 -> 149 ( 0 when erase mode )
-    std::vector<int> mapGrid; // Lưu ID tile (1D vector, access via y * MAP_WIDTH + x)
-    std::vector<std::string> tileIds; // Lưu key tương ứng trong ResourceManager 
+    int selectedTileId;
+    std::vector<int> mapGrid;
+    std::vector<std::string> tileIds;
+    Camera2D camera;
+    bool isDragging;
+    Vector2 lastMousePos;
+    bool isDrawing;
+    Vector2 lastDrawnTile;
 
-    // Camera and view variables
-    Camera2D camera;              // Raylib Camera2D
-    bool isDragging = false;      // For panning
-    Vector2 lastMousePos = {0, 0};
-    bool isDrawing = false;       // For continuous tile drawing
-    Vector2 lastDrawnTile = {-1, -1}; // Last tile coordinates drawn
+    std::string mapNameBuffer;
+    std::string widthBuffer;
+    std::string heightBuffer;
+    bool editingMapName;
+    bool editingWidth;
+    bool editingHeight;
+    bool isClosed;
+    bool isSaved;
+    bool showUnsavedWarning;
 
-    // Toolbar variables
-    std::string mapNameBuffer = "NewMap";
-    std::string widthBuffer = "35";
-    std::string heightBuffer = "20";
-    bool editingMapName = false;
-    bool editingWidth = false;
-    bool editingHeight = false;
-    bool isClosed = false;
-    bool isSaved = true;
-    bool showUnsavedWarning = false;
-
-    void loadTileTextures(); // Đổ tileIds từ Tileset1 đến Tileset149
+    void loadTileTextures();
     void drawMap();
+    bool isMapNameExists(const std::string& name) const;
+    std::string generateUniqueMapName(const std::string& baseName) const;
+    void updateListMapFile(const std::string& oldName, const std::string& newName, const std::string& fileName = "../resources/Map/ListMap.json");
     void drawTilePalette();
     void drawToolbar();
     void updateTilePallete();

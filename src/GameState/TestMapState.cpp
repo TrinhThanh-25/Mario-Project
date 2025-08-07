@@ -11,7 +11,7 @@
 #include "raygui.h"
 
 TestMapState::TestMapState(World* world, std::string mapFileName)
-    : GameState(world, GameStateType::TEST_MAP), 
+    : GameState(world, GameStateType::TEST_MAP),
       map(world->getMap()), 
       camera(world->getCamera()), 
       characters(world->getCharacters()),
@@ -42,7 +42,7 @@ TestMapState::TestMapState(World* world, std::string mapFileName, int width, int
     world->setGamePlay(GamePlay::PLAYCUSTOMMAP);
     characters.push_back(character);
     map->setMap(width, height, mapGrid);
-    map->getMapFileName() = mapFileName;
+    map->setMapFileName(mapFileName);
     camera->target.x = characters[0]->getX() + characters[0]->getWidth() / 2.0f;
     camera->target.y = characters[0]->getY() + characters[0]->getHeight() / 2.0f;
 }
@@ -142,10 +142,22 @@ void TestMapState::update() {
                 for (auto& character : characters) {
                     character->collisionEnemy(e);
                 }
+                for (auto& be : backEnemy) {
+                    be->collisionEnemy(e);
+                }
+                for (auto& fe : frontEnemy) {
+                    fe->collisionEnemy(e);
+                }
             }
             for (auto& e : frontEnemy) {
                 for (auto& character : characters) {
                     character->collisionEnemy(e);
+                }
+                for (auto& be : backEnemy) {
+                    be->collisionEnemy(e);
+                }
+                for (auto& fe : frontEnemy) {
+                    fe->collisionEnemy(e);
                 }
             }
             
@@ -234,8 +246,8 @@ void TestMapState::draw() {
     }
 
     if(GuiButton({ guiPanelRect.x + compMargin, guiPanelRect.y + 340, 190, 35 }, "Return") || IsKeyPressed(KEY_ESCAPE)) {
-        CustomMapState* customMapState = new CustomMapState(world, map->getMapFileName());
-        customMapState->setMap(map->getWidth() / 32, map->getHeight() / 32, map->getMapGrid());
+        CustomMapState* customMapState = new CustomMapState(world, map->getMapFileName(), map->getWidth() / 32, map->getHeight() / 32, map->getMapGrid());
+        customMapState->setIsSaved(isSaved);
         world->setGameState(customMapState);
         return;
     }
@@ -246,4 +258,8 @@ void TestMapState::draw() {
     characters[0]->setInvulnerableMode(immortal);
     map->setNetMode(net);
     characters[0]->drawGameHud();
+}
+
+void TestMapState::setIsSaved(bool saved) {
+    isSaved = saved;
 }

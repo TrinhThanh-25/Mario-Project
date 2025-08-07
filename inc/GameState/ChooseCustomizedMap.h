@@ -5,6 +5,7 @@
 #include "GameState/GameStateType.h"
 #include "raylib.h"
 #include <vector>
+#include <unordered_set>
 
 class MyButton
 {
@@ -48,7 +49,8 @@ class ChooseCustomizedMapState : public GameState
 {
 private:
     int numberOfFile;
-    std::vector<std::string> fileName;
+    std::vector<std::string> listFileName;
+    std::unordered_set<std::string> mapNameSet; // For fast O(1) lookup
     std::vector<MyButton> mapButtons;
     std::vector<MyButton> ESCMenuButtons;
     std::vector<MyButton> OptionButtons;
@@ -68,8 +70,8 @@ public:
     void draw() override;
 
     void setMap(bool Up);
-    void loadFromJson(std::string fileName); // Placeholder for loading state from JSON
-    void save(std::string fileName);
+    void load(std::string fileName = "../resources/Map/ListMap.json");
+    void save(std::string fileName = "../resources/Map/ListMap.json");
 };
 
 

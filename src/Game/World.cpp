@@ -15,6 +15,7 @@
 #include "Common/ResourceManager.h"
 #include "Character/CharacterFactory.h"
 #include "GameState/TestMapState.h"
+#include "GameState/ChooseCustomizedMap.h"
 #include "Game/GameMode.h"
 #include "Game/GamePlay.h"
 #include <unordered_map>
@@ -42,6 +43,7 @@ World::World(int width, int height, const std::string& title, int FPS)
     gamePlay(GamePlay::PLAYDEVELOPEDMAP) {
         map.setCharacters(characters);
         modeWorld = ModeWorld::MULTIPLAYER;
+        gamePlay = GamePlay::PLAYCUSTOMMAP;
         gameState = new TitleScreenState(this);
 }
 
@@ -234,7 +236,11 @@ void World::resetGame() {
     gameHud.reset();
     pausedForTransition = false;
     pausedUpdateCharacters = false;
-    setGameState(new TitleScreenState(this));
+    if(gamePlay == GamePlay::PLAYDEVELOPEDMAP) {
+        gameState = new TitleScreenState(this);
+    } else {
+        gameState = new ChooseCustomizedMapState(this);
+    }
 }
 
 void World::nextMap() {

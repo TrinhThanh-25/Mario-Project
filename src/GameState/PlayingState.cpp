@@ -203,10 +203,22 @@ void PlayingState::update() {
                 for (auto& character : characters) {
                     character->collisionEnemy(e);
                 }
+                for (auto& be : backEnemy) {
+                    be->collisionEnemy(e);
+                }
+                for (auto& fe : frontEnemy) {
+                    fe->collisionEnemy(e);
+                }
             }
             for (auto& e : frontEnemy) {
                 for (auto& character : characters) {
                     character->collisionEnemy(e);
+                }
+                for (auto& be : backEnemy) {
+                    be->collisionEnemy(e);
+                }
+                for (auto& fe : frontEnemy) {
+                    fe->collisionEnemy(e);
                 }
             }
             
