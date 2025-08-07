@@ -173,6 +173,7 @@ void FlyingGoomba::activeWhenMarioApproach(Character& character){
 }
 
 void FlyingGoomba::collisionTile(Tile* tile) {
+    if (!isAlive() || !isSolidTile(tile)) return;
     CollisionType col = checkCollision(tile);
 
     Enemy::collisionTile(tile);

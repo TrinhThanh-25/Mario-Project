@@ -189,6 +189,7 @@ void RedKoopaTroopa::followTheLeader(Sprite* leader) {
 }
 
 void RedKoopaTroopa::collisionTile(Tile* tile) {
+    if (!isAlive() || !isSolidTile(tile)) return;
     CollisionType col = checkCollision(tile);
     Enemy::collisionTile(tile);
 

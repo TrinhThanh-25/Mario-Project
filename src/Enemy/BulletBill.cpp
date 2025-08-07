@@ -98,6 +98,7 @@ void BulletBill::activeWhenMarioApproach(Character& character){
 }
 
 void BulletBill::collisionTile(Tile* tile) {
+    if (!isAlive() || !isSolidTile(tile)) return;
     CollisionType col = checkCollision(tile);
 
     // Gọi xử lý gốc để vẫn giữ va chạm đất/trần

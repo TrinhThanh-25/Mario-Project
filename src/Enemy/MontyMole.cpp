@@ -77,6 +77,7 @@ void MontyMole::update(const std::vector<Character*>& characterList) {
 
 
     if (state == SpriteState::ACTIVE && !hasEmerge) {
+        velocity.y = 0;
         emergeTimer += delta;
         if (emergeTimer >= emergeDelay) {
             hasEmerge = true;
@@ -148,6 +149,7 @@ void MontyMole::collisionSound(){
 }
 
 void MontyMole::collisionTile(Tile* tile) {
+    if (!isAlive() || !isSolidTile(tile)) return;
     CollisionType col = checkCollision(tile);
 
     Enemy::collisionTile(tile);
