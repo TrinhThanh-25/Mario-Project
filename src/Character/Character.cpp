@@ -551,7 +551,7 @@ void Character::collisionTile(Tile* tile) {
 }
 
 void Character::collisionBlock(Block* block) {
-    if(state == SpriteState::DYING || state == SpriteState::VICTORY) return;
+    if(state == SpriteState::DYING || state == SpriteState::VICTORY || block->getState() == SpriteState::NO_COLLIDABLE) return;
     switch(checkCollision(block)) {
         case CollisionType::NORTH:
             if(block->getState() == SpriteState::SOLID_ABOVE || (block->getState() == SpriteState::INVISIBLE && velocity.y >= 0)) {

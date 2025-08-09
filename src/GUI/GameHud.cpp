@@ -6,6 +6,54 @@
 #include "GameState/GameStateFactory.h"
 #include "Item/ItemFactory.h"
 
+GameHudHistory::GameHudHistory()
+    : currentIndex(-1) {}
+
+void GameHudHistory::addMemento(const GameHudMemento& memento) {
+    history.clear();
+    history.push_back(memento);
+    currentIndex = 0;
+}
+
+GameHudMemento GameHudHistory::getMemento() const {
+    if (currentIndex >= 0 && currentIndex < history.size()) {
+        return history[currentIndex];
+    }
+    throw std::out_of_range("No memento available at current index.");
+}
+
+void GameHudHistory::clear() {
+    history.clear();
+    currentIndex = -1;
+}
+
+json GameHudHistory::saveToJson() const {
+    json j;
+    j["history"] = json::array();
+    for (const auto& memento : history) {
+        j["history"].push_back({
+            {"coins", memento.getCoins()},
+            {"yoshiCoins", memento.getYoshiCoins()},
+            {"points", memento.getPoints()}
+        });
+    }
+    return j;
+}
+
+void GameHudHistory::loadFromJson(const json& j) {
+    if (j.contains("history")) {
+        history.clear();
+        for (const auto& memento : j["history"]) {
+            history.push_back(GameHudMemento(
+                memento["coins"].get<int>(),
+                memento["yoshiCoins"].get<int>(),
+                memento["points"].get<int>()
+            ));
+        }
+        currentIndex = history.empty() ? -1 : 0;
+    }
+}
+
 GameHud::GameHud(World* world, int yoshiCoins, int coins, int points, float maxTime)
     : yoshiCoins(yoshiCoins), 
     coins(coins),
@@ -15,7 +63,7 @@ GameHud::GameHud(World* world, int yoshiCoins, int coins, int points, float maxT
     world(world),
     map(world->getMap()),
     characters(world->getCharacters()) {
-
+        history.addMemento(GameHudMemento(coins, yoshiCoins, points));
 }
 
 GameHud::~GameHud() {}
@@ -58,10 +106,23 @@ void GameHud::draw() const {
 }
 
 void GameHud::reset() {
-    yoshiCoins = 0;
+    coins = history.getMemento().getCoins();
+    yoshiCoins = history.getMemento().getYoshiCoins();
+    points = history.getMemento().getPoints();
+    ellapsedTime = 0.0f;
+}
+
+void GameHud::resetGame() {
     coins = 0;
+    yoshiCoins = 0;
     points = 0;
     ellapsedTime = 0.0f;
+    history.clear();
+    history.addMemento(GameHudMemento(coins, yoshiCoins, points));
+}
+
+void GameHud::addHistory() {
+    history.addMemento(GameHudMemento(coins, yoshiCoins, points));
 }
 
 void GameHud::setCoins(int coins) {
@@ -135,6 +196,7 @@ void GameHud::removePoints(int points) {
 
 json GameHud::saveToJson() const {
     json j;
+    j["history"] = history.saveToJson();
     j["coins"] = coins;
     j["yoshiCoins"] = yoshiCoins;
     j["points"] = points;
@@ -144,6 +206,9 @@ json GameHud::saveToJson() const {
 }
 
 void GameHud::loadFromJson(const json& j) {
+    if (j.contains("history")) {
+        history.loadFromJson(j["history"]);
+    }
     coins = j["coins"].get<int>();
     yoshiCoins = j["yoshiCoins"].get<int>();
     points = j["points"].get<int>();

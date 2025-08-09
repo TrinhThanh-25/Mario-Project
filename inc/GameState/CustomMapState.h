@@ -55,7 +55,7 @@ private:
     int selectedTileId;
     std::vector<int> mapGrid;
     std::vector<std::string> tileIds;
-    Camera2D camera;
+    Camera2D* camera;
     bool isDragging;
     Vector2 lastMousePos;
     bool isDrawing;

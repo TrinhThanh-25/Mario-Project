@@ -15,10 +15,15 @@ class KeyManager {
         ~KeyManager() = default;
 
         void initializeKeys();
-        void setKey(ModePlayer modePlayer, const std::string& keyName, int keyValue);
+        bool setKey(ModePlayer modePlayer, const std::string& keyName, int keyValue);
         std::unordered_map<std::string, int>& getKeys(ModePlayer modePlayer);
+        bool isKeyConflicted(ModePlayer modePlayer, const std::string& keyName, int keyValue) const;
         ModePlayer getModePlayer(ModePlayer modePlayer) const;
         void setKeyManagerForCharacter(Character* character, ModePlayer modePlayer);
+
+        void loadCurrentKeyManager(std::string fileName = "../resources/SaveGame/CurrentKeyManager.json");
+        void saveCurrentKeyManager(std::string fileName = "../resources/SaveGame/CurrentKeyManager.json");
+        void setDefaultKeyManager(std::string fileName = "../resources/SaveGame/DefaultKeyManager.json");
 };
 
 #endif

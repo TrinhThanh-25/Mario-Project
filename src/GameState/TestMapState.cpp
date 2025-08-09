@@ -25,6 +25,8 @@ TestMapState::TestMapState(World* world)
     world->setGameMode(GameMode::TESTER);
     world->setGamePlay(GamePlay::PLAYCUSTOMMAP);
     characters.push_back(character);
+    offsetX = camera->target.x - characters[0]->getX() - characters[0]->getWidth() / 2.0f;
+    offsetY = camera->target.y - characters[0]->getY() - characters[0]->getHeight() / 2.0f;
 }
 
 TestMapState::TestMapState(World* world, std::string mapFileName)
@@ -35,16 +37,12 @@ TestMapState::TestMapState(World* world, std::string mapFileName)
 void TestMapState::setMapFileName(const std::string& mapFileName) {
     this->mapFileName = mapFileName;
     map->loadMap(mapFileName);
-    camera->target.x = characters[0]->getX() + characters[0]->getWidth() / 2.0f;
-    camera->target.y = characters[0]->getY() + characters[0]->getHeight() / 2.0f;
 }
 
 TestMapState::TestMapState(World* world, std::string mapFileName, int width, int height, const std::vector<int>& mapGrid)
     : TestMapState(world) {
     map->setMap(width, height, mapGrid);
     map->setMapFileName(mapFileName);
-    camera->target.x = characters[0]->getX() + characters[0]->getWidth() / 2.0f;
-    camera->target.y = characters[0]->getY() + characters[0]->getHeight() / 2.0f;
 }
 
 TestMapState::~TestMapState() {
@@ -269,6 +267,11 @@ void TestMapState::setIsSaved(bool saved) {
 
 void TestMapState::setMap(int width, int height, const std::vector<int>& mapGrid) {
     map->setMap(width, height, mapGrid);
-    camera->target.x = characters[0]->getX() + characters[0]->getWidth() / 2.0f;
-    camera->target.y = characters[0]->getY() + characters[0]->getHeight() / 2.0f;
+}
+
+void TestMapState::setCameraPosition(float x, float y) {
+    camera->target.x = x;
+    camera->target.y = y;
+    offsetX = camera->target.x - characters[0]->getX() - characters[0]->getWidth() / 2.0f;
+    offsetY = camera->target.y - characters[0]->getY() - characters[0]->getHeight() / 2.0f;
 }

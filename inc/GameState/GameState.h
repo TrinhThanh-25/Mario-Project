@@ -50,6 +50,7 @@ class GameState {
         virtual void createDefaultMapFile(const std::string& mapName);
 
         virtual void saveHistory();
+        virtual void setCameraPosition(float x, float y);
 };
 
 #endif

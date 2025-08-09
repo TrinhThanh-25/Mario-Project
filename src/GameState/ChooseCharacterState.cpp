@@ -87,7 +87,7 @@ void ChooseCharacterState::update() {
         else if(world->getGamePlay() == GamePlay::PLAYCUSTOMMAP) {
             world->getMap()->loadMap(world->getMap()->getMapFileName());
         }
-        world->getGameHud()->reset();
+        world->getGameHud()->resetGame();
         world->setModeWorld(modeWorld);
         world->setGameState(GameStateFactory::createGameState(world, GameStateType::PLAYING));
         return;

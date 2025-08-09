@@ -47,6 +47,7 @@ World::World(int width, int height, const std::string& title, int FPS)
         modeWorld = ModeWorld::MULTIPLAYER;
         gamePlay = GamePlay::PLAYCUSTOMMAP;
         gameState = new TitleScreenState(this);
+        keyManager.loadCurrentKeyManager();
 }
 
 World::~World() {
@@ -256,7 +257,7 @@ void World::resetGame() {
     characters.clear();
     map.first();
     map.reset();
-    gameHud.reset();
+    gameHud.resetGame();
     pausedForTransition = false;
     pausedUpdateCharacters = false;
     if(gamePlay == GamePlay::PLAYDEVELOPEDMAP) {
@@ -271,6 +272,7 @@ void World::nextMap() {
         for (Character* character : characters) {
             character->reset(false);
         }
+        gameHud.addHistory();
         setGameState(new PlayingState(this));
     } else {
         setGameState(new FinishedState(this));
@@ -333,10 +335,13 @@ json World::saveToJson() const {
     j["music"] = json::array();
     std::unordered_map<std::string, Music>& music = ResourceManager::getMusic();
     for (const auto& [name, musicStream] : music) {
+        bool isPlaying = IsMusicStreamPlaying(musicStream);
+        float timePlayed = isPlaying ? GetMusicTimePlayed(musicStream) : 0.0f;
+        
         j["music"].push_back({
             {"name", name},
-            {"isPlaying", IsMusicStreamPlaying(musicStream)},
-            {"timePlayed", GetMusicTimePlayed(musicStream)}
+            {"isPlaying", isPlaying},
+            {"timePlayed", timePlayed}
         });
     }
     j["gameMode"] = static_cast<int>(gameMode);
@@ -373,14 +378,18 @@ void World::loadFromJson(const json& j) {
     pausedUpdateCharacters = j["pausedUpdateCharacters"];
 
     std::unordered_map<std::string, Music>& music = ResourceManager::getMusic();
+    for (auto& [name, musicStream] : music) {
+        if (IsMusicStreamPlaying(musicStream)) {
+            StopMusicStream(musicStream);
+        }
+    }
     for (int i = 0; i < j["music"].size(); ++i) {
         const auto& musicJson = j["music"][i];
         if (music.find(musicJson["name"]) != music.end()) {
             if (musicJson["isPlaying"]) {
-                SeekMusicStream(music[musicJson["name"]], musicJson["timePlayed"]);
                 PlayMusicStream(music[musicJson["name"]]);
-            } else {
-                StopMusicStream(music[musicJson["name"]]);
+                UpdateMusicStream(music[musicJson["name"]]);
+                SeekMusicStream(music[musicJson["name"]], musicJson["timePlayed"]);
             }
         }
     }

@@ -18,6 +18,7 @@ class Slider {
         Slider(std::string sliderName, Vector2 position, float width, float minValue, float maxValue, float initialValue, int fontSize = 20);
 
         void update();
+        void update(Camera2D* camera);
         void draw();
 
         float getValue() const;

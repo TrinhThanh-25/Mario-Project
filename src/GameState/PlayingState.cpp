@@ -34,13 +34,11 @@ PlayingState::~PlayingState() {
 }
 
 void PlayingState::update() {
-    // Bỏ qua frame đầu tiên để tránh physics explosion do GetFrameTime() lớn
     if (skipFirstFrame) {
-        GetFrameTime(); // Reset raylib timer
+        GetFrameTime();
         skipFirstFrame = false;
         return;
     }
-    
     if(IsKeyPressed(KEY_ESCAPE)) {
         if(world->getGamePlay() == GamePlay::PLAYDEVELOPEDMAP) {
             SaveGame::saveGame(*world);

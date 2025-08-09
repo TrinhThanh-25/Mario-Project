@@ -10,6 +10,10 @@ std::unordered_map<std::string, int>& GroupKey::getKeys() {
     return keys;
 }
 
+const std::unordered_map<std::string, int>& GroupKey::getKeys() const {
+    return keys;
+}
+
 void GroupKey::setKey(ModePlayer modePlayer) {
     if (modePlayer == ModePlayer::ONEPLAYER) {
         keys = {

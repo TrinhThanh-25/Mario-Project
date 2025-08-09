@@ -83,12 +83,9 @@ CustomMapState::CustomMapState(World* world)
       isDragging(false), isDrawing(false),
       lastMousePos({0, 0}), lastDrawnTile({-1, -1}),
       editingMapName(false), editingWidth(false), editingHeight(false),
-      isClosed(false), isSaved(true), showUnsavedWarning(false) {
+      isClosed(false), isSaved(true), showUnsavedWarning(false),
+      camera(world->getCamera()) {
     loadTileTextures();
-    camera.offset = {(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f};
-    camera.target = {(float)(MAP_WIDTH * TILE_SIZE) / 2.0f, (float)(MAP_HEIGHT * TILE_SIZE) / 2.0f};
-    camera.rotation = 0.0f;
-    camera.zoom = 1.0f;
     widthBuffer = std::to_string(MAP_WIDTH);
     heightBuffer = std::to_string(MAP_HEIGHT);
 }
@@ -112,13 +109,10 @@ CustomMapState::CustomMapState(World* world, const std::string& mapFileName, int
       isDragging(false), isDrawing(false),
       lastMousePos({0, 0}), lastDrawnTile({-1, -1}),
       editingMapName(false), editingWidth(false), editingHeight(false),
-        isClosed(false), isSaved(true), showUnsavedWarning(false) {
+        isClosed(false), isSaved(true), showUnsavedWarning(false),
+        camera(world->getCamera()) {
     loadTileTextures();
     this->mapGrid = mapGrid;
-    camera.offset = {(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f};
-    camera.target = {(float)(MAP_WIDTH * TILE_SIZE) / 2.0f, (float)(MAP_HEIGHT * TILE_SIZE) / 2.0f};
-    camera.rotation = 0.0f;
-    camera.zoom = 1.0f;
     mapNameBuffer = mapFileName;
     widthBuffer = std::to_string(MAP_WIDTH);
     heightBuffer = std::to_string(MAP_HEIGHT);
@@ -221,23 +215,23 @@ void CustomMapState::updateMapView() {
     int paletteWidth = isPaletteVisible ? PALETTE_WIDTH : 0;
     Rectangle mapViewArea = {0, (float)TOOLBAR_HEIGHT, (float)(GetScreenWidth() - paletteWidth), (float)(GetScreenHeight() - TOOLBAR_HEIGHT)};
     
-    camera.offset = {mapViewArea.width / 2.0f, mapViewArea.height / 2.0f + TOOLBAR_HEIGHT};
+    camera->offset = {mapViewArea.width / 2.0f, mapViewArea.height / 2.0f + TOOLBAR_HEIGHT};
     
     if (CheckCollisionPointRec(mouse, mapViewArea)) {
         if ((IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) && GetMouseWheelMove() != 0) {
             float wheelMove = GetMouseWheelMove();
-            Vector2 mouseWorldPos = GetScreenToWorld2D(mouse, camera);
-            camera.zoom = std::clamp(camera.zoom + wheelMove * 0.1f, 0.1f, 5.0f);
-            Vector2 mouseWorldPosAfter = GetScreenToWorld2D(mouse, camera);
-            camera.target.x += mouseWorldPos.x - mouseWorldPosAfter.x;
-            camera.target.y += mouseWorldPos.y - mouseWorldPosAfter.y;
+            Vector2 mouseWorldPos = GetScreenToWorld2D(mouse, *camera);
+            camera->zoom = std::clamp(camera->zoom + wheelMove * 0.1f, 0.1f, 5.0f);
+            Vector2 mouseWorldPosAfter = GetScreenToWorld2D(mouse, *camera);
+            camera->target.x += mouseWorldPos.x - mouseWorldPosAfter.x;
+            camera->target.y += mouseWorldPos.y - mouseWorldPosAfter.y;
         }
         float wheelMove = GetMouseWheelMove();
         if (wheelMove != 0.0f && !IsKeyDown(KEY_LEFT_CONTROL) && !IsKeyDown(KEY_RIGHT_CONTROL)) {
             if (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)) {
-                camera.target.x += wheelMove * 50.0f / camera.zoom;
+                camera->target.x += wheelMove * 50.0f / camera->zoom;
             } else {
-                camera.target.y -= wheelMove * 50.0f / camera.zoom;
+                camera->target.y -= wheelMove * 50.0f / camera->zoom;
             }
         }
         if ((IsKeyDown(KEY_SPACE) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) && !isDragging) {
@@ -248,8 +242,8 @@ void CustomMapState::updateMapView() {
         if (isDragging) {
             if ((IsKeyDown(KEY_SPACE) && IsMouseButtonDown(MOUSE_BUTTON_LEFT))) {
                 Vector2 delta = {mouse.x - lastMousePos.x, mouse.y - lastMousePos.y};
-                camera.target.x -= delta.x / camera.zoom;
-                camera.target.y -= delta.y / camera.zoom;
+                camera->target.x -= delta.x / camera->zoom;
+                camera->target.y -= delta.y / camera->zoom;
                 lastMousePos = mouse;
             } else {
                 isDragging = false;
@@ -263,7 +257,7 @@ void CustomMapState::updateMapView() {
                 isDrawing = true;
                 
                 // Place first tile
-                Vector2 worldPos = GetScreenToWorld2D(mouse, camera);
+                Vector2 worldPos = GetScreenToWorld2D(mouse, *camera);
                 int tileX = (int)(worldPos.x / TILE_SIZE);
                 int tileY = (int)(worldPos.y / TILE_SIZE);
                 
@@ -276,7 +270,7 @@ void CustomMapState::updateMapView() {
             
             // Continue drawing while mouse is held down
             if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && isDrawing && !isDragging) {
-                Vector2 worldPos = GetScreenToWorld2D(mouse, camera);
+                Vector2 worldPos = GetScreenToWorld2D(mouse, *camera);
                 int tileX = (int)(worldPos.x / TILE_SIZE);
                 int tileY = (int)(worldPos.y / TILE_SIZE);
                 
@@ -316,7 +310,7 @@ void CustomMapState::drawMap() {
     int paletteWidth = isPaletteVisible ? PALETTE_WIDTH : 0;
     Rectangle mapViewArea = {0, (float)TOOLBAR_HEIGHT, (float)(GetScreenWidth() - paletteWidth), (float)(GetScreenHeight() - TOOLBAR_HEIGHT)};
     DrawRectangleRec(mapViewArea, {200, 200, 200, 255});
-    BeginMode2D(camera);
+    BeginMode2D(*camera);
     float mapWorldWidth = MAP_WIDTH * TILE_SIZE;
     float mapWorldHeight = MAP_HEIGHT * TILE_SIZE;
     Rectangle mapRect = {0, 0, mapWorldWidth, mapWorldHeight};
@@ -348,7 +342,7 @@ void CustomMapState::drawMap() {
     Vector2 mouse = GetMousePosition();
     if (CheckCollisionPointRec(mouse, mapViewArea) && (selectedTileId > 0 || isEraseMode) && 
         !IsKeyDown(KEY_SPACE) && !isDragging) {
-        Vector2 worldPos = GetScreenToWorld2D(mouse, camera);
+        Vector2 worldPos = GetScreenToWorld2D(mouse, *camera);
         int tileX = (int)(worldPos.x / TILE_SIZE);
         int tileY = (int)(worldPos.y / TILE_SIZE);
         
@@ -369,7 +363,7 @@ void CustomMapState::drawMap() {
     }
     EndMode2D();
     
-    std::string zoomText = "Zoom: " + std::to_string(static_cast<int>(camera.zoom * 100)) + "%";
+    std::string zoomText = "Zoom: " + std::to_string(static_cast<int>(camera->zoom * 100)) + "%";
     DrawText(zoomText.c_str(), 10, TOOLBAR_HEIGHT + 10, 16, BLACK);
     DrawText("Ctrl+Wheel: Zoom", 10, TOOLBAR_HEIGHT + 30, 12, DARKGRAY);
     DrawText("Space+Drag: Pan", 10, TOOLBAR_HEIGHT + 50, 12, DARKGRAY);
@@ -513,6 +507,7 @@ void CustomMapState::drawToolbar() {
         testState->setMapFileName(mapFileName);
         testState->setMap(MAP_WIDTH, MAP_HEIGHT, mapGrid);
         testState->setIsSaved(isSaved);
+        testState->setCameraPosition(camera->target.x, camera->target.y);
         world->setGameState(testState);
         return;
     }
@@ -671,7 +666,6 @@ void CustomMapState::loadMap() {
     
     mapGrid = j["layers"][0]["data"].get<std::vector<int>>();
     
-    camera.target = {(MAP_WIDTH * TILE_SIZE) / 2.0f, (MAP_HEIGHT * TILE_SIZE) / 2.0f};
     isSaved = true;
 }
 
@@ -691,7 +685,7 @@ void CustomMapState::applyMapSize() {
     MAP_WIDTH = newWidth;
     MAP_HEIGHT = newHeight;
     mapGrid.assign(MAP_HEIGHT * MAP_WIDTH, 0);
-    camera.target = {MAP_WIDTH * TILE_SIZE * 0.5f, MAP_HEIGHT * TILE_SIZE * 0.5f};
+    camera->target = {MAP_WIDTH * TILE_SIZE * 0.5f, MAP_HEIGHT * TILE_SIZE * 0.5f};
         
     int paletteWidth = isPaletteVisible ? PALETTE_WIDTH : 0;
     float availableWidth = GetScreenWidth() - paletteWidth;
@@ -699,8 +693,8 @@ void CustomMapState::applyMapSize() {
         
     float zoomX = (availableWidth * 0.8f) / (MAP_WIDTH * TILE_SIZE);
     float zoomY = (availableHeight * 0.8f) / (MAP_HEIGHT * TILE_SIZE);
-    camera.zoom = std::clamp(std::min(zoomX, zoomY), 0.1f, 5.0f);
-    camera.offset = {availableWidth * 0.5f, (availableHeight + TOOLBAR_HEIGHT) * 0.5f};  
+    camera->zoom = std::clamp(std::min(zoomX, zoomY), 0.1f, 5.0f);
+    camera->offset = {availableWidth * 0.5f, (availableHeight + TOOLBAR_HEIGHT) * 0.5f};  
     isSaved = false;
 }
 
@@ -710,9 +704,6 @@ void CustomMapState::setMap(int width, int height, const std::vector<int>& mapGr
     widthBuffer = std::to_string(MAP_WIDTH);
     heightBuffer = std::to_string(MAP_HEIGHT);
     this->mapGrid = mapGrid;
-    camera.target = {MAP_WIDTH * TILE_SIZE * 0.5f, MAP_HEIGHT * TILE_SIZE * 0.5f};
-    camera.offset = {(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f};
-    camera.zoom = 1.0f;
 }
 
 void CustomMapState::setIsSaved(bool saved) {
@@ -770,22 +761,18 @@ void CustomMapState::saveHistory() {
 
 void CustomMapState::undo() {
     if (history.canUndo()) {
-        Camera2D newCamera = camera;
         history.undo();
         CustomMapMemento memento = history.getMemento();
         setMapFileName(memento.getMapFileName());
         setMap(memento.getWidth(), memento.getHeight(), memento.getMapGrid());
-        camera = newCamera;
     }
 }
 
 void CustomMapState::redo() {
     if (history.canRedo()) {
-        Camera2D newCamera = camera;
         history.redo();
         CustomMapMemento memento = history.getMemento();
         setMapFileName(memento.getMapFileName());
         setMap(memento.getWidth(), memento.getHeight(), memento.getMapGrid());
-        camera = newCamera;
     }
 }

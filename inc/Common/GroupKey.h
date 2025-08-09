@@ -15,6 +15,7 @@ class GroupKey {
         ~GroupKey();
 
         std::unordered_map<std::string, int>& getKeys();
+        const std::unordered_map<std::string, int>& getKeys() const;
         void setKey(ModePlayer modePlayer);
 };
 

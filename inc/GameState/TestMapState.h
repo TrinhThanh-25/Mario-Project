@@ -58,6 +58,7 @@ class TestMapState : public GameState {
         void draw() override;
         void setMap(int width, int height, const std::vector<int>& mapGrid);
         void setIsSaved(bool saved);
+        void setCameraPosition(float x, float y);
 };
 
 #endif

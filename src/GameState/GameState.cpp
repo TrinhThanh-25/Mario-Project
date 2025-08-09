@@ -89,3 +89,7 @@ void GameState::createDefaultMapFile(const std::string& mapName) {
 void GameState::saveHistory() {
     // Default empty implementation
 }
+
+void GameState::setCameraPosition(float x, float y) {
+    // Default empty implementation
+}
