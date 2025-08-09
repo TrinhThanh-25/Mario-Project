@@ -19,6 +19,7 @@ class Button{
         void setText(const char* text, int fontSize);
 
         void update();
+        void update(Camera2D* camera);
         void draw();
 
         Vector2 getSize();
@@ -27,6 +28,9 @@ class Button{
 
         bool isPressed();
         bool isHovered();
+        // Overloaded versions for camera transformation
+        bool isPressed(Camera2D* camera);
+        bool isHovered(Camera2D* camera);
         bool isSelected();
         void Selected();
         void deSelected();

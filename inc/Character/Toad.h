@@ -5,7 +5,7 @@
 
 class Toad : public Character {
     public:
-        Toad(ModePlayer mode, Vector2 pos, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed, int initialLives);
+        Toad(ModePlayer mode, Vector2 pos, Vector2 vel, Color color, float speedX, float maxSpeedX, float acceleration, float friction, float floatTime, float jumpSpeed, int initialLives);
         ~Toad() override;
 
         void updateCollisionBoxes() override;

@@ -4,6 +4,7 @@
 #include "GameState/PlayingState.h"
 #include "GameState/CustomMapState.h"
 #include "GameState/ChooseCharacterState.h"
+#include "GameState/GameStateFactory.h"
 #include "SaveGame.h"
 #include "json.hpp"
 #include <filesystem>
@@ -13,8 +14,10 @@
 
 using json = nlohmann::json;
 
-void MyButton::draw()
-{
+MyButton::MyButton(Rectangle rectangle, std::string text, int fontSize, Color color, bool isHandled, bool isDrawn)
+    : rectangle(rectangle), text(text), fontSize(fontSize), color(color), isHandled(isHandled), isDrawn(isDrawn), isHovered(false), wasHovered(false) {}
+
+void MyButton::draw() {
     if (!isDrawn) return;
         DrawTexture(ResourceManager::getTexture()[textureName+"0"], rectangle.x, rectangle.y, color);
     if (isHovered && isHandled)
@@ -24,18 +27,64 @@ void MyButton::draw()
     ResourceManager::drawBigString(this->text, this->rectangle.x + (this->rectangle.width - ResourceManager::getDrawBigStringWidth(this->text, fontSize)) / 2, this->rectangle.y + (this->rectangle.height - ResourceManager::getDrawBigStringHeight(fontSize)) / 2, fontSize);
 }
 
-void MyButton::update()
-{
-    if (isHandled)
-    {
+void MyButton::update() {
+    if (isHandled) {
         Vector2 mousePos = GetMousePosition();
+        wasHovered = isHovered;
         isHovered = CheckCollisionPointRec(mousePos, rectangle);
+        if (isHovered && !wasHovered) {
+            PlaySound(ResourceManager::getSound()["HoverButton"]);
+        }
     }
+}
+
+void MyButton::toggleHandle() {
+    isHandled = !isHandled;
+}
+
+bool MyButton::isHandle() const {
+    return isHandled;
+}
+
+bool MyButton::isHover() const {
+    return isHovered;
+}
+
+bool MyButton::isDraw() const {
+    return isDrawn;
+}
+
+void MyButton::toggleDraw() {
+    isDrawn = !isDrawn;
+}
+
+void MyButton::setTextureName(std::string name) {
+    textureName = name;
+}
+
+void MyButton::setColor(Color new_color){
+    color = new_color;
+}
+
+void MyButton::setText(const std::string &new_text){
+    text = new_text;
 }
 
 void MyButton::setPos(Vector2 newPos) {
     rectangle.x = newPos.x;
     rectangle.y = newPos.y;
+}
+
+std::string MyButton::getText() {
+    return text;
+}
+
+bool MyButton::isClicked() {
+    if (isHandled && isHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+        PlaySound(ResourceManager::getSound()["ClickButton"]);
+        return true;
+    }
+    return false;
 }
 
 ChooseCustomizedMapState::ChooseCustomizedMapState(World *world) : GameState(world, GameStateType::CHOOSE_CUSTOMIZED_MAP)
@@ -49,14 +98,6 @@ ChooseCustomizedMapState::ChooseCustomizedMapState(World *world) : GameState(wor
     {
         mapButtons[i].setTextureName("CMButton");
     }
-
-    ESCMenuButtons.emplace_back(Rectangle{577, 355, 442, 94}, "Resume", 20, WHITE, true, true);
-    ESCMenuButtons.emplace_back(Rectangle{577, 504, 442, 94}, "Return", 20, WHITE, true, true);
-    for (int i = 0; i < ESCMenuButtons.size(); i++)
-    {
-        ESCMenuButtons[i].setTextureName("ESCMenuButton");
-    }
-
     OptionButtons.emplace_back(Rectangle{577, 250, 442, 94}, "1 Player Game", 20, WHITE, true, true);
     OptionButtons.emplace_back(Rectangle{577, 360, 442, 94}, "2 Player Game", 20, WHITE, true, true);
     OptionButtons.emplace_back(Rectangle{577, 470, 442, 94}, "Edit", 20, WHITE, true, true);
@@ -65,7 +106,6 @@ ChooseCustomizedMapState::ChooseCustomizedMapState(World *world) : GameState(wor
     {
         OptionButtons[i].setTextureName("ESCMenuButton");
     }
-    ESCMenuActive = false;
     OptionActive = false;
     currentIndex = 0;
     currentIndex = -1;
@@ -75,115 +115,100 @@ ChooseCustomizedMapState::ChooseCustomizedMapState(World *world) : GameState(wor
 ChooseCustomizedMapState::~ChooseCustomizedMapState()
 {
     mapButtons.clear();
-    ESCMenuButtons.clear();
     OptionButtons.clear();
     save();
 }
 
 void ChooseCustomizedMapState::update()
 {
-    if (ESCMenuActive)
-    {
-        if (IsKeyPressed(KEY_ESCAPE))
-        {
-            ESCMenuActive = false;
-            return;
-        }
-        for (auto &button : ESCMenuButtons)
-        {
-            button.update();
-        }
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-        {
-            if (ESCMenuButtons[0].isHover())
-            {
-                ESCMenuActive = false;
-                return;
-            }
-            else if (ESCMenuButtons[1].isHover())
-            {
-                world->setGameState(new TitleScreenState(world));
-            }
-        }
-    }
-    else if (OptionActive)
-    {
-        if (IsKeyPressed(KEY_ESCAPE))
-        {
+    if (OptionActive) {
+        if (IsKeyPressed(KEY_ESCAPE)) {
             OptionActive = false;
             return;
         }
+        
         if (mapButtons[MapChosen].getText() == "EMPTY SLOT") {
             OptionButtons[1].update();
         } else {
-            for (auto &button : OptionButtons)
-            {
+            for (auto &button : OptionButtons) {
                 button.update();
             }
         }
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            if (OptionButtons[0].isHover()) {
-                ChooseCharacterState* newState = new ChooseCharacterState(world, mapButtons[MapChosen].getText());
-                newState->setModeWorld(ModeWorld::SINGLEPLAYER);
-                world->setGameState(newState);
-                return;
-            } else if (OptionButtons[1].isHover()) {   
-                ChooseCharacterState* newState = new ChooseCharacterState(world, mapButtons[MapChosen].getText());
-                newState->setModeWorld(ModeWorld::MULTIPLAYER);
-                world->setGameState(newState);
-                return;
-            } else if (OptionButtons[2].isHover()) {
-                CustomMapState* newState = new CustomMapState(world, mapButtons[MapChosen].getText());
-                world->setGameState(newState);
-                return;
-            } else if (OptionButtons[3].isHover()) {
-                std::string mapToDelete = mapButtons[MapChosen].getText();
-                std::filesystem::remove("../resources/Map/" + mapToDelete + ".json");
-                numberOfFile--;
-                listFileName.erase(listFileName.begin()+currentIndex+MapChosen);
-                mapNameSet.erase(mapToDelete);
-                if (currentIndex + 4 > numberOfFile) {
-                    currentIndex = numberOfFile - 4;
-                } else currentIndex--;
-                setMap(true);
-                OptionActive = false;
+        
+        // Check for button clicks
+        if (OptionButtons[0].isClicked()) {
+            GameState* newState = GameStateFactory::createGameState(world, GameStateType::CHOOSE_CHARACTER);
+            newState->setMapFileName(mapButtons[MapChosen].getText());
+            newState->setModeWorld(ModeWorld::SINGLEPLAYER);
+            world->setGameState(newState);
+            return;
+        } else if (OptionButtons[1].isClicked()) {   
+            GameState* newState = GameStateFactory::createGameState(world, GameStateType::CHOOSE_CHARACTER);
+            newState->setMapFileName(mapButtons[MapChosen].getText());
+            newState->setModeWorld(ModeWorld::MULTIPLAYER);
+            world->setGameState(newState);
+            return;
+        } else if (OptionButtons[2].isClicked()) {
+            GameState* newState = GameStateFactory::createGameState(world, GameStateType::CUSTOM_MAP);
+            newState->setMapFileName(mapButtons[MapChosen].getText());
+            newState->saveHistory();
+            world->setGameState(newState);
+            return;
+        } else if (OptionButtons[3].isClicked()) {
+            std::string mapToDelete = mapButtons[MapChosen].getText();
+            std::filesystem::remove("../resources/Map/" + mapToDelete + ".json");
+            numberOfFile--;
+            listFileName.erase(listFileName.begin()+currentIndex+MapChosen);
+            mapNameSet.erase(mapToDelete);
+            if (currentIndex + 4 > numberOfFile) {
+                currentIndex = numberOfFile - 4;
             } else {
-                OptionActive = false;
-                return;
+                currentIndex--;
             }
-        }
-    } else {
-        if (IsKeyPressed(KEY_ESCAPE))
-        {
-            ESCMenuActive = true;
+            setMap(true);
+            OptionActive = false;
+        } else if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            OptionActive = false;
             return;
         }
-        for (auto& button:mapButtons) {
+    } else {
+        if (IsKeyPressed(KEY_ESCAPE)) {
+            world->setGameState(GameStateFactory::createGameState(world, GameStateType::TITLE_SCREEN));
+            return;
+        }
+        
+        for (auto& button : mapButtons) {
             button.update();
         }
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            for (int i=0;i<mapButtons.size();i++) {
-                if (mapButtons[i].isHover()) {
-                    MapChosen = i;
-                    if (mapButtons[MapChosen].getText() == "EMPTY SLOT") {
-                        int newMapIndex = 1;
-                        std::string newMapName;
-                        do {
-                            newMapName = "New Map " + std::to_string(newMapIndex);
-                            newMapIndex++;
-                        } while (mapNameSet.find(newMapName) != mapNameSet.end());
-                        
-                        numberOfFile++;
-                        listFileName.push_back(newMapName);
-                        mapNameSet.insert(newMapName);
-                        saveToJson();
-                        world->setGameState(new CustomMapState(world, newMapName));
-                        return;
-                    }
-                    OptionActive = true;
+        
+        // Check for map button clicks
+        for (int i = 0; i < mapButtons.size(); i++) {
+            if (mapButtons[i].isClicked()) {
+                MapChosen = i;
+                if (mapButtons[MapChosen].getText() == "EMPTY SLOT") {
+                    int newMapIndex = 1;
+                    std::string newMapName;
+                    do {
+                        newMapName = "New Map " + std::to_string(newMapIndex);
+                        newMapIndex++;
+                    } while (mapNameSet.find(newMapName) != mapNameSet.end());
+                    
+                    numberOfFile++;
+                    listFileName.push_back(newMapName);
+                    mapNameSet.insert(newMapName);
+                    save();
+                    createDefaultMapFile(newMapName);
+                    GameState* newState = GameStateFactory::createGameState(world, GameStateType::CUSTOM_MAP);
+                    newState->setMapFileName(newMapName);
+                    newState->saveHistory();
+                    world->setGameState(newState);
+                    return;
                 }
+                OptionActive = true;
+                break; // Exit loop after finding clicked button
             }
         }
+        
         float mouse = GetMouseWheelMove();
         MouseWhellAcum += mouse;
         if (MouseWhellAcum >= MouseWhellTime) {
@@ -196,23 +221,14 @@ void ChooseCustomizedMapState::update()
     }
 }
 
-void ChooseCustomizedMapState::draw()
-{
+void ChooseCustomizedMapState::draw() {
     ClearBackground(WHITE);
     DrawTexture(ResourceManager::getTexture()["CMPad"], 124, 9, WHITE);
     for (auto &button : mapButtons)
     {
         button.draw();
     }
-    if (ESCMenuActive)
-    {
-        DrawRectangle(0, 0, 1600, 900, Fade({159, 139, 121, 255}, 0.5f));
-        DrawTexture(ResourceManager::getTexture()["ESCMenuPad"],444,170,WHITE);
-        for (auto &button : ESCMenuButtons)
-        {
-            button.draw();
-        }
-    } else if (OptionActive)
+    if (OptionActive)
     {
         DrawRectangle(0, 0, 1600, 900, Fade({159, 139, 121, 255}, 0.5f));
         DrawTexture(ResourceManager::getTexture()["ESCMenuPad"],444,170,WHITE);
@@ -300,4 +316,34 @@ void ChooseCustomizedMapState::setMap(bool Up)
         mapButtons[2].setText(listFileName[currentIndex+2]);
         mapButtons[3].setText(listFileName[currentIndex+3]);
     }
+}
+
+void ChooseCustomizedMapState::createDefaultMapFile(const std::string& mapName) {
+    std::ofstream newMapFile("../resources/Map/" + mapName + ".json");
+    if (!newMapFile) {
+        std::cerr << "Failed to create new map file: " << mapName << std::endl;
+        return;
+    }
+    newMapFile << "{\n";
+    newMapFile << "    \"width\": 35,\n";
+    newMapFile << "    \"height\": 20,\n";
+    newMapFile << "    \"layers\": [\n";
+    newMapFile << "        {\n";
+    newMapFile << "            \"data\": [\n";
+    for (int y = 0; y < 20; ++y) {
+        newMapFile << "                [";
+        for (int x = 0; x < 35; ++x) {
+            newMapFile << "0";
+            if (x < 34) newMapFile << ", ";
+        }
+        newMapFile << "]";
+        if (y < 19) newMapFile << ",";
+        newMapFile << "\n";
+    }
+    
+    newMapFile << "            ]\n";
+    newMapFile << "        }\n";
+    newMapFile << "    ]\n";
+    newMapFile << "}";
+    newMapFile.close();
 }

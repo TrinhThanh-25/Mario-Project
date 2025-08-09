@@ -62,8 +62,6 @@ class Map : virtual public Drawable {
         std::vector<Item*>& getItem();
         std::vector<Item*>& getStaticItem();
 
-        void showMessage();
-
         void clear();
 
         void reset(bool isTestMap = false);

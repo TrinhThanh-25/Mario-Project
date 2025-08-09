@@ -2,6 +2,7 @@
 #define GAMEHUD_H
 
 #include "Character/CharacterType.h"
+#include "Common/GameHudMemento.h"
 #include <vector>
 #include "json.hpp"
 
@@ -10,6 +11,20 @@ using json = nlohmann::json;
 class Map;
 class World;
 class Character;
+
+class GameHudHistory {
+    private:
+        std::vector<GameHudMemento> history;
+        int currentIndex;
+
+    public:
+        GameHudHistory();
+        void addMemento(const GameHudMemento& memento);
+        GameHudMemento getMemento() const;
+        void clear();
+        json saveToJson() const;
+        void loadFromJson(const json& j);
+};
 
 class GameHud {
     private:
@@ -21,6 +36,7 @@ class GameHud {
         World* world;
         Map* map;
         std::vector<Character*>& characters;
+        GameHudHistory history;
     public:
         GameHud(World* world, int yoshiCoins = 0, int coins = 0, int points = 0, float maxTime = 200.0f);
         ~GameHud();
@@ -28,6 +44,8 @@ class GameHud {
         void update();
         void draw() const;
         void reset();
+        void resetGame();
+        void addHistory();
         
         void setCoins(int coins);
         void setYoshiCoins(int yoshiCoins);

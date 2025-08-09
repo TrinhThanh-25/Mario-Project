@@ -2,6 +2,7 @@
 #include "GameState/IrisOutState.h"
 #include "Common/ResourceManager.h"
 #include "GameState/SettingState.h"
+#include "GameState/GameStateFactory.h"
 #include "SaveGame.h"
 #include "raylib.h"
 
@@ -25,7 +26,7 @@ void CountingPointState::update() {
         else {
             SaveGame::saveGame(*world, "../resources/SaveGame/" + map->getMapFileName() + ".json");
         }
-        SettingState* settingState = new SettingState(world);
+        GameState* settingState = GameStateFactory::createGameState(world, GameStateType::SETTING);
         settingState->setStateBeforeSetting(GameStateType::COUNTING_POINT);
         world->setGameState(settingState);
         return;
@@ -45,7 +46,7 @@ void CountingPointState::update() {
         PlaySound(ResourceManager::getSound()["Coin"]);
     }
     if(*remainTimePoint <= 0) {
-        world->setGameState(new IrisOutState(world));
+        world->setGameState(GameStateFactory::createGameState(world, GameStateType::IRIS_OUT));
     }
 }
 

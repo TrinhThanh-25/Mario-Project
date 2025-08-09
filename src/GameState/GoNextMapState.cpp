@@ -4,6 +4,7 @@
 #include "GameState/SettingState.h"
 #include "Common/ResourceManager.h"
 #include "Character/Character.h"
+#include "GameState/GameStateFactory.h"
 #include "SaveGame.h"
 
 GoNextMapState::GoNextMapState(World* world)
@@ -29,7 +30,7 @@ void GoNextMapState::update() {
         else {
             SaveGame::saveGame(*world, "../resources/SaveGame/" + map->getMapFileName() + ".json");
         }
-        SettingState* settingState = new SettingState(world);
+        GameState* settingState = GameStateFactory::createGameState(world, GameStateType::SETTING);
         settingState->setStateBeforeSetting(GameStateType::GO_NEXT_MAP);
         world->setGameState(settingState);
         return;
@@ -41,7 +42,7 @@ void GoNextMapState::update() {
     } 
     if(isIrisOutFinished) {
         if(world->getGamePlay() == GamePlay::PLAYCUSTOMMAP) {
-            world->setGameState(new FinishedState(world));
+            world->setGameState(GameStateFactory::createGameState(world, GameStateType::FINISHED));
             return;
         }
         world->nextMap();

@@ -16,6 +16,7 @@
 #include "Character/CharacterFactory.h"
 #include "GameState/TestMapState.h"
 #include "GameState/ChooseCustomizedMap.h"
+#include "GameState/GameStateFactory.h"
 #include "Game/GameMode.h"
 #include "Game/GamePlay.h"
 #include <unordered_map>
@@ -41,10 +42,12 @@ World::World(int width, int height, const std::string& title, int FPS)
     GameLoop(),
     gameMode(GameMode::PLAYER),
     gamePlay(GamePlay::PLAYDEVELOPEDMAP) {
+        keyManager.initializeKeys();
         map.setCharacters(characters);
         modeWorld = ModeWorld::MULTIPLAYER;
         gamePlay = GamePlay::PLAYCUSTOMMAP;
         gameState = new TitleScreenState(this);
+        keyManager.loadCurrentKeyManager();
 }
 
 World::~World() {
@@ -53,6 +56,7 @@ World::~World() {
         delete character;
     }
     characters.clear();
+    
     if (gameState) {
         gameState->exit();
         delete gameState;
@@ -155,6 +159,10 @@ GameHud* World::getGameHud() {
     return &gameHud;
 }
 
+KeyManager* World::getKeyManager() {
+    return &keyManager;
+}
+
 void World::playPlayerDownMusic() {
     std::unordered_map<std::string, Music>& music = ResourceManager::getMusic();
     if (!playerDownMusicStreamPlaying) {
@@ -185,6 +193,22 @@ void World::playGameOverMusic() {
             StopMusicStream(music["GameOver"]);
             gameOverMusicStreamPlaying = false;
         }
+    }
+}
+
+void World::stopPlayerDownMusic() {
+    std::unordered_map<std::string, Music>& music = ResourceManager::getMusic();
+    if (IsMusicStreamPlaying(music["PlayerDown"])) {
+        StopMusicStream(music["PlayerDown"]);
+        playerDownMusicStreamPlaying = false;
+    }
+}
+
+void World::stopGameOverMusic() {
+    std::unordered_map<std::string, Music>& music = ResourceManager::getMusic();
+    if (IsMusicStreamPlaying(music["GameOver"])) {
+        StopMusicStream(music["GameOver"]);
+        gameOverMusicStreamPlaying = false;
     }
 }
 
@@ -233,7 +257,7 @@ void World::resetGame() {
     characters.clear();
     map.first();
     map.reset();
-    gameHud.reset();
+    gameHud.resetGame();
     pausedForTransition = false;
     pausedUpdateCharacters = false;
     if(gamePlay == GamePlay::PLAYDEVELOPEDMAP) {
@@ -248,6 +272,7 @@ void World::nextMap() {
         for (Character* character : characters) {
             character->reset(false);
         }
+        gameHud.addHistory();
         setGameState(new PlayingState(this));
     } else {
         setGameState(new FinishedState(this));
@@ -310,20 +335,17 @@ json World::saveToJson() const {
     j["music"] = json::array();
     std::unordered_map<std::string, Music>& music = ResourceManager::getMusic();
     for (const auto& [name, musicStream] : music) {
+        bool isPlaying = IsMusicStreamPlaying(musicStream);
+        float timePlayed = isPlaying ? GetMusicTimePlayed(musicStream) : 0.0f;
+        
         j["music"].push_back({
             {"name", name},
-            {"isPlaying", IsMusicStreamPlaying(musicStream)},
-            {"timePlayed", GetMusicTimePlayed(musicStream)}
+            {"isPlaying", isPlaying},
+            {"timePlayed", timePlayed}
         });
     }
-    j["sound"] = json::array();
-    std::unordered_map<std::string, Sound>& sound = ResourceManager::getSound();
-    for (const auto& [name, soundEffect] : sound) {
-        j["sound"].push_back({
-            {"name", name},
-            {"isPlaying", IsSoundPlaying(soundEffect)}
-        });
-    }
+    j["gameMode"] = static_cast<int>(gameMode);
+    j["gamePlay"] = static_cast<int>(gamePlay);
     return j;
 }
 
@@ -333,6 +355,7 @@ void World::loadFromJson(const json& j) {
         Character* character = CharacterFactory::createCharacter( static_cast<CharacterName>(characterJson["characterName"].get<int>()), static_cast<ModePlayer>(characterJson["modePlayer"].get<int>()) );
         character->loadFromJson(characterJson);
         character->setWorld(this);
+        keyManager.setKeyManagerForCharacter(character, static_cast<ModePlayer>(characterJson["modePlayer"].get<int>()));
         characters.push_back(character);
     }
     map.loadFromJson(j["map"]);
@@ -355,65 +378,31 @@ void World::loadFromJson(const json& j) {
     pausedUpdateCharacters = j["pausedUpdateCharacters"];
 
     std::unordered_map<std::string, Music>& music = ResourceManager::getMusic();
-    for (const auto& musicJson : j["music"]) {
+    for (auto& [name, musicStream] : music) {
+        if (IsMusicStreamPlaying(musicStream)) {
+            StopMusicStream(musicStream);
+        }
+    }
+    for (int i = 0; i < j["music"].size(); ++i) {
+        const auto& musicJson = j["music"][i];
         if (music.find(musicJson["name"]) != music.end()) {
             if (musicJson["isPlaying"]) {
                 PlayMusicStream(music[musicJson["name"]]);
-            } else {
-                StopMusicStream(music[musicJson["name"]]);
-            }
-            SeekMusicStream(music[musicJson["name"]], musicJson["timePlayed"]);
-        }
-    }
-    std::unordered_map<std::string, Sound>& sound = ResourceManager::getSound();
-    for (const auto& soundJson : j["sound"]) {
-        if (sound.find(soundJson["name"]) != sound.end()) {
-            if (soundJson["isPlaying"]) {
-                PlaySound(sound[soundJson["name"]]);
-            } else {
-                StopSound(sound[soundJson["name"]]);
+                UpdateMusicStream(music[musicJson["name"]]);
+                SeekMusicStream(music[musicJson["name"]], musicJson["timePlayed"]);
             }
         }
     }
-    GameState* gameState = nullptr;
-    switch (static_cast<GameStateType>(j["gameState"]["gameStateType"].get<int>())) {
-        case GameStateType::TITLE_SCREEN:
-            gameState = new TitleScreenState(this);
-            break;
-        case GameStateType::CHOOSE_CHARACTER:
-            gameState = new ChooseCharacterState(this);
-            break;
-        case GameStateType::PLAYING:
-            gameState = new PlayingState(this);
-            break;
-        case GameStateType::COUNTING_POINT:
-            gameState = new CountingPointState(this);
-            break;
-        case GameStateType::FINISHED:
-            gameState = new FinishedState(this);
-            break;
-        case GameStateType::GAME_OVER:
-            gameState = new GameOverState(this);
-            break;
-        case GameStateType::GO_NEXT_MAP:
-            gameState = new GoNextMapState(this);
-            break;
-        case GameStateType::IRIS_OUT:
-            gameState = new IrisOutState(this);
-            break;
-        case GameStateType::SETTING:
-            gameState = new SettingState(this);
-            break;
-        case GameStateType::TIME_UP:
-            gameState = new TimeUpState(this);
-            break;
-    }
+    
+    GameState* gameState = GameStateFactory::createGameState(this, static_cast<GameStateType>(j["gameState"]["gameStateType"].get<int>()));
     if (gameState != nullptr) {
         gameState->loadFromJson(j["gameState"]);
         setGameState(gameState);
     } else {
         throw std::runtime_error("Failed to create game state from JSON");
     }
+    gameMode = static_cast<GameMode>(j["gameMode"].get<int>());
+    gamePlay = static_cast<GamePlay>(j["gamePlay"].get<int>());
 }
 
 void World::setGameMode(GameMode mode) {

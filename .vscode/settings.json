@@ -146,7 +146,8 @@
     "print": "cpp",
     "queue": "cpp",
     "stack": "cpp",
-    "xtree": "cpp"
+    "xtree": "cpp",
+    "xhash": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled",
   "cmake.generator": "Visual Studio 17 2022",
