@@ -6,9 +6,11 @@
 #include <vector>
 
 
+
 std::unordered_map<std::string, Texture2D> ResourceManager::texture;
 std::unordered_map<std::string, Sound> ResourceManager::sound;
 std::unordered_map<std::string, Music> ResourceManager::music;
+std::unordered_map<std::string, Font> ResourceManager::font;
 
 std::unordered_map<std::string, Texture2D>& ResourceManager::getTexture() {
     return texture;
@@ -20,6 +22,11 @@ std::unordered_map<std::string, Sound>& ResourceManager::getSound() {
 
 std::unordered_map<std::string, Music>& ResourceManager::getMusic() {
     return music;
+}
+
+std::unordered_map<std::string, Font> &ResourceManager::getFont()
+{
+    return font;
 }
 
 void ResourceManager::loadTexture() {
@@ -724,6 +731,11 @@ void ResourceManager::loadMusic() {
     music["ChooseCharacterMusic"] = LoadMusicStream("../resources/Music/chooseCharacterMusic.mp3");
 }
 
+void ResourceManager::loadFont()
+{
+    font["Font"] = LoadFont("../resources/Font/Pixeled.ttf");
+}
+
 void ResourceManager::unloadTexture() {
     for (auto& pair : texture) {
         UnloadTexture(pair.second);
@@ -745,6 +757,14 @@ void ResourceManager::unloadMusic() {
     music.clear();
 }
 
+void ResourceManager::unloadFont()
+{
+    for (auto& pair : font) {
+        UnloadFont(pair.second);
+    }
+    font.clear();
+}
+
 Texture2D ResourceManager::texture2DFlipHorizontal(Texture2D texture) {
     Image image = LoadImageFromTexture(texture);
     ImageFlipHorizontal(&image);
@@ -757,12 +777,14 @@ void ResourceManager::loadResources() {
     loadTexture();
     loadSound();
     loadMusic();
+    loadFont();
 }
 
 void ResourceManager::unloadResources() {
     unloadTexture();
     unloadSound();
     unloadMusic();
+    unloadFont();
 }
 
 void ResourceManager::drawWhiteSmallNumber(int number, int x, int y) {
