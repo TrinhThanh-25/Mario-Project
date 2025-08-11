@@ -70,6 +70,8 @@ void ResourceManager::loadTexture() {
     texture["SmallMarioDying0"] = LoadTexture("../resources/Mario/SmallMarioDying_0.png");
     texture["SmallMarioDying1"] = texture2DFlipHorizontal(texture["SmallMarioDying0"]);
     texture["SmallMarioVictory0"] = LoadTexture("../resources/Mario/SmallMarioVictory_0.png");
+    texture["SmallMarioTurningAround0Right"] = LoadTexture("../resources/Mario/SmallMarioTurningAround_0.png");
+    texture["SmallMarioTurningAround0Left"] = texture2DFlipHorizontal(texture["SmallMarioTurningAround0Right"]);
 
     //Super Mario
     texture["SuperMario0Right"] = LoadTexture("../resources/Mario/SuperMario_0.png");
@@ -103,6 +105,8 @@ void ResourceManager::loadTexture() {
     texture["TransitioningSuperMario1Left"] = texture2DFlipHorizontal(texture["TransitioningSuperMario1Right"]);
     texture["TransitioningSuperMario2Right"] = LoadTexture("../resources/Mario/TransitioningSuperMario_2.png");
     texture["TransitioningSuperMario2Left"] = texture2DFlipHorizontal(texture["TransitioningSuperMario2Right"]);
+    texture["SuperMarioTurningAround0Right"] = LoadTexture("../resources/Mario/SuperMarioTurningAround_0.png");
+    texture["SuperMarioTurningAround0Left"] = texture2DFlipHorizontal(texture["SuperMarioTurningAround0Right"]);
 
     //Flower Mario
     texture["FlowerMario0Right"] = LoadTexture("../resources/Mario/FlowerMario_0.png");
@@ -136,6 +140,8 @@ void ResourceManager::loadTexture() {
     texture["TransitioningFlowerMario1Left"] = texture2DFlipHorizontal(texture["TransitioningFlowerMario1Right"]);
     texture["TransitioningFlowerMario2Right"] = LoadTexture("../resources/Mario/TransitioningFlowerMario_2.png");
     texture["TransitioningFlowerMario2Left"] = texture2DFlipHorizontal(texture["TransitioningFlowerMario2Right"]);
+    texture["FlowerMarioTurningAround0Right"] = LoadTexture("../resources/Mario/FlowerMarioTurningAround_0.png");
+    texture["FlowerMarioTurningAround0Left"] = texture2DFlipHorizontal(texture["FlowerMarioTurningAround0Right"]);
 
     //Small Luigi
     texture["SmallLuigi0Right"] = LoadTexture("../resources/Luigi/SmallLuigi_0.png");
@@ -159,6 +165,8 @@ void ResourceManager::loadTexture() {
     texture["SmallLuigiDying0"] = LoadTexture("../resources/Luigi/SmallLuigiDying_0.png");
     texture["SmallLuigiDying1"] = texture2DFlipHorizontal(texture["SmallLuigiDying0"]);
     texture["SmallLuigiVictory0"] = LoadTexture("../resources/Luigi/SmallLuigiVictory_0.png");
+    texture["SmallLuigiTurningAround0Right"] = LoadTexture("../resources/Luigi/SmallLuigiTurningAround_0.png");
+    texture["SmallLuigiTurningAround0Left"] = texture2DFlipHorizontal(texture["SmallLuigiTurningAround0Right"]);
 
     //Super Luigi
     texture["SuperLuigi0Right"] = LoadTexture("../resources/Luigi/SuperLuigi_0.png");
@@ -192,6 +200,8 @@ void ResourceManager::loadTexture() {
     texture["TransitioningSuperLuigi1Left"] = texture2DFlipHorizontal(texture["TransitioningSuperLuigi1Right"]);
     texture["TransitioningSuperLuigi2Right"] = LoadTexture("../resources/Luigi/TransitioningSuperLuigi_2.png");
     texture["TransitioningSuperLuigi2Left"] = texture2DFlipHorizontal(texture["TransitioningSuperLuigi2Right"]);
+    texture["SuperLuigiTurningAround0Right"] = LoadTexture("../resources/Luigi/SuperLuigiTurningAround_0.png");
+    texture["SuperLuigiTurningAround0Left"] = texture2DFlipHorizontal(texture["SuperLuigiTurningAround0Right"]);
 
     //Flower Luigi
     texture["FlowerLuigi0Right"] = LoadTexture("../resources/Luigi/FlowerLuigi_0.png");
@@ -225,6 +235,8 @@ void ResourceManager::loadTexture() {
     texture["TransitioningFlowerLuigi1Left"] = texture2DFlipHorizontal(texture["TransitioningFlowerLuigi1Right"]);
     texture["TransitioningFlowerLuigi2Right"] = LoadTexture("../resources/Luigi/TransitioningFlowerLuigi_2.png");
     texture["TransitioningFlowerLuigi2Left"] = texture2DFlipHorizontal(texture["TransitioningFlowerLuigi2Right"]);
+    texture["FlowerLuigiTurningAround0Right"] = LoadTexture("../resources/Luigi/FlowerLuigiTurningAround_0.png");
+    texture["FlowerLuigiTurningAround0Left"] = texture2DFlipHorizontal(texture["FlowerLuigiTurningAround0Right"]);
 
     //Small Toad
     texture["SmallToad0Right"] = LoadTexture("../resources/Toad/SmallToad_0.png");
@@ -248,6 +260,8 @@ void ResourceManager::loadTexture() {
     texture["SmallToadDying0"] = LoadTexture("../resources/Toad/SmallToadDying_0.png");
     texture["SmallToadDying1"] = texture2DFlipHorizontal(texture["SmallToadDying0"]);
     texture["SmallToadVictory0"] = LoadTexture("../resources/Toad/SmallToadVictory_0.png");
+    texture["SmallToadTurningAround0Right"] = LoadTexture("../resources/Toad/SmallToadTurningAround_0.png");
+    texture["SmallToadTurningAround0Left"] = texture2DFlipHorizontal(texture["SmallToadTurningAround0Right"]);
 
     //Super Toad
     texture["SuperToad0Right"] = LoadTexture("../resources/Toad/SuperToad_0.png");
@@ -280,10 +294,11 @@ void ResourceManager::loadTexture() {
     texture["TransitioningSuperToad1Left"] = texture2DFlipHorizontal(texture["TransitioningSuperToad1Right"]);
     texture["TransitioningSuperToad2Right"] = LoadTexture("../resources/Toad/TransitioningSuperToad_2.png");
     texture["TransitioningSuperToad2Left"] = texture2DFlipHorizontal(texture["TransitioningSuperToad2Right"]);
+    texture["SuperToadTurningAround0Right"] = LoadTexture("../resources/Toad/SuperToadTurningAround_0.png");
+    texture["SuperToadTurningAround0Left"] = texture2DFlipHorizontal(texture["SuperToadTurningAround0Right"]);
 
     //Flower Toad
     texture["FlowerToad0Right"] = LoadTexture("../resources/Toad/FlowerToad_0.png");
-    texture["SuperToadRunning2Left"] = texture2DFlipHorizontal(texture["SuperToadRunning2Right"]);
     texture["FlowerToad0Left"] = texture2DFlipHorizontal(texture["FlowerToad0Right"]);
     texture["FlowerToad1Right"] = LoadTexture("../resources/Toad/FlowerToad_1.png");
     texture["FlowerToad1Left"] = texture2DFlipHorizontal(texture["FlowerToad1Right"]);
@@ -291,6 +306,31 @@ void ResourceManager::loadTexture() {
     texture["FlowerToad2Left"] = texture2DFlipHorizontal(texture["FlowerToad2Right"]);
     texture["FlowerToadDucking0Right"] = LoadTexture("../resources/Toad/FlowerToadDucking_0.png");
     texture["FlowerToadDucking0Left"] = texture2DFlipHorizontal(texture["FlowerToadDucking0Right"]);
+    texture["FlowerToadFalling0Right"] = LoadTexture("../resources/Toad/FlowerToadFalling_0.png");
+    texture["FlowerToadFalling0Left"] = texture2DFlipHorizontal(texture["FlowerToadFalling0Right"]);
+    texture["FlowerToadJumping0Right"] = LoadTexture("../resources/Toad/FlowerToadJumping_0.png");
+    texture["FlowerToadJumping0Left"] = texture2DFlipHorizontal(texture["FlowerToadJumping0Right"]);
+    texture["FlowerToadJumpingAndRunning0Right"] = LoadTexture("../resources/Toad/FlowerToadJumpingAndRunning_0.png");
+    texture["FlowerToadJumpingAndRunning0Left"] = texture2DFlipHorizontal(texture["FlowerToadJumpingAndRunning0Right"]);
+    texture["FlowerToadLookingUp0Right"] = LoadTexture("../resources/Toad/FlowerToadLookingUp_0.png");
+    texture["FlowerToadLookingUp0Left"] = texture2DFlipHorizontal(texture["FlowerToadLookingUp0Right"]);
+    texture["FlowerToadRunning0Right"] = LoadTexture("../resources/Toad/FlowerToadRunning_0.png");
+    texture["FlowerToadRunning0Left"] = texture2DFlipHorizontal(texture["FlowerToadRunning0Right"]);
+    texture["FlowerToadRunning1Right"] = LoadTexture("../resources/Toad/FlowerToadRunning_1.png");
+    texture["FlowerToadRunning1Left"] = texture2DFlipHorizontal(texture["FlowerToadRunning1Right"]);
+    texture["FlowerToadRunning2Right"] = LoadTexture("../resources/Toad/FlowerToadRunning_2.png");
+    texture["FlowerToadRunning2Left"] = texture2DFlipHorizontal(texture["FlowerToadRunning2Right"]);
+    texture["FlowerToadThrowingFireball0Right"] = LoadTexture("../resources/Toad/FlowerToadThrowingFireball_0.png");
+    texture["FlowerToadThrowingFireball0Left"] = texture2DFlipHorizontal(texture["FlowerToadThrowingFireball0Right"]);
+    texture["FlowerToadVictory0"] = LoadTexture("../resources/Toad/FlowerToadVictory_0.png");
+    texture["TransitioningFlowerToad0Right"] = LoadTexture("../resources/Toad/TransitioningFlowerToad_0.png");
+    texture["TransitioningFlowerToad0Left"] = texture2DFlipHorizontal(texture["TransitioningFlowerToad0Right"]);
+    texture["TransitioningFlowerToad1Right"] = LoadTexture("../resources/Toad/TransitioningFlowerToad_1.png");
+    texture["TransitioningFlowerToad1Left"] = texture2DFlipHorizontal(texture["TransitioningFlowerToad1Right"]);
+    texture["TransitioningFlowerToad2Right"] = LoadTexture("../resources/Toad/TransitioningFlowerToad_2.png");
+    texture["TransitioningFlowerToad2Left"] = texture2DFlipHorizontal(texture["TransitioningFlowerToad2Right"]);
+    texture["FlowerToadTurningAround0Right"] = LoadTexture("../resources/Toad/FlowerToadTurningAround_0.png");
+    texture["FlowerToadTurningAround0Left"] = texture2DFlipHorizontal(texture["FlowerToadTurningAround0Right"]);
 
     //Small Peach
     texture["SmallPeach0Right"] = LoadTexture("../resources/Peach/SmallPeach_0.png");
@@ -319,6 +359,8 @@ void ResourceManager::loadTexture() {
     texture["SmallPeachDying1"] = texture2DFlipHorizontal(texture["SmallPeachDying0"]);
     texture["SmallPeachDying2"] = texture["SmallPeachDying0"];
     texture["SmallPeachVictory0"] = LoadTexture("../resources/Peach/SmallPeachVictory_0.png");
+    texture["SmallPeachTurningAround0Right"] = LoadTexture("../resources/Peach/SmallPeachTurningAround_0.png");
+    texture["SmallPeachTurningAround0Left"] = texture2DFlipHorizontal(texture["SmallPeachTurningAround0Right"]);
 
     //Super Peach
     texture["SuperPeach0Right"] = LoadTexture("../resources/Peach/SuperPeach_0.png");
@@ -352,6 +394,8 @@ void ResourceManager::loadTexture() {
     texture["TransitioningSuperPeach1Left"] = texture2DFlipHorizontal(texture["TransitioningSuperPeach1Right"]);
     texture["TransitioningSuperPeach2Right"] = LoadTexture("../resources/Peach/TransitioningSuperPeach_2.png");
     texture["TransitioningSuperPeach2Left"] = texture2DFlipHorizontal(texture["TransitioningSuperPeach2Right"]);
+    texture["SuperPeachTurningAround0Right"] = LoadTexture("../resources/Peach/SuperPeachTurningAround_0.png");
+    texture["SuperPeachTurningAround0Left"] = texture2DFlipHorizontal(texture["SuperPeachTurningAround0Right"]);
 
     //Flower Peach
     texture["FlowerPeach0Right"] = LoadTexture("../resources/Peach/FlowerPeach_0.png");
@@ -385,11 +429,14 @@ void ResourceManager::loadTexture() {
     texture["TransitioningFlowerPeach1Left"] = texture2DFlipHorizontal(texture["TransitioningFlowerPeach1Right"]);
     texture["TransitioningFlowerPeach2Right"] = LoadTexture("../resources/Peach/TransitioningFlowerPeach_2.png");
     texture["TransitioningFlowerPeach2Left"] = texture2DFlipHorizontal(texture["TransitioningFlowerPeach2Right"]);
+    texture["FlowerPeachTurningAround0Right"] = LoadTexture("../resources/Peach/FlowerPeachTurningAround_0.png");
+    texture["FlowerPeachTurningAround0Left"] = texture2DFlipHorizontal(texture["FlowerPeachTurningAround0Right"]);
 
     // Tags
     texture["SmallPeachTag"] = LoadTexture("../resources/Peach/SmallPeach.png");
     texture["SuperPeachTag"] = LoadTexture("../resources/Peach/SuperPeach.png");
     texture["FlowerPeachTag"] = LoadTexture("../resources/Peach/FlowerPeach.png");
+    
     //Fireball
     texture["FlowerToadFalling0Right"] = LoadTexture("../resources/Toad/FlowerToadFalling_0.png");
     texture["FlowerToadFalling0Left"] = texture2DFlipHorizontal(texture["FlowerToadFalling0Right"]);
@@ -586,6 +633,10 @@ void ResourceManager::loadTexture() {
     for (int i=1;i<=106;i++){
         texture[std::to_string(i)] = LoadTexture(("../resources/Tile/" + std::to_string(i) + ".png").c_str());
     }
+    texture["CourseClearPoleBackBody"] = LoadTexture("../resources/Tile/tile_CourseClearPoleBackBody.png");
+    texture["CourseClearPoleFrontBody"] = LoadTexture("../resources/Tile/tile_CourseClearPoleFrontBody.png");
+    texture["CourseClearPoleBackTop"] = LoadTexture("../resources/Tile/tile_CourseClearPoleBackTop.png");
+    texture["CourseClearPoleFrontTop"] = LoadTexture("../resources/Tile/tile_CourseClearPoleFrontTop.png");
 
     //Effect
     texture["Puft0"] = LoadTexture("../resources/Effect/Puft_0.png");
@@ -665,7 +716,7 @@ void ResourceManager::loadTexture() {
     texture["GuiPeachSecondPlayer"] = LoadTexture("../resources/gui/peachSecondPlayer.png");
 
     // Tileset
-    for (int i = 0; i < 149; ++i) {
+    for (int i = 0; i < 153; ++i) {
         std::string id = "Tileset" + std::to_string(i + 1); // ID từ 1 đến 149
         std::string path = "../resources/Tileset/" + std::to_string(i) + ".png"; // file từ 0.png đến 148.png
         texture[id] = LoadTexture(path.c_str());

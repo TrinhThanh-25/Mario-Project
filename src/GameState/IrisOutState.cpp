@@ -2,6 +2,7 @@
 #include "GameState/GoNextMapState.h"
 #include "GameState/SettingState.h"
 #include "Common/ResourceManager.h"
+#include "GameState/GameStateFactory.h"
 #include "SaveGame.h"
 
 IrisOutState::IrisOutState(World* world) 
@@ -24,7 +25,7 @@ void IrisOutState::update() {
         else {
             SaveGame::saveGame(*world, "../resources/SaveGame/" + map->getMapFileName() + ".json");
         }
-        SettingState* settingState = new SettingState(world);
+        GameState* settingState = GameStateFactory::createGameState(world, GameStateType::SETTING);
         settingState->setStateBeforeSetting(GameStateType::IRIS_OUT);
         world->setGameState(settingState);
         return;
@@ -36,7 +37,7 @@ void IrisOutState::update() {
         }
     } else {
         PlaySound(ResourceManager::getSound()["GoalIrisOut"]);
-        world->setGameState(new GoNextMapState(world));
+        world->setGameState(GameStateFactory::createGameState(world, GameStateType::GO_NEXT_MAP));
     }
 }
 

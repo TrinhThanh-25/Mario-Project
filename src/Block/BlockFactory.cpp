@@ -17,7 +17,7 @@ Block* BlockFactory::createBlock(BlockType type, Vector2 position, const std::st
             block = new EyesClosedBlock(position, size, color);
             break;
         case BlockType::EYESOPENED:
-            block = new EyesOpenedBlock(position, size, color);
+            block = new EyesOpenedBlock(position, size, color, 0.15, 4);
             break;
         case BlockType::GLASSBLOCK:
             block = new GlassBlock(position, size, color);

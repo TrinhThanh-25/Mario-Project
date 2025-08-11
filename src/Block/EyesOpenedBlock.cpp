@@ -31,7 +31,7 @@ void EyesOpenedBlock::update() {
 }
 void EyesOpenedBlock::draw() {
 	if (hit) {
-		DrawTexture(ResourceManager::getTexture()[std::string( TextFormat( "EyesOpened%d", curFrame))], position.x, position.y, WHITE);
+		DrawTexture(ResourceManager::getTexture()["EyesOpened" + std::to_string(curFrame)], position.x, position.y, WHITE);
 	} else {
 		DrawTexture(ResourceManager::getTexture()["EyesOpened0"], position.x, position.y, WHITE);
 	}
@@ -41,7 +41,7 @@ void EyesOpenedBlock::doHit(Character& character, Map* map) {
 	if (!hit) {
 		PlaySound(ResourceManager::getSound()["ShellRicochet"]);
 		hit = true;
-		state = SpriteState::HIT;
+		state = SpriteState::NO_COLLIDABLE;
 	}
 }
 
