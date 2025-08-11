@@ -25,10 +25,10 @@ std::unordered_map<std::string, int>& KeyManager::getKeys(ModePlayer modePlayer)
     return groupKeys[modePlayer].getKeys();
 }
 
-bool KeyManager::isKeyConflicted(ModePlayer modePlayer, const std::string& keyName, int keyValue) const {
-    const auto& onePlayerKeys = groupKeys.at(ModePlayer::ONEPLAYER).getKeys();
-    const auto& firstPlayerKeys = groupKeys.at(ModePlayer::FIRSTPLAYER).getKeys();
-    const auto& secondPlayerKeys = groupKeys.at(ModePlayer::SECONDPLAYER).getKeys();
+bool KeyManager::isKeyConflicted(ModePlayer modePlayer, const std::string& keyName, int keyValue) {
+    const auto& onePlayerKeys = groupKeys[ModePlayer::ONEPLAYER].getKeys();
+    const auto& firstPlayerKeys = groupKeys[ModePlayer::FIRSTPLAYER].getKeys();
+    const auto& secondPlayerKeys = groupKeys[ModePlayer::SECONDPLAYER].getKeys();
     
     if (modePlayer == ModePlayer::ONEPLAYER) {
         for (const auto& pair : onePlayerKeys) {
@@ -53,6 +53,11 @@ bool KeyManager::isKeyConflicted(ModePlayer modePlayer, const std::string& keyNa
                 return true;
             }
         }
+        for (const auto& pair : firstPlayerKeys) {
+            if (pair.second == keyValue) {
+                return true;
+            }
+        }
     }
     
     return false;
@@ -61,7 +66,6 @@ bool KeyManager::isKeyConflicted(ModePlayer modePlayer, const std::string& keyNa
 void KeyManager::setKeyManagerForCharacter(Character* character, ModePlayer modePlayer) {
     if (character) {
         character->setModePlayer(modePlayer);
-        character->setKeyManager(this);
     }
 }
 

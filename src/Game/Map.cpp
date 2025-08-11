@@ -988,6 +988,18 @@ void Map::loadObjectsToMap(const std::vector<int>& mapGrid) {
             case 149:
                 block.push_back(BlockFactory::createBlock(BlockType::INVISIBLEBLOCK, {x * tilewidth, y * tilewidth}));
                 break;
+            case 150:
+                backTile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "CourseClearPoleBackBody", TileType::NOT_SOLID));
+                break;
+            case 151:
+                backTile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "CourseClearPoleBackTop", TileType::NOT_SOLID));
+                break;
+            case 152:
+                frontTile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "CourseClearPoleFrontBody", TileType::NOT_SOLID));
+                break;
+            case 153:
+                frontTile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "CourseClearPoleFrontTop", TileType::NOT_SOLID));
+                break;
             default:
                 std::cerr << "Unknown tile type: " << y * (width / tilewidth) + x << " at (" << x << ", " << y << ")" << std::endl;
                 break;

@@ -175,7 +175,7 @@ void CustomMapState::updateTilePallete() {
     
     std::vector<int> drawList;
     if (selectedCategory == "ALL") {
-        for (int i = 1; i < (int)tileIds.size(); i++) {
+        for (int i = 1; i <= 153; i++) {  // Fixed: loop to 153 to include all tiles
             drawList.push_back(i);
         }
     } else if (tileCategories.find(selectedCategory) != tileCategories.end()) {
@@ -262,9 +262,12 @@ void CustomMapState::updateMapView() {
                 int tileY = (int)(worldPos.y / TILE_SIZE);
                 
                 if (tileX >= 0 && tileX < MAP_WIDTH && tileY >= 0 && tileY < MAP_HEIGHT) {
-                    mapGrid[tileY * MAP_WIDTH + tileX] = isEraseMode ? 0 : selectedTileId;
-                    lastDrawnTile = {(float)tileX, (float)tileY};
-                    isSaved = false;
+                    int newTileId = isEraseMode ? 0 : selectedTileId;
+                    if (mapGrid[tileY * MAP_WIDTH + tileX] != newTileId) {
+                        mapGrid[tileY * MAP_WIDTH + tileX] = newTileId;
+                        lastDrawnTile = {(float)tileX, (float)tileY};
+                        isSaved = false;
+                    }
                 }
             }
             
@@ -277,9 +280,12 @@ void CustomMapState::updateMapView() {
                 // Only draw if we're on a different tile than last time
                 if (tileX >= 0 && tileX < MAP_WIDTH && tileY >= 0 && tileY < MAP_HEIGHT && 
                     (tileX != (int)lastDrawnTile.x || tileY != (int)lastDrawnTile.y)) {
-                    mapGrid[tileY * MAP_WIDTH + tileX] = isEraseMode ? 0 : selectedTileId;
-                    lastDrawnTile = {(float)tileX, (float)tileY};
-                    isSaved = false;
+                    int newTileId = isEraseMode ? 0 : selectedTileId;
+                    if (mapGrid[tileY * MAP_WIDTH + tileX] != newTileId) {
+                        mapGrid[tileY * MAP_WIDTH + tileX] = newTileId;
+                        lastDrawnTile = {(float)tileX, (float)tileY};
+                        isSaved = false;
+                    }
                 }
             }
             
@@ -287,8 +293,8 @@ void CustomMapState::updateMapView() {
             if (IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
                 if (isDrawing) {
                     saveHistory();
+                    isDrawing = false;
                 }
-                isDrawing = false;
                 lastDrawnTile = {-1, -1};
             }
         }
@@ -420,7 +426,7 @@ void CustomMapState::drawTilePalette() {
 
     std::vector<int> drawList;
     if (selectedCategory == "ALL") {
-        for (int i = 1; i < (int)tileIds.size(); i++) {
+        for (int i = 1; i <= 153; i++) {  // Fixed: loop to 153 to include all tiles
             drawList.push_back(i);
         }
     } else if (tileCategories.find(selectedCategory) != tileCategories.end()) {
@@ -453,9 +459,9 @@ void CustomMapState::drawTilePalette() {
 }
 
 void CustomMapState::loadTileTextures() {
-    for (int i = 1; i <= 149; ++i) {
+    for (int i = 1; i <= 153; ++i) {
         tileIds.push_back("Tileset" + std::to_string(i));
-        if (i >= 2 && i <= 107){
+        if ((i >= 2 && i <= 107) || (i >= 150 && i <= 153)) {
             tileCategories["TILE"].push_back(i);
         }
 
@@ -517,6 +523,7 @@ void CustomMapState::drawToolbar() {
     Rectangle clearBtn = {currentX, 5, TOOLBAR_BUTTON_WIDTH, TOOLBAR_HEIGHT - 10};
     if (GuiButton(clearBtn, "CLEAR")) {
         clearMap();
+        saveHistory();
     }
     currentX += TOOLBAR_BUTTON_WIDTH + TOOLBAR_SPACING;
     
@@ -569,6 +576,7 @@ void CustomMapState::drawToolbar() {
     Rectangle applyBtn = {currentX, 5, TOOLBAR_BUTTON_WIDTH, TOOLBAR_HEIGHT - 10};
     if (GuiButton(applyBtn, "APPLY")) {
         applyMapSize();
+        saveHistory();
     }
 }
 
@@ -578,13 +586,11 @@ void CustomMapState::saveMap() {
         std::cerr << "Cannot save map with empty filename" << std::endl;
         return;
     }
-    
     bool nameChanged = (mapFileName != cleanName);
     if (nameChanged && isMapNameExists(cleanName)) {
         cleanName = generateUniqueMapName(cleanName);
         mapNameBuffer = cleanName;
     }
-    
     if (nameChanged) {
         std::string oldFileName = "../resources/Map/" + mapFileName + ".json";
         if (std::filesystem::exists(oldFileName)) {
@@ -592,55 +598,29 @@ void CustomMapState::saveMap() {
         }
         updateListMapFile(mapFileName, cleanName);
     }
-    
     std::ofstream file("../resources/Map/" + cleanName + ".json");
     if (!file.is_open()) {
         std::cerr << "Failed to open map file for saving: " << cleanName << std::endl;
         return;
     }
-    
-    // Convert 1D array to 2D array for better readability
-    json data2D = json::array();
-    for (int y = 0; y < MAP_HEIGHT; ++y) {
-        json row = json::array();
-        for (int x = 0; x < MAP_WIDTH; ++x) {
-            row.push_back(mapGrid[y * MAP_WIDTH + x]);
-        }
-        data2D.push_back(row);
-    }
-    
-    json j;
-    j["width"] = MAP_WIDTH;
-    j["height"] = MAP_HEIGHT;
-    j["layers"] = json::array();
-    j["layers"].push_back({
-        {"data", data2D}
-    });
-    
-    // Custom formatting to ensure each row is on a new line
     file << "{\n";
     file << "    \"width\": " << MAP_WIDTH << ",\n";
     file << "    \"height\": " << MAP_HEIGHT << ",\n";
     file << "    \"layers\": [\n";
     file << "        {\n";
-    file << "            \"data\": [\n";
-    
+    file << "            \"data\": [";
     for (int y = 0; y < MAP_HEIGHT; ++y) {
-        file << "                [";
         for (int x = 0; x < MAP_WIDTH; ++x) {
-            file << mapGrid[y * MAP_WIDTH + x];
-            if (x < MAP_WIDTH - 1) file << ", ";
+            int index = y * MAP_WIDTH + x;
+            file << mapGrid[index];
+            if (index < (MAP_HEIGHT * MAP_WIDTH) - 1) file << ", ";
+            if ((index + 1) % MAP_WIDTH == 0 && index < (MAP_HEIGHT * MAP_WIDTH) - 1) file << "\n                ";
         }
-        file << "]";
-        if (y < MAP_HEIGHT - 1) file << ",";
-        file << "\n";
     }
-    
-    file << "            ]\n";
+    file << "]\n";
     file << "        }\n";
     file << "    ]\n";
     file << "}";
-    
     file.close();
     isSaved = true;
     mapFileName = cleanName;
@@ -652,20 +632,15 @@ void CustomMapState::loadMap() {
         std::cerr << "Failed to open map file for loading: " << mapFileName << std::endl;
         return;
     }
-    
     json j;
     file >> j;
     file.close();
-    
     MAP_WIDTH = j["width"].get<int>();
-    MAP_HEIGHT = j["height"].get<int>();
-    
+    MAP_HEIGHT = j["height"].get<int>(); 
     widthBuffer = std::to_string(MAP_WIDTH);
     heightBuffer = std::to_string(MAP_HEIGHT);
     mapNameBuffer = mapFileName;
-    
     mapGrid = j["layers"][0]["data"].get<std::vector<int>>();
-    
     isSaved = true;
 }
 

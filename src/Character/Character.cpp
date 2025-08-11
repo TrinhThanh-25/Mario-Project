@@ -1,5 +1,6 @@
 #include "Character/Character.h"
 #include "Common/ResourceManager.h"
+#include "Common/GamepadManager.h"
 #include "Enemy/Enemy.h"
 #include "Block/Block.h"
 #include "Tile/Tile.h"
@@ -52,7 +53,8 @@ Character::Character(CharacterName characterName, ModePlayer mode, Vector2 pos, 
     isThrowingFireball(false),
     throwingFireballTime(0.15f),
     throwingFireballAcum(0.0f),
-    keyManager(nullptr){
+    keyManager(nullptr),
+    gamepadManager(nullptr) {
     setState(SpriteState::ON_GROUND);
 }
 
@@ -64,6 +66,8 @@ void Character::setWorld(World* world) {
     this->world = world;
     this->map = world->getMap();
     this->gameHud = world->getGameHud();
+    this->keyManager = world->getKeyManager();
+    this->gamepadManager = world->getGamepadManager();
 }
 
 void Character::update() {
@@ -260,10 +264,11 @@ void Character::movement(float deltaTime) {
         }
     }
     
+    bool useGamepad = IsGamepadAvailable(getGamepadID());
     float currentSpeedX = isRunning ? ( drawRunning ? maxSpeed * 1.3f : maxSpeed ) : speed;
     float frameTimeAct = isRunning ? frameTimeRunning : frameTimeWalking;
     
-    if(IsKeyDown(getKeys()["SHIFT"])&&velocity.x!=0) {
+    if(((!useGamepad && IsKeyDown(getKeys()["SHIFT"])) || (useGamepad && IsGamepadButtonDown(getGamepadID(), getGamepadButtons()["SHIFT"]))) && velocity.x!=0) {
         isRunning = true;;
     }
     else {
@@ -276,6 +281,13 @@ void Character::movement(float deltaTime) {
             invulnerable = false;
             invulnerableAcum = 0.0f;
             invulnerableBlink = false;
+        }
+    }
+    if(isThrowingFireball) {
+        throwingFireballAcum += deltaTime;
+        if(throwingFireballAcum >= throwingFireballTime) {
+            isThrowingFireball = false;
+            throwingFireballAcum = 0.0f;
         }
     }
     if(invincible) {
@@ -309,21 +321,24 @@ void Character::movement(float deltaTime) {
         velocity.x = 0;
         velocity.y = 0;
         
-        if(IsKeyDown(getKeys()["LEFT"]) && IsKeyDown(getKeys()["RIGHT"])) {
+        // Check for movement input - direct function calls
+        if(((useGamepad && gamepadManager && gamepadManager->isJoystickMovingLeft(getGamepadID())) || (!useGamepad && IsKeyDown(getKeys()["LEFT"]))) && 
+           ((useGamepad && gamepadManager && gamepadManager->isJoystickMovingRight(getGamepadID())) || (!useGamepad && IsKeyDown(getKeys()["RIGHT"])))) {
             
-        } else if(IsKeyDown(getKeys()["RIGHT"])) {
+        } else if((useGamepad && gamepadManager && gamepadManager->isJoystickMovingRight(getGamepadID())) || (!useGamepad && IsKeyDown(getKeys()["RIGHT"]))) {
             velocity.x = currentCreativeSpeed;
             direction = Direction::RIGHT;
-        } else if(IsKeyDown(getKeys()["LEFT"])) {
+        } else if((useGamepad && gamepadManager && gamepadManager->isJoystickMovingLeft(getGamepadID())) || (!useGamepad && IsKeyDown(getKeys()["LEFT"]))) {
             velocity.x = -currentCreativeSpeed;
             direction = Direction::LEFT;
         }
         
-        if(IsKeyDown(getKeys()["UP"]) && IsKeyDown(getKeys()["DOWN"])) {
+        if(((useGamepad && IsGamepadButtonDown(getGamepadID(), getGamepadButtons()["UP"])) || (!useGamepad && IsKeyDown(getKeys()["UP"]))) && 
+           ((useGamepad && IsGamepadButtonDown(getGamepadID(), getGamepadButtons()["DOWN"])) || (!useGamepad && IsKeyDown(getKeys()["DOWN"])))) {
             
-        } else if(IsKeyDown(getKeys()["UP"])) {
+        } else if((useGamepad && IsGamepadButtonDown(getGamepadID(), getGamepadButtons()["UP"])) || (!useGamepad && IsKeyDown(getKeys()["UP"]))) {
             velocity.y = -currentCreativeSpeed;
-        } else if(IsKeyDown(getKeys()["DOWN"])) {
+        } else if((useGamepad && IsGamepadButtonDown(getGamepadID(), getGamepadButtons()["DOWN"])) || (!useGamepad && IsKeyDown(getKeys()["DOWN"]))) {
             velocity.y = currentCreativeSpeed;
         }
         
@@ -353,15 +368,20 @@ void Character::movement(float deltaTime) {
         }
     }
     else {
-        if(IsKeyDown(getKeys()["LEFT"]) || IsKeyDown(getKeys()["RIGHT"])) {
-            if(IsKeyDown(getKeys()["LEFT"]) && IsKeyDown(getKeys()["RIGHT"])) {
+        // Check for horizontal movement with hardcoded joystick
+        if((useGamepad && gamepadManager && (gamepadManager->isJoystickMovingLeft(getGamepadID()) || gamepadManager->isJoystickMovingRight(getGamepadID()))) || 
+           (!useGamepad && (IsKeyDown(getKeys()["LEFT"]) || IsKeyDown(getKeys()["RIGHT"])))) {
+            
+            if((useGamepad && gamepadManager && gamepadManager->isJoystickMovingLeft(getGamepadID()) && gamepadManager->isJoystickMovingRight(getGamepadID())) ||
+               (!useGamepad && IsKeyDown(getKeys()["LEFT"]) && IsKeyDown(getKeys()["RIGHT"]))) {
                 if(velocity.x > 0) {
                     velocity.x = std::max(0.0f, velocity.x - friction * deltaTime);
                 } else if(velocity.x < 0) {
                     velocity.x = std::min(0.0f, velocity.x + friction * deltaTime);
                 }
             } 
-            else if(IsKeyDown(getKeys()["RIGHT"])) {
+            else if((useGamepad && gamepadManager && gamepadManager->isJoystickMovingRight(getGamepadID())) ||
+                   (!useGamepad && IsKeyDown(getKeys()["RIGHT"]))) {
                 direction = Direction::RIGHT;
                 float targetSpeed = isRunning ? (drawRunning ? maxSpeed * 1.3f : maxSpeed) : speed;
                 
@@ -369,7 +389,8 @@ void Character::movement(float deltaTime) {
                     velocity.x = std::min(targetSpeed, velocity.x + acceleration * deltaTime);
                 }
             }
-            else if(IsKeyDown(getKeys()["LEFT"])) {
+            else if((useGamepad && gamepadManager && gamepadManager->isJoystickMovingLeft(getGamepadID())) ||
+                   (!useGamepad && IsKeyDown(getKeys()["LEFT"]))) {
                 direction = Direction::LEFT;
                 float targetSpeed = isRunning ? (drawRunning ? -maxSpeed * 1.3f : -maxSpeed) : -speed;
                 
@@ -390,7 +411,7 @@ void Character::movement(float deltaTime) {
             }
         }
         if(state==SpriteState::ON_GROUND) {
-            if(IsKeyDown(getKeys()["DOWN"])) {
+            if((!useGamepad && IsKeyDown(getKeys()["DOWN"])) || (useGamepad && IsGamepadButtonDown(getGamepadID(), getGamepadButtons()["DOWN"]))) {
                 isDucking = true;
                 velocity.x = 0;
             } else {
@@ -399,7 +420,7 @@ void Character::movement(float deltaTime) {
         } else {
             isDucking = false;
         }
-        if(IsKeyPressed(getKeys()["UP"]) && state == SpriteState::ON_GROUND) {
+        if(((!useGamepad && IsKeyPressed(getKeys()["UP"])) || (useGamepad && IsGamepadButtonPressed(getGamepadID(), getGamepadButtons()["UP"]))) && state == SpriteState::ON_GROUND) {
             velocity.y = jumpSpeed;
             state = SpriteState::JUMPING;
             floatTimeAcum = 0.0f;
@@ -407,7 +428,7 @@ void Character::movement(float deltaTime) {
         }
         if(state == SpriteState::JUMPING) {
             bool isNearPeak = (velocity.y > -50.0f && velocity.y <= 0.0f);
-            if(isNearPeak && floatTimeAcum < floatTime && IsKeyDown(getKeys()["UP"])) {
+            if(isNearPeak && floatTimeAcum < floatTime && ((!useGamepad && IsKeyDown(getKeys()["UP"])) || (useGamepad && IsGamepadButtonDown(getGamepadID(), getGamepadButtons()["UP"])))) {
                 velocity.y += World::gravity * deltaTime * 0.1f;
                 floatTimeAcum += deltaTime;
             } else {
@@ -418,12 +439,14 @@ void Character::movement(float deltaTime) {
             }
         }
     }
-    if(IsKeyPressed(getKeys()["CONTROL"]) && type==CharacterType::FLOWER) {
+    if(((!useGamepad && IsKeyPressed(getKeys()["CONTROL"])) || (useGamepad && IsGamepadButtonPressed(getGamepadID(), getGamepadButtons()["CONTROL"]))) && type==CharacterType::FLOWER) {
         if(direction == Direction::RIGHT) {
             fireball.push_back(Fireball({position.x + size.x - 4, position.y+size.y - 34}, Direction::RIGHT, 2.0f));
         } else {
             fireball.push_back(Fireball({position.x - 16 + 4, position.y+size.y - 34}, Direction::LEFT, 2.0f));
         }
+        isThrowingFireball = true;
+        throwingFireballAcum = 0.0f;
         PlaySound(ResourceManager::getSound()["Fireball"]);
     }
     
@@ -595,6 +618,7 @@ void Character::collisionBlock(Block* block) {
 void Character::collisionEnemy(Enemy* enemy) {
     if(state == SpriteState::DYING || state == SpriteState::VICTORY) return;
     if(enemy->getState() != SpriteState::DYING && enemy->getState() != SpriteState::TO_BE_REMOVED) {
+        bool useGamepad = IsGamepadAvailable(getGamepadID());
         CollisionType collision = checkCollisionEnemy(enemy);
         if(invincible == true && collision != CollisionType::NONE){
             enemy->beingHit(HitType::STOMP);
@@ -609,7 +633,7 @@ void Character::collisionEnemy(Enemy* enemy) {
         else if(collision == CollisionType::SOUTH && enemy->getAuxiliaryState() != SpriteState::INVULNERABLE) {
             if( state == SpriteState::FALLING && enemy->getState() != SpriteState::DYING && enemy->getState() != SpriteState::TO_BE_REMOVED) {
                 position.y = enemy->getY() - size.y;
-                if(IsKeyDown(getKeys()["CONTROL"])) {
+                if((!useGamepad && IsKeyDown(getKeys()["CONTROL"])) || (useGamepad && IsGamepadButtonDown(getGamepadID(), getGamepadButtons()["CONTROL"]))) {
                     velocity.y = -400.0f;
                 }
                 else {
@@ -1068,120 +1092,6 @@ void Character::copyState(const Character& other) {
     throwingFireballAcum = other.throwingFireballAcum;
 }
 
-void Character::jump(float deltaTime) {
-    if(world->getGameMode() == GameMode::TESTER && creativeMode) {
-        float creativeSpeed = 260.0f;
-        float creativeFastSpeed = 400.0f;
-        float currentCreativeSpeed = isRunning ? creativeFastSpeed : creativeSpeed;
-        velocity.y = -currentCreativeSpeed;
-        state = SpriteState::JUMPING;
-    } else {
-        if (state == SpriteState::ON_GROUND) {
-            velocity.y = jumpSpeed;
-            state = SpriteState::JUMPING;
-            floatTimeAcum = 0.0f;
-            PlaySound(ResourceManager::getSound()["Jump"]);
-        }
-    }
-}
-
-void Character::duck(float deltaTime) {
-    if(world->getGameMode() == GameMode::TESTER && creativeMode) {
-        float creativeSpeed = 260.0f;
-        float creativeFastSpeed = 400.0f;
-        float currentCreativeSpeed = isRunning ? creativeFastSpeed : creativeSpeed;
-        velocity.y = currentCreativeSpeed;
-        state = SpriteState::FALLING;
-    } else {
-        if (state == SpriteState::ON_GROUND) {
-            isDucking = true;
-            velocity.x = 0;
-        }
-    }
-}
-
-void Character::moveLeft(float deltaTime) {
-    if(world->getGameMode() == GameMode::TESTER && creativeMode) {
-        float creativeSpeed = 260.0f;
-        velocity.x = -creativeSpeed;
-        direction = Direction::LEFT;
-        isRunning = false;
-    } else {
-        direction = Direction::LEFT;
-        isRunning = false;
-        float targetSpeed = -speed;
-        
-        if (velocity.x > targetSpeed) {
-            velocity.x = std::max(targetSpeed, velocity.x - acceleration * deltaTime);
-        }
-    }
-}
-
-void Character::moveRight(float deltaTime) {
-    if(world->getGameMode() == GameMode::TESTER && creativeMode) {
-        float creativeSpeed = 260.0f;
-        velocity.x = creativeSpeed;
-        direction = Direction::RIGHT;
-        isRunning = false;
-    } else {
-        direction = Direction::RIGHT;
-        isRunning = false;
-        float targetSpeed = speed;
-        
-        if (velocity.x < targetSpeed) {
-            velocity.x = std::min(targetSpeed, velocity.x + acceleration * deltaTime);
-        }
-    }
-}
-
-void Character::runFastLeft(float deltaTime) {
-    if(world->getGameMode() == GameMode::TESTER && creativeMode) {
-        float creativeFastSpeed = 400.0f;
-        velocity.x = -creativeFastSpeed;
-        direction = Direction::LEFT;
-        isRunning = true;
-    } else {
-        direction = Direction::LEFT;
-        isRunning = true;
-        float targetSpeed = drawRunning ? -maxSpeed * 1.3f : -maxSpeed;
-        
-        if (velocity.x > targetSpeed) {
-            velocity.x = std::max(targetSpeed, velocity.x - acceleration * deltaTime);
-        }
-    }
-}
-
-void Character::runFastRight(float deltaTime) {
-    if(world->getGameMode() == GameMode::TESTER && creativeMode) {
-        float creativeFastSpeed = 400.0f;
-        velocity.x = creativeFastSpeed;
-        direction = Direction::RIGHT;
-        isRunning = true;
-    } else {
-        direction = Direction::RIGHT;
-        isRunning = true;
-        float targetSpeed = drawRunning ? maxSpeed * 1.3f : maxSpeed;
-        
-        if (velocity.x < targetSpeed) {
-            velocity.x = std::min(targetSpeed, velocity.x + acceleration * deltaTime);
-        }
-    }
-}
-
-void Character::throwFireball(float deltaTime) {
-    if (type == CharacterType::FLOWER) {
-        isThrowingFireball = true;
-        throwingFireballAcum = 0.0f;
-        
-        if (direction == Direction::RIGHT) {
-            fireball.push_back(Fireball({position.x + size.x - 4, position.y + size.y - 34}, Direction::RIGHT, 2.0f));
-        } else {
-            fireball.push_back(Fireball({position.x - 16 + 4, position.y + size.y - 34}, Direction::LEFT, 2.0f));
-        }
-        PlaySound(ResourceManager::getSound()["Fireball"]);
-    }
-}
-
 void Character::setModePlayer(ModePlayer mode) {
     this->modePlayer = mode;
 }
@@ -1203,4 +1113,33 @@ std::unordered_map<std::string, int>& Character::getKeys() {
         {"SHIFT", KEY_LEFT_SHIFT}
     };
     return defaultKeys;
+}
+
+void Character::setGamepadManager(GamepadManager* gamepadManager) {
+    this->gamepadManager = gamepadManager;
+}
+
+std::unordered_map<std::string, int>& Character::getGamepadButtons() {
+    if (gamepadManager) {
+        return gamepadManager->getButtons(modePlayer);
+    }
+    static std::unordered_map<std::string, int> defaultButtons = {
+        {"UP", GAMEPAD_BUTTON_RIGHT_FACE_UP},
+        {"DOWN", GAMEPAD_BUTTON_RIGHT_TRIGGER_2},
+        {"CONTROL", GAMEPAD_BUTTON_RIGHT_FACE_RIGHT},
+        {"SHIFT", GAMEPAD_BUTTON_LEFT_TRIGGER_2}
+    };
+    return defaultButtons;
+}
+
+int Character::getGamepadID() const {
+    switch(modePlayer) {
+        case ModePlayer::ONEPLAYER:
+        case ModePlayer::FIRSTPLAYER:
+            return 0;
+        case ModePlayer::SECONDPLAYER:
+            return 1;
+        default:
+            return 0;
+    }
 }

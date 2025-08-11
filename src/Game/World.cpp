@@ -43,11 +43,13 @@ World::World(int width, int height, const std::string& title, int FPS)
     gameMode(GameMode::PLAYER),
     gamePlay(GamePlay::PLAYDEVELOPEDMAP) {
         keyManager.initializeKeys();
+        gamepadManager.initializeButtons();
         map.setCharacters(characters);
         modeWorld = ModeWorld::MULTIPLAYER;
         gamePlay = GamePlay::PLAYCUSTOMMAP;
         gameState = new TitleScreenState(this);
         keyManager.loadCurrentKeyManager();
+        gamepadManager.loadCurrentGamepadManager();
 }
 
 World::~World() {
@@ -161,6 +163,10 @@ GameHud* World::getGameHud() {
 
 KeyManager* World::getKeyManager() {
     return &keyManager;
+}
+
+GamepadManager* World::getGamepadManager() {
+    return &gamepadManager;
 }
 
 void World::playPlayerDownMusic() {

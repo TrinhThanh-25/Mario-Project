@@ -3,7 +3,7 @@
  <editorsettings>
   <export target="../build/resources/Map/map1.json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" name="MarioSet" tilewidth="128" tileheight="128" tilecount="149" columns="0">
+ <tileset firstgid="1" name="MarioSet" tilewidth="128" tileheight="128" tilecount="153" columns="0">
   <grid orientation="orthogonal" width="1" height="1"/>
   <tile id="0">
    <image source="Mario/SmallMario_0.png" width="32" height="40"/>
@@ -451,6 +451,18 @@
   </tile>
   <tile id="148">
    <image source="Block/InvisivleCoinBlock.png" width="32" height="32"/>
+  </tile>
+  <tile id="149">
+   <image source="Tile/tile_CourseClearPoleBackBody.png" width="32" height="32"/>
+  </tile>
+  <tile id="150">
+   <image source="Tile/tile_CourseClearPoleBackTop.png" width="32" height="32"/>
+  </tile>
+  <tile id="151">
+   <image source="Tile/tile_CourseClearPoleFrontBody.png" width="32" height="32"/>
+  </tile>
+  <tile id="152">
+   <image source="Tile/tile_CourseClearPoleFrontTop.png" width="32" height="32"/>
   </tile>
  </tileset>
  <layer id="1" name="Tile Layer 1" width="200" height="50">

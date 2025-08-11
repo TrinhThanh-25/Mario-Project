@@ -23,6 +23,7 @@ class Tile;
 class Enemy;
 class GameHud;
 class KeyManager;
+class GamepadManager;
 
 class Character : public Sprite {
     protected:
@@ -101,8 +102,8 @@ class Character : public Sprite {
         float throwingFireballTime;
         float throwingFireballAcum;
 
-        // KeyManager
         KeyManager* keyManager;
+        GamepadManager* gamepadManager;
 
     public:
         Character(CharacterName characterName, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float acceleration, float friction, float floatTime, float jumpSpeed, int initialLives);
@@ -174,16 +175,12 @@ class Character : public Sprite {
         
         void setKeyManager(KeyManager* keyManager);
         std::unordered_map<std::string, int>& getKeys();
+        
+        void setGamepadManager(GamepadManager* gamepadManager);
+        std::unordered_map<std::string, int>& getGamepadButtons();
+        int getGamepadID() const;
 
         void copyState(const Character& other);
-
-        void jump(float deltaTime);
-        void duck(float deltaTime);
-        void moveLeft(float deltaTime);
-        void moveRight(float deltaTime);
-        void runFastLeft(float deltaTime);
-        void runFastRight(float deltaTime);
-        void throwFireball(float deltaTime);
 };
 
 #endif

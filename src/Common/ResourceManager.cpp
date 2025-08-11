@@ -626,6 +626,10 @@ void ResourceManager::loadTexture() {
     for (int i=1;i<=106;i++){
         texture[std::to_string(i)] = LoadTexture(("../resources/Tile/" + std::to_string(i) + ".png").c_str());
     }
+    texture["CourseClearPoleBackBody"] = LoadTexture("../resources/Tile/tile_CourseClearPoleBackBody.png");
+    texture["CourseClearPoleFrontBody"] = LoadTexture("../resources/Tile/tile_CourseClearPoleFrontBody.png");
+    texture["CourseClearPoleBackTop"] = LoadTexture("../resources/Tile/tile_CourseClearPoleBackTop.png");
+    texture["CourseClearPoleFrontTop"] = LoadTexture("../resources/Tile/tile_CourseClearPoleFrontTop.png");
 
     //Effect
     texture["Puft0"] = LoadTexture("../resources/Effect/Puft_0.png");
@@ -705,7 +709,7 @@ void ResourceManager::loadTexture() {
     texture["GuiPeachSecondPlayer"] = LoadTexture("../resources/gui/peachSecondPlayer.png");
 
     // Tileset
-    for (int i = 0; i < 149; ++i) {
+    for (int i = 0; i < 153; ++i) {
         std::string id = "Tileset" + std::to_string(i + 1); // ID từ 1 đến 149
         std::string path = "../resources/Tileset/" + std::to_string(i) + ".png"; // file từ 0.png đến 148.png
         texture[id] = LoadTexture(path.c_str());

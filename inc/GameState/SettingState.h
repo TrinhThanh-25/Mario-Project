@@ -11,6 +11,7 @@ class SettingState : public GameState {
     private:
         Camera2D* camera;
         KeyManager* keyManager;
+        GamepadManager* gamepadManager;
 
         GameStateType stateBeforeSetting;
 
@@ -26,13 +27,15 @@ class SettingState : public GameState {
         float speed;
 
         ModePlayer curModePlayer;
-        std::string curKeyName;
+        std::string curInputName;
         KeyboardKey curKeyValue;
+        int curGamepadButtonValue;
         Rectangle curRect;
-        bool isEditingKey = false;
+        bool isEditing = false;
+        bool isEditingGamepad = false;
 
         bool isDefaultNotified = false;
-        bool isKeyConflictedNotified = false;
+        bool isConflictNotified = false;
         bool isConflict = false;
         
     public:
@@ -50,11 +53,15 @@ class SettingState : public GameState {
         void drawVolumeAndButtonSetting();
         void updateKeyControlSetting();
         void drawKeyControlSetting();
+        void updateGamepadControlSetting();
+        void drawGamepadControlSetting();
         void updateRestoreDefaultButton();
-        void drawKeyButton(ModePlayer modePlayer, const std::string& keyName, int keyValue, float x, float y, float width, float height);
+        void drawInputButton(ModePlayer modePlayer, const std::string& inputName, int inputValue, float x, float y, float width, float height, bool isGamepad);
         std::string getKeyName(int keyValue);
+        std::string getGamepadButtonName(int buttonValue);
+        std::string getInputName(int inputValue, bool isGamepad);
         std::string getFunctionName(const std::string& keyName);
-        void checkKeyButtonClick(Vector2 mousePos, Rectangle buttonRect, ModePlayer curModePlayer, std::string curKeyName);
+        void checkInputButtonClick(Vector2 mousePos, Rectangle buttonRect, ModePlayer curModePlayer, std::string inputName, bool isGamepad);
         bool isMouseInClippingArea() const;
         void drawRestoreDefaultButton();
         Rectangle getRestoreDefaultButtonRect() const;
@@ -62,8 +69,8 @@ class SettingState : public GameState {
 
         void updateConfirmDefaultSetting();
         void drawConfirmDefaultSetting();
-        void updateKeyConflictNotification();
-        void drawKeyConflictNotification();
+        void updateConflictNotification();
+        void drawConflictNotification();
 };
 
 #endif

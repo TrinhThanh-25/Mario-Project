@@ -17,7 +17,7 @@ class KeyManager {
         void initializeKeys();
         bool setKey(ModePlayer modePlayer, const std::string& keyName, int keyValue);
         std::unordered_map<std::string, int>& getKeys(ModePlayer modePlayer);
-        bool isKeyConflicted(ModePlayer modePlayer, const std::string& keyName, int keyValue) const;
+        bool isKeyConflicted(ModePlayer modePlayer, const std::string& keyName, int keyValue);
         ModePlayer getModePlayer(ModePlayer modePlayer) const;
         void setKeyManagerForCharacter(Character* character, ModePlayer modePlayer);
 

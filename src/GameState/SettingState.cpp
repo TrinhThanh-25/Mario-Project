@@ -7,6 +7,7 @@
 #include "GameState/TimeUpState.h"
 #include "Common/ResourceManager.h"
 #include "Common/AudioManager.h"
+#include "Common/GamepadManager.h"
 #include "SaveGame.h"
 #include "GameState/GameStateFactory.h"
 
@@ -58,7 +59,7 @@ SettingState::SettingState(World* world)
     musicVolumeSlider("MUSIC",{(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 - 50}, 300, 0.0f, 1.0f, AudioManager::getMusicVolume(), 36),
     sfxVolumeSlider("SFX",{(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 10}, 300, 0.0f, 1.0f, AudioManager::getSfxVolume(), 36),
     backgroundPositionx(0.0f), speed(40.0f),
-    camera(world->getCamera()), keyManager(world->getKeyManager()){
+    camera(world->getCamera()), keyManager(world->getKeyManager()), gamepadManager(world->getGamepadManager()){
         camera->offset = { (float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f };
         camera->target = { (float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f };
         camera->rotation = 0.0f;
@@ -75,12 +76,12 @@ void SettingState::update() {
         updateConfirmDefaultSetting();
         return;
     }
-    else if(isKeyConflictedNotified) {
-        updateKeyConflictNotification();
+    else if(isConflictNotified) {
+        updateConflictNotification();
         return;
     }
     float availableHeight = GetScreenHeight() - 100;
-    float contentHeight = (stateBeforeSetting == GameStateType::TITLE_SCREEN) ? 1200.0f : 1350.0f;
+    float contentHeight = (stateBeforeSetting == GameStateType::TITLE_SCREEN) ? 2500.0f : 2650.0f;  // Updated for new gamepad layout
     float maxHeight = contentHeight;
     float wheelMove = GetMouseWheelMove();
     if(wheelMove != 0) {
@@ -93,6 +94,7 @@ void SettingState::update() {
     }
     updateVolumeAndButtonSetting();
     updateKeyControlSetting();
+    updateGamepadControlSetting();
     updateRestoreDefaultButton();
 }
 
@@ -102,13 +104,14 @@ void SettingState::draw() {
     BeginMode2D(*camera);
     drawVolumeAndButtonSetting();
     drawKeyControlSetting();
+    drawGamepadControlSetting();
     EndMode2D();
     EndScissorMode();
     drawRestoreDefaultButton();
     if(isDefaultNotified) {
         drawConfirmDefaultSetting();
-    } else if(isKeyConflictedNotified) {
-        drawKeyConflictNotification();
+    } else if(isConflictNotified) {
+        drawConflictNotification();
     }
 }
 
@@ -181,7 +184,7 @@ void SettingState::updateVolumeAndButtonSetting() {
         }
         else if(returnButton.isPressed(camera)) {
             if (isConflict) {
-                isKeyConflictedNotified = true;
+                isConflictNotified = true;
             } else {
                 world->resetGame();
             }
@@ -192,7 +195,7 @@ void SettingState::updateVolumeAndButtonSetting() {
     }
     if (IsKeyPressed(KEY_ESCAPE)) {
         if (isConflict) {
-            isKeyConflictedNotified = true;
+            isConflictNotified = true;
         } else {
             world->resetGame();
         }
@@ -219,7 +222,7 @@ void SettingState::updateKeyControlSetting() {
     Vector2 worldMousePos = GetScreenToWorld2D(mousePos, *camera);
     bool mouseInClipping = isMouseInClippingArea();
     
-    if(isEditingKey) {
+    if(isEditing && !isEditingGamepad) {
         curKeyValue = KeyboardKey::KEY_NULL;
         for (int keyValue = 0; keyValue < 512; keyValue++) {
             if (IsKeyPressed(keyValue)) {
@@ -228,16 +231,15 @@ void SettingState::updateKeyControlSetting() {
             }
         }
         if (curKeyValue != KeyboardKey::KEY_NULL) {
-            keyManager->setKey(curModePlayer, curKeyName, static_cast<int>(curKeyValue));
+            keyManager->setKey(curModePlayer, curInputName, static_cast<int>(curKeyValue));
             keyManager->saveCurrentKeyManager();
             
-            // Cập nhật trạng thái conflict của toàn bộ hệ thống
             updateConflictStatus();
             
-            isEditingKey = false;
+            isEditing = false;
         }
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && mouseInClipping && !CheckCollisionPointRec(worldMousePos, curRect)) {
-            isEditingKey = false;
+            isEditing = false;
         }
     }
     
@@ -264,7 +266,7 @@ void SettingState::updateKeyControlSetting() {
         
         for (int i = 0; i < 6; i++) {
             float rowY = currentY + (i * rowHeight);
-            checkKeyButtonClick(worldMousePos, Rectangle{startColumn2X, rowY, 2*columnWidth + columnSpacing, buttonHeight}, ModePlayer::ONEPLAYER, keyNames[i]);
+            checkInputButtonClick(worldMousePos, Rectangle{startColumn2X, rowY, 2*columnWidth + columnSpacing, buttonHeight}, ModePlayer::ONEPLAYER, keyNames[i], false);
         }
         
         currentY += (6 * rowHeight) + 50.0f;
@@ -272,8 +274,8 @@ void SettingState::updateKeyControlSetting() {
         currentY += 50.0f;
         for (int i = 0; i < 6; i++) {
             float rowY = currentY + (i * rowHeight);
-            checkKeyButtonClick(worldMousePos, Rectangle{startColumn2X, rowY, columnWidth, buttonHeight}, ModePlayer::FIRSTPLAYER, keyNames[i]);
-            checkKeyButtonClick(worldMousePos, Rectangle{startColumn3X, rowY, columnWidth, buttonHeight}, ModePlayer::SECONDPLAYER, keyNames[i]);
+            checkInputButtonClick(worldMousePos, Rectangle{startColumn2X, rowY, columnWidth, buttonHeight}, ModePlayer::FIRSTPLAYER, keyNames[i], false);
+            checkInputButtonClick(worldMousePos, Rectangle{startColumn3X, rowY, columnWidth, buttonHeight}, ModePlayer::SECONDPLAYER, keyNames[i], false);
         }
     }
 }
@@ -313,7 +315,7 @@ void SettingState::drawKeyControlSetting() {
         
         std::string functionName = getFunctionName(keyName);
         DrawText(functionName.c_str(), startColumn1X, rowY, 40, WHITE);
-        drawKeyButton(ModePlayer::ONEPLAYER, keyName, onePlayerKeys[keyName], startColumn2X, rowY, 2*columnWidth + columnSpacing, buttonHeight);
+        drawInputButton(ModePlayer::ONEPLAYER, keyName, onePlayerKeys[keyName], startColumn2X, rowY, 2*columnWidth + columnSpacing, buttonHeight, false);
     }
     currentY += (6 * rowHeight) + 50.0f;
     
@@ -333,23 +335,30 @@ void SettingState::drawKeyControlSetting() {
         
         std::string functionName = getFunctionName(keyName);
         DrawText(functionName.c_str(), startColumn1X, rowY + 10, 40, WHITE);
-        drawKeyButton(ModePlayer::FIRSTPLAYER, keyName, firstPlayerKeys[keyName], startColumn2X, rowY, columnWidth, buttonHeight);
-        drawKeyButton(ModePlayer::SECONDPLAYER, keyName, secondPlayerKeys[keyName], startColumn3X, rowY, columnWidth, buttonHeight);
+        drawInputButton(ModePlayer::FIRSTPLAYER, keyName, firstPlayerKeys[keyName], startColumn2X, rowY, columnWidth, buttonHeight, false);
+        drawInputButton(ModePlayer::SECONDPLAYER, keyName, secondPlayerKeys[keyName], startColumn3X, rowY, columnWidth, buttonHeight, false);
     }
 }
 
-void SettingState::drawKeyButton(ModePlayer modePlayer, const std::string& keyName, int keyValue, float x, float y, float width, float height) {
+void SettingState::drawInputButton(ModePlayer modePlayer, const std::string& inputName, int inputValue, float x, float y, float width, float height, bool isGamepad) {
     Vector2 mousePos = GetMousePosition();
     mousePos.x += camera->target.x - camera->offset.x;
     mousePos.y += camera->target.y - camera->offset.y;
     
     bool mouseInClipping = isMouseInClippingArea();
     bool isHovering = mouseInClipping && (mousePos.x >= x && mousePos.x <= x + width &&mousePos.y >= y && mousePos.y <= y + height);
-    bool isEditing = (isEditingKey && curKeyName == keyName && curModePlayer == modePlayer);
-    bool hasConflict = keyManager->isKeyConflicted(modePlayer, keyName, keyValue);
+    //
+    bool isEditingThis, hasConflict;
+    if (isGamepad) {
+        isEditingThis = (isEditing && isEditingGamepad && curInputName == inputName && curModePlayer == modePlayer);
+        hasConflict = gamepadManager->isButtonConflicted(modePlayer, inputName, inputValue);
+    } else {
+        isEditingThis = (isEditing && !isEditingGamepad && curInputName == inputName && curModePlayer == modePlayer);
+        hasConflict = keyManager->isKeyConflicted(modePlayer, inputName, inputValue);
+    }
     
     Color buttonColor, borderColor, textColor;
-    if (isEditing) {
+    if (isEditingThis) {
         buttonColor = Fade(RED, 0.7f);
         textColor = WHITE;
     } else if (hasConflict) {
@@ -367,10 +376,18 @@ void SettingState::drawKeyButton(ModePlayer modePlayer, const std::string& keyNa
     int segments = 0;
     DrawRectangleRounded(Rectangle{x, y, width, height}, roundness, segments, buttonColor);
     
-    std::string displayText = isEditing ? "Press Key..." : getKeyName(keyValue);
-    int fontSize = (isHovering || isEditing) ? 18 : 16; 
+    std::string displayText = isEditingThis ? (isGamepad ? "Press Button..." : "Press Key...") : getInputName(inputValue, isGamepad);
+    int fontSize = (isHovering || isEditingThis) ? 18 : 16; 
     int textWidth = MeasureText(displayText.c_str(), fontSize);
     DrawText(displayText.c_str(), x + width/2 - textWidth/2, y + height/2 - fontSize/2, fontSize, textColor);
+}
+
+std::string SettingState::getInputName(int inputValue, bool isGamepad) {
+    if (isGamepad) {
+        return getGamepadButtonName(inputValue);
+    } else {
+        return getKeyName(inputValue);
+    }
 }
 
 std::string SettingState::getKeyName(int keyValue) {
@@ -455,14 +472,15 @@ std::string SettingState::getFunctionName(const std::string& keyName) {
     return "Unknown";
 }
 
-void SettingState::checkKeyButtonClick(Vector2 mousePos, Rectangle buttonRect, ModePlayer curModePlayer, std::string curKeyName) {
+void SettingState::checkInputButtonClick(Vector2 mousePos, Rectangle buttonRect, ModePlayer curModePlayer, std::string inputName, bool isGamepad) {
     if (CheckCollisionPointRec(mousePos, buttonRect)) {
-        if (isEditingKey) {
-            isEditingKey = false;
+        if (isEditing) {
+            isEditing = false;
         } else {
-            isEditingKey = true;
+            isEditing = true;
+            isEditingGamepad = isGamepad;
             this->curModePlayer = curModePlayer;
-            this->curKeyName = curKeyName;
+            this->curInputName = inputName;
             this->curRect = buttonRect;
         }
     }
@@ -489,6 +507,18 @@ void SettingState::updateConflictStatus() {
             }
         }
     }
+    for (ModePlayer mode : modes) {
+        auto& buttons = gamepadManager->getButtons(mode);
+        for (const std::string& buttonName : keyNames) {
+            if (buttons.find(buttonName) != buttons.end()) {
+                int buttonValue = buttons[buttonName];
+                if (gamepadManager->isButtonConflicted(mode, buttonName, buttonValue)) {
+                    isConflict = true;
+                    return;
+                }
+            }
+        }
+    }
 }
 
 void SettingState::updateConfirmDefaultSetting() {
@@ -498,6 +528,8 @@ void SettingState::updateConfirmDefaultSetting() {
         if (CheckCollisionPointRec(mousePos, yesButton)) {
             keyManager->setDefaultKeyManager();
             keyManager->saveCurrentKeyManager();
+            gamepadManager->setDefaultGamepadManager();
+            gamepadManager->saveCurrentGamepadManager();
             updateConflictStatus();
             isDefaultNotified = false;
         }
@@ -548,31 +580,28 @@ void SettingState::drawConfirmDefaultSetting() {
              noButton.y + noButton.height/2 - noFontSize/2, noFontSize, WHITE);
 }
 
-void SettingState::updateKeyConflictNotification() {
+void SettingState::updateConflictNotification() {
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         Vector2 mousePos = GetMousePosition();
         Rectangle okButton = {(float)GetScreenWidth()/2 - 50, (float)GetScreenHeight()/2 + 80, 100, 50};
         if (CheckCollisionPointRec(mousePos, okButton)) {
-            isKeyConflictedNotified = false;
+            isConflictNotified = false;
         }
     }
     if (IsKeyPressed(KEY_ESCAPE)) {
-        isKeyConflictedNotified = false;
+        isConflictNotified = false;
     }
 }
 
-void SettingState::drawKeyConflictNotification() {
+void SettingState::drawConflictNotification() {
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(BLACK, 0.7f));
     
     // Main dialog box
     Rectangle dialogBox = {(float)GetScreenWidth()/2 - 300, (float)GetScreenHeight()/2 - 100, 600, 200};
     DrawRectangleRounded(dialogBox, 0.2f, 0, Fade(DARKGRAY, 0.9f));
     
-    // Warning icon (simple exclamation mark)
-    DrawText("!", GetScreenWidth()/2 - 300 + 30, GetScreenHeight()/2 - 80, 60, RED);
-    
     // Title text
-    const char* titleText = "Cannot save. Key already in use.";
+    const char* titleText = "Cannot save. Settings conflict detected.";
     int titleFontSize = 32;
     int titleWidth = MeasureText(titleText, titleFontSize);
     DrawText(titleText, GetScreenWidth()/2 - titleWidth/2 + 20, GetScreenHeight()/2 - 60, titleFontSize, WHITE);
@@ -590,4 +619,152 @@ void SettingState::drawKeyConflictNotification() {
     int okTextWidth = MeasureText(okText, okFontSize);
     DrawText(okText, okButton.x + okButton.width/2 - okTextWidth/2,
              okButton.y + okButton.height/2 - okFontSize/2, okFontSize, WHITE);
+}
+
+void SettingState::updateGamepadControlSetting() {
+    Vector2 mousePos = GetMousePosition();
+    Vector2 worldMousePos = GetScreenToWorld2D(mousePos, *camera);
+    bool mouseInClipping = isMouseInClippingArea();
+    
+    if(isEditing && isEditingGamepad) {
+        curGamepadButtonValue = -1;
+        // Check all gamepad buttons
+        for (int buttonValue = 0; buttonValue < 32; buttonValue++) {
+            int gamepadID = (curModePlayer == ModePlayer::SECONDPLAYER) ? 1 : 0;
+            if (IsGamepadAvailable(gamepadID) && IsGamepadButtonPressed(gamepadID, buttonValue)) {
+                curGamepadButtonValue = buttonValue;
+                break;
+            }
+        }
+        
+        if (curGamepadButtonValue != -1) {
+            gamepadManager->setButton(curModePlayer, curInputName, curGamepadButtonValue);
+            gamepadManager->saveCurrentGamepadManager();
+            
+            // Cập nhật trạng thái conflict của toàn bộ hệ thống
+            updateConflictStatus();
+            
+            isEditing = false;
+        }
+        
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && mouseInClipping && !CheckCollisionPointRec(worldMousePos, curRect)) {
+            isEditing = false;
+        }
+    }
+    
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && mouseInClipping) {
+        float startY;
+        if(stateBeforeSetting == GameStateType::TITLE_SCREEN) {
+            startY = 1600.0f;  // 650 + 900 + 50 buffer
+        } else {
+            startY = 1750.0f;  // 800 + 900 + 50 buffer
+        }
+        float currentY = startY + 50.0f;
+        float fadeX = 100.0f;
+        currentY += 50.0f;
+        float columnSpacing = 50.0f;
+        float columnWidth = 400.0f;
+        float startColumn1X = fadeX + columnSpacing;
+        float startColumn2X = startColumn1X + columnWidth + columnSpacing;
+        float startColumn3X = startColumn2X + columnWidth + columnSpacing;
+        float rowHeight = 50.0f;
+        float buttonHeight = 50.0f;
+        std::vector<std::string> buttonNames = {"UP", "DOWN", "CONTROL", "SHIFT"};
+        
+        for (int i = 0; i < 4; i++) {
+            float rowY = currentY + (i * rowHeight);
+            checkInputButtonClick(worldMousePos, Rectangle{startColumn2X, rowY, 2*columnWidth + columnSpacing, buttonHeight}, ModePlayer::ONEPLAYER, buttonNames[i], true);
+        }
+        
+        currentY += (4 * rowHeight) + 50.0f;
+        currentY += 50.0f;
+        currentY += 50.0f;
+        for (int i = 0; i < 4; i++) {
+            float rowY = currentY + (i * rowHeight);
+            checkInputButtonClick(worldMousePos, Rectangle{startColumn2X, rowY, columnWidth, buttonHeight}, ModePlayer::FIRSTPLAYER, buttonNames[i], true);
+            checkInputButtonClick(worldMousePos, Rectangle{startColumn3X, rowY, columnWidth, buttonHeight}, ModePlayer::SECONDPLAYER, buttonNames[i], true);
+        }
+    }
+}
+
+void SettingState::drawGamepadControlSetting() {
+    float startPositionY;
+    if(stateBeforeSetting == GameStateType::TITLE_SCREEN) {
+        DrawRectangle (100, 1600, 1400, 900, Fade(BLACK, 0.7f));
+        startPositionY = 1600.0f;  // 650 + 900 + 50 buffer
+    } else {
+        DrawRectangle (100, 1750, 1400, 900, Fade(BLACK, 0.7f));
+        startPositionY = 1750.0f;  // 800 + 900 + 50 buffer
+    }
+    DrawText("GAMEPAD CONTROLS", GetScreenWidth()/2.0f - MeasureText("GAMEPAD CONTROLS", 40)/2, startPositionY + 20, 40, WHITE);
+
+    float currentY = startPositionY + 50.0f;
+    std::vector<std::string> buttonNames = {"UP", "DOWN", "CONTROL", "SHIFT"};
+    float fadeX = 100.0f;
+    
+    DrawText("SINGLE PLAYER", GetScreenWidth()/2.0f - MeasureText("SINGLE PLAYER", 30)/2, currentY, 30, YELLOW);
+    currentY += 50.0f;
+    
+    auto& onePlayerButtons = gamepadManager->getButtons(ModePlayer::ONEPLAYER);
+    
+    float columnSpacing = 50.0f;
+    float columnWidth = 400.0f;
+    float startColumn1X = fadeX + columnSpacing;
+    float startColumn2X = startColumn1X + columnWidth + columnSpacing;
+    float startColumn3X = startColumn2X + columnWidth + columnSpacing;
+    float rowHeight = 50.0f;
+    float buttonHeight = 50.0f;
+    
+    for (int i = 0; i < 4; i++) {
+        std::string buttonName = buttonNames[i];
+        float rowY = currentY + (i * rowHeight);
+        
+        std::string functionName = getFunctionName(buttonName);
+        DrawText(functionName.c_str(), startColumn1X, rowY, 40, WHITE);
+        drawInputButton(ModePlayer::ONEPLAYER, buttonName, onePlayerButtons[buttonName], startColumn2X, rowY, 2*columnWidth + columnSpacing, buttonHeight, true);
+    }
+    currentY += (4 * rowHeight) + 50.0f;
+    
+    DrawText("MULTIPLAYER", GetScreenWidth()/2.0f - MeasureText("MULTIPLAYER", 30)/2, currentY, 30, YELLOW);
+    currentY += 50.0f;
+    
+    DrawText("FIRST PLAYER", startColumn2X + columnWidth/2.0f - MeasureText("FIRST PLAYER", 20), currentY, 20, WHITE);
+    DrawText("SECOND PLAYER", startColumn3X + columnWidth/2.0f - MeasureText("SECOND PLAYER", 20), currentY, 20, WHITE);
+    currentY += 50.0f;
+    
+    auto& firstPlayerButtons = gamepadManager->getButtons(ModePlayer::FIRSTPLAYER);
+    auto& secondPlayerButtons = gamepadManager->getButtons(ModePlayer::SECONDPLAYER);
+    
+    for (int i = 0; i < 4; i++) {
+        std::string buttonName = buttonNames[i];
+        float rowY = currentY + (i * rowHeight);
+        
+        std::string functionName = getFunctionName(buttonName);
+        DrawText(functionName.c_str(), startColumn1X, rowY + 10, 40, WHITE);
+        drawInputButton(ModePlayer::FIRSTPLAYER, buttonName, firstPlayerButtons[buttonName], startColumn2X, rowY, columnWidth, buttonHeight, true);
+        drawInputButton(ModePlayer::SECONDPLAYER, buttonName, secondPlayerButtons[buttonName], startColumn3X, rowY, columnWidth, buttonHeight, true);
+    }
+}
+
+std::string SettingState::getGamepadButtonName(int buttonValue) {
+    switch (buttonValue) {
+        case GAMEPAD_BUTTON_LEFT_FACE_UP: return "↑";
+        case GAMEPAD_BUTTON_LEFT_FACE_RIGHT: return "→";
+        case GAMEPAD_BUTTON_LEFT_FACE_DOWN: return "↓";
+        case GAMEPAD_BUTTON_LEFT_FACE_LEFT: return "←";
+        case GAMEPAD_BUTTON_RIGHT_FACE_UP: return "Y";
+        case GAMEPAD_BUTTON_RIGHT_FACE_RIGHT: return "B";
+        case GAMEPAD_BUTTON_RIGHT_FACE_DOWN: return "A";
+        case GAMEPAD_BUTTON_RIGHT_FACE_LEFT: return "X";
+        case GAMEPAD_BUTTON_LEFT_TRIGGER_1: return "LB";
+        case GAMEPAD_BUTTON_LEFT_TRIGGER_2: return "LT";
+        case GAMEPAD_BUTTON_RIGHT_TRIGGER_1: return "RB";
+        case GAMEPAD_BUTTON_RIGHT_TRIGGER_2: return "RT";
+        case GAMEPAD_BUTTON_MIDDLE_LEFT: return "SELECT";
+        case GAMEPAD_BUTTON_MIDDLE: return "HOME";
+        case GAMEPAD_BUTTON_MIDDLE_RIGHT: return "START";
+        case GAMEPAD_BUTTON_LEFT_THUMB: return "L3";
+        case GAMEPAD_BUTTON_RIGHT_THUMB: return "R3";
+        default: return "BUTTON_" + std::to_string(buttonValue);
+    }
 }

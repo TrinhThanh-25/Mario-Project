@@ -181,7 +181,6 @@ void ChooseCustomizedMapState::update()
             button.update();
         }
         
-        // Check for map button clicks
         for (int i = 0; i < mapButtons.size(); i++) {
             if (mapButtons[i].isClicked()) {
                 MapChosen = i;
@@ -205,7 +204,7 @@ void ChooseCustomizedMapState::update()
                     return;
                 }
                 OptionActive = true;
-                break; // Exit loop after finding clicked button
+                break;
             }
         }
         
@@ -324,24 +323,25 @@ void ChooseCustomizedMapState::createDefaultMapFile(const std::string& mapName) 
         std::cerr << "Failed to create new map file: " << mapName << std::endl;
         return;
     }
+    
+    int width = 35;
+    int height = 20;
+    
     newMapFile << "{\n";
-    newMapFile << "    \"width\": 35,\n";
-    newMapFile << "    \"height\": 20,\n";
+    newMapFile << "    \"width\": " << width << ",\n";
+    newMapFile << "    \"height\": " << height << ",\n";
     newMapFile << "    \"layers\": [\n";
     newMapFile << "        {\n";
-    newMapFile << "            \"data\": [\n";
-    for (int y = 0; y < 20; ++y) {
-        newMapFile << "                [";
-        for (int x = 0; x < 35; ++x) {
+    newMapFile << "            \"data\": [";
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            int index = y * width + x;
             newMapFile << "0";
-            if (x < 34) newMapFile << ", ";
+            if (index < (height * width) - 1) newMapFile << ", ";
+            if ((index + 1) % width == 0 && index < (height * width) - 1) newMapFile << "\n                ";
         }
-        newMapFile << "]";
-        if (y < 19) newMapFile << ",";
-        newMapFile << "\n";
     }
-    
-    newMapFile << "            ]\n";
+    newMapFile << "]\n";
     newMapFile << "        }\n";
     newMapFile << "    ]\n";
     newMapFile << "}";

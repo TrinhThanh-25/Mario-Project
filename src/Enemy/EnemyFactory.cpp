@@ -10,7 +10,7 @@ Enemy* EnemyFactory::createEnemy(EnemyType type, Vector2 position, Direction dir
         case EnemyType::BANZAI_BILL:
             size = {128, 128};
             velocity = {direction == Direction::LEFT ? -400.0f : 400.0f, 0};
-            enemy = new BanzaiBill(position, size, velocity, color);
+            enemy = new BanzaiBill({position.x, position.y - 96}, size, velocity, color);
             break;
 
         case EnemyType::BLUE_KOOPA_TROOPA:
