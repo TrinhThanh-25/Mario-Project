@@ -785,6 +785,13 @@ void ResourceManager::loadMusic() {
 void ResourceManager::loadFont()
 {
     font["Font"] = LoadFont("../resources/Font/Pixeled.ttf");
+    static int glyphs[128];
+    for (int i = 32; i <= 126; ++i) glyphs[i-32] = i; // ký tự space, chữ, số, dấu
+    glyphs[126-32+1] = 0x2190; // ←
+    glyphs[126-32+2] = 0x2191; // ↑
+    glyphs[126-32+3] = 0x2192; // →
+    glyphs[126-32+4] = 0x2193; // ↓
+    font["DejavuSans"] = LoadFontEx("../resources/Font/dejavu-sans.bold.ttf", 32, glyphs, 128);
 }
 
 void ResourceManager::unloadTexture() {

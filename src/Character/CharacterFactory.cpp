@@ -18,7 +18,7 @@ Character* CharacterFactory::createCharacter(CharacterName characterName, ModePl
         case CharacterName::MARIO:
             defaultSpeedX = 260.0f;
             defaultMaxSpeedX = 360.0f;
-            defaultJumpSpeed = -600.0f;
+            defaultJumpSpeed = -630.0f;
             defaultPosition = {100, 100};
             defaultVelocity = {0, 0};
             acceleration = 1500.0f;
@@ -38,7 +38,7 @@ Character* CharacterFactory::createCharacter(CharacterName characterName, ModePl
         case CharacterName::TOAD:
             defaultSpeedX = 312.0f;
             defaultMaxSpeedX = 432.0f;
-            defaultJumpSpeed = -540.0f;
+            defaultJumpSpeed = -560.0f;
             defaultPosition = {100, 100};
             defaultVelocity = {0, 0};
             acceleration = 1950.0f;
@@ -48,7 +48,7 @@ Character* CharacterFactory::createCharacter(CharacterName characterName, ModePl
         case CharacterName::PEACH:
             defaultSpeedX = 220.0f;
             defaultMaxSpeedX = 305.0f;
-            defaultJumpSpeed = -570.0f;
+            defaultJumpSpeed = -580.0f;
             defaultPosition = {100, 100};
             defaultVelocity = {0, 0};
             acceleration = 1275.0f;

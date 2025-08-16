@@ -1,56 +1,80 @@
 [
     [
         {
-            "buttonName": "UP",
-            "buttonValue": 3
+            "buttonName": "LEFT",
+            "buttonValue": 4
         },
         {
-            "buttonName": "DOWN",
+            "buttonName": "UP",
             "buttonValue": 7
         },
         {
+            "buttonName": "RIGHT",
+            "buttonValue": 2
+        },
+        {
+            "buttonName": "DOWN",
+            "buttonValue": 12
+        },
+        {
             "buttonName": "CONTROL",
-            "buttonValue": 0
+            "buttonValue": 6
         },
         {
             "buttonName": "SHIFT",
-            "buttonValue": 5
+            "buttonValue": 10
         }
     ],
     [
         {
-            "buttonName": "UP",
-            "buttonValue": 3
+            "buttonName": "LEFT",
+            "buttonValue": 4
         },
         {
-            "buttonName": "DOWN",
+            "buttonName": "UP",
             "buttonValue": 7
         },
         {
+            "buttonName": "RIGHT",
+            "buttonValue": 2
+        },
+        {
+            "buttonName": "DOWN",
+            "buttonValue": 12
+        },
+        {
             "buttonName": "CONTROL",
-            "buttonValue": 0
+            "buttonValue": 6
         },
         {
             "buttonName": "SHIFT",
-            "buttonValue": 5
+            "buttonValue": 10
         }
     ],
     [
         {
-            "buttonName": "UP",
-            "buttonValue": 3
+            "buttonName": "LEFT",
+            "buttonValue": 4
         },
         {
-            "buttonName": "DOWN",
+            "buttonName": "UP",
             "buttonValue": 7
         },
         {
+            "buttonName": "RIGHT",
+            "buttonValue": 2
+        },
+        {
+            "buttonName": "DOWN",
+            "buttonValue": 12
+        },
+        {
             "buttonName": "CONTROL",
-            "buttonValue": 0
+            "buttonValue": 6
         },
         {
             "buttonName": "SHIFT",
-            "buttonValue": 5
+            "buttonValue": 10
         }
     ]
 ]

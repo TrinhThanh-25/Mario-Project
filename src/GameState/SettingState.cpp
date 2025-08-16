@@ -36,8 +36,10 @@ void SettingState::drawRestoreDefaultButton() {
     const char* displayText = "Restore to Default";
     int fontSize = 18;
     int textWidth = MeasureText(displayText, fontSize);
-    DrawText(displayText, buttonRect.x + buttonRect.width/2 - textWidth/2, 
-             buttonRect.y + buttonRect.height/2 - fontSize/2, fontSize, textColor);
+    std::unordered_map<std::string, Font> font = ResourceManager::getFont();
+    DrawTextEx(font["DejavuSans"], displayText, 
+        {(float)(buttonRect.x + buttonRect.width/2 - textWidth/2), (float)(buttonRect.y + buttonRect.height/2 - fontSize/2)}, 
+        (float)fontSize, 0, textColor);
 }
 
 void SettingState::updateRestoreDefaultButton() {
@@ -59,11 +61,11 @@ SettingState::SettingState(World* world)
     musicVolumeSlider("MUSIC",{(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 - 50}, 300, 0.0f, 1.0f, AudioManager::getMusicVolume(), 36),
     sfxVolumeSlider("SFX",{(float)GetScreenWidth() / 2 - 150, (float)GetScreenHeight() / 2 + 10}, 300, 0.0f, 1.0f, AudioManager::getSfxVolume(), 36),
     backgroundPositionx(0.0f), speed(40.0f),
-    camera(world->getCamera()), keyManager(world->getKeyManager()), gamepadManager(world->getGamepadManager()){
-        camera->offset = { (float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f };
-        camera->target = { (float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f };
-        camera->rotation = 0.0f;
-        camera->zoom = 1.0f;
+    keyManager(world->getKeyManager()), gamepadManager(world->getGamepadManager()){
+        camera.offset = { (float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f };
+        camera.target = { (float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f };
+        camera.rotation = 0.0f;
+        camera.zoom = 1.0f;
         updateConflictStatus();
 }
 
@@ -76,20 +78,21 @@ void SettingState::update() {
         updateConfirmDefaultSetting();
         return;
     }
-    else if(isConflictNotified) {
+    if(isConflictNotified) {
         updateConflictNotification();
         return;
     }
+    // Only update settings UI if no notification is shown
     float availableHeight = GetScreenHeight() - 100;
     float contentHeight = (stateBeforeSetting == GameStateType::TITLE_SCREEN) ? 2500.0f : 2650.0f;  // Updated for new gamepad layout
     float maxHeight = contentHeight;
     float wheelMove = GetMouseWheelMove();
     if(wheelMove != 0) {
-        camera->target.y -= wheelMove * 80.0f;
-        if(camera->target.y < 450.0f) {
-            camera->target.y = 450.0f; 
-        } else if(camera->target.y > maxHeight) {
-            camera->target.y = maxHeight; 
+        camera.target.y -= wheelMove * 80.0f;
+        if(camera.target.y < 450.0f) {
+            camera.target.y = 450.0f; 
+        } else if(camera.target.y > maxHeight) {
+            camera.target.y = maxHeight; 
         }
     }
     updateVolumeAndButtonSetting();
@@ -101,7 +104,7 @@ void SettingState::update() {
 void SettingState::draw() {
     DrawTextureRec(ResourceManager::getTexture()["SettingBackground"], Rectangle{(float)backgroundPositionx, 0, (float)GetScreenWidth(), (float)GetScreenHeight()}, Vector2{0, 0}, WHITE);
     BeginScissorMode(0, 50, GetScreenWidth(), GetScreenHeight() - 150);
-    BeginMode2D(*camera);
+    BeginMode2D(camera);
     drawVolumeAndButtonSetting();
     drawKeyControlSetting();
     drawGamepadControlSetting();
@@ -144,8 +147,8 @@ json SettingState::saveToJson() const {
 void SettingState::updateVolumeAndButtonSetting() {
     bool mouseInClipping = isMouseInClippingArea();
     if (mouseInClipping) {
-        musicVolumeSlider.update(camera);
-        sfxVolumeSlider.update(camera);
+        musicVolumeSlider.update(&camera);
+        sfxVolumeSlider.update(&camera);
     }
     AudioManager::setMusicVolume(musicVolumeSlider.getValue());
     AudioManager::setSfxVolume(sfxVolumeSlider.getValue());
@@ -159,19 +162,19 @@ void SettingState::updateVolumeAndButtonSetting() {
     backgroundPositionx += speed * deltaTime;
     if(stateBeforeSetting == GameStateType::TITLE_SCREEN) {
         if (mouseInClipping) {
-            returnButton.update(camera);
-            exitButton.update(camera);
+            returnButton.update(&camera);
+            exitButton.update(&camera);
         }
     } else {
         if (mouseInClipping) {
-            resumeButton.update(camera);
-            restartButton.update(camera);
-            returnButton.update(camera);
-            exitButton.update(camera);
+            resumeButton.update(&camera);
+            restartButton.update(&camera);
+            returnButton.update(&camera);
+            exitButton.update(&camera);
         }
     }
     if (mouseInClipping) {
-        if(resumeButton.isPressed(camera) && stateBeforeSetting != GameStateType::TITLE_SCREEN) {
+    if(resumeButton.isPressed(&camera) && stateBeforeSetting != GameStateType::TITLE_SCREEN) {
             if(world->getGamePlay() == GamePlay::PLAYDEVELOPEDMAP) {
                 SaveGame::loadGame(*world);
             }
@@ -179,17 +182,17 @@ void SettingState::updateVolumeAndButtonSetting() {
                 SaveGame::loadGame(*world, "../resources/SaveGame/" + world->getMap()->getMapFileName() + ".json");
             }
         }
-        else if(restartButton.isPressed(camera) && stateBeforeSetting != GameStateType::TITLE_SCREEN) {
+    else if(restartButton.isPressed(&camera) && stateBeforeSetting != GameStateType::TITLE_SCREEN) {
             world->resetMap();
         }
-        else if(returnButton.isPressed(camera)) {
+    else if(returnButton.isPressed(&camera)) {
             if (isConflict) {
                 isConflictNotified = true;
             } else {
                 world->resetGame();
             }
         }
-        else if(exitButton.isPressed(camera)) {
+    else if(exitButton.isPressed(&camera)) {
             world->setIsClosed(true);
         }
     }
@@ -219,7 +222,7 @@ void SettingState::drawVolumeAndButtonSetting() {
 
 void SettingState::updateKeyControlSetting() {
     Vector2 mousePos = GetMousePosition();
-    Vector2 worldMousePos = GetScreenToWorld2D(mousePos, *camera);
+    Vector2 worldMousePos = GetScreenToWorld2D(mousePos, camera);
     bool mouseInClipping = isMouseInClippingArea();
     
     if(isEditing && !isEditingGamepad) {
@@ -289,14 +292,15 @@ void SettingState::drawKeyControlSetting() {
         DrawRectangle (100, 800, 1400, 900, Fade(BLACK, 0.7f));
         startPositionY = 800.0f;
     }
-    DrawText("KEY CONTROLS", GetScreenWidth()/2.0f - MeasureText("KEY CONTROLS", 40)/2, startPositionY + 20, 40, WHITE);
+    std::unordered_map<std::string, Font> font = ResourceManager::getFont();
+    DrawTextEx(font["DejavuSans"], "KEY CONTROLS", {(float)(GetScreenWidth()/2.0f - MeasureText("KEY CONTROLS", 40)/2), (float)(startPositionY + 20)}, 40.0f, 0, WHITE);
 
     float currentY = startPositionY + 50.0f;
     std::vector<std::string> keyNames = {"LEFT", "RIGHT", "UP", "DOWN", "CONTROL", "SHIFT"};
     float fadeX = 100.0f;
     float fadeWidth = 1400.0f;
     
-    DrawText("SINGLE PLAYER", GetScreenWidth()/2.0f - MeasureText("SINGLE PLAYER", 30)/2, currentY, 30, YELLOW);
+    DrawTextEx(font["DejavuSans"], "SINGLE PLAYER", {(float)(GetScreenWidth()/2.0f - MeasureText("SINGLE PLAYER", 30)/2), (float)currentY}, 30.0f, 0, YELLOW);
     currentY += 50.0f;
     
     auto& onePlayerKeys = keyManager->getKeys(ModePlayer::ONEPLAYER);
@@ -314,16 +318,16 @@ void SettingState::drawKeyControlSetting() {
         float rowY = currentY + (i * rowHeight);
         
         std::string functionName = getFunctionName(keyName);
-        DrawText(functionName.c_str(), startColumn1X, rowY, 40, WHITE);
+        DrawTextEx(font["DejavuSans"], functionName.c_str(), {(float)startColumn1X, (float)rowY}, 40.0f, 0, WHITE);
         drawInputButton(ModePlayer::ONEPLAYER, keyName, onePlayerKeys[keyName], startColumn2X, rowY, 2*columnWidth + columnSpacing, buttonHeight, false);
     }
     currentY += (6 * rowHeight) + 50.0f;
     
-    DrawText("MULTIPLAYER", GetScreenWidth()/2.0f - MeasureText("MULTIPLAYER", 30)/2, currentY, 30, YELLOW);
+    DrawTextEx(font["DejavuSans"], "MULTIPLAYER", {(float)(GetScreenWidth()/2.0f - MeasureText("MULTIPLAYER", 30)/2), (float)currentY}, 30.0f, 0, YELLOW);
     currentY += 50.0f;
     
-    DrawText("FIRST PLAYER", startColumn2X + columnWidth/2.0f - MeasureText("FIRST PLAYER", 20), currentY, 20, WHITE);
-    DrawText("SECOND PLAYER", startColumn3X + columnWidth/2.0f - MeasureText("SECOND PLAYER", 20), currentY, 20, WHITE);
+    DrawTextEx(font["DejavuSans"], "FIRST PLAYER", {(float)(startColumn2X + columnWidth/2.0f - MeasureText("FIRST PLAYER", 20)/2), (float)currentY}, 20.0f, 0, WHITE);
+    DrawTextEx(font["DejavuSans"], "SECOND PLAYER", {(float)(startColumn3X + columnWidth/2.0f - MeasureText("SECOND PLAYER", 20)/2), (float)currentY}, 20.0f, 0, WHITE);
     currentY += 50.0f;
     
     auto& firstPlayerKeys = keyManager->getKeys(ModePlayer::FIRSTPLAYER);
@@ -334,7 +338,7 @@ void SettingState::drawKeyControlSetting() {
         float rowY = currentY + (i * rowHeight);
         
         std::string functionName = getFunctionName(keyName);
-        DrawText(functionName.c_str(), startColumn1X, rowY + 10, 40, WHITE);
+        DrawTextEx(font["DejavuSans"], functionName.c_str(), {(float)startColumn1X, (float)(rowY + 10)}, 40.0f, 0, WHITE);
         drawInputButton(ModePlayer::FIRSTPLAYER, keyName, firstPlayerKeys[keyName], startColumn2X, rowY, columnWidth, buttonHeight, false);
         drawInputButton(ModePlayer::SECONDPLAYER, keyName, secondPlayerKeys[keyName], startColumn3X, rowY, columnWidth, buttonHeight, false);
     }
@@ -342,8 +346,8 @@ void SettingState::drawKeyControlSetting() {
 
 void SettingState::drawInputButton(ModePlayer modePlayer, const std::string& inputName, int inputValue, float x, float y, float width, float height, bool isGamepad) {
     Vector2 mousePos = GetMousePosition();
-    mousePos.x += camera->target.x - camera->offset.x;
-    mousePos.y += camera->target.y - camera->offset.y;
+    mousePos.x += camera.target.x - camera.offset.x;
+    mousePos.y += camera.target.y - camera.offset.y;
     
     bool mouseInClipping = isMouseInClippingArea();
     bool isHovering = mouseInClipping && (mousePos.x >= x && mousePos.x <= x + width &&mousePos.y >= y && mousePos.y <= y + height);
@@ -379,7 +383,8 @@ void SettingState::drawInputButton(ModePlayer modePlayer, const std::string& inp
     std::string displayText = isEditingThis ? (isGamepad ? "Press Button..." : "Press Key...") : getInputName(inputValue, isGamepad);
     int fontSize = (isHovering || isEditingThis) ? 18 : 16; 
     int textWidth = MeasureText(displayText.c_str(), fontSize);
-    DrawText(displayText.c_str(), x + width/2 - textWidth/2, y + height/2 - fontSize/2, fontSize, textColor);
+    std::unordered_map<std::string, Font> font = ResourceManager::getFont();
+    DrawTextEx(font["DejavuSans"], displayText.c_str(), {(float)(x + width/2 - textWidth/2), (float)(y + height/2 - fontSize/2)}, (float)fontSize, 0, textColor);
 }
 
 std::string SettingState::getInputName(int inputValue, bool isGamepad) {
@@ -545,39 +550,38 @@ void SettingState::updateConfirmDefaultSetting() {
 
 void SettingState::drawConfirmDefaultSetting() {
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(BLACK, 0.7f));
-    Rectangle dialogBox = {(float)GetScreenWidth()/2 - 250, (float)GetScreenHeight()/2 - 100, 500, 200};
+    Rectangle dialogBox = {(float)GetScreenWidth()/2 - 350, (float)GetScreenHeight()/2 - 150, 700, 300};
     DrawRectangleRounded(dialogBox, 0.2f, 0, Fade(DARKGRAY, 0.9f));
     
+    std::unordered_map<std::string, Font> font = ResourceManager::getFont();
     const char* titleText = "Initialize setting?";
     int titleFontSize = 36;
     int titleWidth = MeasureText(titleText, titleFontSize);
-    DrawText(titleText, GetScreenWidth()/2 - titleWidth/2, GetScreenHeight()/2 - 60, titleFontSize, WHITE);
+    DrawTextEx(font["DejavuSans"], titleText, {(float)(GetScreenWidth()/2 - titleWidth/2), (float)(GetScreenHeight()/2 - 60)}, (float)titleFontSize, 0, WHITE);
 
     Rectangle yesButton = {(float)GetScreenWidth()/2 - 120, (float)GetScreenHeight()/2 + 80, 100, 50};
     Vector2 mousePos = GetMousePosition();
     bool yesHover = CheckCollisionPointRec(mousePos, yesButton);
-    
+
     Color yesColor = yesHover ? Fade(GREEN, 0.8f) : Fade(DARKGREEN, 0.6f);
     DrawRectangleRounded(yesButton, 0.3f, 0, yesColor);
-    
+
     const char* yesText = "Yes";
     int yesFontSize = 24;
     int yesTextWidth = MeasureText(yesText, yesFontSize);
-    DrawText(yesText, yesButton.x + yesButton.width/2 - yesTextWidth/2, 
-             yesButton.y + yesButton.height/2 - yesFontSize/2, yesFontSize, WHITE);
-    
+    DrawTextEx(font["DejavuSans"], yesText, {(float)(yesButton.x + yesButton.width/2 - yesTextWidth/2), (float)(yesButton.y + yesButton.height/2 - yesFontSize/2)}, (float)yesFontSize, 0, WHITE);
+
     // No button  
     Rectangle noButton = {(float)GetScreenWidth()/2 + 20, (float)GetScreenHeight()/2 + 80, 100, 50};
     bool noHover = CheckCollisionPointRec(mousePos, noButton);
-    
+
     Color noColor = noHover ? Fade(RED, 0.8f) : Fade(DARKGRAY, 0.6f);
     DrawRectangleRounded(noButton, 0.3f, 0, noColor);
-    
+
     const char* noText = "No";
     int noFontSize = 24;
     int noTextWidth = MeasureText(noText, noFontSize);
-    DrawText(noText, noButton.x + noButton.width/2 - noTextWidth/2,
-             noButton.y + noButton.height/2 - noFontSize/2, noFontSize, WHITE);
+    DrawTextEx(font["DejavuSans"], noText, {(float)(noButton.x + noButton.width/2 - noTextWidth/2), (float)(noButton.y + noButton.height/2 - noFontSize/2)}, (float)noFontSize, 0, WHITE);
 }
 
 void SettingState::updateConflictNotification() {
@@ -597,33 +601,33 @@ void SettingState::drawConflictNotification() {
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(BLACK, 0.7f));
     
     // Main dialog box
-    Rectangle dialogBox = {(float)GetScreenWidth()/2 - 300, (float)GetScreenHeight()/2 - 100, 600, 200};
+    Rectangle dialogBox = {(float)GetScreenWidth()/2 - 350, (float)GetScreenHeight()/2 - 150, 700, 300};
     DrawRectangleRounded(dialogBox, 0.2f, 0, Fade(DARKGRAY, 0.9f));
     
+    std::unordered_map<std::string, Font> font = ResourceManager::getFont();
     // Title text
     const char* titleText = "Cannot save. Settings conflict detected.";
     int titleFontSize = 32;
     int titleWidth = MeasureText(titleText, titleFontSize);
-    DrawText(titleText, GetScreenWidth()/2 - titleWidth/2 + 20, GetScreenHeight()/2 - 60, titleFontSize, WHITE);
-    
+    DrawTextEx(font["DejavuSans"], titleText, {(float)(GetScreenWidth()/2 - titleWidth/2 + 20), (float)(GetScreenHeight()/2 - 60)}, (float)titleFontSize, 0, WHITE);
+
     // OK button
     Rectangle okButton = {(float)GetScreenWidth()/2 - 50, (float)GetScreenHeight()/2 + 80, 100, 50};
     Vector2 mousePos = GetMousePosition();
     bool okHover = CheckCollisionPointRec(mousePos, okButton);
-    
+
     Color okColor = okHover ? Fade(BLUE, 0.8f) : Fade(DARKBLUE, 0.6f);
     DrawRectangleRounded(okButton, 0.3f, 0, okColor);
-    
+
     const char* okText = "OK";
     int okFontSize = 24;
     int okTextWidth = MeasureText(okText, okFontSize);
-    DrawText(okText, okButton.x + okButton.width/2 - okTextWidth/2,
-             okButton.y + okButton.height/2 - okFontSize/2, okFontSize, WHITE);
+    DrawTextEx(font["DejavuSans"], okText, {(float)(okButton.x + okButton.width/2 - okTextWidth/2), (float)(okButton.y + okButton.height/2 - okFontSize/2)}, (float)okFontSize, 0, WHITE);
 }
 
 void SettingState::updateGamepadControlSetting() {
     Vector2 mousePos = GetMousePosition();
-    Vector2 worldMousePos = GetScreenToWorld2D(mousePos, *camera);
+    Vector2 worldMousePos = GetScreenToWorld2D(mousePos, camera);
     bool mouseInClipping = isMouseInClippingArea();
     
     if(isEditing && isEditingGamepad) {
@@ -688,25 +692,20 @@ void SettingState::updateGamepadControlSetting() {
 }
 
 void SettingState::drawGamepadControlSetting() {
+    std::unordered_map<std::string, Font> font = ResourceManager::getFont();
     float startPositionY;
+    float fadeX = 100.0f;
+    float fadeWidth = 1400.0f;
+    float fadeHeight = 400.0f + 4 * 50.0f + 50.0f + 50.0f + 4 * 50.0f + 50.0f + 50.0f; // estimate for both single/multi player
     if(stateBeforeSetting == GameStateType::TITLE_SCREEN) {
-        DrawRectangle (100, 1600, 1400, 900, Fade(BLACK, 0.7f));
-        startPositionY = 1600.0f;  // 650 + 900 + 50 buffer
+        startPositionY = 1600.0f;
+        DrawRectangle(fadeX, startPositionY, fadeWidth, 400 + 4 * 50.0f + 200.0f, Fade(BLACK, 0.7f));
     } else {
-        DrawRectangle (100, 1750, 1400, 900, Fade(BLACK, 0.7f));
-        startPositionY = 1750.0f;  // 800 + 900 + 50 buffer
+        startPositionY = 1750.0f;
+        DrawRectangle(fadeX, startPositionY, fadeWidth, 400 + 4 * 50.0f + 200.0f, Fade(BLACK, 0.7f));
     }
-    DrawText("GAMEPAD CONTROLS", GetScreenWidth()/2.0f - MeasureText("GAMEPAD CONTROLS", 40)/2, startPositionY + 20, 40, WHITE);
-
     float currentY = startPositionY + 50.0f;
     std::vector<std::string> buttonNames = {"UP", "DOWN", "CONTROL", "SHIFT"};
-    float fadeX = 100.0f;
-    
-    DrawText("SINGLE PLAYER", GetScreenWidth()/2.0f - MeasureText("SINGLE PLAYER", 30)/2, currentY, 30, YELLOW);
-    currentY += 50.0f;
-    
-    auto& onePlayerButtons = gamepadManager->getButtons(ModePlayer::ONEPLAYER);
-    
     float columnSpacing = 50.0f;
     float columnWidth = 400.0f;
     float startColumn1X = fadeX + columnSpacing;
@@ -714,22 +713,29 @@ void SettingState::drawGamepadControlSetting() {
     float startColumn3X = startColumn2X + columnWidth + columnSpacing;
     float rowHeight = 50.0f;
     float buttonHeight = 50.0f;
+
+    DrawTextEx(font["DejavuSans"], "GAMEPAD CONTROLS", {(float)(GetScreenWidth()/2.0f - MeasureText("GAMEPAD CONTROLS", 40)/2), (float)(startPositionY + 20)}, 40.0f, 0, WHITE);
     
+    DrawTextEx(font["DejavuSans"], "SINGLE PLAYER", {(float)(GetScreenWidth()/2.0f - MeasureText("SINGLE PLAYER", 30)/2), (float)currentY}, 30.0f, 0, YELLOW);
+    currentY += 50.0f;
+
+    auto& onePlayerButtons = gamepadManager->getButtons(ModePlayer::ONEPLAYER);
+
     for (int i = 0; i < 4; i++) {
         std::string buttonName = buttonNames[i];
         float rowY = currentY + (i * rowHeight);
-        
+
         std::string functionName = getFunctionName(buttonName);
-        DrawText(functionName.c_str(), startColumn1X, rowY, 40, WHITE);
+        DrawTextEx(font["DejavuSans"], functionName.c_str(), {(float)startColumn1X, (float)rowY}, 40.0f, 0, WHITE);
         drawInputButton(ModePlayer::ONEPLAYER, buttonName, onePlayerButtons[buttonName], startColumn2X, rowY, 2*columnWidth + columnSpacing, buttonHeight, true);
     }
     currentY += (4 * rowHeight) + 50.0f;
-    
-    DrawText("MULTIPLAYER", GetScreenWidth()/2.0f - MeasureText("MULTIPLAYER", 30)/2, currentY, 30, YELLOW);
+
+    DrawTextEx(font["DejavuSans"], "MULTIPLAYER", {(float)(GetScreenWidth()/2.0f - MeasureText("MULTIPLAYER", 30)/2), (float)currentY}, 30.0f, 0, YELLOW);
     currentY += 50.0f;
     
-    DrawText("FIRST PLAYER", startColumn2X + columnWidth/2.0f - MeasureText("FIRST PLAYER", 20), currentY, 20, WHITE);
-    DrawText("SECOND PLAYER", startColumn3X + columnWidth/2.0f - MeasureText("SECOND PLAYER", 20), currentY, 20, WHITE);
+    DrawTextEx(font["DejavuSans"], "FIRST PLAYER", {(float)(startColumn2X + columnWidth/2.0f - MeasureText("FIRST PLAYER", 20)/2), (float)currentY}, 20.0f, 0, WHITE);
+    DrawTextEx(font["DejavuSans"], "SECOND PLAYER", {(float)(startColumn3X + columnWidth/2.0f - MeasureText("SECOND PLAYER", 20)/2), (float)currentY}, 20.0f, 0, WHITE);
     currentY += 50.0f;
     
     auto& firstPlayerButtons = gamepadManager->getButtons(ModePlayer::FIRSTPLAYER);
@@ -740,7 +746,7 @@ void SettingState::drawGamepadControlSetting() {
         float rowY = currentY + (i * rowHeight);
         
         std::string functionName = getFunctionName(buttonName);
-        DrawText(functionName.c_str(), startColumn1X, rowY + 10, 40, WHITE);
+        DrawTextEx(font["DejavuSans"], functionName.c_str(), {(float)startColumn1X, (float)(rowY + 10)}, 40.0f, 0, WHITE);
         drawInputButton(ModePlayer::FIRSTPLAYER, buttonName, firstPlayerButtons[buttonName], startColumn2X, rowY, columnWidth, buttonHeight, true);
         drawInputButton(ModePlayer::SECONDPLAYER, buttonName, secondPlayerButtons[buttonName], startColumn3X, rowY, columnWidth, buttonHeight, true);
     }

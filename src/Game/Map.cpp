@@ -16,7 +16,7 @@ Map::Map(std::vector<Character*>& characters, World* world, int mapNumber)
     : characters(characters), 
     world(world), 
     mapNumber(mapNumber),
-    maxMapNumber(4),
+    maxMapNumber(3),
     offset(0.0f), 
     camera(nullptr), 
     width(0), 

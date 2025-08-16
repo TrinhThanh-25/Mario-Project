@@ -9,7 +9,7 @@
 
 class SettingState : public GameState {
     private:
-        Camera2D* camera;
+        Camera2D camera;
         KeyManager* keyManager;
         GamepadManager* gamepadManager;
 
