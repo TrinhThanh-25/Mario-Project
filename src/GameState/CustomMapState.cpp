@@ -641,7 +641,6 @@ void CustomMapState::loadMap() {
     heightBuffer = std::to_string(MAP_HEIGHT);
     mapNameBuffer = mapFileName;
     mapGrid = j["layers"][0]["data"].get<std::vector<int>>();
-    isSaved = true;
 }
 
 void CustomMapState::clearMap() {
