@@ -5,11 +5,11 @@ Item* ItemFactory::createItem(ItemType type, Source source, Vector2 position, Di
     Item* item = nullptr;
     switch (type) {
         case ItemType::COIN:
-            item = new Coin(position, {24, 32}, WHITE, 100); // Assuming default points for coin
+            item = new Coin(position, {24, 32}, WHITE, 101); // Assuming default points for coin
             break;
         case ItemType::MUSHROOM:
             if (source == Source::BLOCK) {
-                item = new Mushroom(position, {32, 32}, WHITE, 201, false); // Assuming default points for mushroom
+                item = new Mushroom(position, {32, 32}, WHITE, 200, false); // Assuming default points for mushroom
             } else {
                 item = new Mushroom(position, {32, 32}, WHITE, 200, true); // For inventory
             }
