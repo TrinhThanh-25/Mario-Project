@@ -2,9 +2,9 @@
 
 Enemy* EnemyFactory::createEnemy(EnemyType type, Vector2 position, Direction direction) {
     Enemy* enemy = nullptr;
-    Vector2 size = {32, 32};       // Default size
-    Vector2 velocity = {0, 0};     // Default velocity
-    Color color = WHITE;           // Default color
+    Vector2 size = {32, 32};      
+    Vector2 velocity = {0, 0};     
+    Color color = WHITE;          
 
     switch (type) {
         case EnemyType::BANZAI_BILL:

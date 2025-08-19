@@ -26,9 +26,9 @@ void BobOmb::update(const std::vector<Character*>& characterList) {
     if (state == SpriteState::INACTIVE) {
         for (Character* c : characterList) {
             activeWhenMarioApproach(*c);
-            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+            if (state != SpriteState::INACTIVE) break;  
         }
-        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
+        if (state == SpriteState::INACTIVE) return; 
     }
 
     if (state == SpriteState::DYING) {
@@ -155,7 +155,6 @@ void BobOmb::collisionTile(Tile* tile) {
     if (!isAlive() || !isSolidTile(tile)) return;
     CollisionType col = checkCollision(tile);
 
-    // Gọi xử lý gốc để vẫn giữ va chạm đất/trần
     Enemy::collisionTile(tile);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
@@ -169,7 +168,6 @@ void BobOmb::collisionTile(Tile* tile) {
 void BobOmb::collisionBlock(Block* block) {
     CollisionType col = checkCollision(block);
 
-    // Gọi xử lý gốc để vẫn giữ va chạm đất/trần
     Enemy::collisionBlock(block);
 
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
@@ -181,23 +179,23 @@ void BobOmb::collisionBlock(Block* block) {
 }
 
 json BobOmb::saveToJson() const {
-    json j = Enemy::saveToJson();  // Gọi hàm cha
+    json j = Enemy::saveToJson();  
 
     j["isIgnited"] = isIgnited;
     j["ignitionTimer"] = ignitionTimer;
     j["maxIgniteTime"] = maxIgniteTime;
     j["explosionRadius"] = explosionRadius;
-    j["bobombState"] = static_cast<int>(bobombState);  // enum nên lưu dưới dạng int
+    j["bobombState"] = static_cast<int>(bobombState); 
 
     return j;
 }
 
 void BobOmb::loadFromJson(const json& j) {
-    Enemy::loadFromJson(j);  // Gọi hàm cha
+    Enemy::loadFromJson(j);  
 
     isIgnited = j["isIgnited"].get<bool>();
     ignitionTimer = j["ignitionTimer"].get<float>();
     maxIgniteTime = j["maxIgniteTime"].get<float>();
     explosionRadius = j["explosionRadius"].get<float>();
-    bobombState = static_cast<BobOmbState>(j["bobombState"].get<int>());  // enum
+    bobombState = static_cast<BobOmbState>(j["bobombState"].get<int>());  
 }

@@ -97,7 +97,6 @@ void BlueKoopaTroopa::draw() {
             int spinFrame = ((int)(GetTime() * 12)) % 8;
             textureKey = "BlueKoopaShield" + std::to_string(spinFrame);
         } else {
-            // SHELL: đứng yên
             textureKey = "BlueKoopaShield0";
         }
     }
