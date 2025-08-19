@@ -30,11 +30,8 @@ void RedKoopaTroopa::draw() {
     if (state == SpriteState::DYING) {
         std::string dyingKey = isFacingLeft ? "RedKoopaTroopa1Left" : "RedKoopaTroopa1Right";
         DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
-
-    // Bay lên
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
 
-    // Lấp lánh bằng alpha modulate (sin wave)
         float alpha = 0.5f + 0.5f * sin(GetTime() * 10.0f); // dao động từ 0 → 1
         Color glowColor = {255, 255, 255, (unsigned char)(255 * alpha)};
 
@@ -45,14 +42,14 @@ void RedKoopaTroopa::draw() {
             glowColor
         );
     }
-    north.setColor(BLUE);
-    south.setColor(BLUE);
-    west.setColor(BLUE);
-    east.setColor(BLUE);
-    north.draw();
-    west.draw();
-    south.draw();
-    east.draw();
+    // north.setColor(BLUE);
+    // south.setColor(BLUE);
+    // west.setColor(BLUE);
+    // east.setColor(BLUE);
+    // north.draw();
+    // west.draw();
+    // south.draw();
+    // east.draw();
 }
  
     
@@ -130,19 +127,10 @@ void RedKoopaTroopa::update(const std::vector<Character*>& characterList) {
             followTheLeader(leader);
         }
 
-        // Đổi hướng nếu gần mép (đặc trưng Red Koopa)
-        // if (isNearEdge()) {
-        //     velocity.x = -velocity.x;
-        //     isFacingLeft = !isFacingLeft;
-        // }
-
-        // Di chuyển
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
         velocity.y += World::gravity * delta;
 
-
-        // Cập nhật hướng nhìn
         if (velocity.x != 0) {
             isFacingLeft = velocity.x < 0;
         }

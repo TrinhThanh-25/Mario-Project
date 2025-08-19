@@ -11,8 +11,8 @@ Swooper::Swooper(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     isDropping = false;
     isFlyingHorizontally = false;
 
-    dropSpeed = 120.0f;                  // Tốc độ rơi
-    flySpeed = 60.0f;                    // Tốc độ bay ngang 
+    dropSpeed = 120.0f;                 
+    flySpeed = 60.0f;                    
     activationRangeY = 100.0f;           // Khoảng cách dọc để kích hoạt
     startPosition = position;
 
@@ -49,7 +49,6 @@ void Swooper::update(const std::vector<Character*>& characterList){
     }
 
     if (state == SpriteState::ACTIVE){
-        // CollisionType col = checkCollision(collidables); // Tạm bỏ
 
         if (isDropping){
             position.y += velocity.y * delta;
@@ -138,7 +137,7 @@ void Swooper::beingHit(HitType type) {
 void Swooper::activeWhenMarioApproach(Character& character){
     if (state != SpriteState::INACTIVE) return;
 
-    Vector2 marioPos = character.getPosition();  // <-- sửa dòng này
+    Vector2 marioPos = character.getPosition();  
     float dx = abs(marioPos.x - position.x);
     float dy = abs(position.y - marioPos.y);
 
@@ -146,7 +145,7 @@ void Swooper::activeWhenMarioApproach(Character& character){
         setState(SpriteState::ACTIVE);
         isDropping = true;
         velocity.y = dropSpeed;
-        startPosition = position;  // nhớ lưu vị trí bắt đầu rơi
+        startPosition = position;  
     }
 }
 

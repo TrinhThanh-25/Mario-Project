@@ -16,7 +16,7 @@ MontyMole::MontyMole(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
 }
 
 MontyMole::~MontyMole() {
-    // Destructor logic if needed
+    
 }
 
 void MontyMole::draw() {

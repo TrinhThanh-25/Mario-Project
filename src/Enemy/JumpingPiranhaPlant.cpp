@@ -134,11 +134,11 @@ void JumpingPiranhaPlant::activeWhenMarioApproach(Character& character){
 }
 
 void JumpingPiranhaPlant::collisionTile(Tile* tile) {
-    
+    // Không có collisionTile
 }
 
 void JumpingPiranhaPlant::collisionBlock(Block* block) {
-    
+    // Không có collisionBlock
 }
 
 // ======================= SAVE GAME =========================
