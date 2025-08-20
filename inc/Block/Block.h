@@ -27,7 +27,7 @@ enum class BlockType {
 class Block : public Sprite{
 protected:
 	bool hit = false;
-	int earnedPoints = 0;
+	int earnedPoints;
 	BlockType blockType;
 public:
 	Block() = default;
