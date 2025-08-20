@@ -1,5 +1,5 @@
-#ifndef TOAD_H
-#define TOAD_H
+#ifndef MARIO_CHARACTER_TOAD_H
+#define MARIO_CHARACTER_TOAD_H
 
 #include "Character/Character.h"
 
