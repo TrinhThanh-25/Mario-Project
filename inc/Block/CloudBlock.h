@@ -1,5 +1,5 @@
-#ifndef CLOUD_BLOCK_H
-#define CLOUD_BLOCK_H
+#ifndef MARIO_CLOUD_BLOCK_H
+#define MARIO_CLOUD_BLOCK_H
 
 #include "Block/Block.h"
 
