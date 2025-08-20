@@ -1,5 +1,5 @@
-#ifndef ENEMY_H
-#define ENEMY_H
+#ifndef MARIO_ENEMY_H
+#define MARIO_ENEMY_H
 
 #include "Common/Sprite.h"
 //#include "Mario/Mario.h"

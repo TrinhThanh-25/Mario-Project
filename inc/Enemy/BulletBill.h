@@ -1,5 +1,5 @@
-#ifndef BULLETBILL_H
-#define BULLETBILL_H
+#ifndef MARIO_BULLETBILL_H
+#define MARIO_BULLETBILL_H
 
 #include "Enemy/Enemy.h"
 #include "Game/World.h"
