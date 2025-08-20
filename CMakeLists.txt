@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 # Set project name
-# Set project name
-project(PROJECTMARIO)
+project(PROJECTMARIO VERSION 1.0.1)
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
