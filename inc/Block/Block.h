@@ -6,6 +6,7 @@
 #include "Character/Character.h"
 #include "raylib.h"
 
+// Block type enumeration for different block variants
 enum class BlockType {
 		CLOUDBLOCK,
 		EXCLAMATIONBLOCK,
