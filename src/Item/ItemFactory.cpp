@@ -5,29 +5,29 @@ Item* ItemFactory::createItem(ItemType type, Source source, Vector2 position, Di
     Item* item = nullptr;
     switch (type) {
         case ItemType::COIN:
-            item = new Coin(position, {24, 32}, WHITE, 101); // Assuming default points for coin
+            item = new Coin(position, {24, 32}, WHITE, 100);
             break;
         case ItemType::MUSHROOM:
             if (source == Source::BLOCK) {
-                item = new Mushroom(position, {32, 32}, WHITE, 200, false); // Assuming default points for mushroom
+                item = new Mushroom(position, {32, 32}, WHITE, 200, false); 
             } else {
-                item = new Mushroom(position, {32, 32}, WHITE, 200, true); // For inventory
+                item = new Mushroom(position, {32, 32}, WHITE, 200, true); 
             }
             item->setDirection(direction);
             break;
         case ItemType::FLOWER:
             if (source == Source::BLOCK) {
-                item = new FireFlower(position, {32, 32}, WHITE, 300, false); // Assuming default points for flower
+                item = new FireFlower(position, {32, 32}, WHITE, 300, false); 
             } else {
-                item = new FireFlower(position, {32, 32}, WHITE, 300, true); // For inventory
+                item = new FireFlower(position, {32, 32}, WHITE, 300, true); 
             }
             break;
         case ItemType::STAR:
-            item = new Star(position, {30, 32}, WHITE, 400); // Assuming default points for star
+            item = new Star(position, {30, 32}, WHITE, 400); 
             item->setDirection(direction);
             break;
         case ItemType::YOSHI_COIN:
-            item = new YoshiCoin(position, {32, 50}, WHITE, 400); // Assuming default points for Yoshi coin
+            item = new YoshiCoin(position, {32, 50}, WHITE, 400); 
             break;
         case ItemType::THREE_UP_MOON:
             item = new ThreeUpMoon(position, {30, 32}, WHITE, 3); // Assuming 3 lives for Three Up Moon
