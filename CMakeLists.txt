@@ -6,6 +6,7 @@ project(PROJECTMARIO VERSION 1.0.1)
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
 
 # Add all .cpp files in the src/ folder
 # Add all .cpp files in the src/ folder
