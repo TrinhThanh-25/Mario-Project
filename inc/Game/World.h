@@ -1,5 +1,5 @@
-#ifndef WORLD_H
-#define WORLD_H
+#ifndef MARIO_GAME_WORLD_H
+#define MARIO_GAME_WORLD_H
 
 #include "Common/Drawable.h"
 #include "Game/Map.h"

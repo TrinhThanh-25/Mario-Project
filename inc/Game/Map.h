@@ -1,5 +1,5 @@
-#ifndef MAP_H
-#define MAP_H
+#ifndef MARIO_GAME_MAP_H
+#define MARIO_GAME_MAP_H
 
 #include <vector>
 #include "raylib.h"
