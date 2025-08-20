@@ -1,6 +1,7 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
+
 #include "Common/Sprite.h"
 #include "Character/Character.h"
 #include "raylib.h"
@@ -26,7 +27,7 @@ enum class BlockType {
 class Block : public Sprite{
 protected:
 	bool hit = false;
-	int earnedPoints;
+	int earnedPoints = 0;
 	BlockType blockType;
 public:
 	Block() = default;
