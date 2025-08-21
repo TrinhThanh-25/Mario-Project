@@ -91,7 +91,6 @@ void JumpingPiranhaPlant::beingHit(HitType type){
 void JumpingPiranhaPlant::draw() {
     std::string textureKey;
 
-    // 4 frame quay vòng: mở/đóng + chân
     int frame = static_cast<int>(GetTime() * 6) % 4;
     const char* keys[] = {
         "JumpingPiranhaPlant0",
@@ -134,11 +133,9 @@ void JumpingPiranhaPlant::activeWhenMarioApproach(Character& character){
 }
 
 void JumpingPiranhaPlant::collisionTile(Tile* tile) {
-    // Không có collisionTile
 }
 
 void JumpingPiranhaPlant::collisionBlock(Block* block) {
-    // Không có collisionBlock
 }
 
 // ======================= SAVE GAME =========================
