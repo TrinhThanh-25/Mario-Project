@@ -80,9 +80,6 @@ void MummyBeetle::draw(){
 
     DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
 
-    // else if (state == SpriteState::SHELL || state == SpriteState::SHELL_MOVING || state == SpriteState::DYING) {
-    //     textureKey = isFacingLeft ? "BuzzyBeetleShellLeft" : "BuzzyBeetleShellRight";
-    // }
 
     if (state == SpriteState::DYING) {
         std::string dyingKey = isFacingLeft ? "MummyBeetle1Left" : "MummyBeetle1Right";
@@ -176,7 +173,6 @@ void MummyBeetle::collisionTile(Tile* tile) {
         if (state == SpriteState::ACTIVE) {
             velocity.x = isFacingLeft ? -100.0f : 100.0f;
         }
-        // SHELL_MOVING không cần chỉnh velocity, chỉ cần isFacingLeft
     }
 
     if (col == CollisionType::SOUTH){
