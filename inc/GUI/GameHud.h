@@ -37,8 +37,13 @@ class GameHud {
         Map* map;
         std::vector<Character*>& characters;
         GameHudHistory history;
-    public:
+
+        static GameHud *gameHud;
         GameHud(World* world, int yoshiCoins = 0, int coins = 0, int points = 0, float maxTime = 200.0f);
+    public:
+        static GameHud* getInstance(World* world, int yoshiCoins = 0, int coins = 0, int points = 0, float maxTime = 200.0f);
+        GameHud(const GameHud&) = delete;
+        GameHud& operator=(const GameHud&) = delete;
         ~GameHud();
 
         void update();

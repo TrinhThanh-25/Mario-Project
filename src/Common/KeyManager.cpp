@@ -6,7 +6,16 @@
 #include <fstream>
 #include <iostream>
 
+KeyManager* KeyManager::keyManager = nullptr;
+
 using json = nlohmann::json;
+
+KeyManager* KeyManager::getInstance() {
+    if (!keyManager) {
+        keyManager = new KeyManager();
+    }
+    return keyManager;
+}
 
 void KeyManager::initializeKeys() {
     for (const auto& mode : {ModePlayer::ONEPLAYER, ModePlayer::FIRSTPLAYER, ModePlayer::SECONDPLAYER}) {
