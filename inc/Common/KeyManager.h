@@ -10,8 +10,13 @@ enum class ModePlayer;
 class KeyManager {
     private:
         std::unordered_map<ModePlayer, GroupKey> groupKeys;
-    public:
+
+        static KeyManager* keyManager;
         KeyManager() = default;
+    public:
+        static KeyManager* getInstance();
+        KeyManager(const KeyManager&) = delete;
+        KeyManager& operator=(const KeyManager&) = delete;
         ~KeyManager() = default;
 
         void initializeKeys();

@@ -25,9 +25,11 @@
 float World::gravity = 1200.0f;
 
 World::World(int width, int height, const std::string& title, int FPS)
-    : map(characters, this, 1), 
-    camera(), 
-    gameHud(this, 0, 0, 0, 200.0f),
+    : map(characters, this, 0), 
+    camera(),
+    gameHud(nullptr),
+    keyManager(nullptr),
+    gamepadManager(nullptr),
     width(width), 
     height(height), 
     title(title), 
@@ -42,14 +44,17 @@ World::World(int width, int height, const std::string& title, int FPS)
     GameLoop(),
     gameMode(GameMode::PLAYER),
     gamePlay(GamePlay::PLAYDEVELOPEDMAP) {
-        keyManager.initializeKeys();
-        gamepadManager.initializeButtons();
+        gameHud = GameHud::getInstance(this, 0, 0, 0, 200.0f);
+        keyManager = KeyManager::getInstance();
+        gamepadManager = GamepadManager::getInstance();
+        keyManager->initializeKeys();
+        gamepadManager->initializeButtons();
         map.setCharacters(characters);
         modeWorld = ModeWorld::MULTIPLAYER;
         gamePlay = GamePlay::PLAYCUSTOMMAP;
         gameState = new TitleScreenState(this);
-        keyManager.loadCurrentKeyManager();
-        gamepadManager.loadCurrentGamepadManager();
+        keyManager->loadCurrentKeyManager();
+        gamepadManager->loadCurrentGamepadManager();
 }
 
 World::~World() {
@@ -158,15 +163,15 @@ int* World::getRemainTimePoint() {
 }
 
 GameHud* World::getGameHud() {
-    return &gameHud;
+    return gameHud;
 }
 
 KeyManager* World::getKeyManager() {
-    return &keyManager;
+    return keyManager;
 }
 
 GamepadManager* World::getGamepadManager() {
-    return &gamepadManager;
+    return gamepadManager;
 }
 
 void World::playPlayerDownMusic() {
@@ -249,7 +254,7 @@ void World::resetMap() {
         character->reset(true);
     }
     map.reset();
-    gameHud.reset();
+    gameHud->reset();
     pausedForTransition = false;
     pausedUpdateCharacters = false;
     setGameState(new PlayingState(this));
@@ -263,7 +268,7 @@ void World::resetGame() {
     characters.clear();
     map.first();
     map.reset();
-    gameHud.resetGame();
+    gameHud->resetGame();
     pausedForTransition = false;
     pausedUpdateCharacters = false;
     if(gamePlay == GamePlay::PLAYDEVELOPEDMAP) {
@@ -278,7 +283,8 @@ void World::nextMap() {
         for (Character* character : characters) {
             character->reset(false);
         }
-        gameHud.addHistory();
+        gameHud->addHistory();
+        gameHud->reset();
         setGameState(new PlayingState(this));
     } else {
         setGameState(new FinishedState(this));
@@ -330,7 +336,7 @@ json World::saveToJson() const {
         {"rotation", camera.rotation},
         {"zoom", camera.zoom}
     };
-    j["gameHud"] = gameHud.saveToJson();
+    j["gameHud"] = gameHud->saveToJson();
     j["remainTimePoint"] = remainTimePoint;
     j["gameState"] = gameState->saveToJson();
     j["modeWorld"] = static_cast<int>(modeWorld);
@@ -361,7 +367,7 @@ void World::loadFromJson(const json& j) {
         Character* character = CharacterFactory::createCharacter( static_cast<CharacterName>(characterJson["characterName"].get<int>()), static_cast<ModePlayer>(characterJson["modePlayer"].get<int>()) );
         character->loadFromJson(characterJson);
         character->setWorld(this);
-        keyManager.setKeyManagerForCharacter(character, static_cast<ModePlayer>(characterJson["modePlayer"].get<int>()));
+        keyManager->setKeyManagerForCharacter(character, static_cast<ModePlayer>(characterJson["modePlayer"].get<int>()));
         characters.push_back(character);
     }
     map.loadFromJson(j["map"]);
@@ -371,7 +377,7 @@ void World::loadFromJson(const json& j) {
     camera.rotation = j["camera"]["rotation"];
     camera.zoom = j["camera"]["zoom"];
     
-    gameHud.loadFromJson(j["gameHud"]);
+    gameHud->loadFromJson(j["gameHud"]);
     
     remainTimePoint = j["remainTimePoint"];
     

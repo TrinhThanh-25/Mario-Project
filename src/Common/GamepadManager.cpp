@@ -6,7 +6,16 @@
 #include <fstream>
 #include <iostream>
 
+GamepadManager* GamepadManager::gamepadManager = nullptr;
+
 using json = nlohmann::json;
+
+GamepadManager* GamepadManager::getInstance() {
+    if (!gamepadManager) {
+        gamepadManager = new GamepadManager();
+    }
+    return gamepadManager;
+}
 
 void GamepadManager::initializeButtons() {
     for (const auto& mode : {ModePlayer::ONEPLAYER, ModePlayer::FIRSTPLAYER, ModePlayer::SECONDPLAYER}) {

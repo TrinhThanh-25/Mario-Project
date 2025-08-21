@@ -6,6 +6,8 @@
 #include "GameState/GameStateFactory.h"
 #include "Item/ItemFactory.h"
 
+GameHud* GameHud::gameHud = nullptr;
+
 GameHudHistory::GameHudHistory()
     : currentIndex(-1) {}
 
@@ -52,6 +54,13 @@ void GameHudHistory::loadFromJson(const json& j) {
         }
         currentIndex = history.empty() ? -1 : 0;
     }
+}
+
+GameHud* GameHud::getInstance(World* world, int yoshiCoins, int coins, int points, float maxTime) {
+    if (!gameHud) {
+        gameHud = new GameHud(world, yoshiCoins, coins, points, maxTime);
+    }
+    return gameHud;
 }
 
 GameHud::GameHud(World* world, int yoshiCoins, int coins, int points, float maxTime)

@@ -10,9 +10,14 @@ enum class ModePlayer;
 class GamepadManager {
     private:
         std::unordered_map<ModePlayer, GroupGamepad> groupGamepads;
+
+        static GamepadManager* gamepadManager;
+        GamepadManager() = default;
         
     public:
-        GamepadManager() = default;
+        static GamepadManager* getInstance();
+        GamepadManager(const GamepadManager&) = delete;
+        GamepadManager& operator=(const GamepadManager&) = delete;
         ~GamepadManager() = default;
 
         void initializeButtons();

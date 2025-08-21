@@ -101,7 +101,7 @@ void Rex::beingHit(HitType type) {
     if (type == HitType::STOMP){
         if (!isShrunken){
             isShrunken = true;
-            velocity.x = 0;
+            velocity.x*=2.0f;
             setSize({32, 32});
             updateCollisionBoxes();
         }

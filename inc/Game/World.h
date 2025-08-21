@@ -26,9 +26,9 @@ class World : public GameLoop {
         std::vector<Character*> characters;
         Map map;
         Camera2D camera;
-        GameHud gameHud;
-        KeyManager keyManager;
-        GamepadManager gamepadManager;
+        GameHud* gameHud;
+        KeyManager* keyManager;
+        GamepadManager* gamepadManager;
         
         int width;
         int height;
