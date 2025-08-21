@@ -1,5 +1,8 @@
-#ifndef BLOCK_H
-#define BLOCK_H
+#ifndef MARIO_BLOCK_H
+#define MARIO_BLOCK_H
+
+#pragma once
+
 
 #include "Common/Sprite.h"
 #include "Character/Character.h"
@@ -44,12 +47,4 @@ public:
 	void loadFromJson(const json& j) override;
 };
 
-// ListMap.json
-// j["ListMap"][0] = "Map1";
-// j["ListMap"][1] = "MapCustom";
-// j["ListMap"][2] = "NewMapCustom";
-
-// testmap->setName("NewMap")
-
-// NewMapCustom
 #endif

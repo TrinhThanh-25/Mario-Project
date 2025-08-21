@@ -1,5 +1,5 @@
-#ifndef GOOMBA_H
-#define GOOMBA_H
+#ifndef MARIO_GOOMBA_H
+#define MARIO_GOOMBA_H
 
 #include "Enemy.h"
 #include "Game/World.h"

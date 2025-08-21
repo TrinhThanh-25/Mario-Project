@@ -1,5 +1,5 @@
-#ifndef MAP_H
-#define MAP_H
+#ifndef MARIO_GAME_MAP_H
+#define MARIO_GAME_MAP_H
 
 #include <vector>
 #include "raylib.h"
@@ -61,8 +61,6 @@ class Map : virtual public Drawable {
         std::vector<Enemy*>& getFrontEnemy();
         std::vector<Item*>& getItem();
         std::vector<Item*>& getStaticItem();
-
-        void showMessage();
 
         void clear();
 

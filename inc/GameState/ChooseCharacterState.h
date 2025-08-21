@@ -15,6 +15,8 @@ class ChooseCharacterState : public GameState {
         ChooseCharacterState(World* world);
         ChooseCharacterState(World* world, std::string mapFileName);
         ~ChooseCharacterState() override;
+        
+        void setMapFileName(const std::string& mapFileName);
         void update() override;
         void draw() override;
         void setModeWorld(ModeWorld mode);

@@ -1,6 +1,7 @@
 #include "GameState/GameOverState.h"
 #include "Common/ResourceManager.h"
 #include "SaveGame.h"
+#include "GameState/GameStateFactory.h"
 
 GameOverState::GameOverState(World* world)
     : GameState(world, GameStateType::GAME_OVER) {
@@ -14,6 +15,12 @@ void GameOverState::update() {
     world->playGameOverMusic();
     world->resetWhenCharacterDead();
     SaveGame::deleteSaveGame();
+    if(IsKeyPressed(KEY_ESCAPE) || IsKeyPressed(KEY_ENTER)) {
+        world->stopPlayerDownMusic();
+        world->stopGameOverMusic();
+        world->setGameState(GameStateFactory::createGameState(world, GameStateType::TITLE_SCREEN));
+        return;
+    }
 }
 
 void GameOverState::draw() {

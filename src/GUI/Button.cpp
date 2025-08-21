@@ -34,6 +34,18 @@ void Button::update(){
     }
 }
 
+void Button::update(Camera2D* camera){
+    if(isPressed(camera)) {
+        PlaySound(ResourceManager::getSound()["ClickButton"]);
+    }
+    if(!isPlayHoverSound && isHovered(camera)) {
+        PlaySound(ResourceManager::getSound()["HoverButton"]);
+        isPlayHoverSound = true;
+    } else if (!isHovered(camera) && !selected) {
+        isPlayHoverSound = false;
+    }
+}
+
 void Button::draw(){
     std::unordered_map<std::string, Texture2D>& texture = ResourceManager::getTexture();
     if (this->text) {
@@ -63,6 +75,16 @@ bool Button::isPressed(){
 
 bool Button::isHovered(){
     return CheckCollisionPointRec(GetMousePosition(), rectangle);
+}
+
+bool Button::isPressed(Camera2D* camera){
+    Vector2 worldMousePos = GetScreenToWorld2D(GetMousePosition(), *camera);
+    return IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(worldMousePos, rectangle);
+}
+
+bool Button::isHovered(Camera2D* camera){
+    Vector2 worldMousePos = GetScreenToWorld2D(GetMousePosition(), *camera);
+    return CheckCollisionPointRec(worldMousePos, rectangle);
 }
 
 bool Button::isSelected(){

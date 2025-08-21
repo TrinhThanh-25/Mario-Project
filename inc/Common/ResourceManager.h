@@ -11,20 +11,24 @@ class ResourceManager {
         static std::unordered_map<std::string, Texture2D> texture;
         static std::unordered_map<std::string, Sound> sound;
         static std::unordered_map<std::string, Music> music;
+        static std::unordered_map<std::string, Font> font;
 
         static void loadTexture();
         static void loadSound();
         static void loadMusic();
+        static void loadFont();
 
         static void unloadTexture();
         static void unloadSound();
         static void unloadMusic();
+        static void unloadFont();
 
         static Texture2D texture2DFlipHorizontal(Texture2D texture);
     public:
         static std::unordered_map<std::string, Texture2D>& getTexture();
         static std::unordered_map<std::string, Sound>& getSound();
         static std::unordered_map<std::string, Music>& getMusic();
+        static std::unordered_map<std::string, Font>& getFont();
 
         static void loadResources();
         static void unloadResources();

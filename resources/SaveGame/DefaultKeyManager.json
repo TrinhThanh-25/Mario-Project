@@ -1,0 +1,80 @@
+[
+    [
+        {
+            "keyName": "LEFT",
+            "keyValue": 263
+        },
+        {
+            "keyName": "UP",
+            "keyValue": 32
+        },
+        {
+            "keyName": "RIGHT",
+            "keyValue": 262
+        },
+        {
+            "keyName": "DOWN",
+            "keyValue": 264
+        },
+        {
+            "keyName": "CONTROL",
+            "keyValue": 341
+        },
+        {
+            "keyName": "SHIFT",
+            "keyValue": 340
+        }
+    ],
+    [
+        {
+            "keyName": "LEFT",
+            "keyValue": 65
+        },
+        {
+            "keyName": "UP",
+            "keyValue": 87
+        },
+        {
+            "keyName": "RIGHT",
+            "keyValue": 68
+        },
+        {
+            "keyName": "DOWN",
+            "keyValue": 83
+        },
+        {
+            "keyName": "CONTROL",
+            "keyValue": 341
+        },
+        {
+            "keyName": "SHIFT",
+            "keyValue": 340
+        }
+    ],
+    [
+        {
+            "keyName": "LEFT",
+            "keyValue": 263
+        },
+        {
+            "keyName": "UP",
+            "keyValue": 265
+        },
+        {
+            "keyName": "RIGHT",
+            "keyValue": 262
+        },
+        {
+            "keyName": "DOWN",
+            "keyValue": 264
+        },
+        {
+            "keyName": "CONTROL",
+            "keyValue": 345
+        },
+        {
+            "keyName": "SHIFT",
+            "keyValue": 344
+        }
+    ]
+]

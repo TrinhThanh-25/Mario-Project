@@ -44,6 +44,34 @@ void Slider::update() {
     }
 }
 
+void Slider::update(Camera2D* camera) {
+    Vector2 mouse = GetScreenToWorld2D(GetMousePosition(), *camera);
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(mouse, handle)) {
+        dragging = true;
+    }
+    if (dragging && !IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
+        dragging = false;
+    }
+    if (dragging) {
+        float x = std::clamp(mouse.x, track.x, track.x + width);
+        ratio = (x - track.x) / width;
+        handle.x = x - handle.width / 2;
+    }
+    else {
+        handle.x = track.x + ratio * width - handle.width / 2;
+    }
+    if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(mouse, track)) {
+        ratio = (mouse.x - track.x) / width;
+        if(ratio < 0.0f) {
+            ratio = 0.0f;
+        } else if(ratio > 1.0f) {
+            ratio = 1.0f;
+        }
+        handle.x = track.x + ratio * width - handle.width / 2;
+        dragging = true;
+    }
+}
+
 void Slider::draw() {
     std::unordered_map<std::string, Texture2D>& textures = ResourceManager::getTexture();
     ResourceManager::drawBigString(sliderName, (int)(track.x - 10 - ResourceManager::getDrawBigStringWidth(sliderName, fontSize)), (int)(track.y) - ResourceManager::getDrawBigStringHeight(fontSize) / 2, fontSize);

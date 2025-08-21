@@ -1,5 +1,5 @@
-#ifndef FLYINGGOOMBA_H
-#define FLYINGGOOMBA_H
+#ifndef MARIO_FLYINGGOOMBA_H
+#define MARIO_FLYINGGOOMBA_H
 
 #include "Enemy.h"
 #include "Game/World.h"

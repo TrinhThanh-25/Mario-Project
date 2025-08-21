@@ -16,7 +16,7 @@ Map::Map(std::vector<Character*>& characters, World* world, int mapNumber)
     : characters(characters), 
     world(world), 
     mapNumber(mapNumber),
-    maxMapNumber(4),
+    maxMapNumber(3),
     offset(0.0f), 
     camera(nullptr), 
     width(0), 
@@ -49,14 +49,45 @@ void Map::loadMap(const std::string& mapFileName) {
 		return;
 	}
 	nlohmann::json mapJson;
-	file >> mapJson;
+	try {
+        file >> mapJson;
+    } catch (const json::parse_error& e) {
+        std::cerr << "Failed to parse JSON file: " << fileName << " - " << e.what() << std::endl;
+        file.close();
+        return;
+    }
+    file.close();
+    
+    // Validate JSON structure
+    if (!mapJson.contains("width") || !mapJson.contains("height") || !mapJson.contains("layers") || 
+        !mapJson["layers"].is_array() || mapJson["layers"].empty() || 
+        !mapJson["layers"][0].contains("data")) {
+        std::cerr << "Invalid JSON structure in map file: " << fileName << std::endl;
+        return;
+    }
+    
 	int width = mapJson["width"];
 	int height = mapJson["height"];
 	this->width = (float) width * 32.0f;
     this->height = (float) height * 32.0f;
 	float tilewidth = 32.0f;
-	std::vector<int> data = mapJson["layers"][0]["data"];
-	loadObjectsToMap(data);
+    auto layerData = mapJson["layers"][0]["data"];
+    mapGrid.clear();
+    mapGrid.resize(width * height, 0);
+    if (layerData.is_array() && !layerData.empty() && layerData[0].is_array()) {
+        for (int y = 0; y < height && y < (int)layerData.size(); ++y) {
+            auto row = layerData[y];
+            for (int x = 0; x < width && x < (int)row.size(); ++x) {
+                mapGrid[y * width + x] = row[x].get<int>();
+            }
+        }
+    } else if (layerData.is_array()) {
+        for (int i = 0; i < width * height && i < (int)layerData.size(); ++i) {
+            mapGrid[i] = layerData[i].get<int>();
+        }
+    }
+    
+	loadObjectsToMap(mapGrid);
 }
 
 void Map::setCharacters(std::vector<Character*>& characters) {
@@ -213,10 +244,6 @@ void Map::clear() {
     staticItem.clear();
 }
 
-void Map::showMessage() {
-    // Hiện thông báo nếu có
-}
-
 void Map::reset(bool isTestMap) {
     if(!isTestMap) {
         StopMusicStream(ResourceManager::getMusic()["Invincible"]);
@@ -231,6 +258,8 @@ void Map::reset(bool isTestMap) {
 bool Map::next() {
     if (mapNumber < maxMapNumber) {
         mapNumber++;
+        backgroundID = mapNumber;
+        musicID = mapNumber;
         mapFileName = "Map" + std::to_string(mapNumber);
         reset();
         return true;
@@ -294,46 +323,72 @@ json Map::saveToJson() const {
         {"a", backgroundColor.a}
     };
     j["musicID"] = musicID;
+    
+    // Optimize: Reserve array capacity to avoid reallocations
     j["tiles"] = json::array();
+    j["tiles"].get_ref<json::array_t&>().reserve(tile.size());
     for (const auto& t : tile) {
         j["tiles"].push_back(t->saveToJson());
     }
+    
     j["backTiles"] = json::array();
+    j["backTiles"].get_ref<json::array_t&>().reserve(backTile.size());
     for (const auto& bT : backTile) {
         j["backTiles"].push_back(bT->saveToJson());
     }
+    
     j["frontTiles"] = json::array();
+    j["frontTiles"].get_ref<json::array_t&>().reserve(frontTile.size());
     for (const auto& fT : frontTile) {
         j["frontTiles"].push_back(fT->saveToJson());
     }
+    
     j["blocks"] = json::array();
+    j["blocks"].get_ref<json::array_t&>().reserve(block.size());
     for (const auto& b : block) {
         j["blocks"].push_back(b->saveToJson());
     }
+    
     j["messBlocks"] = json::array();
+    j["messBlocks"].get_ref<json::array_t&>().reserve(messBlock.size());
     for (const auto& mB : messBlock) {
         j["messBlocks"].push_back(mB->saveToJson());
     }
+    
     j["backEnemies"] = json::array();
+    j["backEnemies"].get_ref<json::array_t&>().reserve(backEnemy.size());
     for (const auto& bE : backEnemy) {
         j["backEnemies"].push_back(bE->saveToJson());
     }
+    
     j["frontEnemies"] = json::array();
+    j["frontEnemies"].get_ref<json::array_t&>().reserve(frontEnemy.size());
     for (const auto& fE : frontEnemy) {
         j["frontEnemies"].push_back(fE->saveToJson());
     }
+    
     j["items"] = json::array();
+    j["items"].get_ref<json::array_t&>().reserve(item.size());
     for (const auto& i : item) {
         j["items"].push_back(i->saveToJson());
     }
+    
     j["staticItems"] = json::array();
+    j["staticItems"].get_ref<json::array_t&>().reserve(staticItem.size());
     for (const auto& sI : staticItem) {
         j["staticItems"].push_back(sI->saveToJson());
     }
+    j["mapGrid"] = mapGrid;
+    
     return j;
 }
 
 void Map::loadFromJson(const json& j) {
+    int totalTiles = j.contains("mapGrid") ? j["mapGrid"].size() : 0;
+    if (totalTiles > 10000) {
+        std::cout << "Info: Loading large map data (" << totalTiles << " tiles)..." << std::endl;
+    }
+    
     mapFileName = j.at("mapFileName").get<std::string>();
     offset = j.at("offset").get<float>();
     mapNumber = j.at("mapNumber").get<int>();
@@ -357,51 +412,76 @@ void Map::loadFromJson(const json& j) {
     frontEnemy.clear();
     item.clear();
     staticItem.clear();
-    for (const auto& tJson : j["tiles"]) {
+    
+    // Optimize: Reserve capacity to avoid reallocations during loading
+    const auto& tilesArray = j["tiles"];
+    tile.reserve(tilesArray.size());
+    for (const auto& tJson : tilesArray) {
         Tile* t = TileFactory::createTile({tJson["position"][0].get<float>(), tJson["position"][1].get<float>()},
                                              tJson["nameTexture"].get<std::string>());
         t->loadFromJson(tJson);
         tile.push_back(t);
     }
-    for (const auto& bTJson : j["backTiles"]) {
+    
+    const auto& backTilesArray = j["backTiles"];
+    backTile.reserve(backTilesArray.size());
+    for (const auto& bTJson : backTilesArray) {
         Tile* bT = TileFactory::createTile({bTJson["position"][0].get<float>(), bTJson["position"][1].get<float>()},
                                              bTJson["nameTexture"].get<std::string>());
         bT->loadFromJson(bTJson);
         backTile.push_back(bT);
     }
-    for (const auto& fTJson : j["frontTiles"]) {
+    
+    const auto& frontTilesArray = j["frontTiles"];
+    frontTile.reserve(frontTilesArray.size());
+    for (const auto& fTJson : frontTilesArray) {
         Tile* fT = TileFactory::createTile({fTJson["position"][0].get<float>(), fTJson["position"][1].get<float>()},
                                              fTJson["nameTexture"].get<std::string>());
         fT->loadFromJson(fTJson);
         frontTile.push_back(fT);
     }
-    for (const auto& bJson : j["blocks"]) {
+    
+    const auto& blocksArray = j["blocks"];
+    block.reserve(blocksArray.size());
+    for (const auto& bJson : blocksArray) {
         Block* b = BlockFactory::createBlock(static_cast<BlockType>(bJson["blockType"].get<int>()),
                                              {bJson["position"][0].get<float>(), bJson["position"][1].get<float>()});
         b->loadFromJson(bJson);
         block.push_back(b);
     }
-    for (const auto& mBJson : j["messBlocks"]) {
+    
+    const auto& messBlocksArray = j["messBlocks"];
+    messBlock.reserve(messBlocksArray.size());
+    for (const auto& mBJson : messBlocksArray) {
         Block* mB = BlockFactory::createBlock(static_cast<BlockType>(mBJson["blockType"].get<int>()),
                                                {mBJson["position"][0].get<float>(), mBJson["position"][1].get<float>()});
         mB->loadFromJson(mBJson);
         messBlock.push_back(mB);
     }
-    for (const auto& bEJson : j["backEnemies"]) {
+    
+    const auto& backEnemiesArray = j["backEnemies"];
+    backEnemy.reserve(backEnemiesArray.size());
+    for (const auto& bEJson : backEnemiesArray) {
         Enemy* bE = EnemyFactory::createEnemy(static_cast<EnemyType>(bEJson["type"].get<int>()),
                                                {bEJson["position"][0].get<float>(), bEJson["position"][1].get<float>()},
                                                static_cast<Direction>(bEJson["direction"].get<int>()));
         bE->loadFromJson(bEJson);
         backEnemy.push_back(bE);
     }
-    for (const auto& fEJson : j["frontEnemies"]) {
+    
+    const auto& frontEnemiesArray = j["frontEnemies"];
+    frontEnemy.reserve(frontEnemiesArray.size());
+    for (const auto& fEJson : frontEnemiesArray) {
         Enemy* fE = EnemyFactory::createEnemy(static_cast<EnemyType>(fEJson["type"].get<int>()),
                                                {fEJson["position"][0].get<float>(), fEJson["position"][1].get<float>()},
                                                static_cast<Direction>(fEJson["direction"].get<int>()));
         fE->loadFromJson(fEJson);
         frontEnemy.push_back(fE);
     }
-    for (const auto& iJson : j["items"]) {
+    
+    const auto& itemsArray = j["items"];
+    item.reserve(itemsArray.size());
+    for (const auto& iJson : itemsArray) {
         Item* i = ItemFactory::createItem(static_cast<ItemType>(iJson["type"].get<int>()),
                                            Source::BLOCK,
                                            {iJson["position"][0].get<float>(), iJson["position"][1].get<float>()},
@@ -409,13 +489,23 @@ void Map::loadFromJson(const json& j) {
         i->loadFromJson(iJson);
         item.push_back(i);
     }
-    for (const auto& sIJson : j["staticItems"]) {
+    
+    const auto& staticItemsArray = j["staticItems"];
+    staticItem.reserve(staticItemsArray.size());
+    for (const auto& sIJson : staticItemsArray) {
         Item* sI = ItemFactory::createItem(static_cast<ItemType>(sIJson["type"].get<int>()),
                                              Source::BLOCK,
                                              {sIJson["position"][0].get<float>(), sIJson["position"][1].get<float>()},
                                              static_cast<Direction>(sIJson["direction"].get<int>()));
         sI->loadFromJson(sIJson);
         staticItem.push_back(sI);
+    }
+    
+    // Load mapGrid efficiently
+    mapGrid = j["mapGrid"].get<std::vector<int>>();
+    
+    if (totalTiles > 10000) {
+        std::cout << "Info: Large map loaded successfully!" << std::endl;
     }
 }
 
@@ -897,6 +987,18 @@ void Map::loadObjectsToMap(const std::vector<int>& mapGrid) {
                 break;
             case 149:
                 block.push_back(BlockFactory::createBlock(BlockType::INVISIBLEBLOCK, {x * tilewidth, y * tilewidth}));
+                break;
+            case 150:
+                backTile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "CourseClearPoleBackBody", TileType::NOT_SOLID));
+                break;
+            case 151:
+                backTile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "CourseClearPoleBackTop", TileType::NOT_SOLID));
+                break;
+            case 152:
+                frontTile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "CourseClearPoleFrontBody", TileType::NOT_SOLID));
+                break;
+            case 153:
+                frontTile.push_back(TileFactory::createTile({x * tilewidth, y * tilewidth}, "CourseClearPoleFrontTop", TileType::NOT_SOLID));
                 break;
             default:
                 std::cerr << "Unknown tile type: " << y * (width / tilewidth) + x << " at (" << x << ", " << y << ")" << std::endl;

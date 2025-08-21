@@ -1,11 +1,11 @@
-#ifndef PEACH_H
-#define PEACH_H
+#ifndef MARIO_CHARACTER_PEACH_H
+#define MARIO_CHARACTER_PEACH_H
 
 #include "Character/Character.h"
 
 class Peach : public Character {
     public:
-        Peach(ModePlayer mode, Vector2 pos, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed, int initialLives);
+        Peach(ModePlayer mode, Vector2 pos, Vector2 vel, Color color, float speedX, float maxSpeedX, float acceleration, float friction, float floatTime, float jumpSpeed, int initialLives);
         ~Peach();
 
         void updateCollisionBoxes() override;

@@ -8,6 +8,7 @@
 #include "raylib.h"
 #include <vector>
 #include <string>
+#include <unordered_map>
 
 enum class ModePlayer{
     ONEPLAYER,
@@ -21,6 +22,8 @@ class Block;
 class Tile;
 class Enemy;
 class GameHud;
+class KeyManager;
+class GamepadManager;
 
 class Character : public Sprite {
     protected:
@@ -39,6 +42,11 @@ class Character : public Sprite {
         float dyingSpeed;
         bool isRunning;
         bool isDucking;
+
+        float acceleration;
+        float friction;
+        float floatTime;
+        float floatTimeAcum;
 
         //walking
         float frameTimeWalking;
@@ -88,8 +96,17 @@ class Character : public Sprite {
 
         bool creativeMode;
         bool invulnerableMode;
+
+        // throwing fireball
+        bool isThrowingFireball;
+        float throwingFireballTime;
+        float throwingFireballAcum;
+
+        KeyManager* keyManager;
+        GamepadManager* gamepadManager;
+
     public:
-        Character(CharacterName characterName, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed, int initialLives);
+        Character(CharacterName characterName, ModePlayer mode, Vector2 pos, Vector2 dim, Vector2 vel, Color color, float speedX, float maxSpeedX, float acceleration, float friction, float floatTime, float jumpSpeed, int initialLives);
         virtual ~Character() override;
 
         void setWorld(World* world);
@@ -153,6 +170,15 @@ class Character : public Sprite {
         void setCharacterName(CharacterName name);
         CharacterName getCharacterName() const;
         GameMode getGameMode() const;
+        ModePlayer getModePlayer() const;
+        void setModePlayer(ModePlayer mode);
+        
+        void setKeyManager(KeyManager* keyManager);
+        std::unordered_map<std::string, int>& getKeys();
+        
+        void setGamepadManager(GamepadManager* gamepadManager);
+        std::unordered_map<std::string, int>& getGamepadButtons();
+        int getGamepadID() const;
 
         void copyState(const Character& other);
 };

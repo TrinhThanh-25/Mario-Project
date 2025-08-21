@@ -1,6 +1,8 @@
 #include "GameState/PlayingState.h"
 #include "GameState/CountingPointState.h"
 #include "GameState/SettingState.h"
+#include "GameState/GoNextMapState.h"
+#include "GameState/GameStateFactory.h"
 #include "Block/Block.h"
 #include "Tile/Tile.h"
 #include "Enemy/Enemy.h"
@@ -17,8 +19,14 @@ PlayingState::PlayingState(World* world)
     modeWorld(world->getModeWorld()), 
     gameHud(world->getGameHud()),
     pausedForTransition(world->getPausedForTransition()),
-    pausedUpdateCharacters(world->getPausedUpdateCharacters()) {
+    pausedUpdateCharacters(world->getPausedUpdateCharacters()),
+    skipFirstFrame(true) {
         world->setGameMode(GameMode::PLAYER);
+        
+        // Reset raylib internal timer để tránh physics explosion
+        // Gọi GetTime() để lấy thời gian hiện tại và "sync" lại timer
+        static double lastTime = 0.0;
+        lastTime = GetTime();
 }
 
 PlayingState::~PlayingState() {
@@ -26,6 +34,11 @@ PlayingState::~PlayingState() {
 }
 
 void PlayingState::update() {
+    if (skipFirstFrame) {
+        GetFrameTime();
+        skipFirstFrame = false;
+        return;
+    }
     if(IsKeyPressed(KEY_ESCAPE)) {
         if(world->getGamePlay() == GamePlay::PLAYDEVELOPEDMAP) {
             SaveGame::saveGame(*world);
@@ -33,7 +46,9 @@ void PlayingState::update() {
         else {
             SaveGame::saveGame(*world, "../resources/SaveGame/" + map->getMapFileName() + ".json");
         }
-        SettingState* settingState = new SettingState(world);
+        world->stopPlayerDownMusic();
+        world->stopGameOverMusic();
+        GameState* settingState = GameStateFactory::createGameState(world, GameStateType::SETTING);
         settingState->setStateBeforeSetting(GameStateType::PLAYING);
         world->setGameState(settingState);
         return;
@@ -54,17 +69,17 @@ void PlayingState::update() {
             float mapWidth = map->getWidth();
             float mapHeight = map->getHeight();
             camera->offset = {centerX, centerY};
-            if(charactersX <= centerX) {
-                camera->target.x = centerX; 
+            if(charactersX <= centerX + 32) {
+                camera->target.x = centerX + 32; 
                 map->setOffset(0);
-            } else if(charactersX >= mapWidth - centerX) {
-                camera->target.x = mapWidth - centerX;
+            } else if(charactersX >= mapWidth - centerX - 32) {
+                camera->target.x = mapWidth - centerX - 32;
             } else {
                 camera->target.x = charactersX;
-                map->setOffset(charactersX - centerX);
+                map->setOffset(charactersX - centerX - 32);
             }
-            if(charactersY <= centerY) {
-                camera->target.y = centerY;
+            if(charactersY <= centerY + 32) {
+                camera->target.y = centerY + 32;
             } else if(charactersY >= mapHeight - centerY) {
                 camera->target.y = mapHeight - centerY;
             } else {
@@ -100,18 +115,18 @@ void PlayingState::update() {
             float viewWidth = screenWidth / camera->zoom;
             float viewHeight = screenHeight / camera->zoom;
 
-            if (center.x < viewWidth / 2.0f) {
-                camera->target.x = viewWidth / 2.0f;
+            if (center.x < viewWidth / 2.0f + 32 / zoomX) {
+                camera->target.x = viewWidth / 2.0f + 32 / zoomX;
                 map->setOffset(0);
-            } else if (center.x > mapWidth - viewWidth / 2.0f) {
-                camera->target.x = mapWidth - viewWidth / 2.0f;
+            } else if (center.x > mapWidth - viewWidth / 2.0f - 32 / zoomX) {
+                camera->target.x = mapWidth - viewWidth / 2.0f - 32 / zoomX;
             } else {
                 camera->target.x = center.x;
-                map->setOffset(center.x - viewWidth / 2.0f);
+                map->setOffset(center.x - viewWidth / 2.0f - 32 / zoomX);
             }
 
-            if (center.y < viewHeight / 2.0f) {
-                camera->target.y = viewHeight / 2.0f;
+            if (center.y < viewHeight / 2.0f + 32 / zoomY) {
+                camera->target.y = viewHeight / 2.0f + 32 / zoomY;
             } else if (center.y >= mapHeight - viewHeight / 2.0f) {
                 camera->target.y = mapHeight - viewHeight / 2.0f;
             } else {
@@ -142,8 +157,9 @@ void PlayingState::update() {
     }
 
     if(!isOneCharactersDead() && !isAllCharactersVictory()) {
-        gameHud->update();
-        map->playMusic();
+        if(world->getGamePlay() == GamePlay::PLAYDEVELOPEDMAP) {
+            map->playMusic();
+        }
         if (!*pausedForTransition) {
             for (auto& b : block) {
                 b->update();
@@ -247,12 +263,13 @@ void PlayingState::update() {
                 }
             }
         }
+        gameHud->update();
     }
     else if (isOneCharactersDead()) {
         world->resetWhenCharacterDead();
     } 
     else if (isAllCharactersVictory()) {
-        world->setGameState(new CountingPointState(world));
+        world->setGameState(GameStateFactory::createGameState(world, GameStateType::COUNTING_POINT));
     }
 }
 
@@ -295,7 +312,10 @@ bool PlayingState::isOneCharactersTransitioning() const {
 }
 
 void PlayingState::enter() {
-    map->playMusic();
+    skipFirstFrame = true;
+    if(world->getGamePlay() == GamePlay::PLAYDEVELOPEDMAP) {
+        map->playMusic();
+    }
 }
 
 void PlayingState::exit() {

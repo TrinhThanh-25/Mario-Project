@@ -1,0 +1,80 @@
+[
+    [
+        {
+            "buttonName": "LEFT",
+            "buttonValue": 4
+        },
+        {
+            "buttonName": "UP",
+            "buttonValue": 7
+        },
+        {
+            "buttonName": "RIGHT",
+            "buttonValue": 2
+        },
+        {
+            "buttonName": "DOWN",
+            "buttonValue": 12
+        },
+        {
+            "buttonName": "CONTROL",
+            "buttonValue": 6
+        },
+        {
+            "buttonName": "SHIFT",
+            "buttonValue": 10
+        }
+    ],
+    [
+        {
+            "buttonName": "LEFT",
+            "buttonValue": 4
+        },
+        {
+            "buttonName": "UP",
+            "buttonValue": 7
+        },
+        {
+            "buttonName": "RIGHT",
+            "buttonValue": 2
+        },
+        {
+            "buttonName": "DOWN",
+            "buttonValue": 12
+        },
+        {
+            "buttonName": "CONTROL",
+            "buttonValue": 6
+        },
+        {
+            "buttonName": "SHIFT",
+            "buttonValue": 10
+        }
+    ],
+    [
+        {
+            "buttonName": "LEFT",
+            "buttonValue": 4
+        },
+        {
+            "buttonName": "UP",
+            "buttonValue": 7
+        },
+        {
+            "buttonName": "RIGHT",
+            "buttonValue": 2
+        },
+        {
+            "buttonName": "DOWN",
+            "buttonValue": 12
+        },
+        {
+            "buttonName": "CONTROL",
+            "buttonValue": 6
+        },
+        {
+            "buttonName": "SHIFT",
+            "buttonValue": 10
+        }
+    ]
+]

@@ -13,6 +13,7 @@ class PlayingState : public GameState {
         GameHud* gameHud;
         bool* pausedForTransition;
         bool* pausedUpdateCharacters;
+        bool skipFirstFrame;
     public:
         PlayingState(World* world);
         ~PlayingState() override;

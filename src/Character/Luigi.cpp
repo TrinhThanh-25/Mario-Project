@@ -1,7 +1,7 @@
 #include "Character/Luigi.h"
 
-Luigi::Luigi(ModePlayer mode, Vector2 pos, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed, int initialLives) :
-    Character(CharacterName::LUIGI, mode, pos, {32, 44}, vel, color, speedX, maxSpeedX, jumpSpeed, initialLives) {
+Luigi::Luigi(ModePlayer mode, Vector2 pos, Vector2 vel, Color color, float speedX, float maxSpeedX, float acceleration, float friction, float floatTime, float jumpSpeed, int initialLives) :
+    Character(CharacterName::LUIGI, mode, pos, {32, 44}, vel, color, speedX, maxSpeedX, acceleration, friction, floatTime, jumpSpeed, initialLives) {
     name = "Luigi";
 }
 

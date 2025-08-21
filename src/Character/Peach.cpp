@@ -1,7 +1,7 @@
 #include "Character/Peach.h"
 
-Peach::Peach(ModePlayer mode, Vector2 pos, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed, int initialLives) :
-    Character(CharacterName::PEACH, mode, pos, {26, 46}, vel, color, speedX, maxSpeedX, jumpSpeed, initialLives) {
+Peach::Peach(ModePlayer mode, Vector2 pos, Vector2 vel, Color color, float speedX, float maxSpeedX, float acceleration, float friction, float floatTime, float jumpSpeed, int initialLives) :
+    Character(CharacterName::PEACH, mode, pos, {26, 46}, vel, color, speedX, maxSpeedX, acceleration, friction, floatTime, jumpSpeed, initialLives) {
     name = "Peach";
     maxFrame = 3;
 }

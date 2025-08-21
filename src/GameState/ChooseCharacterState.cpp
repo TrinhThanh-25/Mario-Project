@@ -4,6 +4,7 @@
 #include "Character/CharacterFactory.h"
 #include "Common/ResourceManager.h"
 #include "GameState/ChooseCustomizedMap.h"
+#include "GameState/GameStateFactory.h"
 #include "raylib.h"
 
 ChooseCharacterState::ChooseCharacterState(World* world)
@@ -19,6 +20,10 @@ ChooseCharacterState::ChooseCharacterState(World* world)
 
 ChooseCharacterState::ChooseCharacterState(World* world, std::string mapFileName)
     : ChooseCharacterState(world) {
+    setMapFileName(mapFileName);
+}
+
+void ChooseCharacterState::setMapFileName(const std::string& mapFileName) {
     world->getMap()->loadMap(mapFileName);
 }
 
@@ -43,9 +48,9 @@ void ChooseCharacterState::update() {
     std::vector<Character*>& characters = world->getCharacters();
     if(IsKeyPressed(KEY_ESCAPE)) {
         if(world->getGamePlay() == GamePlay::PLAYDEVELOPEDMAP) {
-            world->setGameState(new TitleScreenState(world));
+            world->setGameState(GameStateFactory::createGameState(world, GameStateType::TITLE_SCREEN));
         } else if(world->getGamePlay() == GamePlay::PLAYCUSTOMMAP) {
-            world->setGameState(new ChooseCustomizedMapState(world));
+            world->setGameState(GameStateFactory::createGameState(world, GameStateType::CHOOSE_CUSTOMIZED_MAP));
         }
         return;
     }
@@ -56,16 +61,21 @@ void ChooseCharacterState::update() {
         for (CharacterTag* tag : characterTags) {
             if (modeWorld == ModeWorld::SINGLEPLAYER && (tag->getState() == TagState::FIRSTPLAYERSELECTING || tag->getState() == TagState::FIRSTPLAYERSELECTED)) {
                 characters.push_back(CharacterFactory::createCharacter(tag->getName(), ModePlayer::ONEPLAYER));
+                world->getKeyManager()->setKeyManagerForCharacter(characters.back(), ModePlayer::ONEPLAYER);
             } 
             else if (modeWorld == ModeWorld::MULTIPLAYER && (tag->getState() == TagState::FIRSTPLAYERSELECTING || tag->getState() == TagState::FIRSTPLAYERSELECTED)) {
                 characters.push_back(CharacterFactory::createCharacter(tag->getName(), ModePlayer::FIRSTPLAYER));
+                world->getKeyManager()->setKeyManagerForCharacter(characters.back(), ModePlayer::FIRSTPLAYER);
             } 
             else if (modeWorld == ModeWorld::MULTIPLAYER && (tag->getState() == TagState::SECONDPLAYERSELECTING || tag->getState() == TagState::SECONDPLAYERSELECTED)) {
                 characters.push_back(CharacterFactory::createCharacter(tag->getName(), ModePlayer::SECONDPLAYER));
+                world->getKeyManager()->setKeyManagerForCharacter(characters.back(), ModePlayer::SECONDPLAYER);
             }
             else if(modeWorld == ModeWorld::MULTIPLAYER && (tag->getState() == TagState::BOTHPLAYERSELECTING || tag->getState() == TagState::BOTHPLAYERSELECTED || tag->getState() == TagState::FIRSTPLAYERSELECTED_SECONDPLAYERSELECTING || tag->getState() == TagState::SECONDPLAYERSECLECTED_FIRSTPLAYERSELECTING)) {
                 characters.push_back(CharacterFactory::createCharacter(tag->getName(), ModePlayer::FIRSTPLAYER));
+                world->getKeyManager()->setKeyManagerForCharacter(characters.back(), ModePlayer::FIRSTPLAYER);
                 characters.push_back(CharacterFactory::createCharacter(tag->getName(), ModePlayer::SECONDPLAYER));
+                world->getKeyManager()->setKeyManagerForCharacter(characters.back(), ModePlayer::SECONDPLAYER);
             }
             for (Character* character : characters) {
                 character->setWorld(world);
@@ -77,9 +87,9 @@ void ChooseCharacterState::update() {
         else if(world->getGamePlay() == GamePlay::PLAYCUSTOMMAP) {
             world->getMap()->loadMap(world->getMap()->getMapFileName());
         }
-        world->getGameHud()->reset();
+        world->getGameHud()->resetGame();
         world->setModeWorld(modeWorld);
-        world->setGameState(new PlayingState(world));
+        world->setGameState(GameStateFactory::createGameState(world, GameStateType::PLAYING));
         return;
     }
     if(modeWorld == ModeWorld::SINGLEPLAYER) {

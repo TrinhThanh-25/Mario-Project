@@ -4,6 +4,7 @@
 #include "GameState/SettingState.h"
 #include "Common/ResourceManager.h"
 #include "GameState/ChooseCustomizedMap.h"
+#include "GameState/GameStateFactory.h"
 #include "SaveGame.h"
 #include "raylib.h"
 
@@ -158,13 +159,13 @@ void TitleScreenState::update() {
         UpdateMusicStream(ResourceManager::getMusic()["Title"]);
     }
     if(onePlayerGameButton.isPressed() || (IsKeyPressed(KEY_ENTER) && onePlayerGameButton.isSelected())) {
-        ChooseCharacterState* newState = new ChooseCharacterState(world);
+        GameState* newState = GameStateFactory::createGameState(world, GameStateType::CHOOSE_CHARACTER);
         newState->setModeWorld(ModeWorld::SINGLEPLAYER);
         world->setGamePlay(GamePlay::PLAYDEVELOPEDMAP);
         world->setGameState(newState);
     }
     else if(twoPlayersGameButton.isPressed() || (IsKeyPressed(KEY_ENTER) && twoPlayersGameButton.isSelected())) {
-        ChooseCharacterState* newState = new ChooseCharacterState(world);
+        GameState* newState = GameStateFactory::createGameState(world, GameStateType::CHOOSE_CHARACTER);
         newState->setModeWorld(ModeWorld::MULTIPLAYER);
         world->setGamePlay(GamePlay::PLAYDEVELOPEDMAP);
         world->setGameState(newState);
@@ -177,13 +178,13 @@ void TitleScreenState::update() {
         world->setIsClosed(true);
     }
     else if(optionsButton.isPressed() || (IsKeyPressed(KEY_ENTER) && optionsButton.isSelected())) {
-        SettingState* newState = new SettingState(world);
+        GameState* newState = GameStateFactory::createGameState(world, GameStateType::SETTING);
         newState->setStateBeforeSetting(GameStateType::TITLE_SCREEN);
         world->setGameState(newState);
     }
     else if(listMapButton.isPressed() || (IsKeyPressed(KEY_ENTER) && listMapButton.isSelected())) {
-        ChooseCustomizedMapState* newState = new ChooseCustomizedMapState(world);
-        world->setGameState(newState);
+        world->setGamePlay(GamePlay::PLAYCUSTOMMAP);
+        world->setGameState(GameStateFactory::createGameState(world, GameStateType::CHOOSE_CUSTOMIZED_MAP));
     }
 }
 

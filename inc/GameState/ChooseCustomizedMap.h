@@ -7,11 +7,11 @@
 #include <vector>
 #include <unordered_set>
 
-class MyButton
-{
+class MyButton {
 private:
     Rectangle rectangle;
     bool isHovered = false;
+    bool wasHovered = false;
     std::string text;
     int fontSize = 0;
     bool isHandled = false;
@@ -19,30 +19,20 @@ private:
     Color color;
     std::string textureName = "";
 public:
-    MyButton(Rectangle rect, const std::string &txt, int size, Color nColor, bool handle, bool drawn = true)
-        : rectangle(rect), text(txt), fontSize(size), isHandled(handle), isDrawn(drawn), color(nColor) {}
+    MyButton(Rectangle rectangle, std::string text, int fontSize, Color color, bool isHandled = true, bool isDrawn = true);
     void draw();
     void update();
-    void toggleHandle() { isHandled = !isHandled; }
-    bool isHandle() const { return isHandled; }
-    bool isHover() const { return isHovered; }
-    bool isDraw() const { return isDrawn; }
-    void toggleDraw() { isDrawn = !isDrawn; }
-    void setTextureName(std::string name) {
-        textureName = name;
-    }
-    void setColor(Color new_color)
-    {
-        color = new_color;
-    }
-    void setText(const std::string &new_text)
-    {
-        text = new_text;
-    }
+    void toggleHandle();
+    bool isHandle() const;
+    bool isHover() const;
+    bool isDraw() const;
+    void toggleDraw();
+    void setTextureName(std::string name);
+    void setColor(Color new_color);
+    void setText(const std::string &new_text);
     void setPos(Vector2 newPos);
-    std::string getText() {
-        return text;
-    }
+    std::string getText();
+    bool isClicked();
 };
 
 class ChooseCustomizedMapState : public GameState
@@ -50,15 +40,12 @@ class ChooseCustomizedMapState : public GameState
 private:
     int numberOfFile;
     std::vector<std::string> listFileName;
-    std::unordered_set<std::string> mapNameSet; // For fast O(1) lookup
+    std::unordered_set<std::string> mapNameSet;
     std::vector<MyButton> mapButtons;
-    std::vector<MyButton> ESCMenuButtons;
     std::vector<MyButton> OptionButtons;
-    bool ESCMenuActive = false;
     bool OptionActive = false;
     int MapChosen = 0;
 
-    // Mouse Whell handling
     float MouseWhellAcum = 0;
     float MouseWhellTime = 1.0f;
     int currentIndex;
@@ -72,6 +59,7 @@ public:
     void setMap(bool Up);
     void load(std::string fileName = "../resources/Map/ListMap.json");
     void save(std::string fileName = "../resources/Map/ListMap.json");
+    void createDefaultMapFile(const std::string& mapName);
 };
 
 

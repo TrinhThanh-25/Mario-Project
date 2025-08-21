@@ -1,5 +1,5 @@
-#ifndef STAR_H
-#define STAR_H
+#ifndef MARIO_ITEM_STAR_H
+#define MARIO_ITEM_STAR_H
 
 #include "Item.h"
 

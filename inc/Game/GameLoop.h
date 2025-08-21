@@ -1,5 +1,5 @@
-#ifndef GAMELOOP_H
-#define GAMELOOP_H
+#ifndef MARIO_GAME_GAMELOOP_H
+#define MARIO_GAME_GAMELOOP_H
 
 #include "Common/Drawable.h"
 

@@ -1,5 +1,5 @@
-#ifndef QUESTIONBLOCK_H
-#define QUESTIONBLOCK_H
+#ifndef MARIO_QUESTIONBLOCK_H
+#define MARIO_QUESTIONBLOCK_H
 
 #include "Block/Block.h"
 #include "Character/Character.h"

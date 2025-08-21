@@ -1,11 +1,11 @@
-#ifndef MARIO_H
-#define MARIO_H
+#ifndef MARIO_CHARACTER_MARIO_H
+#define MARIO_CHARACTER_MARIO_H
 
 #include "Character/Character.h"
 
 class Mario : public Character {
     public:
-        Mario(ModePlayer mode,Vector2 pos, Vector2 vel, Color color, float speedX, float maxSpeedX, float jumpSpeed, int initialLives);
+        Mario(ModePlayer mode,Vector2 pos, Vector2 vel, Color color, float speedX, float maxSpeedX, float acceleration, float friction, float floatTime, float jumpSpeed, int initialLives);
         ~Mario();
         void updateCollisionBoxes() override;
         void transitionToSmall() override;
