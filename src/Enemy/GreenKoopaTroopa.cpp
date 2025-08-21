@@ -97,11 +97,11 @@ void GreenKoopaTroopa::draw() {
 
     else if (state == SpriteState::SHELL || state == SpriteState::SHELL_MOVING) {
         if (shellMoving) {
-            // SHELL_MOVING: quay liên tục với 8 frame
+        
             int spinFrame = ((int)(GetTime() * 12)) % 8;
             textureKey = "GreenKoopaShield" + std::to_string(spinFrame);
         } else {
-            // SHELL: đứng yên
+           
             textureKey = "GreenKoopaShield0";
         }
     }
@@ -214,7 +214,7 @@ void GreenKoopaTroopa::collisionTile(Tile* tile) {
         if (state == SpriteState::ACTIVE) {
             velocity.x = isFacingLeft ? -100.0f : 100.0f;
         } else if (state == SpriteState::SHELL_MOVING) {
-            shellSpeed = fabs(shellSpeed);  // giữ nguyên speed, chỉ đổi hướng bằng isFacingLeft
+            shellSpeed = fabs(shellSpeed);  
         }
     }
 
