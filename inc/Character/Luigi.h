@@ -1,5 +1,5 @@
-#ifndef LUIGI_H
-#define LUIGI_H
+#ifndef MARIO_CHARACTER_LUIGI_H
+#define MARIO_CHARACTER_LUIGI_H
 
 #include "Character/Character.h"
 

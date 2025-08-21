@@ -1,5 +1,5 @@
-#ifndef COIN_H
-#define COIN_H
+#ifndef MARIO_ITEM_COIN_H
+#define MARIO_ITEM_COIN_H
 
 #include "Item.h"
 

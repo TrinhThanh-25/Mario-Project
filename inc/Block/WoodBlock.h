@@ -1,5 +1,5 @@
-#ifndef WOOD_BLOCK_H
-#define WOOD_BLOCK_H
+#ifndef MARIO_WOOD_BLOCK_H
+#define MARIO_WOOD_BLOCK_H
 
 #include "Block/Block.h"
 

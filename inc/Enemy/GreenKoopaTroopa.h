@@ -1,5 +1,5 @@
-#ifndef GREENKOOPATROOPA_H
-#define GREENKOOPATROOPA_H
+#ifndef MARIO_GREENKOOPATROOPA_H
+#define MARIO_GREENKOOPATROOPA_H
 
 #include "Enemy/Enemy.h"
 #include "Common/HitType.h"

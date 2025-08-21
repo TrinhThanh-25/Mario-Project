@@ -1,5 +1,8 @@
-#ifndef BLOCK_H
-#define BLOCK_H
+#ifndef MARIO_BLOCK_H
+#define MARIO_BLOCK_H
+
+#pragma once
+
 
 #include "Common/Sprite.h"
 #include "Character/Character.h"

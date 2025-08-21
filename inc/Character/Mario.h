@@ -1,5 +1,5 @@
-#ifndef MARIO_H
-#define MARIO_H
+#ifndef MARIO_CHARACTER_MARIO_H
+#define MARIO_CHARACTER_MARIO_H
 
 #include "Character/Character.h"
 

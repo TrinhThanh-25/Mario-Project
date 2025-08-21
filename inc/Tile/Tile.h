@@ -1,5 +1,5 @@
-#ifndef TILE_H
-#define TILE_H
+#ifndef MARIO_TILE_TILE_H
+#define MARIO_TILE_TILE_H
 
 #include "Common/Sprite.h"
 #include "raylib.h"

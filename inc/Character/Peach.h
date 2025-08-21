@@ -1,5 +1,5 @@
-#ifndef PEACH_H
-#define PEACH_H
+#ifndef MARIO_CHARACTER_PEACH_H
+#define MARIO_CHARACTER_PEACH_H
 
 #include "Character/Character.h"
 

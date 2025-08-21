@@ -1,5 +1,5 @@
-#ifndef STONEBLOCK_H
-#define STONEBLOCK_H
+#ifndef MARIO_STONEBLOCK_H
+#define MARIO_STONEBLOCK_H
 
 #include "Block.h"
 
