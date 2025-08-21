@@ -24,9 +24,9 @@ void GreenKoopaTroopa::update(const std::vector<Character*>& characterList) {
     if (state == SpriteState::INACTIVE) {
         for (Character* c : characterList) {
             activeWhenMarioApproach(*c);
-            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+            if (state != SpriteState::INACTIVE) break;  
         }
-        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
+        if (state == SpriteState::INACTIVE) return; 
     }
 
     if (state == SpriteState::ACTIVE) {
@@ -97,11 +97,11 @@ void GreenKoopaTroopa::draw() {
 
     else if (state == SpriteState::SHELL || state == SpriteState::SHELL_MOVING) {
         if (shellMoving) {
-            // SHELL_MOVING: quay liên tục với 8 frame
+        
             int spinFrame = ((int)(GetTime() * 12)) % 8;
             textureKey = "GreenKoopaShield" + std::to_string(spinFrame);
         } else {
-            // SHELL: đứng yên
+           
             textureKey = "GreenKoopaShield0";
         }
     }
@@ -214,7 +214,7 @@ void GreenKoopaTroopa::collisionTile(Tile* tile) {
         if (state == SpriteState::ACTIVE) {
             velocity.x = isFacingLeft ? -100.0f : 100.0f;
         } else if (state == SpriteState::SHELL_MOVING) {
-            shellSpeed = fabs(shellSpeed);  // giữ nguyên speed, chỉ đổi hướng bằng isFacingLeft
+            shellSpeed = fabs(shellSpeed);  
         }
     }
 

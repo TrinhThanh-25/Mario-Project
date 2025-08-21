@@ -22,9 +22,9 @@ void MummyBeetle::update(const std::vector<Character*>& characterList) {
     if (state == SpriteState::INACTIVE) {
         for (Character* c : characterList) {
             activeWhenMarioApproach(*c);
-            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+            if (state != SpriteState::INACTIVE) break;  
         }
-        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
+        if (state == SpriteState::INACTIVE) return; 
     }
 
     if (state == SpriteState::ACTIVE) {
@@ -80,9 +80,6 @@ void MummyBeetle::draw(){
 
     DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
 
-    // else if (state == SpriteState::SHELL || state == SpriteState::SHELL_MOVING || state == SpriteState::DYING) {
-    //     textureKey = isFacingLeft ? "BuzzyBeetleShellLeft" : "BuzzyBeetleShellRight";
-    // }
 
     if (state == SpriteState::DYING) {
         std::string dyingKey = isFacingLeft ? "MummyBeetle1Left" : "MummyBeetle1Right";
@@ -176,7 +173,6 @@ void MummyBeetle::collisionTile(Tile* tile) {
         if (state == SpriteState::ACTIVE) {
             velocity.x = isFacingLeft ? -100.0f : 100.0f;
         }
-        // SHELL_MOVING không cần chỉnh velocity, chỉ cần isFacingLeft
     }
 
     if (col == CollisionType::SOUTH){

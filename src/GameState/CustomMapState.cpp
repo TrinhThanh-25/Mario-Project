@@ -13,6 +13,7 @@
 
 using json = nlohmann::json;
 
+// CONST FOR LATER
 const int PALETTE_WIDTH = 290;
 const int BUTTON_HEIGHT = 30;
 const int CATEGORY_BUTTON_WIDTH = 50;
@@ -145,6 +146,7 @@ void CustomMapState::handleUnsavedWarning() {
     Rectangle discardBtn = {(float)(dialogX + 140), (float)(dialogY + 140), 100, 30};
     Rectangle cancelBtn = {(float)(dialogX + 260), (float)(dialogY + 140), 100, 30};
     
+    // =============================== DRAW BUTTON ==============================
     if (GuiButton(saveBtn, "SAVE & EXIT")) {
         saveMap();
         showUnsavedWarning = false;
@@ -387,7 +389,7 @@ void CustomMapState::drawMap() {
 void CustomMapState::drawTilePalette() {
     int screenWidth = GetScreenWidth();
     int screenHeight = GetScreenHeight();
-    
+    // Có thể kiếm texture để thay thế sau
     Rectangle toggleButton = {(float)getToggleX(isPaletteVisible), 5, (float)TOGGLE_BUTTON_WIDTH, (float)BUTTON_HEIGHT};
     if (GuiButton(toggleButton, isPaletteVisible ? "<<" : ">>")) {
         isPaletteVisible = !isPaletteVisible;
@@ -423,7 +425,7 @@ void CustomMapState::drawTilePalette() {
     int tileAreaHeight = paletteHeight - (tileAreaY - paletteY) - 10;
     int tilesPerRow = (PALETTE_WIDTH - 20) / (TILE_DISPLAY_SIZE + TILE_SPACING);
     int maxVisibleRows = tileAreaHeight / (TILE_DISPLAY_SIZE + TILE_SPACING);
-
+// list to be drawn 
     std::vector<int> drawList;
     if (selectedCategory == "ALL") {
         for (int i = 1; i <= 153; i++) {  // Fixed: loop to 153 to include all tiles
@@ -458,6 +460,7 @@ void CustomMapState::drawTilePalette() {
     }
 }
 
+// load texture ảnh theo ID để dễ vẽ
 void CustomMapState::loadTileTextures() {
     for (int i = 1; i <= 153; ++i) {
         tileIds.push_back("Tileset" + std::to_string(i));
@@ -573,6 +576,7 @@ void CustomMapState::drawToolbar() {
     }
     currentX += 60 + TOOLBAR_SPACING;
     
+    // Apply button
     Rectangle applyBtn = {currentX, 5, TOOLBAR_BUTTON_WIDTH, TOOLBAR_HEIGHT - 10};
     if (GuiButton(applyBtn, "APPLY")) {
         applyMapSize();

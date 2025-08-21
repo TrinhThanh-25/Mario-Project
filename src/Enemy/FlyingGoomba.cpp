@@ -14,14 +14,14 @@ FlyingGoomba::FlyingGoomba(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
 }
 
 FlyingGoomba::~FlyingGoomba() {
-    // Destructor logic if needed
+
 }
 
 void FlyingGoomba::draw() {
     std::string textureKey;
 
     if (state == SpriteState::ACTIVE) {
-        int frame = (int)(flyingCycleTime * 6) % 2; // dùng flyingCycleTime cho đồng bộ vỗ cánh
+        int frame = (int)(flyingCycleTime * 6) % 2; 
 
         if (movetype == MoveType::FLYING) {
             if (isFacingLeft) {
@@ -30,7 +30,7 @@ void FlyingGoomba::draw() {
                 textureKey = (frame == 0) ? "FlyingGoomba0Right" : "FlyingGoomba1Right";
             }
         } else if (movetype == MoveType::WALKING) {
-            frame = (int)(GetTime() * 6) % 2; // walking vẫn dùng thời gian thực
+            frame = (int)(GetTime() * 6) % 2; 
             if (isFacingLeft) {
                 textureKey = (frame == 0) ? "Goomba0Left" : "Goomba1Left";
             } else {
@@ -77,9 +77,9 @@ void FlyingGoomba::update(const std::vector<Character*>& characterList) {
     if (state == SpriteState::INACTIVE) {
         for (Character* c : characterList) {
             activeWhenMarioApproach(*c);
-            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+            if (state != SpriteState::INACTIVE) break;  
         }
-        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
+        if (state == SpriteState::INACTIVE) return; 
     }
 
     if (state == SpriteState::ACTIVE) {

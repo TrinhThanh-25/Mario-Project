@@ -10,7 +10,7 @@ BanzaiBill::BanzaiBill(Vector2 pos, Vector2 dim, Vector2 vel, Color color)
     setState(SpriteState::INACTIVE);   // Chờ Mario đến gần mới active
     isFacingLeft = vel.x < 0;     // Dựa theo hướng bay ban đầu
 
-    maxLifeTime = 8.0f;    // Sau 8 giây sẽ tự biến mất (có thể tùy chỉnh)
+    maxLifeTime = 8.0f;   
     lifeTimer = 0.0f;
     
     point = 500;
@@ -25,7 +25,7 @@ void BanzaiBill::update(const std::vector<Character*>& characterList) {
             activeWhenMarioApproach(*c);
             if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
         }
-        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
+        if (state == SpriteState::INACTIVE) return; 
     }   
 
     if (state == SpriteState::ACTIVE) {

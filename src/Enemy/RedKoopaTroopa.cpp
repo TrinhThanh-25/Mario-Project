@@ -30,12 +30,9 @@ void RedKoopaTroopa::draw() {
     if (state == SpriteState::DYING) {
         std::string dyingKey = isFacingLeft ? "RedKoopaTroopa1Left" : "RedKoopaTroopa1Right";
         DrawTexture(ResourceManager::getTexture()[dyingKey], position.x, position.y, WHITE);
-
-    // Bay lên
         float offsetY = 50.0f * pointFrameAcum / pointFrameTime;
 
-    // Lấp lánh bằng alpha modulate (sin wave)
-        float alpha = 0.5f + 0.5f * sin(GetTime() * 10.0f); // dao động từ 0 → 1
+        float alpha = 0.5f + 0.5f * sin(GetTime() * 10.0f); 
         Color glowColor = {255, 255, 255, (unsigned char)(255 * alpha)};
 
         DrawTexture(
@@ -45,14 +42,6 @@ void RedKoopaTroopa::draw() {
             glowColor
         );
     }
-    north.setColor(BLUE);
-    south.setColor(BLUE);
-    west.setColor(BLUE);
-    east.setColor(BLUE);
-    north.draw();
-    west.draw();
-    south.draw();
-    east.draw();
 }
  
     
@@ -119,9 +108,9 @@ void RedKoopaTroopa::update(const std::vector<Character*>& characterList) {
     if (state == SpriteState::INACTIVE) {
         for (Character* c : characterList) {
             activeWhenMarioApproach(*c);
-            if (state != SpriteState::INACTIVE) break;  // Đã được kích hoạt thì dừng
+            if (state != SpriteState::INACTIVE) break;  
         }
-        if (state == SpriteState::INACTIVE) return; // Vẫn chưa được kích hoạt thì không làm gì
+        if (state == SpriteState::INACTIVE) return; 
     }
 
     if (state == SpriteState::ACTIVE) {
@@ -130,19 +119,10 @@ void RedKoopaTroopa::update(const std::vector<Character*>& characterList) {
             followTheLeader(leader);
         }
 
-        // Đổi hướng nếu gần mép (đặc trưng Red Koopa)
-        // if (isNearEdge()) {
-        //     velocity.x = -velocity.x;
-        //     isFacingLeft = !isFacingLeft;
-        // }
-
-        // Di chuyển
         position.x += velocity.x * delta;
         position.y += velocity.y * delta;
         velocity.y += World::gravity * delta;
 
-
-        // Cập nhật hướng nhìn
         if (velocity.x != 0) {
             isFacingLeft = velocity.x < 0;
         }
@@ -178,7 +158,6 @@ void RedKoopaTroopa::followTheLeader(Sprite* leader) {
     Vector2 leaderPos = leader->getPosition();
     float delta = GetFrameTime();
 
-    // Nếu leader cách quá xa dhì chạy dheo
     if (fabs(position.x - leaderPos.x) > 32.0f) {
         isFacingLeft = leaderPos.x < position.x;
         velocity.x = isFacingLeft ? -40.0f : 40.0f; // tốc độ như trong update()
@@ -219,17 +198,6 @@ void RedKoopaTroopa::collisionBlock(Block* block) {
         velocity.y = 0;
     }
 }
-
-// bool RedKoopaTroopa::isNearEdge() {
-//     return true;
-//     // float checkOffsetX = isFacingLeft ? -1.0f : dimension.x + 1.0f;
-//     // Vector2 checkPos = {
-//     //     position.x + checkOffsetX,
-//     //     position.y + dimension.y + 1.0f
-//     // };
-
-//     // return !world->getMap()->isSolidTileAt(checkPos);
-// }
 
 // =========================== SAVE GAME ====================
 json RedKoopaTroopa::saveToJson() const {

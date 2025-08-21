@@ -18,9 +18,6 @@ public:
     void followTheLeader(Sprite* leader);
 
     Sprite* leader = nullptr;
-
-    // bool isNearEdge();
-
     void collisionBlock(Block* block);
     void collisionTile(Tile* tile);
 
