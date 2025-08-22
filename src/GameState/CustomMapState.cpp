@@ -150,15 +150,17 @@ void CustomMapState::handleUnsavedWarning() {
     if (GuiButton(saveBtn, "SAVE & EXIT")) {
         saveMap();
         showUnsavedWarning = false;
-        world->setGameState(GameStateFactory::createGameState(world, GameStateType::CHOOSE_CUSTOMIZED_MAP));
-        return;
-    }
-    else if (GuiButton(discardBtn, "DISCARD")) {
+        isClosed = true;
+        pendingExit = true;
+        nextState = GameStateType::CHOOSE_CUSTOMIZED_MAP;
+        return; 
+    } else if (GuiButton(discardBtn, "DISCARD")) {
         showUnsavedWarning = false;
-        world->setGameState(GameStateFactory::createGameState(world, GameStateType::CHOOSE_CUSTOMIZED_MAP));
+        isClosed = true;
+        pendingExit = true;
+        nextState = GameStateType::CHOOSE_CUSTOMIZED_MAP;
         return;
-    }
-    else if (GuiButton(cancelBtn, "CANCEL")) {
+    } else if (GuiButton(cancelBtn, "CANCEL")) {
         showUnsavedWarning = false;
     }
 }
@@ -201,6 +203,15 @@ void CustomMapState::updateTilePallete() {
 }
 
 void CustomMapState::update() {
+    if (pendingExit) {
+        pendingExit = false;
+        if (pendingTestState) {
+            world->setGameState(pendingTestState.release()); // chuyển ownership
+        } else if (nextState == GameStateType::CHOOSE_CUSTOMIZED_MAP) {
+            world->setGameState(GameStateFactory::createGameState(world, GameStateType::CHOOSE_CUSTOMIZED_MAP));
+        }
+        return; // dừng update frame này
+    }
     if (showUnsavedWarning) return;
     if ((IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) && IsKeyPressed(KEY_Z)) {
         undo();
@@ -304,6 +315,7 @@ void CustomMapState::updateMapView() {
 }
 
 void CustomMapState::draw() {
+    if (isClosed) return;
     ClearBackground({230, 230, 230, 255});
     drawMap();
     drawToolbar();
@@ -512,12 +524,14 @@ void CustomMapState::drawToolbar() {
     Rectangle testBtn = {currentX, 5, TOOLBAR_BUTTON_WIDTH, TOOLBAR_HEIGHT - 10};
     if (GuiButton(testBtn, "TEST")) {
         isClosed = true;
-        GameState* testState = GameStateFactory::createGameState(world, GameStateType::TEST_MAP);
-        testState->setMapFileName(mapFileName);
-        testState->setMap(MAP_WIDTH, MAP_HEIGHT, mapGrid);
-        testState->setIsSaved(isSaved);
-        testState->setCameraPosition(camera->target.x, camera->target.y);
-        world->setGameState(testState);
+        pendingExit = true;
+    // Tạo state mới ở update() để tránh hủy giữa draw.
+    // Lưu các thông tin cần đem sang:
+        pendingTestState.reset(GameStateFactory::createGameState(world, GameStateType::TEST_MAP));
+        pendingTestState->setMapFileName(mapFileName);
+        pendingTestState->setMap(MAP_WIDTH, MAP_HEIGHT, mapGrid);
+        pendingTestState->setIsSaved(isSaved);
+        pendingTestState->setCameraPosition(camera->target.x, camera->target.y);
         return;
     }
     currentX += TOOLBAR_BUTTON_WIDTH + TOOLBAR_SPACING;

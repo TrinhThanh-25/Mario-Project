@@ -27,9 +27,6 @@ void BuzzyBeetle::draw() {
         textureKey = isFacingLeft ? (frame == 0 ? "BuzzyBeetle0Left" : "BuzzyBeetle1Left")
                                   : (frame == 0 ? "BuzzyBeetle0Right" : "BuzzyBeetle1Right");
     } 
-    // else if (state == SpriteState::SHELL || state == SpriteState::SHELL_MOVING || state == SpriteState::DYING) {
-    //     textureKey = isFacingLeft ? "BuzzyBeetleShellLeft" : "BuzzyBeetleShellRight";
-    // }
 
     DrawTexture(ResourceManager::getTexture()[textureKey], position.x, position.y, WHITE);
 
@@ -121,20 +118,11 @@ void BuzzyBeetle::beingHit(HitType type) {
     switch (type) {
         case HitType::STOMP:
             if (state == SpriteState::ACTIVE) {
-                setState(SpriteState::SHELL);
-                velocity.x = 0;
+                setState(SpriteState::DYING);
+                diePosition = position;
+                dyingFrameAcum = 0.0f;
+                pointFrameAcum = 0.0f;
                 shellMoving = false;
-                shellTimer = 0.0f;
-            }
-            else if (state == SpriteState::SHELL) {
-                setState(SpriteState::SHELL_MOVING);
-                shellMoving = true;
-                shellTimer = 0.0f;
-            }
-            else if (state == SpriteState::SHELL_MOVING) {
-                setState(SpriteState::SHELL);
-                shellMoving = false;
-                shellTimer = 0.0f;
             }
             break;
 
@@ -175,7 +163,6 @@ void BuzzyBeetle::activeWhenMarioApproach(Character& character) {
 }
 
 void BuzzyBeetle::collisionSound() {
-    // PlaySound(ResourceManager::getSound()["BuzzyHit"]);
 }
 
 void BuzzyBeetle::followTheLeader(Sprite* leader) {
