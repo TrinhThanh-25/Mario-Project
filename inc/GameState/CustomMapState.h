@@ -88,6 +88,10 @@ private:
 
     std::map<std::string, std::vector<int>> tileCategories;
     std::string selectedCategory = "ALL";
+
+    bool pendingExit = false;
+    GameStateType nextState = GameStateType::NONE; // hoặc một enum/flag bạn có
+    std::unique_ptr<GameState> pendingTestState;
 };
 
 #endif
