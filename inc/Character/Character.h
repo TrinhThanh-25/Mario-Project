@@ -181,6 +181,7 @@ class Character : public Sprite {
         int getGamepadID() const;
 
         void copyState(const Character& other);
+        void setDying();
 };
 
 #endif

@@ -647,6 +647,11 @@ void ResourceManager::loadTexture() {
     texture["Stardust1"] = LoadTexture("../resources/Effect/Star_1.png");
     texture["Stardust2"] = LoadTexture("../resources/Effect/Star_2.png");
     texture["Stardust3"] = LoadTexture("../resources/Effect/Star_3.png");
+    texture["Explode0"] = LoadTexture("../resources/Effect/Explode_0.png");
+    texture["Explode1"] = LoadTexture("../resources/Effect/Explode_1.png");
+    texture["Explode2"] = LoadTexture("../resources/Effect/Explode_2.png");
+    texture["Explode3"] = LoadTexture("../resources/Effect/Explode_3.png");
+    texture["Explode4"] = LoadTexture("../resources/Effect/Explode_4.png");
 
     //GUI
     texture["Gui1Up"] = LoadTexture("../resources/gui/gui1Up.png");

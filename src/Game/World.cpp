@@ -272,9 +272,9 @@ void World::resetGame() {
     pausedForTransition = false;
     pausedUpdateCharacters = false;
     if(gamePlay == GamePlay::PLAYDEVELOPEDMAP) {
-        gameState = new TitleScreenState(this);
+        gameState = GameStateFactory::createGameState(this, GameStateType::TITLE_SCREEN);
     } else {
-        gameState = new ChooseCustomizedMapState(this);
+        gameState = GameStateFactory::createGameState(this, GameStateType::CHOOSE_CUSTOMIZED_MAP);
     }
 }
 
@@ -285,9 +285,9 @@ void World::nextMap() {
         }
         gameHud->addHistory();
         gameHud->reset();
-        setGameState(new PlayingState(this));
+        setGameState(GameStateFactory::createGameState(this, GameStateType::PLAYING));
     } else {
-        setGameState(new FinishedState(this));
+        setGameState(GameStateFactory::createGameState(this, GameStateType::FINISHED));
     }
 }
 

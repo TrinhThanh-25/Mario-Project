@@ -30,7 +30,10 @@ private:
     float maxIgniteTime;      // VD: 2.0s
     float explosionRadius;    // vùng gây sát thương
     BobOmbState bobombState;
-
+    float explosionFrameAcum = 0.0f;
+    float explosionFrameTime = 0.2f;
+    int currentExplosionFrame = 0;
+    int maxExplosionFrame = 5;
 };
 
 

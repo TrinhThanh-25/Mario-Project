@@ -21,7 +21,7 @@ void Toad::updateCollisionBoxes() {
     } else {
         north.setY(position.y);
     }
-    south.setWidth(size.x / 4);
+    south.setWidth(size.x / 3);
     south.setX(position.x + size.x / 2 - south.getWidth() / 2);
     south.setY(position.y + size.y - south.getHeight());
     east.setHeight(size.y / 1.5f);

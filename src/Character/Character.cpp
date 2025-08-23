@@ -251,7 +251,7 @@ void Character::movement(float deltaTime) {
         if(world->getGameMode() == GameMode::TESTER && creativeMode) {
             position.y = map->getHeight() - size.y;
             velocity.y = 0;
-        } else {   
+        } else {
             state = SpriteState::DYING;
             if(world->getGameMode() == GameMode::TESTER) {
                 map->reset(true);
@@ -641,7 +641,6 @@ void Character::collisionEnemy(Enemy* enemy) {
                 }
                 state = SpriteState::JUMPING;
                 enemy->beingHit(HitType::STOMP);
-                enemy->setIsFacingLeft(direction == Direction::LEFT);
                 PlaySound(ResourceManager::getSound()["Stomp"]);
                 gameHud->addPoints(enemy->getPoint());
             }
@@ -666,39 +665,7 @@ void Character::collisionEnemy(Enemy* enemy) {
             }
         }
         else if( collision != CollisionType::NONE && invulnerable == false ) {
-            switch(type) {
-                case CharacterType::SMALL:
-                    if(world->getGameMode() == GameMode::TESTER && invulnerableMode) {
-                        break;
-                    }
-                    state = SpriteState::DYING;
-                    if(world->getGameMode() == GameMode::TESTER) {
-                        map->reset(true);
-                        reset(true);
-                    } else {
-                        world->playPlayerDownMusic();
-                        removeLives(1);
-                    }
-                    break;
-                case CharacterType::SUPER:
-                    if(world->getGameMode() == GameMode::TESTER && invulnerableMode) {
-                        break;
-                    }
-                    PlaySound(ResourceManager::getSound()["Pipe"]);
-                    previousState = state;
-                    state = SpriteState::SUPER_TO_SMALL;
-                    invulnerable = true;
-                    break;
-                case CharacterType::FLOWER:
-                    if(world->getGameMode() == GameMode::TESTER && invulnerableMode) {
-                        break;
-                    }
-                    PlaySound(ResourceManager::getSound()["Pipe"]);
-                    previousState = state;
-                    state = SpriteState::FLOWER_TO_SMALL;
-                    invulnerable = true;
-                    break;
-            }
+            setDying();
         }
     }
 }
@@ -1141,5 +1108,41 @@ int Character::getGamepadID() const {
             return 1;
         default:
             return 0;
+    }
+}
+
+void Character::setDying() {
+    switch(type) {
+        case CharacterType::SMALL:
+            if(world->getGameMode() == GameMode::TESTER && invulnerableMode) {
+                break;
+            }
+            state = SpriteState::DYING;
+            if(world->getGameMode() == GameMode::TESTER) {
+                map->reset(true);
+                reset(true);
+            } else {
+                world->playPlayerDownMusic();
+                removeLives(1);
+            }
+            break;
+        case CharacterType::SUPER:
+            if(world->getGameMode() == GameMode::TESTER && invulnerableMode) {
+                break;
+            }
+            PlaySound(ResourceManager::getSound()["Pipe"]);
+            previousState = state;
+            state = SpriteState::SUPER_TO_SMALL;
+            invulnerable = true;
+            break;
+        case CharacterType::FLOWER:
+            if(world->getGameMode() == GameMode::TESTER && invulnerableMode) {
+                break;
+            }
+            PlaySound(ResourceManager::getSound()["Pipe"]);
+            previousState = state;
+            state = SpriteState::FLOWER_TO_SMALL;
+            invulnerable = true;
+            break;
     }
 }

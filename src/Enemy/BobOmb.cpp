@@ -48,8 +48,27 @@ void BobOmb::update(const std::vector<Character*>& characterList) {
     }
 
     if (state == SpriteState::EXPLODING) {
-        // Có thể thêm hiệu ứng nổ nếu cần
-        setState(SpriteState::TO_BE_REMOVED);
+        for (Character* c : characterList) {
+            float dx = c->getPosition().x + c->getWidth() / 2 - (position.x + getWidth() / 2);
+            float dy = c->getPosition().y + c->getHeight() / 2 - (position.y + getHeight() / 2);
+            float distance = sqrt(dx * dx + dy * dy);
+
+            if (distance <= explosionRadius) {
+                c->setDying();
+            }
+            explosionFrameAcum += delta;
+            if (explosionFrameAcum >= explosionFrameTime) {
+                if(currentExplosionFrame < maxExplosionFrame) {
+                    currentExplosionFrame++;
+                } else {
+                    setState(SpriteState::TO_BE_REMOVED);
+                }
+                explosionFrameAcum = 0.0f;
+                currentDyingFrame = 0;
+                dyingFrameAcum = 0.0f;
+                diePosition = position;
+            }
+        }
         return;
     }
 
@@ -111,26 +130,16 @@ void BobOmb::draw() {
         );
     }
 
-    // else if (state == SpriteState::EXPLODING) {
-    //     DrawTexture(ResourceManager::getTexture()["BobOmbExplode"], position.x, position.y, WHITE);
-    // }
+    else if (state == SpriteState::EXPLODING) {
+        DrawTexture(ResourceManager::getTexture()["Explode" + std::to_string(currentExplosionFrame)], position.x, position.y, WHITE);
+    }
 }
 
 
 void BobOmb::beingHit(HitType type){
-    if (type == HitType::STOMP || type == HitType::SHELL_KICK){
-        if (bobombState == BobOmbState::IDLE) {
-            setState(SpriteState::DYING);
-            diePosition = position;
-            dyingFrameAcum = 0.0f;
-            pointFrameAcum = 0.0f;
-        }
-    }
-    else if (type == HitType::FIREBALL){
-        if (bobombState == BobOmbState::IDLE) {
-            bobombState = BobOmbState::IGNITED;
-            ignitionTimer = 0.0f;
-        }
+    if (bobombState == BobOmbState::IDLE) {
+        bobombState = BobOmbState::IGNITED;
+        ignitionTimer = 0.0f;
     }
 }
 

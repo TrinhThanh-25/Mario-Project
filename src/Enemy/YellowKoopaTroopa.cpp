@@ -188,7 +188,7 @@ void YellowKoopaTroopa::activeWhenMarioApproach(Character& character) {
 }
 
 void YellowKoopaTroopa::collisionTile(Tile* tile) {
-    if (!isAlive() || !isSolidTile(tile)) return;
+    if (!isAlive() || !isSolidTile(tile) || (tile->getType() == TileType::SOLID_ONLY_ENEMY && shellMoving)) return;
     CollisionType col = checkCollision(tile);
 
     Enemy::collisionTile(tile);

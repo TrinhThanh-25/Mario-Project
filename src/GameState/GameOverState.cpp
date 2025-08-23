@@ -18,7 +18,7 @@ void GameOverState::update() {
     if(IsKeyPressed(KEY_ESCAPE) || IsKeyPressed(KEY_ENTER)) {
         world->stopPlayerDownMusic();
         world->stopGameOverMusic();
-        world->setGameState(GameStateFactory::createGameState(world, GameStateType::TITLE_SCREEN));
+        world->resetGame();
         return;
     }
 }

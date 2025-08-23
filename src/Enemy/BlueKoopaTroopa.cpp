@@ -176,7 +176,7 @@ void BlueKoopaTroopa::activeWhenMarioApproach(Character& character){
 }
 
 void BlueKoopaTroopa::collisionTile(Tile* tile) {
-    if (!isAlive() || !isSolidTile(tile)) return;
+    if (!isAlive() || !isSolidTile(tile) || (tile->getType() == TileType::SOLID_ONLY_ENEMY && shellMoving)) return;
     CollisionType col = checkCollision(tile);
 
     // Gọi xử lý gốc để giữ va chạm trần và đất

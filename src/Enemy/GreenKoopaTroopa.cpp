@@ -205,7 +205,7 @@ void GreenKoopaTroopa::followTheLeader(Sprite* leader) {
 }
 
 void GreenKoopaTroopa::collisionTile(Tile* tile) {
-    if (!isAlive() || !isSolidTile(tile)) return;
+    if (!isAlive() || !isSolidTile(tile) || (tile->getType() == TileType::SOLID_ONLY_ENEMY && shellMoving)) return;
     CollisionType col = checkCollision(tile);
     Enemy::collisionTile(tile);
 

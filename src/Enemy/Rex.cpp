@@ -124,7 +124,11 @@ void Rex::activeWhenMarioApproach(Character& character) {
     Enemy::activeWhenMarioApproach(character);
 
     if (state == SpriteState::ACTIVE && velocity.x == 0) {
-        velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        if(isShrunken) {
+            velocity.x = isFacingLeft ? -200.0f : 20.0f;
+        } else {
+            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+        }
     }
 }
 
@@ -137,7 +141,11 @@ void Rex::collisionTile(Tile* tile) {
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
         isFacingLeft = !isFacingLeft;
         if (state == SpriteState::ACTIVE) {
-            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+            if(isShrunken) {
+                velocity.x = isFacingLeft ? -200.0f : 200.0f;
+            } else {
+                velocity.x = isFacingLeft ? -100.0f : 100.0f;
+            }
         }
     }
     if (col == CollisionType::SOUTH) {
@@ -153,7 +161,11 @@ void Rex::collisionBlock(Block* block) {
     if (col == CollisionType::WEST || col == CollisionType::EAST) {
         isFacingLeft = !isFacingLeft;
         if (state == SpriteState::ACTIVE) {
-            velocity.x = isFacingLeft ? -100.0f : 100.0f;
+            if(isShrunken) {
+                velocity.x = isFacingLeft ? -200.0f : 200.0f;
+            } else {
+                velocity.x = isFacingLeft ? -100.0f : 100.0f;
+            }
         }
     }
     if (col == CollisionType::SOUTH) {

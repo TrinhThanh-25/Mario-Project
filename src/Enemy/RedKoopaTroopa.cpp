@@ -49,32 +49,24 @@ void RedKoopaTroopa::beingHit(HitType type) {
     switch (type) {
         case HitType::STOMP:
             if (state == SpriteState::ACTIVE) {
-                setState(SpriteState::SHELL);
-                velocity = {0, 0};
-                shellMoving = false;
-            }
-            else if (state == SpriteState::SHELL) {
                 setState(SpriteState::DYING);
                 diePosition = position;
                 currentDyingFrame = 0;
                 dyingFrameAcum = 0.0f;
                 pointFrameAcum = 0.0f;
+                dyingFrameTime = 0.2f;
                 shellMoving = false;
             }
             break;
 
         case HitType::SHELL_KICK:
-            if (state == SpriteState::SHELL) {
-                shellMoving = true;
-                isFacingLeft = !isFacingLeft; // đổi hướng nếu bị đá
-            } 
-            else if (state == SpriteState::ACTIVE) {
-                // Bị mai trượt → chết luôn
+            if (state == SpriteState::ACTIVE) {
                 setState(SpriteState::DYING);
                 diePosition = position;
                 currentDyingFrame = 0;
                 dyingFrameAcum = 0.0f;
                 pointFrameAcum = 0.0f;
+                dyingFrameTime = 0.2f;
                 velocity = {0, 0};
                 shellMoving = false;
             }

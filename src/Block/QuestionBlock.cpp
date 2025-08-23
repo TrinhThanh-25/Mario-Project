@@ -33,6 +33,15 @@ QuestionBlock::~QuestionBlock() = default;
 void QuestionBlock::update() {
 	const float deltaTime = GetFrameTime();
 	
+	if (!hit) {
+		frameAcum += deltaTime;
+		if (frameAcum >= frameTime) {
+			frameAcum = 0.0f;
+			curFrame++;
+			curFrame %= maxFrame;
+		}
+	}
+	
 	if (hit && coinAnimationRunning) {
 		coinAnimationAcum += deltaTime;
 		if (coinAnimationAcum >= coinAnimationTime) {
